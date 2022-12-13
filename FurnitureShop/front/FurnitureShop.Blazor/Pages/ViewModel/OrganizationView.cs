@@ -1,0 +1,10 @@
+﻿// using FurnitureShop.Data.Entities;
+
+namespace FurnitureShop.Blazor.Shared;
+
+public class OrganizationView
+{
+    public Guid Id { get; set; }
+    public string? Name { get; set; }
+    // public EOrganizationStatus Status { get; set; }
+}

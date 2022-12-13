@@ -1,0 +1,37 @@
+﻿<MudNavMenu>
+    <div class="containers">
+        <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+        <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+        <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch</MudNavLink>
+        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
+        <MudNavLink Href="category" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Category</MudNavLink>
+        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment">Organizations</MudNavLink>
+    </div>
+</MudNavMenu>
+
+<style>
+    .containers{
+        display: flex;
+    }
+
+    .mud-ripple {
+        color: white !important;
+    }
+
+    .mud-nav-link:not(.mud-nav-link-disabled) .mud-nav-link-icon.mud-nav-link-icon-default{
+        color: white;
+    }
+
+    .mud-nav-link-text {
+        color: white !important;
+    }
+
+    .mud-nav-link .mud-nav-link-text {
+        width: 90px;
+        text-align: center;
+        margin-left: 12px;
+        margin-inline-start: 12px;
+        margin-inline-end: unset;
+        letter-spacing: 0;
+    }
+</style>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FurnitureShop.Blazor", "FurnitureShop.Blazor\FurnitureShop.Blazor.csproj", "{CDC2A9BB-6981-4FC2-A092-CC91371C3671}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDC2A9BB-6981-4FC2-A092-CC91371C3671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC2A9BB-6981-4FC2-A092-CC91371C3671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC2A9BB-6981-4FC2-A092-CC91371C3671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC2A9BB-6981-4FC2-A092-CC91371C3671}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13EB9340-5136-4753-924D-585945E6FF44}
+	EndGlobalSection
+EndGlobal
