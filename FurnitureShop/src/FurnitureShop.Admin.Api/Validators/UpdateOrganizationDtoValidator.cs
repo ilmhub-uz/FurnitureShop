@@ -9,7 +9,7 @@ namespace FurnitureShop.Admin.Api.Validators
         {
             RuleFor(updateorganizationdto => updateorganizationdto.Name).NotNull();
             RuleFor(updateorganizationdto => updateorganizationdto.Name)
-           .MaximumLength(25).MinimumLength(3).When(createorganizationdto => createorganizationdto.Name is not null);
+           .MaximumLength(25).MinimumLength(3).When(updateorganizationdto => updateorganizationdto.Name is not null);
         }
     }
 }
