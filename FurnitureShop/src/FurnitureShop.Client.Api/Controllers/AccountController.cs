@@ -1,5 +1,5 @@
 ﻿using FurnitureShop.Client.Api.Dtos;
-using FurnitureShop.Client.Api.Services;
+using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;

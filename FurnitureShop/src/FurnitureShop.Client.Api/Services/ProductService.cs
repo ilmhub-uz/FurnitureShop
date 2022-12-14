@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.ViewModel;
+﻿using FurnitureShop.Client.Api.Services.Interfaces;
+using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
@@ -20,7 +21,7 @@ public class ProductService : IProductService
     
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
     {
-        var existingProduct = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
+        var existingProduct = _unitOfWork.Products.GetById(productId);
         if (existingProduct is null)
             throw new NotFoundException<Product>();
 

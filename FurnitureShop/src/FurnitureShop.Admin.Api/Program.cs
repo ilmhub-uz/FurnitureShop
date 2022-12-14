@@ -1,5 +1,7 @@
+using FluentValidation;
 using FurnitureShop.Common.Extensions;
 using JFA.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddCors();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
 

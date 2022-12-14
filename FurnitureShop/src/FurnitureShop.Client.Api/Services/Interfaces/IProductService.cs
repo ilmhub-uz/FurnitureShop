@@ -1,6 +1,6 @@
 ﻿using FurnitureShop.Client.Api.ViewModel;
 
-namespace FurnitureShop.Client.Api.Services;
+namespace FurnitureShop.Client.Api.Services.Interfaces;
 
 public interface IProductService
 {
