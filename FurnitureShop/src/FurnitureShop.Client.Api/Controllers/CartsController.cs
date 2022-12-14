@@ -1,5 +1,9 @@
-﻿using FurnitureShop.Client.Api.Dtos;
+﻿using System.Security.Claims;
+using FurnitureShop.Client.Api.Dtos;
+using FurnitureShop.Client.Api.Services;
+using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
+using FurnitureShop.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Client.Api.Controllers;
@@ -8,24 +12,39 @@ namespace FurnitureShop.Client.Api.Controllers;
 [ApiController]
 public class CartsController : ControllerBase
 {
-    [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
-    [HttpGet]
-    public async Task<IActionResult> GetCarts()
+    private readonly ICartService _cartService;
+
+    public CartsController(ICartService cartService)
     {
-        return Ok();
+        _cartService = cartService;
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
+    [HttpGet]
+    public async Task<ActionResult<CartView>> GetCarts() =>
+        await _cartService.GetUserCart();
+
+    [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<IActionResult> AddToCart([FromBody] CreateCartDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, [FromBody] CreateCartDto createCartDto)
     {
+        await _cartService.AddToCart(claimsPrincipal, productId, createCartDto);
+        return Ok();
+    }
+
+    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
+    [HttpGet("{cartProductId}")]
+    public async Task<ActionResult<CartView>> DeleteCartProductById(Guid cartProductId, Guid productId)
+    {
+        await _cartService.DeleteCartProductById(cartProductId, productId);
         return Ok();
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPut("{cartProductId}")]
-    public async Task<IActionResult> DeleteCart(Guid cartProductId)
+    public async Task<ActionResult<List<CartView>>> DeleteCart(Guid cartProductId)
     {
+        await _cartService.DeletCartAllProducts(cartProductId);
         return Ok();
     }
 }
