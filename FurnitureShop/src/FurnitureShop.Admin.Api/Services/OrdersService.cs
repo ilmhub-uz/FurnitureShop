@@ -31,9 +31,9 @@ public class OrdersService : IOrdersService
         return order.Adapt<OrderView>();
     }
 
-    public Task<List<OrderView>> GetOrderByOrganizationId(Guid organizationId)
+    public async Task<List<OrderView>> GetOrderByOrganizationId(Guid organizationId)
     {
-        var organization = _unitOfWork.Organizations.GetById(organizationId);
+        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(o => o.Id == organizationId);
         if (organization is null)
             throw new NotFoundException<Organization>();
 
@@ -41,6 +41,6 @@ public class OrdersService : IOrdersService
         if (orders is null)
             throw new NotFoundException<Order>();
 
-        return Task.FromResult(orders.Adapt<List<OrderView>>());
+        return orders.Adapt<List<OrderView>>();
     }
 }
