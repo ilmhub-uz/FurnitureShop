@@ -43,13 +43,13 @@ public class OrganizationsService : IOrganizationsService
         await _unitOfWork.Organizations.Update(organization);
     }
 
-    public async Task DeleteOrganization(Guid organizationId, DeleteOrganizationDto deleteOrganizationDto)
+    public async Task DeleteOrganization(Guid organizationId)
     {
         var organization = _unitOfWork.Organizations.GetById(organizationId);
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        organization.Status = deleteOrganizationDto.Status;
+        organization.Status = EOrganizationStatus.Deleted;
 
         await _unitOfWork.Organizations.Update(organization);
     }

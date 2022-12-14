@@ -56,14 +56,8 @@ public class ProductsService : IProductsService
         if (category is null)
             throw new NotFoundException<Category>();
 
-        if (dtoModel.Count <= 0)
-            throw new BadRequestException("Product count was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
-
-        if (dtoModel.Price <= 0)
-            throw new BadRequestException("Product price was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
-
-        existingProduct = dtoModel.Adapt<Product>();
-
+        existingProduct.Status = dtoModel.Status;
+        
         await _unitOfWork.Products.Update(existingProduct);
     }
 
@@ -72,7 +66,9 @@ public class ProductsService : IProductsService
         var existingProduct = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
         if (existingProduct is null)
             throw new NotFoundException<Product>();
-
+        
+        existingProduct.Status = EProductStatus.Deleted;
+        
         await _unitOfWork.Products.Remove(existingProduct);
     }
 }

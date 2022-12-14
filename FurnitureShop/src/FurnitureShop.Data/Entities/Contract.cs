@@ -25,4 +25,9 @@ public class Contract
     [Required]
     public decimal TotalPrice { get; set; }
     public Dictionary<string, string>? ProductProperties { get; set; }
+    public DateTime FinishDate { get; set; }
+    
+    public Guid OrderId { get; set; }
+    [ForeignKey(nameof(OrderId))]
+    public virtual Order? Order { get; set; }
 }
