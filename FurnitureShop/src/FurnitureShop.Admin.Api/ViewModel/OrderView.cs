@@ -17,3 +17,4 @@ public class OrderView
 
     public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
 }
+                
