@@ -1,0 +1,33 @@
+﻿<MudCard Elevation="0" Square="true" Class="@Class" Style="@Style">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            <MudAvatar Image="assets/images/avatars/1.png"/>
+        </CardHeaderAvatar>
+        @*<MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+            <ActivatorContent>
+                <MudAvatar Image="assets/images/avatars/1.png" />
+            </ActivatorContent>
+            <ChildContent>
+                <MudDivider Class="mb-2" />
+                <MudListItem Text="Account" Icon="@Icons.Material.Outlined.Person" Href="/personal/account" />
+                <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Login" Href="/pages/authentication/login" />
+            </ChildContent>
+        </MudMenu>*@
+        <CardHeaderContent>
+            <MudText Typo="Typo.body2">Leverow</MudText>
+            <MudText Typo="Typo.caption">Administrator</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Default">
+                <MudMenuItem>My account</MudMenuItem>
+                <MudMenuItem Href="/account/logout">Logout</MudMenuItem>
+            </MudMenu>
+        </CardHeaderActions>
+    </MudCardHeader>
+    
+</MudCard>
+
+@code {
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string Style { get; set; }
+}
