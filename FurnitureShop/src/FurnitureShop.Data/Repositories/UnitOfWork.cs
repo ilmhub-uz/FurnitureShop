@@ -1,3 +1,4 @@
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 using JFA.DependencyInjection;
@@ -24,7 +25,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_productImageRepository is null) _productImageRepository = new ProductImageRepository(_context);
+            if (_productImageRepository is null) _productImageRepository = new ProductImageRepository(_context);
             return _productImageRepository;
         }
     }
@@ -34,7 +35,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_productRepository is null) _productRepository = new ProductRepository(_context);
+            if (_productRepository is null) _productRepository = new ProductRepository(_context);
             return _productRepository;
         }
     }
@@ -44,7 +45,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_organizationRepository is null) _organizationRepository = new OrganizationRepository(_context);
+            if (_organizationRepository is null) _organizationRepository = new OrganizationRepository(_context);
             return _organizationRepository;
         }
     }
@@ -54,7 +55,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_orderRepository is null) _orderRepository = new OrderRepository(_context);
+            if (_orderRepository is null) _orderRepository = new OrderRepository(_context);
             return _orderRepository;
         }
     }
@@ -66,6 +67,16 @@ public class UnitOfWork : IUnitOfWork
         {
             if (_cartRepository is null) _cartRepository = new CartRepository(_context);
             return _cartRepository;
+        }
+    }
+
+    private IFavoriteRepository _favoriteRepository;
+    public IFavoriteRepository Favorites;
+    {
+        get
+        {
+            if(_favoritRepository is null ) _favoritRepository = new FavoriteRepository(_context);
+            return _favoriteRepository;    
         }
     }
 
