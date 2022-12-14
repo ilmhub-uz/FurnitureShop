@@ -1,0 +1,27 @@
+﻿.text-center {
+    text-align: center;
+    padding: 18px 0px;
+}
+
+.container {
+    padding: 10px 0px;
+}
+
+.categories {
+    display: flex;
+    justify-content: space-between;
+}
+
+.category {
+    padding: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 18px;
+    width: 280px;
+}
+
+img {
+    width: 100%;
+    padding: 10px 0px 0px 0px;
+}
+
+
