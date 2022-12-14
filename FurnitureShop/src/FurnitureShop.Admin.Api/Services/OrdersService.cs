@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Admin.Api.ViewModel;
+﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
@@ -16,9 +17,21 @@ public class OrdersService : IOrdersService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<OrderView>> GetOrdersAsync()
+    public async Task<List<OrderView>> GetOrdersAsync(OrderFilter filter)
     {
-        var orders = await _unitOfWork.Orders.GetAll().ToListAsync();
+        List<Order>? orders;
+        if(filter.OrganizationId is not null)
+        {
+            orders = await _unitOfWork.Orders.GetAll().Where(o => o.OrganizationId == filter.OrganizationId).ToListAsync();
+            if (orders is null)
+                throw new NotFoundException<Order>();
+
+            return orders.Adapt<List<OrderView>>();
+        }
+        orders = await _unitOfWork.Orders.GetAll().ToListAsync();
+        if (orders is null)
+            throw new NotFoundException<Order>();
+
         return orders.Adapt<List<OrderView>>();
     }
 
@@ -29,18 +42,5 @@ public class OrdersService : IOrdersService
             throw new NotFoundException<Order>();
 
         return order.Adapt<OrderView>();
-    }
-
-    public async Task<List<OrderView>> GetOrderByOrganizationId(Guid organizationId)
-    {
-        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(o => o.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
-
-        var orders = _unitOfWork.Orders.GetAll().Where(o => o.OrganizationId == organizationId);
-        if (orders is null)
-            throw new NotFoundException<Order>();
-
-        return orders.Adapt<List<OrderView>>();
     }
 }
