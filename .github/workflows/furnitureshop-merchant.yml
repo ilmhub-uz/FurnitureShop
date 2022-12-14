@@ -24,5 +24,5 @@ jobs:
       - name: Upload files
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          branch: front-built/furnitureshop
+          branch: front-built/furnitures-merchant
           folder: release/wwwroot
