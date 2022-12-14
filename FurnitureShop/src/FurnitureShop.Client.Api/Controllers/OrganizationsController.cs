@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.Services.Interfaces;
+﻿using FurnitureShop.Client.Api.Filters;
+using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]
+    [TypeFilter(typeof(GetOrganizationByIdFilterAttribute))]
     public async Task<ActionResult<OrganizationView>> GetOrganizationById(Guid organizationId) =>
         await _organizationService.GetOrganizationByIdAsync(organizationId);
 }
