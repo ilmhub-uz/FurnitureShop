@@ -6,5 +6,5 @@ namespace FurnitureShop.Api.Services;
 public interface IProductCommentService
 {
     Task<List<ProductComment>> GetProductComments(Guid ProductId);
-    Task<ProductComment> AddProductComments(Guid ProductId, ProductCommentDto commentDto);
+    Task<ProductComment> AddProductComments(Guid ProductId, ProductCommentView commentDto);
 }
