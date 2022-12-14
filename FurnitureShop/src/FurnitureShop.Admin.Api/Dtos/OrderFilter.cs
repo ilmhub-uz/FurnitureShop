@@ -1,6 +1,8 @@
-﻿namespace FurnitureShop.Admin.Api.Dtos;
+﻿using FurnitureShop.Common.Models;
 
-public class OrderFilter : PagenationParams
+namespace FurnitureShop.Admin.Api.Dtos;
+
+public class OrderFilter : PaginationParams
 {
     public Guid? OrganizationId { get; set; }
 }
