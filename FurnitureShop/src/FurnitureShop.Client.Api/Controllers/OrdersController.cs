@@ -20,7 +20,7 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{orderId}/cancel")]
-    public async Task<IActionResult> UpdateOrder(Guid orderId)
+    public async Task<IActionResult> UpdateOrder(UpdateOrderDto updateOrderDto,Guid orderId)
     {
         return Ok();
     }

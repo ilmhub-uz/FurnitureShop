@@ -13,6 +13,7 @@ public class Product
     public bool IsAvailable { get; set; }
     public uint Count { get; set; }
     public int Views { get; set; }
+    public EProductStatus Status { get; set; }
     public List<uint>? Rates { get; set; }
     public int? CategoryId { get; set; }
     [ForeignKey(nameof(CategoryId))]
