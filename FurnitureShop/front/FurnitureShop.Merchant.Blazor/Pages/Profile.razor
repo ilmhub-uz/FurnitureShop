@@ -2,6 +2,7 @@
 <PageTitle>Profile</PageTitle>
 
 @using FurnitureShop.Admin.Blazor.Dtos
+@using FurnitureShop.Admin.Blazor.ViewModel
 @using Newtonsoft.Json
 
 <h1>User-Name: @user?.UserName</h1>
@@ -11,17 +12,17 @@
 
 
 @code {
-    RegisterUserDto user = new RegisterUserDto();
+    UserView user = new UserView();
 
     protected override async Task OnInitializedAsync()
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7003");
+        client.BaseAddress = new Uri("https://localhost:7113");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        user = JsonConvert.DeserializeObject<RegisterUserDto>(profileJson);
+        user = JsonConvert.DeserializeObject<UserView>(profileJson);
     }
 }
