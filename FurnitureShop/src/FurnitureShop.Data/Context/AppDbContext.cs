@@ -13,7 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductImage>? ProductImages { get; set; }
     public DbSet<Contract>? Contracts { get; set; } 
-
+    public DbSet<Favorites> Favorites { get; set; }
+    public DbSet<FavoritesProduct> FavoritesProducts { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -8,6 +8,7 @@ public class AppUser : IdentityUser<Guid>
     public string? LastName { get; set; }
     public EUserStatus Status { get; set; }
     public string? AvatarUrl { get; set; }
+    public virtual Favorites? Favorites { get; set; }
 
     public virtual ICollection<OrganizationUser>? Organizations { get; set; }
     public virtual ICollection<Contract>? Contracts { get; set; }
