@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Admin.Api.ViewModel;
+﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
@@ -16,11 +17,19 @@ public class OrdersService : IOrdersService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<OrderView>> GetOrdersAsync()
+    public async Task<List<OrderView>> GetOrdersAsync(OrderFilter filter)
     {
-        var orders = await _unitOfWork.Orders.GetAll().ToListAsync();
-        return orders.Adapt<List<OrderView>>();
+        var orders = _unitOfWork.Orders.GetAll();
+
+        if (filter.OrganizationId is not null)
+        {
+            orders = orders.Where(o => o.OrganizationId == filter.OrganizationId);
+        }
+
+        var orderList = await orders.ToListAsync();
+        return orderList.Adapt<List<OrderView>>();
     }
+
 
     public async Task<OrderView> GetOrderByIdAsync(Guid orderId)
     {
