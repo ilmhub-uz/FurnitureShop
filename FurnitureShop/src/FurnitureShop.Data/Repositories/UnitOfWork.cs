@@ -59,6 +59,16 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    private ICartRepository _cartRepository;
+    public ICartRepository Carts
+    {
+        get
+        {
+            if (_cartRepository is null) _cartRepository = new CartRepository(_context);
+            return _cartRepository;
+        }
+    }
+
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
