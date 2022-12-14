@@ -19,21 +19,17 @@ public class OrdersService : IOrdersService
     }
     public async Task<List<OrderView>> GetOrdersAsync(OrderFilter filter)
     {
-        List<Order>? orders;
-        if(filter.OrganizationId is not null)
+        var orders = _unitOfWork.Orders.GetAll();
+
+        if (filter.OrganizationId is not null)
         {
-            orders = await _unitOfWork.Orders.GetAll().Where(o => o.OrganizationId == filter.OrganizationId).ToListAsync();
-            if (orders is null)
-                throw new NotFoundException<Order>();
-
-            return orders.Adapt<List<OrderView>>();
+            orders = orders.Where(o => o.OrganizationId == filter.OrganizationId);
         }
-        orders = await _unitOfWork.Orders.GetAll().ToListAsync();
-        if (orders is null)
-            throw new NotFoundException<Order>();
 
-        return orders.Adapt<List<OrderView>>();
+        var orderList = await orders.ToListAsync();
+        return orderList.Adapt<List<OrderView>>();
     }
+
 
     public async Task<OrderView> GetOrderByIdAsync(Guid orderId)
     {
