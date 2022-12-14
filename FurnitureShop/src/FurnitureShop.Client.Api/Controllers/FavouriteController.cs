@@ -26,7 +26,6 @@ namespace FurnitureShop.Client.Api.Controllers
 
             var favouriteView = await _favouriteService.GetFavouriteByIdAsync(favouriteId);
 
-            await _context.SaveChangesAsync();
             return Ok();
         }
 
