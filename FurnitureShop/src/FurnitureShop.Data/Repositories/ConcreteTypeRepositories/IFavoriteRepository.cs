@@ -1,6 +1,8 @@
-﻿namespace FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
+﻿using FurnitureShop.Data.Entities;
 
-public interface IFavoriteRepository : IGenericRepository<IFavoriteRepository>
+namespace FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
+
+public interface IFavoriteRepository : IGenericRepository<FavouriteProduct>
 {
 
 }
