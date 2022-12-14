@@ -39,9 +39,9 @@ public class OrganizationsController : ControllerBase
         return Ok();
     }
     [HttpDelete("{organizationId:Guid}")]
-    public async Task<IActionResult> DeleteOrganization(Guid organizationId,DeleteOrganizationDto deleteOrganizationDto)
+    public async Task<IActionResult> DeleteOrganization(Guid organizationId)
     {
-        await _service.DeleteOrganization(organizationId, deleteOrganizationDto);
+        await _service.DeleteOrganization(organizationId);
         return Ok();
     }
 }

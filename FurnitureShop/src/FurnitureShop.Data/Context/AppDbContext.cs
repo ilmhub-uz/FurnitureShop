@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Data.Entities;
+using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     public DbSet<ProductComment> ProductComments { get; set; }
     public DbSet<Contract>? Contracts { get; set; } 
     public DbSet<FavouriteProduct> FavouriteProducts { get; set; }
+
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
