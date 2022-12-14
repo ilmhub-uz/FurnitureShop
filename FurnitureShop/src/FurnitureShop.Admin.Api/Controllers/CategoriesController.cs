@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Admin.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Filters;
@@ -13,10 +14,14 @@ namespace FurnitureShop.Admin.Api.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesService _categoriesService;
+        private readonly IValidator<CreateCategoryDto> _createCategoryValidator;
+        private readonly IValidator<UpdateCategoryDto> _updateCategoryValidator;
 
-        public CategoriesController(ICategoriesService categoriesService)
+        public CategoriesController(ICategoriesService categoriesService, IValidator<UpdateCategoryDto> updateCategoryValidator, IValidator<CreateCategoryDto> createCategoryValidator)
         {
             _categoriesService = categoriesService;
+            _updateCategoryValidator = updateCategoryValidator;
+            _createCategoryValidator = createCategoryValidator;
         }
 
         [HttpGet]
@@ -40,6 +45,10 @@ namespace FurnitureShop.Admin.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
         {
+            var result = _createCategoryValidator.Validate(createCategoryDto);
+            if(!result.IsValid)
+                return BadRequest(())
+
             await _categoriesService.AddCategory(createCategoryDto);
 
             return Ok();
