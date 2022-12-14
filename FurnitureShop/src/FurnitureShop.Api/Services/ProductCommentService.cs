@@ -2,8 +2,10 @@
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FurnitureShop.Api.Services;
@@ -11,13 +13,20 @@ namespace FurnitureShop.Api.Services;
 public class ProductCommentService : IProductCommentService
 {
     private readonly AppDbContext _context;
-    public ProductCommentService(AppDbContext context)
+    private readonly UserManager<AppUser> _userManager;
+    public ProductCommentService(AppDbContext context, UserManager<AppUser> userManager)
     {
+        _userManager = userManager;
         _context = context;
     }
-    public Task<ProductComment> AddProductComments(Guid ProductId, ProductCommentView commentDto)
+    public async Task AddProductComments(ClaimsPrincipal principal, Guid ProductId, CreateProductComment commentDto)
     {
-        throw new NotImplementedException();
+        var userId = Guid.Parse(_userManager.GetUserId(principal));
+
+        var comment = commentDto.Adapt<ProductComment>();
+        comment.UserId = userId;
+        await _context.ProductComments.AddAsync(comment);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<List<ProductComment>> GetProductComments(Guid ProductId)
