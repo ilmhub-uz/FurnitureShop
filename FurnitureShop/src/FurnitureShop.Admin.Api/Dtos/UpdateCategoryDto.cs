@@ -4,8 +4,7 @@ namespace FurnitureShop.Admin.Api.Dtos;
 
 public class UpdateCategoryDto
 {
-    [Required]
-    public string? Name { get; set; }
+    public string Name { get; set; }
 
     public int? ParentId { get; set; }
 }
