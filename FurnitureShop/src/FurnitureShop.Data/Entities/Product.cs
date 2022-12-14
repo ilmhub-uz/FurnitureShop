@@ -10,6 +10,7 @@ public class Product
     public Dictionary<string, string>? Properties { get; set; }
     public decimal Price { get; set; }
     public virtual List<ProductImage>? Images { get; set; }
+    public virtual List<ProductComment>? ProductComments { get; set; }
     public bool IsAvailable { get; set; }
     public uint Count { get; set; }
     public int Views { get; set; }
