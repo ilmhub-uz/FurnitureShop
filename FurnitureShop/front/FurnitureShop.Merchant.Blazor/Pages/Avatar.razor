@@ -1,0 +1,67 @@
+﻿@page "/user_avatar"
+
+@using FurnitureShop.Admin.Blazor.Dtos
+@inject NavigationManager NavManager
+@inject HttpClient Http
+
+
+
+
+
+
+
+   
+
+
+@*
+@code {
+    UserAvatar model = new UserAvatar();
+    AddFiles files = new AddFiles();
+
+    protected void Redirect(string s = "/")
+    {
+        NavManager.NavigateTo(s);
+    }
+
+    private async Task OnValidSubmit(IBrowserFile e)
+        {
+        // File.Api stert
+
+        files.Files.Add(e);
+        files.Type = EFileType.Images;
+        files.Folder = EFileFolder.User;
+
+        var fileClient = new HttpClient();
+        fileClient.BaseAddress = new Uri("https://localhost:7019");
+
+        var messageFile = new HttpRequestMessage(HttpMethod.Post, "/api/Files");
+        messageFile.Content = JsonContent.Create(files);
+        messageFile.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var resultFile = await (await fileClient.SendAsync(messageFile)).Content.ReadAsStringAsync();
+        if (resultFile is not null)
+            {
+            model.AvatarUrl = resultFile;
+        }
+
+        // File.Api end
+
+
+        // Merchant.Api start
+
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7113");
+
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/avatar");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var result = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        if (result is not null)
+            {
+        Redirect();
+        }
+
+        // Merchant.Api end
+    }
+}*@

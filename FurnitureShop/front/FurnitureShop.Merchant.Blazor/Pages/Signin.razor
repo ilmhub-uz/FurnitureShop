@@ -1,6 +1,8 @@
 ﻿@page "/signin"
 
 @using FurnitureShop.Admin.Blazor.Dtos
+@inject NavigationManager NavManager
+
 
 <PageTitle>Sign in</PageTitle>
 <MudPaper Height="100vh" Width="100%" Style="border:none;">
@@ -32,11 +34,24 @@
 @code {
     LoginUserDto model = new LoginUserDto();
 
-    bool success;
-
-    private void OnValidSubmit(EditContext context)
+    protected void Redirect(string s = "/profile")
     {
-        success = true;
-        StateHasChanged();
+        NavManager.NavigateTo(s);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7113");
+
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signin");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var result = await(await client.SendAsync(message)).Content.ReadAsStringAsync(); 
+        if(result is not null)
+        {
+            Redirect();
+        }
     }
 }

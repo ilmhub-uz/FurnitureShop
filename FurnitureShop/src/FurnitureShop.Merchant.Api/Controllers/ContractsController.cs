@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Common.Filters;
+﻿using FluentValidation;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
@@ -12,15 +13,23 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 public class ContractsController : ControllerBase
 {
     private readonly IContractService _contractService;
-    public ContractsController(IContractService contractService)
+    private readonly IValidator<CreateContractDto> _createContractValidator;
+    public ContractsController(IContractService contractService, 
+        IValidator<CreateContractDto> createContractValidator)
     {
         _contractService = contractService;
+        _createContractValidator = createContractValidator;
     }
 
     [HttpPost]
     [ValidateModel]
     public async Task<IActionResult> CreateContract([FromBody] CreateContractDto createContractDto)
     {
+        var validateResult = _createContractValidator.Validate(createContractDto);
+        
+        if (!validateResult.IsValid)
+            return BadRequest();
+
         await _contractService.AddContractAsync(createContractDto);
 
         return Ok();
