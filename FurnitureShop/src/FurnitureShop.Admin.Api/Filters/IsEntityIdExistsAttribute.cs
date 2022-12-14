@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Common.Exceptions;
+﻿using Flurl.Util;
+using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -7,25 +8,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Admin.Api.Filters
 {
-    public class IsProductExistsAttribute : ActionFilterAttribute
+    public class IsEntityIdExistsAttribute : ActionFilterAttribute
     {
         private readonly IUnitOfWork _unitOfWork;
-        public IsProductExistsAttribute(IUnitOfWork unitOfWork)
+        public IsEntityIdExistsAttribute(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!context.ActionArguments.ContainsKey("productId"))
+            if (!context.ActionArguments.Any(dictionary => dictionary.Key.EndsWith("Id")))
             {
                 context.Result = new NotFoundResult();
                 return;
             }
-            var productId =(Guid?)context.ActionArguments["productId"];
-
-
-            if(!_unitOfWork.Products.GetAll().Any(pr => pr.Id == productId))
+            var Id = (Guid?)context.ActionArguments.ToList().FirstOrDefault(idictionary => idictionary.Key.EndsWith("Id")).Value;
+           
+          if (!_unitOfWork.Products.GetAll().Any(pr => pr.Id == Id))
             {
                 context.Result = new NotFoundResult();
                 return;

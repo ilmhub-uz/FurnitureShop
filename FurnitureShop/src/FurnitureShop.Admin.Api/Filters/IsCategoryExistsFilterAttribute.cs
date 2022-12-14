@@ -15,7 +15,8 @@ namespace FurnitureShop.Admin.Api.Filters
 
             public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
             {
-                if (!context.ActionArguments.ContainsKey("categoryId"))
+          
+             if (!context.ActionArguments.ContainsKey("categoryId"))
                 {
                     context.Result = new NotFoundResult();
                     return;
