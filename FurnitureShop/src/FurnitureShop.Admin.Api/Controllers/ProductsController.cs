@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Admin.Api.Controllers;
 [Route("api/products")]
