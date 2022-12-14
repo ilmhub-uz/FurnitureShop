@@ -71,11 +71,11 @@ public class UnitOfWork : IUnitOfWork
     }
 
     private IFavoriteRepository _favoriteRepository;
-    public IFavoriteRepository Favorites;
+    public IFavoriteRepository Favorites
     {
         get
         {
-            if(_favoritRepository is null ) _favoritRepository = new FavoriteRepository(_context);
+            if(_favoriteRepository is null ) _favoriteRepository = new FavoriteRepository(_context);
             return _favoriteRepository;    
         }
     }
