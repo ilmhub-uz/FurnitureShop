@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureShop.Client.Api.ViewModel
 {
-        public class FavoritesProduct
-        {
+        public class FavouriteView
+    {
             public Guid Id { get; set; }
             public Guid UserId { get; set; }
 
