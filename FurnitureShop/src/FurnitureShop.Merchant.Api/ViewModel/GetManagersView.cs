@@ -1,8 +1,8 @@
 ﻿using FurnitureShop.Data.Entities;
 
-namespace FurnitureShop.Merchant.Api.Dtos
+namespace FurnitureShop.Merchant.Api.ViewModel
 {
-    public class GetManagersDto
+    public class GetManagersView
     {
         public Guid UserId { get; set; }
         public AppUser User { get; set; }
