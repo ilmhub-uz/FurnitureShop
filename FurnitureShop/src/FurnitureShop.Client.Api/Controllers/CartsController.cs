@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Client.Api.Dtos;
+using FurnitureShop.Client.Api.Filters;
 using FurnitureShop.Client.Api.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ public class CartsController : ControllerBase
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPut("{cartProductId}")]
+    [TypeFilter(typeof(DeleteCartFilterAttribute))]
     public async Task<IActionResult> DeleteCart(Guid cartProductId)
     {
         return Ok();
