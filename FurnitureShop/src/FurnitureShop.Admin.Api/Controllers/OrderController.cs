@@ -17,7 +17,7 @@ public class OrderController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrderView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrdersAsync(OrderFilter filter)
+    public async Task<IActionResult> GetOrders(OrderFilter filter)
     {
         var orders = await _ordersService.GetOrdersAsync(filter);
         return Ok(orders);
