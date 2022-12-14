@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Common.Filters;
+﻿using FluentValidation;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
@@ -12,10 +13,16 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationService _organizationService;
+    private readonly IValidator<CreateOrganizationDto> _createOrganizationValitor;
+    private readonly IValidator<UpdateOrganizationDto> _updateOrganizationValidator;
 
-    public OrganizationsController(IOrganizationService organizationService)
+    public OrganizationsController(IOrganizationService organizationService,
+        IValidator<CreateOrganizationDto> createOrganizationValitor,
+        IValidator<UpdateOrganizationDto> updateOrganizationValidator)
     {
         _organizationService = organizationService;
+        _createOrganizationValitor = createOrganizationValitor;
+        _updateOrganizationValidator = updateOrganizationValidator;
     }
 
     [HttpGet]
@@ -31,6 +38,11 @@ public class OrganizationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
     {
+        var validateResult = _createOrganizationValitor.Validate(createOrganizationDto);
+
+        if (!validateResult.IsValid)
+            return BadRequest();
+
         await _organizationService.AddOrganization(User, createOrganizationDto);
         return Ok();
     }
@@ -38,6 +50,11 @@ public class OrganizationsController : ControllerBase
     [HttpPut("{organizationId:guid}")]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
     {
+        var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);
+
+        if (!validateResult.IsValid)
+            return BadRequest();
+
         await _organizationService.UpdateOrganization(organizationId, updateOrganizationDto);
         return Ok();
     }
