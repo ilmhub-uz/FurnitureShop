@@ -1,0 +1,28 @@
+name: build furniture.shop
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet/@v1
+        with: 
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+        
+      - name: Publish project
+        run: dotnet publish FurnitureShop/front/FurnitureShop.Client.Blazor/FurnitureShop.Admin.Blazor.csproj -c Release -o release
+     
+      - name: Upload files
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: front-built/furnitureshop
+          folder: release/wwwroot
