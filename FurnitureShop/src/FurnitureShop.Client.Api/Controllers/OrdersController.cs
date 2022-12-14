@@ -1,4 +1,6 @@
 ﻿using FurnitureShop.Client.Api.Dtos;
+using FurnitureShop.Client.Api.Services.Interfaces;
+using FurnitureShop.Client.Api.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Client.Api.Controllers;
@@ -7,21 +9,25 @@ namespace FurnitureShop.Client.Api.Controllers;
 [ApiController]
 public class OrdersController : ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto)
+    private readonly IOrderService _orderService;
+
+    public OrdersController(IOrderService orderService)
     {
-        return Ok();
+        _orderService = orderService;
     }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(OrderView), StatusCodes.Status200OK)]
+    public async Task<ActionResult<OrderView>> CreateOrder([FromBody] CreateOrderDto createOrderDto) =>
+        await _orderService.CreateOrder(createOrderDto);
 
     [HttpGet]
-    public async Task<IActionResult> GetOrders()
-    {
-        return Ok();
-    }
+    [ProducesResponseType(typeof(List<OrderView>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<OrderView>>> GetOrders() => 
+        await _orderService.GetOrders();
 
     [HttpPut("{orderId}/cancel")]
-    public async Task<IActionResult> UpdateOrder(UpdateOrderDto updateOrderDto,Guid orderId)
-    {
-        return Ok();
-    }
+    [ProducesResponseType(typeof(OrderView), StatusCodes.Status200OK)]
+    public async Task<ActionResult<OrderView>> UpdateOrder(UpdateOrderDto updateOrderDto, Guid orderId) =>
+        await _orderService.UpdateOrder(updateOrderDto, orderId);
 }
