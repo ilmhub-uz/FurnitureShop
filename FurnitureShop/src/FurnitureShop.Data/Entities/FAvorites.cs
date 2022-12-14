@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Data.Entities
 {
-    internal class FAvorites
+    public class FAvoritesSmth
     {
+
     }
 }
