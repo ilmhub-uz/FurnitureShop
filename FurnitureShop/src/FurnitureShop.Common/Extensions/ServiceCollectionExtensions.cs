@@ -30,13 +30,13 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<AppDbContext>();
     }
 
-    public static void AddCorsPolicy(this IServiceCollection collection, ConfigurationManager configuration)
+    public static void AddCorsPolicy(this IServiceCollection collection)
     {
         collection.AddCors(options =>
         {
             options.AddDefaultPolicy(cors =>
             {
-                cors.WithOrigins(configuration["AllowedOrigins"])
+                cors.WithOrigins("http://localhost:65283", "https://localhost:8521", "http://localhost:9842")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

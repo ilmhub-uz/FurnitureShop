@@ -1,0 +1,59 @@
+﻿@page "/register"
+@using FurnitureShop.Admin.Blazor.Dtos
+
+<PageTitle>Register</PageTitle>
+<MudPaper Height="100vh" Width="100%" Style="border:none;">
+    <div style="margin: 20px auto; margin-left: 200px;">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
+                <MudGrid>
+                    <MudItem xs="12" sm="7">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudTextField Label="Username" HelperText="Max. 8 characters"
+                                              @bind-Value="model.UserName" For="@(() => model.UserName)" />
+                                <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                              @bind-Value="model.FirstName" For="@(() => model.FirstName)" />
+                                <MudTextField Label="Last name" Class="mt-3"
+                                              @bind-Value="model.LastName" For="@(() => model.LastName)" />
+                                <MudTextField Label="Email" HelperText="Iltimos kuchukcha qo'ying'" Class="mt-3"
+                                              @bind-Value="model.Email" For="@(() => model.Email)" InputType="InputType.Email" />
+                                <MudTextField Label="Password" Class="mt-3"
+                                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>             
+                </MudGrid>
+            </EditForm>
+        </MudContainer>
+    </div>
+    
+</MudPaper>
+
+
+
+
+@code {
+    RegisterUserDto model = new RegisterUserDto();
+
+    bool success;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7113");
+
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signup");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var result = await(await client.SendAsync(message)).Content.ReadAsStringAsync(); 
+
+        success = true;
+        StateHasChanged();
+    }
+}
