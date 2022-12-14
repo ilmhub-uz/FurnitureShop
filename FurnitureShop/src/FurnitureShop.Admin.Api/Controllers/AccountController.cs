@@ -1,4 +1,6 @@
-﻿using FurnitureShop.Data.Entities;
+﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Data.Entities;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +14,7 @@ public class AccountController : ControllerBase
 {
 
     private readonly SignInManager<AppUser> _signInManager;
-
+   
     public AccountController(SignInManager<AppUser> signInManager)
     {
         _signInManager = signInManager;

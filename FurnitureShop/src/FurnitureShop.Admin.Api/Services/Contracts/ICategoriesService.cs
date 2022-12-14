@@ -1,7 +1,7 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 
-namespace FurnitureShop.Admin.Api.Services;
+namespace FurnitureShop.Admin.Api.Services.Contracts;
 
 public interface ICategoriesService
 {

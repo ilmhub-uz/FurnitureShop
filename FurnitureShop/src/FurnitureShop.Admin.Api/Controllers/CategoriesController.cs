@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FurnitureShop.Admin.Api.Dtos;
-using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Admin.Api.Filters;
+using FurnitureShop.Admin.Api.Services.Contracts;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ namespace FurnitureShop.Admin.Api.Controllers
     [Route("api/categories")]
     [ApiController]
     [ValidateModel]
+    [TypeFilter(typeof(IsCategoryExistsFilterAttribute))]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesService _categoriesService;

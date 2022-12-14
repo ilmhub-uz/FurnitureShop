@@ -1,16 +1,16 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
-using FurnitureShop.Admin.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using FurnitureShop.Admin.Api.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using FurnitureShop.Admin.Api.Services.Contracts;
 
 namespace FurnitureShop.Admin.Api.Controllers;
 
 [Route("api/organizations")]
 [ApiController]
-[TypeFilter(typeof(IsCategoryExistsFilterAttribute))]
+
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationsService _service;
