@@ -1,4 +1,6 @@
-﻿using FurnitureShop.Data.Entities;
+﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Data.Entities;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,10 +14,24 @@ public class AccountController : ControllerBase
 {
 
     private readonly SignInManager<AppUser> _signInManager;
-
-    public AccountController(SignInManager<AppUser> signInManager)
+    private readonly UserManager<AppUser> _userManager;
+    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
     {
         _signInManager = signInManager;
+        _userManager = userManager;
+    }
+    [HttpPost("signup")]
+    public async Task<IActionResult> SignUp([FromForm] RegisterUserDto registerUserDto)
+    {
+
+        var user = registerUserDto.Adapt<AppUser>();
+        var result = await _userManager.CreateAsync(user, registerUserDto.Password);
+        
+        if (!result.Succeeded)
+            return BadRequest();
+
+        await _signInManager.SignInAsync(user, true);
+        return Ok();
     }
 
     [HttpPost("signin")]
