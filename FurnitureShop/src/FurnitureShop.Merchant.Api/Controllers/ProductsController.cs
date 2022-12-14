@@ -26,7 +26,7 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostProduct(CreateProductDto dtoModel)
+    public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
     {  
         await _productService.AddProduct(dtoModel);
 
