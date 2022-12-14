@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Data.Entities;
 using JFA.DependencyInjection;
 

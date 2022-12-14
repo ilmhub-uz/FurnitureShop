@@ -1,4 +1,4 @@
-﻿using FurnitureShop.Client.Api.Services;
+﻿using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
