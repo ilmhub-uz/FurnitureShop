@@ -1,8 +1,27 @@
 ﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
-    <MudNavLink Href="categories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
-    <MudNavLink Href="category" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Category</MudNavLink>
-    <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment">Organizations</MudNavLink>
+    <div class="NavMenu">
+        <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home" Class="NavMenu">Home</MudNavLink>
+    </div>
+    <div class="NavMemu">
+        <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add" Class="NavMenu">Counter</MudNavLink>
+    </div>
+    <div class="NavMenu">
+        <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List" Class="NavMenu">Fetch</MudNavLink>
+    </div>
+    <div class="NavMenu">
+        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category" Class="NavMenu">Categories</MudNavLink>
+    </div>
+    <div class="NavMenu">
+        <MudNavLink Href="category" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category" Class="NavMenu">Category</MudNavLink>
+    </div>
+    <div class="NavMenu">
+        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment" Class="NavMenu">Organizations</MudNavLink>
+    </div>
 </MudNavMenu>
+
+<style>
+    .NavMenu{
+        color: black !important;
+        text-align: center;
+    }
+</style>

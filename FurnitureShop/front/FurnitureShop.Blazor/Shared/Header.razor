@@ -5,7 +5,7 @@
         <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch</MudNavLink>
         <MudNavLink Href="categories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
         <MudNavLink Href="category" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Category</MudNavLink>
-        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment">Organizations</MudNavLink>
+        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment" >Organizations</MudNavLink>
     </div>
 </MudNavMenu>
 
@@ -14,15 +14,15 @@
         display: flex;
     }
 
-    .mud-ripple {
+    .mud-nav-link:not(.mud-nav-link-disabled) .mud-nav-link-icon.mud-nav-link-icon-default {
         color: white !important;
     }
 
-    .mud-nav-link:not(.mud-nav-link-disabled) .mud-nav-link-icon.mud-nav-link-icon-default{
-        color: white;
+    .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled){
+        color: white !important;
     }
 
-    .mud-nav-link-text {
+    .mud-ripple {
         color: white !important;
     }
 
@@ -34,4 +34,5 @@
         margin-inline-end: unset;
         letter-spacing: 0;
     }
+
 </style>
