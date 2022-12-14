@@ -31,18 +31,10 @@ public class ContractService : IContractService
 
     public async Task AddContractAsync(CreateContractDto contractDto)
     {
-        //logics added
-
-        //logics already added
-        throw new NotImplementedException();
-    }
-
-    public async Task AddContract(CreateContractDto contractDto)
-    {
         var contract = contractDto.Adapt<Contract>();
 
         await _context.AddAsync(contract);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteContract(Guid contractId)
