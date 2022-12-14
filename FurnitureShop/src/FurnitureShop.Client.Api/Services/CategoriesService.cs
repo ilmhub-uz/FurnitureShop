@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.ViewModel;
+﻿using FurnitureShop.Client.Api.Services.Interfaces;
+using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;

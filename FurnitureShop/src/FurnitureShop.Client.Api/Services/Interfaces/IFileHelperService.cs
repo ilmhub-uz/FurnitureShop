@@ -1,6 +1,6 @@
 ﻿using FurnitureShop.Data.Entities;
 
-namespace FurnitureShop.Client.Api.Services;
+namespace FurnitureShop.Client.Api.Services.Interfaces;
 
 public interface IFileHelperService
 {
