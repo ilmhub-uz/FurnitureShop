@@ -1,4 +1,6 @@
-﻿using FurnitureShop.Client.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Client.Api.Dtos;
+using FurnitureShop.Client.Api.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Client.Api.Controllers;
@@ -7,6 +9,13 @@ namespace FurnitureShop.Client.Api.Controllers;
 [ApiController]
 public class OrdersController : ControllerBase
 {
+    private readonly IValidator<UpdateOrderDto> _createUserValidator;
+
+    public OrdersController(IValidator<UpdateOrderDto> createUserValidator)
+    {
+        _createUserValidator = createUserValidator;
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto)
     {
@@ -20,8 +29,14 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPut("{orderId}/cancel")]
-    public async Task<IActionResult> UpdateOrder(Guid orderId)
+    public async Task<IActionResult> UpdateOrder(UpdateOrderDto updateOrderDto,Guid orderId)
     {
+        var result = _createUserValidator.Validate(updateOrderDto);
+
+        if (!result.IsValid)
+        {
+            return BadRequest(result.Errors);
+        }
         return Ok();
     }
 }
