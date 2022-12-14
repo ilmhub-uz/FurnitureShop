@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
