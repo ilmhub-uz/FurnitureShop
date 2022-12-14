@@ -30,4 +30,17 @@ public class OrdersService : IOrdersService
 
         return order.Adapt<OrderView>();
     }
+
+    public Task<List<OrderView>> GetOrderByOrganizationId(Guid organizationId)
+    {
+        var organization = _unitOfWork.Organizations.GetById(organizationId);
+        if (organization is null)
+            throw new NotFoundException<Organization>();
+
+        var orders = _unitOfWork.Orders.GetAll().Where(o => o.OrganizationId == organizationId);
+        if (orders is null)
+            throw new NotFoundException<Order>();
+
+        return Task.FromResult(orders.Adapt<List<OrderView>>());
+    }
 }

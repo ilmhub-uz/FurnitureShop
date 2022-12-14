@@ -6,4 +6,5 @@ public interface IOrdersService
 {
     Task<List<OrderView>> GetOrdersAsync();
     Task<OrderView> GetOrderByIdAsync(Guid orderId);
+    Task<List<OrderView>> GetOrderByOrganizationId(Guid organizationId);
 }
