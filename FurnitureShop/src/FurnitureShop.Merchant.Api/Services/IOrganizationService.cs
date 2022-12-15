@@ -11,4 +11,5 @@ public interface IOrganizationService
     Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto);
     Task UpdateOrganization(Guid organizationId, UpdateOrganizationDto updateOrganizationDto);
     Task DeleteOrganization(Guid organizationId);
+    Task<OrganizationView> GetOrganizationByName(string organizationName);
 }
