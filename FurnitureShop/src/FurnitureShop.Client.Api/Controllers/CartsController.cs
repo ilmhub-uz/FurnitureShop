@@ -23,9 +23,9 @@ public class CartsController : ControllerBase
         _createUserValidator = createUserValidator;
     }
 
-    [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<CartProductView>), StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<CartView>> GetCarts([FromQuery] PaginationParams paginationParams, Guid cartId)
+    public async Task<ActionResult<List<CartProductView>>> GetCartsProduct([FromQuery] PaginationParams paginationParams, Guid cartId)
     {
         await _cartService.GetUserCart(paginationParams, cartId);
         return Ok();
