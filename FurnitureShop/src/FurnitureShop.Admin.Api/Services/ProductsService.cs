@@ -1,6 +1,8 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Helpers;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Mapster;
@@ -16,21 +18,17 @@ public class ProductsService : IProductsService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter)
+    public async Task<List<ProductView>> GetProducts(PaginationParams paginationParams)
     {
-        var existingProducts = _unitOfWork.Products.GetAll();
-        if (existingProducts is null)
-            throw new NotFoundException<Product>();
-        
-        var arithmetic = ((int)filter.Page - 1) * (int)filter.Limit;
-        
-        var filteredProducts = await existingProducts
-            .Skip(arithmetic)
-            .Take((int)filter.Limit)
-            .Select(e => e.Adapt<ProductView>())
-            .ToListAsync();
+        var products = await _unitOfWork.Products.GetAll().ToPagedListAsync(paginationParams);
 
-        return filteredProducts;
+        if (products is null)
+            throw new NotFoundException<Product>();
+
+        var productList = products.Select(p => p.Adapt<ProductView>()).ToList()
+            ;
+
+        return productList;
     }
 
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
