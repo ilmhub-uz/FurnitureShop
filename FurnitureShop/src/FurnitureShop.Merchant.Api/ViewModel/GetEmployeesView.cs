@@ -2,7 +2,7 @@
 
 namespace FurnitureShop.Merchant.Api.ViewModel
 {
-    public class GetManagersView
+    public class GetEmployeesView
     {
         public Guid UserId { get; set; }
         public AppUser User { get; set; }

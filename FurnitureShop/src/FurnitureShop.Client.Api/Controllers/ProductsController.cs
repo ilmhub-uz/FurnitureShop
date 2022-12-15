@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.Services.Interfaces;
+﻿using FurnitureShop.Client.Api.Filters;
+using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
@@ -18,7 +19,6 @@ public partial class ProductsController : ControllerBase
     public ProductsController(IProductService productService)
     {
         _productService = productService;
-        
     }
 
     [HttpGet]

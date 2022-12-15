@@ -1,7 +1,206 @@
 ﻿@page "/"
 
 <PageTitle>Index</PageTitle>
+<div class="form-floating">
+    <input type="search" class="form-control" placeholder="Search" />
+</div>
+<MudCarousel Class="mud-width-full" Style="height:700px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudImage Src="http://krimdommebel.ru/image/catalog/CBK/Bruna_jasen/Bruna_gost_1.jpg" Alt="furniture" Elevation="25" Class="rounded-lg" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudImage Src="https://cdn.artcer.ru/files/pics/article/nolinski-6.jpg" Alt="furniture" Elevation="25" Class="rounded-lg" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudImage Src="https://mirdm.ru/upload/iblock/be4/be4f34a677b5c63e568a5077e1450107.jpg" Alt="furniture" Elevation="25" Class="rounded-lg" />
+        </div>
+    </MudCarouselItem>
+</MudCarousel>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, dunyo!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
-<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+<div class="home-category">
+    <h1>
+        Popular categories
+    </h1>
+    <div class="row">
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                </div>
+
+                <p>
+                    Chairs
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                </div>
+
+                <p>
+                    Tables
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/379/k66a15dow4vx9nppr4y3839u6j2saz1w.png" alt="imgs" />
+                </div>
+                <p>Frameless sofas</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/b8a/lfr6ljaax0je7n306vtzr206uobtr1rg.png" alt="beds" />
+                </div>
+
+                <p>
+                    Beds
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" alt="archairs" />
+                </div>
+                <p>
+                    Armchairs
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                </div>
+
+                <p>
+                    Chairs
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                </div>
+
+                <p>
+                    Tables
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/e8d/754g8e8es3tb4xyuyn802ov7apxwcz7n.png" alt="matras" />
+                </div>
+
+                <p>Mattresses</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                </div>
+
+                <p>
+                    Chairs
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="popular-category">
+                <div class="home-img">
+                    <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                </div>
+
+                <p>
+                    Tables
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code{
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+}
+
+<style>
+    .rounded-lg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .popular-category{
+        height: 150px;
+    }
+    .popular-category .home-img {
+        display: flex;
+        justify-content: center;
+    }
+
+    .popular-category p {
+        text-align: center;
+    }
+
+    .home-category h1 {
+        margin-top: 100px;
+        margin-bottom: 20px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: center;
+        grid-row: 1;
+        align-items: center;
+    }
+
+    .col-4 {
+        padding: 10px;
+        margin: 0px 20px 30px 0px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        border-radius: 18px;
+        width: 280px;
+    }
+
+    .pt-16{
+        padding-top: 18px !important;
+    }
+
+    .my-16 {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .form-floating {
+        margin-bottom: 10px;
+    }
+    .form-control {
+        border-radius: 10px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        width: 70%;
+        padding: 10px 10px;
+    }
+    
+</style>

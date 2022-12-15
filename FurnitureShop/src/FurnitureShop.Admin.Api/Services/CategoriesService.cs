@@ -1,6 +1,8 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Helpers;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
@@ -18,9 +20,9 @@ public class CategoriesService : ICategoriesService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<CategoryView>> GetCategoriesAsync()
+    public async Task<List<CategoryView>> GetCategoriesAsync(PaginationParams paginationParams)
     {
-        var categories = await _unitOfWork.Categories.GetAll().Where(c => c.ParentId == null).ToListAsync();
+        var categories = await _unitOfWork.Categories.GetAll().Where(c => c.ParentId == null).ToPagedListAsync(paginationParams);
 
         var categoriesViewList = new List<CategoryView>();
 

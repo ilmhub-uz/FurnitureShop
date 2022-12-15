@@ -1,6 +1,8 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Helpers;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
@@ -16,11 +18,20 @@ public class OrganizationsService : IOrganizationsService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<OrganizationView>> GetOrganizationsAsync()
+
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationFilterDto filterDto, PaginationParams paginationParams)
     {
-        var organization = await _unitOfWork.Organizations.GetAll().ToListAsync();
-        return organization.Adapt<List<OrganizationView>>();
+        var organizations = _unitOfWork.Organizations.GetAll();
+        if (filterDto.UserId is not null)
+        {
+            organizations = organizations.Where(o => o.Users!
+            .Any(u => u.UserId == filterDto.UserId));
+        }
+
+        var organizationsList = await organizations.ToPagedListAsync(paginationParams);
+        return organizationsList.Adapt<List<OrganizationView>>();
     }
+
     public async Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId)
     {
         var organization = (await _unitOfWork.Organizations.GetAll().ToListAsync())
@@ -31,6 +42,7 @@ public class OrganizationsService : IOrganizationsService
 
         return organization.Adapt<OrganizationView>();
     }
+
     public async Task UpdateOrganization(Guid organizationId, UpdateOrganizationDto updateOrganizationDto)
     {
         var organization = _unitOfWork.Organizations.GetById(organizationId);

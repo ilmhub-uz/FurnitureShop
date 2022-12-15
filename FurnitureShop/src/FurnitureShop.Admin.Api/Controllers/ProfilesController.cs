@@ -1,3 +1,4 @@
+using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Data.Entities;
 using Mapster;
@@ -10,13 +11,13 @@ namespace FurnitureShop.Admin.Api.Controllers;
 [Route("api/profiles")]
 [ApiController]
 [Authorize(Roles = "Admin")]
-public class ProfilesController:ControllerBase
+public class ProfilesController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager;
+    private readonly UserManager<AppUser> _userManager ;
 
     public ProfilesController(UserManager<AppUser> userManager)
     {
-        _userManager= userManager ;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -26,10 +27,4 @@ public class ProfilesController:ControllerBase
         var user = await _userManager.GetUserAsync(User);
         return Ok(user.Adapt<UserView>());
     }
-
-
-
-
-
-
 }

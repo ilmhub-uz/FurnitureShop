@@ -5,5 +5,5 @@ namespace FurnitureShop.Client.Api.ViewModel;
 
 public class CartView
 {
-    public virtual ICollection<CartProduct>? CartProducts { get; set; }
+    public virtual ICollection<CartProductView>? CartProducts { get; set; }
 }
