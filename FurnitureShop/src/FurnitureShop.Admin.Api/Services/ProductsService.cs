@@ -18,6 +18,7 @@ public class ProductsService : IProductsService
     {
         _unitOfWork = unitOfWork;
     }
+<<<<<<< HEAD
     public async Task<List<ProductView>> GetProducts(PaginationParams paginationParams)
     {
         var products = await _unitOfWork.Products.GetAll().ToPagedListAsync(paginationParams);
@@ -28,6 +29,19 @@ public class ProductsService : IProductsService
         var productList = products.Select(p => p.Adapt<ProductView>()).ToList();
 
         return productList;
+=======
+    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter, PaginationParams paginationParams)
+    {
+        var existingProducts = _unitOfWork.Products.GetAll();
+
+        if (filter.OrganizationId != null)
+            existingProducts = existingProducts.Where(o => o.OrganizationId == filter.OrganizationId);
+        else if (filter.CategoryId != null)
+            existingProducts = existingProducts.Where(o => o.CategoryId == filter.CategoryId);
+
+        var products = await existingProducts.ToPagedListAsync(paginationParams);
+        return products.Adapt<List<ProductView>>();
+>>>>>>> origin/main
     }
 
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
@@ -54,7 +68,7 @@ public class ProductsService : IProductsService
             throw new NotFoundException<Category>();
 
         existingProduct.Status = dtoModel.Status;
-        
+
         await _unitOfWork.Products.Update(existingProduct);
     }
 
@@ -63,9 +77,9 @@ public class ProductsService : IProductsService
         var existingProduct = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
         if (existingProduct is null)
             throw new NotFoundException<Product>();
-        
+
         existingProduct.Status = EProductStatus.Deleted;
-        
+
         await _unitOfWork.Products.Remove(existingProduct);
     }
 }
