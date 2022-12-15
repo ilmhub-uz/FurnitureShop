@@ -74,4 +74,8 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         await _context.SaveChangesAsync();
     }
+    public async Task<bool> IsExists(object? id)
+    {
+        return await DbSet.FindAsync(id) != null;
+    }
 }

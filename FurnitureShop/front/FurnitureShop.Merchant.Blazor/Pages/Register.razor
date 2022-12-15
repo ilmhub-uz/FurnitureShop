@@ -1,5 +1,7 @@
 ﻿@page "/register"
 @using FurnitureShop.Admin.Blazor.Dtos
+@inject NavigationManager NavManager
+
 
 <PageTitle>Register</PageTitle>
 <MudPaper Height="100vh" Width="100%" Style="border:none;">
@@ -40,7 +42,10 @@
 @code {
     RegisterUserDto model = new RegisterUserDto();
 
-    bool success;
+    protected void Redirect(string s = "/profile")
+    {
+        NavManager.NavigateTo(s);
+    }
 
     private async Task OnValidSubmit(EditContext context)
     {
@@ -52,8 +57,9 @@
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var result = await(await client.SendAsync(message)).Content.ReadAsStringAsync(); 
-
-        success = true;
-        StateHasChanged();
+        if(result is not null)
+        {
+            Redirect();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Api.Services;
 using FurnitureShop.Api.ViewModel;
+using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Api.Controllers;
@@ -15,8 +16,8 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<CategoryView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganizations() => 
-        Ok(await _categoriesService.GetCategoriesAsync());
+    public async Task<IActionResult> GetOrganizations([FromQuery] PaginationParams paginationParams) => 
+        Ok(await _categoriesService.GetCategoriesAsync(paginationParams));
 
     [HttpGet("{categoryId:int}")]
     [ProducesResponseType(typeof(CategoryView), StatusCodes.Status200OK)]

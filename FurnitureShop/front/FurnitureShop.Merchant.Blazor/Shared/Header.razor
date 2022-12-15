@@ -1,13 +1,23 @@
-﻿<MudAppBar style="background-color: #1d1d1d;" Fixed="false" Elevation="1">
+﻿@using FurnitureShop.Admin.Blazor.ViewModel
+@using Newtonsoft.Json
+
+<MudAppBar style="background-color: #1d1d1d;" Fixed="false" Elevation="1">
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
     <MudIconButton Style="margin-left:20px;" Href="/" Icon="@Icons.Filled.ShoppingCart" Color="Color.Inherit" />
     
     <MudSpacer />
 
-    <MudLink Href="/register" Underline="Underline.None" Color="Color.Primary">Register</MudLink>
-    <MudButton style="margin: 0 20px;" class="text-decoration-none" Href="/signin" Variant="Variant.Filled" EndIcon="@Icons.Filled.ArrowCircleRight" Color="Color.Primary">Sign in</MudButton>
+    @if (@user is null)
+    {
+        <MudLink Href="/register" Underline="Underline.None" Color="Color.Primary">Register</MudLink>
+        <MudButton style="margin: 0 20px;" class="text-decoration-none" Href="/signin" Variant="Variant.Filled" EndIcon="@Icons.Filled.ArrowCircleRight" Color="Color.Primary">Sign in</MudButton>
+    }
+    else
+    {
+        <MudIconButton Href="Profile" Icon="@Icons.Filled.Person" Color="Color.Inherit" />
+    }
+
     
-    <MudIconButton Href="Profile" Icon="@Icons.Filled.Person" Color="Color.Inherit" />
 </MudAppBar>
 <MudDrawer @bind-Open="@open" Breakpoint="@breakpoint" Elevation="1" Anchor="Anchor.Start" Variant="@DrawerVariant.Temporary" PreserveOpenState="@preserveOpenState">
         <MudDrawerHeader>
@@ -37,5 +47,19 @@
     void ToggleDrawer()
     {
         open = !open;
+    }
+
+    UserView user = new UserView();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7113");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        user = JsonConvert.DeserializeObject<UserView>(profileJson);
     }
 }

@@ -36,7 +36,12 @@ public static class ServiceCollectionExtensions
         {
             options.AddDefaultPolicy(cors =>
             {
-                cors.WithOrigins("http://localhost:65283", "https://localhost:8521", "http://localhost:9842")
+                cors.WithOrigins("http://localhost:65283", // Merchant.Api
+                                "https://localhost:8521", 
+                                "http://localhost:9842", 
+                                "http://localhost:34445", // File.Api
+                                "https://localhost:7019",
+                                "http://localhost:5285")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

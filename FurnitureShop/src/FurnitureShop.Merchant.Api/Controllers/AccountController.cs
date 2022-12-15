@@ -31,13 +31,22 @@ public class AccountController : ControllerBase
         _fileHelperService = fileHelperService;
     }
 
+    [HttpPut("avatar/filePath")]
+    public async Task<IActionResult> UpdateUserProfile([FromBody] UserAvatar avatar)
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        user.AvatarUrl = avatar.AvatarUrl;
+
+        await _userManager.UpdateAsync(user);
+        
+        return Ok();
+    }
+
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromForm] RegisterUserDto dtoModel)
+    public async Task<IActionResult> SignUp([FromBody] RegisterUserDto dtoModel)
     {
         var user = dtoModel.Adapt<AppUser>();
-        if (dtoModel.Avatar is not null)
-            user.AvatarUrl = await _fileHelperService.SaveFileAsync(dtoModel.Avatar, EFileType.Images, EFileFolder.User);
-
         var result = await _userManager.CreateAsync(user, dtoModel.Password);
 
         if (!result.Succeeded)
@@ -49,7 +58,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<IActionResult> SignIn(LoginUserDto dtoModel)
+    public async Task<IActionResult> SignIn([FromBody] LoginUserDto dtoModel)
     {
         var result = await _signInManager.PasswordSignInAsync(dtoModel.UserName, dtoModel.Password, true, true);
         if (!result.Succeeded)

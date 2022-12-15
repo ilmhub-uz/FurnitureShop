@@ -36,15 +36,13 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserDto)
+    public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateUserDto updateUserDto)
     {
         var user = await _userManager.GetUserAsync(User);
 
         user.FirstName = updateUserDto.FirstName;
         user.LastName = updateUserDto.LastName;
-        if (updateUserDto.Avatar is not null)
-            user.AvatarUrl = await _fileHelperService.SaveFileAsync(updateUserDto.Avatar, EFileType.Images, EFileFolder.User);
-
+        user.AvatarUrl = updateUserDto.Avatar;
         await _userManager.UpdateAsync(user);
         
         return Ok();

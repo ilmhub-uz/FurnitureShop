@@ -1,6 +1,7 @@
 ﻿using FurnitureShop.Api.Services;
 using FurnitureShop.Api.ViewModel;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,8 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts()
-    => await _productService.GetProducts();
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] PaginationParams paginationParams)
+    => await _productService.GetProducts(paginationParams);
 
     [HttpGet("{productId:guid}")]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)

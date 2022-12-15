@@ -3,6 +3,7 @@ using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,9 @@ namespace FurnitureShop.Admin.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<CategoryView>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetOrganizations()
+        public async Task<IActionResult> GetCategories([FromQuery] PaginationParams paginationParams)
         {
-            var categories = await _categoriesService.GetCategoriesAsync();
+            var categories = await _categoriesService.GetCategoriesAsync(paginationParams);
 
             return Ok(categories);
         }
