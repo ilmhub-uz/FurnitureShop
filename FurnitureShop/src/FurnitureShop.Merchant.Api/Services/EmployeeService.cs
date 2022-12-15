@@ -7,18 +7,19 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using FurnitureShop.Common.Email_Sender.Services;
 
 namespace FurnitureShop.Merchant.Api.Services
 {
 
     [Scoped]
-    public class ManagerService : IManagerService
+    public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
         private readonly UserManager<AppUser> _userManager;
 
-        public ManagerService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
+        public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
@@ -27,7 +28,6 @@ namespace FurnitureShop.Merchant.Api.Services
 
         public async Task AddManager(ClaimsPrincipal User, Guid organizationId, string email)
         {
-
             var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
             if (organization is null)
                 throw new NotFoundException<Organization>();
@@ -51,13 +51,13 @@ namespace FurnitureShop.Merchant.Api.Services
             _emailSender.SendEmail(message);
         }
 
-        public async Task<List<GetManagersView>> GetManagers(Guid organizationId)
+        public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId)
         {
             var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
             if (organization is null)
                 throw new NotFoundException<Organization>();
 
-            return (organization.Users.ToList()).Adapt<List<GetManagersView>>();
+            return (organization.Users.Where(e => e.Role == ERole.Manager).ToList()).Adapt<List<GetEmployeesView>>();
         }
 
         public async Task RemoveManager(Guid organizationId, Guid managerId)
@@ -73,5 +73,51 @@ namespace FurnitureShop.Merchant.Api.Services
             organization.Users.Remove(manager);
         }
 
+        public async Task AddSeller(ClaimsPrincipal User, Guid organizationId, string email)
+        {
+            var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
+            if (organization is null)
+                throw new NotFoundException<Organization>();
+
+            var joiner = _userManager.Users.FirstOrDefault(u => u.Email == email);
+            if (joiner is null)
+                throw new NotFoundException<AppUser>();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            organization.Users.Add(new OrganizationUser()
+            {
+                UserId = joiner.Id,
+                User = joiner,
+                OrganizationId = organization.Id,
+                Organization = organization,
+                Role = ERole.Seller
+            });
+
+            var message = new Message(new string[] { $"{email}" }, "Furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as seller. \n Congratulations 🎉");
+            _emailSender.SendEmail(message);
+        }
+
+        public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
+        {
+            var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
+            if (organization is null)
+                throw new NotFoundException<Organization>();
+
+            return (organization.Users.Where(e => e.Role == ERole.Seller).ToList()).Adapt<List<GetEmployeesView>>();
+        }
+
+        public async Task RemoveSeller(Guid organizationId, Guid managerId)
+        {
+            var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
+            if (organization is null)
+                throw new NotFoundException<Organization>();
+
+            var manager = organization.Users.FirstOrDefault(u => u.UserId == managerId);
+            if (manager is null)
+                throw new NotFoundException<Organization>();
+
+            organization.Users.Remove(manager);
+        }
     }
 }
