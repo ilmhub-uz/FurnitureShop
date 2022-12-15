@@ -1,4 +1,7 @@
-﻿using FurnitureShop.Admin.Api.Services;
+﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Common.Helpers;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -18,22 +21,26 @@ namespace FurnitureShop.Admin.Api.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpGet]
-        public async Task<IActionResult> GetPopularCategories()
+        public async Task<IActionResult> GetCategories(PaginationParams pagination)
         {
-            List<Tuple<string, int>> categoryNameWithViews = new();
-            var categories =  _unitOfWork.Categories.GetAll();
+            List<PopularCategory> popularCategories = new();
 
-            if (categories is not null)
+            var categories =  _unitOfWork.Categories.GetAll().OrderByDescending(c=>c.Views);
+
+            foreach (var category in await categories.ToPagedListAsync(pagination))
             {
-                var popularCategories = await categories.OrderByDescending(c => c.Views).Take(5).ToListAsync();
-                foreach (var category in popularCategories)
+                popularCategories.Add(new PopularCategory()
                 {
-                    Tuple<string, int> categoryNameWithView = new Tuple<string, int>(category.Name, category.Views);
-                    categoryNameWithViews.Add(categoryNameWithView);
-                }
+                    CategoryName = category.Name,
+                    Views = category.Views,
+                });
             }
-            return Ok(categoryNameWithViews);
-            
+            return Ok(popularCategories);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            _unitOfWork
         }
     }
 }
