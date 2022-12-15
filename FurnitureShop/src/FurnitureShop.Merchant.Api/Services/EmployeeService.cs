@@ -47,7 +47,7 @@ namespace FurnitureShop.Merchant.Api.Services
                 Role = ERole.Manager
             });
 
-            var message = new Message(new string[] { $"{email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
+            var message = new EmailService(new string[] { $"{email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
             _emailSender.SendEmail(message);
         }
 
