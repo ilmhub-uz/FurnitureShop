@@ -17,18 +17,15 @@ public class AccountController : ControllerBase
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
-    private readonly IFileHelperService _fileHelperService;
 
     public AccountController(
         AppDbContext context,
         UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
-        IFileHelperService fileHelperService)
+        SignInManager<AppUser> signInManager)
     {
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
-        _fileHelperService = fileHelperService;
     }
 
     [HttpPut("avatar/filePath")]
