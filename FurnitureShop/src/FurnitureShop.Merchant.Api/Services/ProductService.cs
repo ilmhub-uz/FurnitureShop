@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
@@ -39,7 +40,8 @@ public class ProductService : IProductService
 
         await _unitOfWork.Products.AddAsync(productEntity);
     }
-
+    
+    [IdValidation]
     public async Task DeleteProductById(Guid productId)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
