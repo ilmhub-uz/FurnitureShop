@@ -30,9 +30,9 @@ namespace FurnitureShop.Client.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<FavouriteView>>> AddToFavourite(ClaimsPrincipal claims, Guid productId, [FromBody] CreateFavouriteDto dtoModel)
+        public async Task<ActionResult<List<FavouriteView>>> AddToFavourite(Guid productId, [FromBody] CreateFavouriteDto dtoModel)
         {
-            await _favouriteService.AddToFavourites(claims, productId, dtoModel);
+            await _favouriteService.AddToFavourites(User,productId, dtoModel);
             return Ok();
         }
 
