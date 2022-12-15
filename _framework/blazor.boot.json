@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "FurnitureShop.Blazor.dll": "sha256-0LKkKvIEvrfQYItSC9KlwLD4zqCcF1BLKl4wz7vHn+E=",
+      "FurnitureShop.Blazor.dll": "sha256-o+qX946bm8z5Ma9cd5svvGJ9+g7213hkqfZZeI0\/nCM=",
       "Microsoft.AspNetCore.Components.dll": "sha256-MeaFGwI5J2fGEx9MTxdulhqfaAgtRwICqPeSVBQZPLI=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-Q0WfAaL4xETTlDPDiVgqRm3lLKRHbcUGKmkDYv\/\/P6M=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-B3pxlzmf\/tJ8pODPFG1BYYhaWzoUeILb2k3RUSyRWv0=",
