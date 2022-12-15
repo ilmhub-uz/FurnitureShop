@@ -18,17 +18,17 @@ public class OrganizationsService : IOrganizationsService
     {
         _unitOfWork = unitOfWork;
     }
-
-    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationFilterDto filterDto, PaginationParams paginationParams)
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationFilterDto filter)
     {
         var organizations = _unitOfWork.Organizations.GetAll();
-        if (filterDto.UserId is not null)
+
+        if (organizations is not null)
         {
             organizations = organizations.Where(o => o.Users!
-            .Any(u => u.UserId == filterDto.UserId));
+            .Any(uo => uo.UserId == filter.UserId));
         }
 
-        var organizationsList = await organizations.ToPagedListAsync(paginationParams);
+        var organizationsList = await organizations.ToPagedListAsync(filter);
         return organizationsList.Adapt<List<OrganizationView>>();
     }
 

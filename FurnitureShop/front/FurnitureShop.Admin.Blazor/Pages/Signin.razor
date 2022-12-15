@@ -1,2 +1,34 @@
 ﻿@page "/account/signin"
 <PageTitle>Authentication</PageTitle>
+
+
+@using FurnitureShop.Admin.Blazor.Dtos
+@inject NavigationManager NavManager
+
+
+@*frontend codes here*@
+
+@code {
+
+    LoginUserDto model = new LoginUserDto();
+
+    protected void Redirect(string route = "/profile")
+    {
+        NavManager.NavigateTo(route);
+    }
+
+    private async Task OnvalidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7237");
+
+        var message = new HttpRequestMessage(HttpMethod.Post, "api/accounts/singin");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var result = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        if (result is not null)
+        {
+            Redirect();
+        }
+    }
+}

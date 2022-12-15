@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Admin.Api.Controllers;
@@ -16,9 +17,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProducts(ProductFilterDto product)
+    public async Task<IActionResult> GetProducts([FromQuery] ProductFilterDto filter)
     {
-        var products = await _service.GetProducts(product);
+        var products = await _service.GetProducts(filter);
         return Ok(products);
     }
 
