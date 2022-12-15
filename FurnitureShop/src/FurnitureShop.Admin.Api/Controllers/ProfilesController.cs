@@ -27,9 +27,4 @@ public class ProfilesController:ControllerBase
         return Ok(user.Adapt<UserView>());
     }
 
-
-
-
-
-
 }
