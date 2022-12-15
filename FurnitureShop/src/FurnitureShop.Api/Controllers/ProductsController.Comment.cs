@@ -23,12 +23,12 @@ public partial class ProductsController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> AddProductComment(ClaimsPrincipal claims,Guid productId, CreateProductComment commentDto)
     {
-        
-
         var user = _userManager.GetUserAsync(User);
 
-
-        return Ok(await _productCommentService.AddProductComments(, productId, commentDto));
+        //User - degan ozgaruvchi bor controllerni base classida unda userni claimlari saqlanadi
+        //Userni type ClaimsPrinciple
+        var userClaims = User;
+        return Ok(await _productCommentService.AddProductComments(userClaims, productId, commentDto));
     }
 
 }
