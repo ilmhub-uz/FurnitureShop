@@ -19,7 +19,7 @@ public class OrdersService : IOrdersService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<OrderView>> GetOrdersAsync(OrderFilter filter , PaginationParams paginationParams)
+    public async Task<List<OrderView>> GetOrdersAsync(OrderFilter filter, PaginationParams paginationParams)
     {
         var orders = _unitOfWork.Orders.GetAll();
 
