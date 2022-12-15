@@ -2,6 +2,8 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 using JFA.DependencyInjection;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Data.Repositories;
 
@@ -86,6 +88,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public int Save() => _context.SaveChanges();
+    public async Task SaveAsync() => await _context.SaveChangesAsync();
 
     public void Dispose()
     {
