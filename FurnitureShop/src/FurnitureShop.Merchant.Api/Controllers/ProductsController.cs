@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Common.Filters;
+﻿using FluentValidation;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
@@ -13,21 +14,31 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [ValidateModel]
 public partial class ProductsController : ControllerBase
 {
-
     private readonly IProductService _productService;
     private readonly AppDbContext _context;
+    private readonly IValidator<UpdateProductDto> _updateProductValidator;
+    private readonly IValidator<CreateProductDto> _createProductValidator;
 
     public ProductsController(
         IProductService productService,
-        AppDbContext appDbContext)
+        AppDbContext appDbContext,
+        IValidator<UpdateProductDto> updateProductValidator,
+        IValidator<CreateProductDto> createProductValidator)
     {
         _productService = productService;
         _context = appDbContext;
+        _updateProductValidator = updateProductValidator;
+        _createProductValidator = createProductValidator;
     }
 
     [HttpPost]
     public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
-    {  
+    {
+        var validateResult = _createProductValidator.Validate(dtoModel);
+
+        if (!validateResult.IsValid)
+            return BadRequest();
+
         await _productService.AddProduct(dtoModel);
 
         return Ok();
@@ -74,6 +85,11 @@ public partial class ProductsController : ControllerBase
     [HttpPut("{productId:guid}")]
     public async Task<IActionResult> UpdateProduct(Guid productId, UpdateProductDto dtoModel)
     {
+        var validateResult = _updateProductValidator.Validate(dtoModel);
+
+        if (!validateResult.IsValid)
+            return BadRequest();
+
         await _productService.UpdateProduct(productId, dtoModel);
 
         return Ok();

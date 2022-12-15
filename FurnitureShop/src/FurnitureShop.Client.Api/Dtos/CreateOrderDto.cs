@@ -4,8 +4,6 @@ public class CreateOrderDto
 {
     public Guid OrganizationId { get; set; }
 
-    /// <summary>
-    /// Productni organizationidlari OrganizarionId bilan bir xil bolishi kerak
-    /// </summary>
-    public List<Guid>? CartProductIds { get; set; }
+    public Guid UserId { get; set; }
+    public List<CreateOrderProductDto>? CartProductIds { get; set; }
 }

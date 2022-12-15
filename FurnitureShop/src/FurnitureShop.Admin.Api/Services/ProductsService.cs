@@ -1,6 +1,8 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Helpers;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Mapster;
@@ -16,21 +18,17 @@ public class ProductsService : IProductsService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter)
+    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter, PaginationParams paginationParams)
     {
         var existingProducts = _unitOfWork.Products.GetAll();
-        if (existingProducts is null)
-            throw new NotFoundException<Product>();
-        
-        var arithmetic = ((int)filter.Page - 1) * (int)filter.Limit;
-        
-        var filteredProducts = await existingProducts
-            .Skip(arithmetic)
-            .Take((int)filter.Limit)
-            .Select(e => e.Adapt<ProductView>())
-            .ToListAsync();
 
-        return filteredProducts;
+        if (filter.OrganizationId != null)
+            existingProducts = existingProducts.Where(o => o.OrganizationId == filter.OrganizationId);
+        else if (filter.CategoryId != null)
+            existingProducts = existingProducts.Where(o => o.CategoryId == filter.CategoryId);
+
+        var products = await existingProducts.ToPagedListAsync(paginationParams);
+        return products.Adapt<List<ProductView>>();
     }
 
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
@@ -57,7 +55,7 @@ public class ProductsService : IProductsService
             throw new NotFoundException<Category>();
 
         existingProduct.Status = dtoModel.Status;
-        
+
         await _unitOfWork.Products.Update(existingProduct);
     }
 
@@ -66,9 +64,9 @@ public class ProductsService : IProductsService
         var existingProduct = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
         if (existingProduct is null)
             throw new NotFoundException<Product>();
-        
+
         existingProduct.Status = EProductStatus.Deleted;
-        
+
         await _unitOfWork.Products.Remove(existingProduct);
     }
 }
