@@ -4,9 +4,9 @@ public class PaginationMetaData
 {
     public PaginationMetaData(int totalCount, int pageSize, int pageNumber)
     {
-        CurrentPage = pageNumber;
-        PageSize = pageSize;
-        TotalCount = totalCount;
+        CurrentPage = pageNumber;//joriy page raqami
+        PageSize = pageSize;//total page count
+        TotalCount = totalCount;//umumiy elementlar soni
         TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
     }
 
