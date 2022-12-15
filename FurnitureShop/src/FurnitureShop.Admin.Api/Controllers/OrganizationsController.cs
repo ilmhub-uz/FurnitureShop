@@ -1,6 +1,7 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 namespace FurnitureShop.Admin.Api.Controllers;
 
@@ -17,9 +18,9 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganizations()
+    public async Task<IActionResult> GetOrganizations([FromQuery]PaginationParams paginationParams)
     {
-        var organization = await _service.GetOrganizationsAsync();
+        var organization = await _service.GetOrganizationsAsync(paginationParams);
         return Ok(organization);
     }
 
