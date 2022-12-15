@@ -26,7 +26,6 @@ public partial class ProductsController : ControllerBase
     => await _productService.GetProducts();
 
     [HttpGet("{productId:guid}")]
-    [TypeFilter(typeof(IsProductIdExistsAttribute))]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
     => await _productService.GetProductByIdAsync(productId);
 }

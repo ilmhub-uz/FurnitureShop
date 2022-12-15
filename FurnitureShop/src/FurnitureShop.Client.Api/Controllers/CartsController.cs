@@ -4,6 +4,7 @@ using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,12 +25,15 @@ public class CartsController : ControllerBase
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<CartView>> GetCarts() =>
-        await _cartService.GetUserCart();
+    public async Task<ActionResult<CartView>> GetCarts([FromQuery] PaginationParams paginationParams, Guid cartId)
+    {
+        await _cartService.GetUserCart(paginationParams, cartId);
+        return Ok();
+    }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, [FromBody] CreateCartDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, CreateCartDto createCartDto)
     {
         var result = _createUserValidator.Validate(createCartDto);
 
