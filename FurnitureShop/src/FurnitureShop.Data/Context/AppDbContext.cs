@@ -17,6 +17,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     public DbSet<Contract>? Contracts { get; set; } 
     public DbSet<FavouriteProduct> FavouriteProducts { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<LikeProduct> LikeProducts { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
