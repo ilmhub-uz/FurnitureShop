@@ -21,10 +21,7 @@ public class ProductCommentService : IProductCommentService
     }
     public async Task AddProductComments(ClaimsPrincipal principal, Guid ProductId, CreateProductComment commentDto)
     {
-        var userId = Guid.Parse(_userManager.GetUserId(principal));
-
         var comment = commentDto.Adapt<ProductComment>();
-        comment.UserId = userId;
         await _context.ProductComments.AddAsync(comment);
         await _context.SaveChangesAsync();
     }
