@@ -31,6 +31,7 @@ public class OrganizationsService : IOrganizationsService
         var organizationsList = await organizations.ToPagedListAsync(filter);
         return organizationsList.Adapt<List<OrganizationView>>();
     }
+
     public async Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId)
     {
         var organization = (await _unitOfWork.Organizations.GetAll().ToListAsync())
@@ -41,6 +42,7 @@ public class OrganizationsService : IOrganizationsService
 
         return organization.Adapt<OrganizationView>();
     }
+
     public async Task UpdateOrganization(Guid organizationId, UpdateOrganizationDto updateOrganizationDto)
     {
         var organization = _unitOfWork.Organizations.GetById(organizationId);

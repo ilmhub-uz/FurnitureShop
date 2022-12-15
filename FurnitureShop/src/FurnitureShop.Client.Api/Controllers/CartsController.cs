@@ -23,9 +23,9 @@ public class CartsController : ControllerBase
         _createUserValidator = createUserValidator;
     }
 
-    [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<CartProductView>), StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<CartView>> GetCarts([FromQuery] PaginationParams paginationParams, Guid cartId)
+    public async Task<ActionResult<List<CartProductView>>> GetCartsProduct([FromQuery] PaginationParams paginationParams, Guid cartId)
     {
         await _cartService.GetUserCart(paginationParams, cartId);
         return Ok();
@@ -33,14 +33,14 @@ public class CartsController : ControllerBase
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, CreateCartDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(Guid productId, CreateCartDto createCartDto)
     {
         var result = _createUserValidator.Validate(createCartDto);
 
         if (!result.IsValid)
             return BadRequest(result.Errors);
 
-        await _cartService.AddToCart(claimsPrincipal, productId, createCartDto);
+        await _cartService.AddToCart(User, productId, createCartDto);
         return Ok();
     }
 
