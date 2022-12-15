@@ -6,7 +6,7 @@ namespace FurnitureShop.Admin.Api.Services;
 
 public interface IProductsService
 {
-    Task<List<ProductView>> GetProducts(ProductFilterDto filter, PaginationParams paginationParams);
+    Task<List<ProductView>> GetProducts(ProductFilterDto filter);
     Task<ProductView> GetProductByIdAsync(Guid productId);
     Task UpdateProduct(Guid productId, UpdateProductDto dtoModel);
     Task DeleteProductById(Guid productId);

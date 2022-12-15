@@ -2,7 +2,7 @@
 
 namespace FurnitureShop.Admin.Api.Dtos;
 
-public class OrderFilter : PaginationParams
+public class OrderFilterDto : PaginationParams
 {
     public Guid? OrganizationId { get; set; }
 }
