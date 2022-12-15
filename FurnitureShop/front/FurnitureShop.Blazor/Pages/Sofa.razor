@@ -1,0 +1,66 @@
+﻿@page "/sofas"
+
+<PageTitle>Sofas</PageTitle>
+
+<div class="container">
+    <MudText Typo="Typo.h3" Class="text-center">Sofas</MudText>
+    <div class="categories">
+        <div class="category">
+            <MudLink Href="category">
+                <h3 class="text-center">Ноутбук, принтер, компьютерлар</h3>
+                <img src="https://cdn.macbro.uz/macbro/38f5c97f-48a9-4582-b508-df528b6faf4d" alt="mac" />
+            </MudLink>
+            
+        </div>
+        <div class="category">
+            <h3 class="text-center">Смартфон, телефон, гаджет, аксессуарлар
+            </h3>
+            <img src="https://cdn.macbro.uz/macbro/74f8a955-bba9-400c-92b2-4b30d01761e0" alt="phone" />
+        </div>
+        <div class="category">
+            <h3 class="text-center">
+                Маиший техника
+            </h3>
+            <img src="https://olcha.uz/image/256x256/category/BCoCpVZoqpqJzQC4aiRpGVE115PG3XEqtSsF4AfxYn9sruh9BLoqUenR5IAi." alt="kir moshina" />
+        </div>
+        <div class="category">
+            <h3 class="text-center">
+                Авто жиҳозлар
+            </h3>
+            <img src="https://olcha.uz/image/256x256/category/N3iMWPyvXRIXTqwloVhRb4oe2PEn38unPptNWZVenY7DJS2GYY5py94DRAX6." alt="iWatch" />
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-center {
+        text-align: center;
+        padding: 18px 0px;
+    }
+
+    .container {
+        padding: 10px 0px;
+    }
+
+    .categories {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .category {
+        padding: 10px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        border-radius: 18px;
+        width: 280px;
+    }
+
+    img {
+        width: 100%;
+        padding: 10px 0px 0px 0px;
+    }
+</style>
+
+@code {
+    private CategoryView[]? categories;
+
+}
