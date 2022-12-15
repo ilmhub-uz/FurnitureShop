@@ -1,6 +1,13 @@
-﻿namespace FurnitureShop.Client.Api.Validators
+﻿using FluentValidation;
+using FurnitureShop.Client.Api.Dtos;
+
+namespace FurnitureShop.Client.Api.Validators;
+
+public class CreateFavouritesDtoValidator : AbstractValidator<CreateFavouriteDto>
 {
-    public class CreateFavouritesDtoValidator
-    {
-    }
+	public CreateFavouritesDtoValidator()
+	{
+		RuleFor(createFavouritesDto => createFavouritesDto.ProductId).NotNull().WithMessage("ProductId is not valid");
+	}
 }
+
