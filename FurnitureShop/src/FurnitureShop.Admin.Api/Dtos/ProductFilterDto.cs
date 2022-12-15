@@ -1,4 +1,4 @@
-﻿using FurnitureShop.Common.Models;
+using FurnitureShop.Common.Models;
 
 namespace FurnitureShop.Admin.Api.Dtos;
 
