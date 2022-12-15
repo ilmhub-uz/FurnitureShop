@@ -1,11 +1,10 @@
 ﻿<MudNavMenu>
     <div class="containers">
-        <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-        <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-        <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch</MudNavLink>
-        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
-        <MudNavLink Href="category" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Category</MudNavLink>
-        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment">Organizations</MudNavLink>
+        <MudNavLink Href="" Match="NavLinkMatch.All">Home</MudNavLink>
+        <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix">Fetch</MudNavLink>
+        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix">Categories</MudNavLink>
+        <MudNavLink Href="category" Match="NavLinkMatch.Prefix">Category</MudNavLink>
+        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix">Organizations</MudNavLink>
     </div>
 </MudNavMenu>
 
@@ -14,24 +13,25 @@
         display: flex;
     }
 
-    .mud-ripple {
-        color: white !important;
+    .mud-nav-item {
+        width: auto;
     }
 
-    .mud-nav-link:not(.mud-nav-link-disabled) .mud-nav-link-icon.mud-nav-link-icon-default{
-        color: white;
+    .mud-ripple {
+        color: white !important;
     }
 
     .mud-nav-link-text {
         color: white !important;
     }
 
-    .mud-nav-link .mud-nav-link-text {
+    ..mud-nav-link .mud-nav-link-text {
         width: 90px;
         text-align: center;
         margin-left: 12px;
         margin-inline-start: 12px;
         margin-inline-end: unset;
         letter-spacing: 0;
+        color: white;
     }
 </style>

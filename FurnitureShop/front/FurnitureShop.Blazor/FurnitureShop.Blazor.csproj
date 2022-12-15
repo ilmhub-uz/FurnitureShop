@@ -16,4 +16,8 @@
 	</ItemGroup>
 	
 	
+	<ItemGroup>
+	  <None Remove="Syncfusion.Blazor.Core" />
+	  <None Remove="Syncfusion.Blazor.Buttons" />
+	</ItemGroup>
 </Project>
