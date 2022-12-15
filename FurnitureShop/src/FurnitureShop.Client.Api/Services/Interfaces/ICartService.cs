@@ -7,7 +7,7 @@ namespace FurnitureShop.Client.Api.Services.Interfaces;
 
 public interface ICartService
 {
-    Task<CartView> GetUserCart(PaginationParams paginationParams, Guid cartId, ClaimsPrincipal claims);
+    Task<List<CartProductView>> GetUserCart(PaginationParams paginationParams, Guid cartId);
     Task AddToCart(ClaimsPrincipal claims, Guid productId, CreateCartDto createCartDto);
     Task DeleteCartProductById(Guid cartProductId, Guid productId);
     Task DeletCartAllProducts(Guid cartId);

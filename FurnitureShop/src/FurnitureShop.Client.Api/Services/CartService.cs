@@ -8,6 +8,7 @@ using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace FurnitureShop.Client.Api.Services;
@@ -76,20 +77,19 @@ public class CartService : ICartService
         await _unitOfWork.Carts.Update(cart);
     }
 
-    public Task<CartView> GetUserCart(PaginationParams paginationParams, Guid cartId, ClaimsPrincipal claims)
+    public async Task<List<CartProductView>> GetUserCart(PaginationParams paginationParams, Guid cartId)
     {
-        var user = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-        var cart = _unitOfWork.Carts.(cartId);
-
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
         if (cart is null)
         {
             throw new NotFoundException<Cart>();
         }
 
-
         var pagedList = cart.CartProducts?.AsQueryable().ToPagedList(paginationParams);
-        var result = pagedList.Adapt<CartView>();
+        if (pagedList is null)
+            return new List<CartProductView>();
+
+        var result = pagedList.Adapt<List<CartProductView>>();
         return result;
     }
 }
