@@ -2,6 +2,7 @@
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.ViewModel;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using System.Security.Claims;
 
 namespace FurnitureShop.Merchant.Api.Services
 {
+
+    [Scoped]
     public class ManagerService : IManagerService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -69,5 +72,6 @@ namespace FurnitureShop.Merchant.Api.Services
 
             organization.Users.Remove(manager);
         }
+
     }
 }
