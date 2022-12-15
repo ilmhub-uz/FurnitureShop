@@ -18,4 +18,6 @@ public static class LoggerExtensions
 
         builder.Logging.AddSerilog(logger);
     }
+
+
 }

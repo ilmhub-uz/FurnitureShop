@@ -4,6 +4,8 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
 using System.Reflection;
+using Serilog;
+using TelegramSink;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,19 @@ builder.Services.AddCors();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
+
+var botToken = builder.Configuration.GetValue("BotToken", string.Empty);
+var chatId = builder.Configuration.GetValue("ChatId", string.Empty);
+var outlayTemplate = builder.Configuration.GetValue("outputTemplate.log", string.Empty);
+
+var logger = new LoggerConfiguration()
+    .WriteTo.TeleSink(botToken
+        , chatId)
+    .WriteTo.File(path: "path", rollingInterval: RollingInterval.Year,
+        outputTemplate: outlayTemplate)
+    .CreateLogger();
+
+builder.Logging.AddSerilog(logger);
 
 builder.Services.AddFluentValidationAutoValidation(o =>
 {
