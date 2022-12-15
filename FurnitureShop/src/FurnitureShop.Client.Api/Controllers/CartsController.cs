@@ -33,14 +33,14 @@ public class CartsController : ControllerBase
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, CreateCartDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(Guid productId, CreateCartDto createCartDto)
     {
         var result = _createUserValidator.Validate(createCartDto);
 
         if (!result.IsValid)
             return BadRequest(result.Errors);
 
-        await _cartService.AddToCart(claimsPrincipal, productId, createCartDto);
+        await _cartService.AddToCart(User, productId, createCartDto);
         return Ok();
     }
 
