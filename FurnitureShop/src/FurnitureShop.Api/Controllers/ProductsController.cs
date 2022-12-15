@@ -1,4 +1,6 @@
-﻿using FurnitureShop.Api.Services;
+﻿using FluentValidation;
+using FurnitureShop.Api.Dtos;
+using FurnitureShop.Api.Services;
 using FurnitureShop.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Models;
@@ -20,17 +22,21 @@ public partial class ProductsController : ControllerBase
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly IProductCommentService _productCommentService;
+    private readonly IValidator<CreateProductComment> _validator;
 
     public ProductsController(
         IProductService productService,
         AppDbContext appDbContext,
         IProductCommentService productCommentService,
-        UserManager<AppUser> userManager)
+        UserManager<AppUser> userManager,
+        IValidator<CreateProductComment> validator
+        )
     {
         _productService = productService;
         _context = appDbContext;
         _productCommentService = productCommentService;
         _userManager = userManager; 
+        _validator = validator; 
     }
 
     [HttpGet]
