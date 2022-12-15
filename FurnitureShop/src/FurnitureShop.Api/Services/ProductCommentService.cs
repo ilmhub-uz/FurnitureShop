@@ -1,12 +1,11 @@
 ﻿using FurnitureShop.Api.Dtos;
+using FurnitureShop.Api.ViewModel;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace FurnitureShop.Api.Services;
 
@@ -26,17 +25,43 @@ public class ProductCommentService : IProductCommentService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<ProductComment>> GetProductComments(Guid ProductId)
+    public async Task<List<ProductCommentView>> GetProductComments(Guid productId)
     {
-        var comments = await _context.ProductComments.Where(c => c.ProductId == ProductId).ToListAsync();
+        var mainComments = await _context.ProductComments
+            .Where(tc => tc.ParentId == null && tc.ProductId == productId)
+            .ToListAsync();
 
-        var commentDtoList = new List<ProductCommentView>();
-        foreach (var comment in comments)
+        var mainCommentsView = new List<ProductCommentView>();
+
+        foreach (var comment in mainComments)
         {
-            var commentDto = comment.Adapt<ProductCommentView>();
-            commentDtoList.Add(commentDto);
+            var commentDto = ToProductCommentDto(comment);
+            mainCommentsView.Add(commentDto);
         }
 
-        return comments;
+        return mainCommentsView;
+    }
+
+    private ProductCommentView ToProductCommentDto(ProductComment comment)
+    {
+        var commentDto = new ProductCommentView()
+        {
+            Id = comment.Id,
+            Comment = comment.Comment,
+            User = comment.User?.Adapt<UserView>(),
+            CreatedDate = comment.CreatedAt
+
+        };
+
+        if (comment.Children is null)
+            return commentDto;
+
+        foreach (var child in comment.Children)
+        {
+            commentDto.Children = new List<ProductCommentView>();
+            commentDto.Children.Add(ToProductCommentDto(child));
+        }
+
+        return commentDto;
     }
 }
