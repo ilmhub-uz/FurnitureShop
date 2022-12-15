@@ -7,6 +7,6 @@ namespace FurnitureShop.Admin.Api.Services;
 
 public interface IOrdersService
 {
-    Task<List<OrderView>> GetOrdersAsync(OrderFilter filter, PaginationParams paginationParams);
+    Task<List<OrderView>> GetOrdersAsync(OrderFilterDto filter);
     Task<OrderView> GetOrderByIdAsync(Guid orderId);
 }

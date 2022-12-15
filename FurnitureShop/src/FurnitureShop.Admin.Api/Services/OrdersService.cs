@@ -19,7 +19,7 @@ public class OrdersService : IOrdersService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<OrderView>> GetOrdersAsync(OrderFilter filter , PaginationParams paginationParams)
+    public async Task<List<OrderView>> GetOrdersAsync(OrderFilterDto filter)
     {
         var orders = _unitOfWork.Orders.GetAll();
 
@@ -28,7 +28,7 @@ public class OrdersService : IOrdersService
             orders = orders.Where(o => o.OrganizationId == filter.OrganizationId);
         }
 
-        var orderList = await orders.ToPagedListAsync(paginationParams);
+        var orderList = await orders.ToPagedListAsync(filter);
         return orderList.Adapt<List<OrderView>>();
     }
 
