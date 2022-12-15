@@ -18,7 +18,7 @@ namespace FurnitureShop.Merchant.Api.Services
         private readonly IEmailSender _emailSender;
         private readonly UserManager<AppUser> _userManager;
 
-        public OrganizationService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
+        public ManagerService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
