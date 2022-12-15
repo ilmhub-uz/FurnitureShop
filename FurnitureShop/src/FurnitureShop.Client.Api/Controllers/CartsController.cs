@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using FluentValidation;
 using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services;
 using FurnitureShop.Client.Api.Services.Interfaces;
@@ -13,10 +14,12 @@ namespace FurnitureShop.Client.Api.Controllers;
 public class CartsController : ControllerBase
 {
     private readonly ICartService _cartService;
+    private readonly IValidator<CreateCartDto> _createUserValidator;
 
-    public CartsController(ICartService cartService)
+    public CartsController(ICartService cartService, IValidator<CreateCartDto> createUserValidator)
     {
         _cartService = cartService;
+        _createUserValidator = createUserValidator;
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
@@ -28,6 +31,11 @@ public class CartsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, CreateCartDto createCartDto)
     {
+        var result = _createUserValidator.Validate(createCartDto);
+
+        if (!result.IsValid)
+            return BadRequest(result.Errors);
+
         await _cartService.AddToCart(claimsPrincipal, productId, createCartDto);
         return Ok();
     }
