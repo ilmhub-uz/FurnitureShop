@@ -1,5 +1,4 @@
 using FurnitureShop.Admin.Api.Dtos;
-using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Data.Entities;
 using Mapster;
@@ -12,15 +11,15 @@ namespace FurnitureShop.Admin.Api.Controllers;
 [Route("api/profiles")]
 [ApiController]
 [Authorize(Roles = "Admin")]
-public class ProfilesController:ControllerBase
+public class ProfilesController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IFileHelperService _fileHelperService;
 
     public ProfilesController(UserManager<AppUser> userManager, IFileHelperService fileHelperService)
     {
-        _userManager= userManager ;
-        _fileHelperService = fileHelperService ;
+        _userManager = userManager;
+        _fileHelperService = fileHelperService;
     }
 
     [HttpGet]
@@ -46,7 +45,7 @@ public class ProfilesController:ControllerBase
         await _userManager.UpdateAsync(user);
 
         return Ok();
-                  
+
     }
 
 
