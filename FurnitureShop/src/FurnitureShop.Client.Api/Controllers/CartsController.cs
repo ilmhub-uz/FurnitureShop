@@ -26,7 +26,7 @@ public class CartsController : ControllerBase
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, [FromBody] CreateCartDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(ClaimsPrincipal claimsPrincipal, Guid productId, CreateCartDto createCartDto)
     {
         await _cartService.AddToCart(claimsPrincipal, productId, createCartDto);
         return Ok();
