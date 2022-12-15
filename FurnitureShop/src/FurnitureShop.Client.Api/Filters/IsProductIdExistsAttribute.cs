@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FurnitureShop.Client.Api.Filters;
 
-public class GetProductByIdFilterAttribute : ActionFilterAttribute
+public class IsProductIdExistsAttribute : ActionFilterAttribute
 {
     private readonly IUnitOfWork _unitOfWork;
-    public GetProductByIdFilterAttribute(IUnitOfWork unitOfWork)
+    public IsProductIdExistsAttribute(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
