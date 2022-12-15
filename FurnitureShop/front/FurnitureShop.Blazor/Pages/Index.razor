@@ -1,7 +1,54 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
-<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+<div class="form-floating">
+    <input type="search" class="form-control" placeholder="Search" />
+</div>
+<MudCarousel Class="mud-width-full" Style="height:750px; border-radius: 10px" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudImage Src="https://images.pexels.com/photos/276528/pexels-photo-276528.jpeg?cs=srgb&dl=pexels-pixabay-276528.jpg&fm=jpg" Class="HomeImg" Alt="alt" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudImage Src="https://thumbs.dreamstime.com/b/vintage-furniture-flat-stylish-vintage-furniture-spacious-flat-interior-beige-sofa-chairs-posters-wall-112280434.jpg" Class="HomeImg" Alt="chair" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex" style="height:100%">
+            <MudImage Src="https://thumbs.dreamstime.com/b/urban-jungle-trendy-living-room-interior-white-couch-black-knot-pillow-wooden-furniture-copy-space-empty-wall-174228512.jpg" Class="HomeImg" Alt="img" />
+        </div>
+    </MudCarouselItem>
+</MudCarousel>
+
+@code{
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+}
+
+<style>
+    .my-16 {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    .mud-container-maxwidth-lg {
+        max-width: 1160px;
+    }
+    .pt-16 {
+        padding-top: 10px !important;
+    }
+    .form-floating {
+        margin-bottom: 10px;
+    }
+    .form-control {
+        border-radius: 10px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        width: 70%;
+        padding: 10px 10px;
+    }
+</style>
