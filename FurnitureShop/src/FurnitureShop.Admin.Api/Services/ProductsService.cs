@@ -25,8 +25,7 @@ public class ProductsService : IProductsService
         if (products is null)
             throw new NotFoundException<Product>();
 
-        var productList = products.Select(p => p.Adapt<ProductView>()).ToList()
-            ;
+        var productList = products.Select(p => p.Adapt<ProductView>()).ToList();
 
         return productList;
     }
