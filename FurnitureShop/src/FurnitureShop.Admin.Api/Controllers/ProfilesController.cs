@@ -1,4 +1,3 @@
-using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Data.Entities;
 using Mapster;
@@ -13,7 +12,7 @@ namespace FurnitureShop.Admin.Api.Controllers;
 [Authorize(Roles = "Admin")]
 public class ProfilesController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager ;
+    private readonly UserManager<AppUser> _userManager;
 
     public ProfilesController(UserManager<AppUser> userManager)
     {

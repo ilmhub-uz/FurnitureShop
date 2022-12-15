@@ -4,7 +4,6 @@ using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Admin.Api.Controllers
