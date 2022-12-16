@@ -15,8 +15,13 @@ public partial class ProductsController
 
     [HttpPost("{productId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> AddProductComment(ClaimsPrincipal? claims, Guid productId, CreateProductComment commentDto)
+    public async Task<IActionResult> AddProductComment(ClaimsPrincipal? claims, Guid productId,[FromBody] CreateProductComment commentDto)
     { 
+        var result = _validator.Validate(commentDto);
+
+        if (!result.IsValid)
+            return BadRequest();
+
         var user = _userManager.GetUserAsync(User);
         var claim = User;
         await _productCommentService.AddProductComments(claim, productId, commentDto);

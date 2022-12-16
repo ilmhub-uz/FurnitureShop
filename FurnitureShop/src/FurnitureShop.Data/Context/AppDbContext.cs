@@ -14,10 +14,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     public DbSet<Category>? Categories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductImage>? ProductImages { get; set; }
+    public DbSet<CategoryImage> CategoryImages { get; set; }
     public DbSet<ProductComment> ProductComments { get; set; }
     public DbSet<Contract>? Contracts { get; set; } 
     public DbSet<FavouriteProduct> FavouriteProducts { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<LikeProduct> LikeProducts { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -25,6 +27,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     {
         base.OnModelCreating(builder);
         builder.Entity<OrganizationUser>().HasKey(user => new { user.UserId, user.OrganizationId });
+        builder.Entity<LikeProduct>().HasKey(likeproduct => new { likeproduct.UserId, likeproduct.ProductId });
     }
 
     public override int SaveChanges()

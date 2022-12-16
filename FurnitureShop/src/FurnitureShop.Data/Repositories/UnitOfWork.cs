@@ -80,6 +80,16 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    public IAppUserRepository _appUserRepository;
+    public IAppUserRepository AppUsers
+    {
+        get
+        {
+            if(_appUserRepository is null ) _appUserRepository = new AppUserRepository(_context);
+            return _appUserRepository ;
+        }
+    }
+
     public UnitOfWork(AppDbContext context)
     {
         _context = context;

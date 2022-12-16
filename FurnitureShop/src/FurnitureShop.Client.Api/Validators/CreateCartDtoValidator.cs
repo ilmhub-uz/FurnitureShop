@@ -7,8 +7,8 @@ public class CreateCartDtoValidator : AbstractValidator<CreateCartDto>
 {
     public CreateCartDtoValidator()
     {
-        RuleFor(createOrderDto => createOrderDto.ProductId).NotEmpty();
-        RuleFor(createOrderDto => createOrderDto.Count).NotEmpty();
-        RuleFor(createOrderDto => createOrderDto.Properties).NotEmpty();
+        RuleFor(createCartDto => createCartDto.ProductId).NotEmpty();
+        RuleFor(createCartDto => createCartDto.Count).NotEmpty();
+        RuleFor(createCartDto => createCartDto.Properties).NotEmpty();
     }
 }

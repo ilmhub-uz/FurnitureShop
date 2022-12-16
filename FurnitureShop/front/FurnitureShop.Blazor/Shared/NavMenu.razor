@@ -1,8 +1,44 @@
-﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
-    <MudNavLink Href="categories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
-    <MudNavLink Href="category" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Category</MudNavLink>
-    <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Comment">Organizations</MudNavLink>
+﻿<link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
+
+<MudNavMenu>
+    <MudNavGroup Title="Sofas" Icon="@Icons.Filled.Chair" Class="NavCat">
+        <MudNavLink Href="sofas" Match="NavLinkMatch.All"><MudImage Class="img" Src="https://mebel.shop/upload/iblock/14c/pdslcuh71fu5dksm0fzjnok0qcnkihr9.png" Alt="" />Frameless sofas</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Armchairs" Icon="@Icons.Filled.Chair" Class="NavCat">
+        <MudNavLink Href="armchairs" Match="NavLinkMatch.Prefix"><MudImage Class="img"
+          Src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" Alt="" />Armchairs</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Beds" Icon="@Icons.Filled.Chair" Class="NavCat">
+        <MudNavLink Href="beds" Match="NavLinkMatch.Prefix"><MudImage Class="img"
+          Src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" Alt="" />Beds</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Mattresses" Icon="@Icons.Filled.Chair" Class="NavCat">
+        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix">Mattresses</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Chairs" Icon="@Icons.Filled.Chair" Class="NavCat">
+        <MudNavLink Href="category" Match="NavLinkMatch.Prefix">Сhairs</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Tables" Icon="@Icons.Filled.Chair" Class="NavCat">
+        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix">Tables</MudNavLink>
+    </MudNavGroup>
 </MudNavMenu>
+
+<style>
+    .NavCat .mud-nav-link-text {
+        color: black !important;
+    }
+    .img {
+        margin-right: 20px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .mud-nav-link-text {
+        display: flex !important;
+    }
+
+    .mud-nav-item .mud-ripple a {
+        padding: 0px !important;
+    }
+
+</style>

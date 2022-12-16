@@ -7,17 +7,18 @@
 <MudLayout>
     <MudAppBar Elevation="0">
         <div class="containers">
-            @* <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e)
-                => DrawerToggle())" /> *@
+             
             @* <MudSpacer /> *@
             <div>
-                <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/"
-                    Target="_blank" />
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e)
+                => DrawerToggle())" /> 
             </div>
             <div>
                 <Header />
             </div>
             <div>
+                <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/"
+                    Target="_blank" />
                 <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"
                     Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
             </div>
@@ -34,6 +35,7 @@
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
             @Body
         </MudContainer>
+        <Footer />
     </MudMainContent>
 </MudLayout>
 

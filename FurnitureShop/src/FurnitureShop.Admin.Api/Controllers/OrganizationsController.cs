@@ -18,9 +18,9 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganizations([FromQuery]PaginationParams paginationParams)
+    public async Task<IActionResult> GetOrganizations([FromQuery]OrganizationFilterDto filter)
     {
-        var organization = await _service.GetOrganizationsAsync(paginationParams);
+        var organization = await _service.GetOrganizationsAsync(filter);
         return Ok(organization);
     }
 

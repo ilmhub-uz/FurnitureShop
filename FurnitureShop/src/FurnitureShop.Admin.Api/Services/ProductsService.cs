@@ -18,17 +18,17 @@ public class ProductsService : IProductsService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter, PaginationParams paginationParams)
+    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter)
     {
         var existingProducts = _unitOfWork.Products.GetAll();
 
-        if (filter.OrganizationId != null)
+        if (filter.OrganizationId is not null)
             existingProducts = existingProducts.Where(o => o.OrganizationId == filter.OrganizationId);
         else if (filter.CategoryId != null)
             existingProducts = existingProducts.Where(o => o.CategoryId == filter.CategoryId);
 
-        var products = await existingProducts.ToPagedListAsync(paginationParams);
-        return products.Adapt<List<ProductView>>();
+        var productsList = await existingProducts.ToPagedListAsync(filter);
+        return productsList.Adapt<List<ProductView>>();
     }
 
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
