@@ -1,6 +1,7 @@
 ﻿using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
@@ -19,13 +20,12 @@ public class ProductService : IProductService
         _unitOfWork = unitOfWork;
     }
     
+    [IdValidation]
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
-        if (existingProduct is null)
-            throw new NotFoundException<Product>();
 
-        return existingProduct.Adapt<ProductView>();
+        return existingProduct!.Adapt<ProductView>();
     }
 
     public async Task<List<ProductView>> GetProducts()
