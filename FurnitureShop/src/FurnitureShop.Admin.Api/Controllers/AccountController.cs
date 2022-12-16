@@ -23,7 +23,7 @@ public class AccountController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> SignUp([FromForm] RegisterUserDto registerUserDto)
     {
-
+      
         var user = registerUserDto.Adapt<AppUser>();
         var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
@@ -33,6 +33,7 @@ public class AccountController : ControllerBase
         await _signInManager.SignInAsync(user, true);
         return Ok();
     }
+
     [HttpPost("signin")]
     public async Task<IActionResult> SignIn(string userName, string password)
     {
