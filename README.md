@@ -2,6 +2,7 @@
  
 maindan branch ochib -> entity qoshiladi -> migration -> repository interface -> repository implementation -> entity dto -> service interface -> service implementation ->
 
+
 > #  FurnitureShop.Api
 
 | No | User |
