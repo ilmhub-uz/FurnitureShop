@@ -87,7 +87,9 @@ public class CartService : ICartService
 
         var pagedList = cart.CartProducts?.AsQueryable().ToPagedList(paginationParams);
         if (pagedList is null)
-            return new List<CartProductView>();
+        {
+            throw new NotFoundException<CartProduct>();
+        }
 
         var result = pagedList.Adapt<List<CartProductView>>();
         return result;
