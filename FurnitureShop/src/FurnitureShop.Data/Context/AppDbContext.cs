@@ -26,6 +26,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     {
         base.OnModelCreating(builder);
         builder.Entity<OrganizationUser>().HasKey(user => new { user.UserId, user.OrganizationId });
+        builder.Entity<LikeProduct>().HasKey(likeproduct => new { likeproduct.UserId, likeproduct.ProductId });
     }
 
     public override int SaveChanges()

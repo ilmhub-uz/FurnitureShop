@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 
 [Scoped]
-public class CartRepository : GenericRepository<Cart>, ICartRepository
+public class CartRepository : GenericRepository<Cart>, ICartRepository, IEntityExistsRepository
 {
     public CartRepository(AppDbContext context) : base(context) { }
 }
