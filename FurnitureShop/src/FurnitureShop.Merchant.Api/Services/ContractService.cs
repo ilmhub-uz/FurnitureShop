@@ -21,6 +21,7 @@ public class ContractService : IContractService
         => (await _context.Contracts!.ToListAsync()).Adapt<List<ContractView>>();
 
     public async Task<ContractView> GetContractByIdAsync(Guid contractId)
+        => (await _context.Contracts.FirstOrDefaultAsync(c => c.Id == contractId)).Adapt<ContractView>();
 
     public async Task<ContractView> GetContractById(Guid contractId)
     {
