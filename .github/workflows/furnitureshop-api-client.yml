@@ -20,10 +20,10 @@ jobs:
           include-prerelease: true
         
       - name: Publish project
-        run: dotnet publish FurnitureShop/front/FurnitureShop.Client.Api/FurnitureShop.Client.Api.csproj -c Release -o release
+        run: dotnet publish FurnitureShop/src/FurnitureShop.Client.Api/FurnitureShop.Client.Api.csproj -c Release -o release
      
       - name: Upload files
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: api-built/furnitures-client
-          folder: release/wwwroot
+          folder: release
