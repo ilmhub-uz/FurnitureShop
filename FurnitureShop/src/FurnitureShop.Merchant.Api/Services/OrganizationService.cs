@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
@@ -25,13 +26,12 @@ public class OrganizationService : IOrganizationService
         return (await _unitOfWork.Organizations.GetAll().ToListAsync()).Adapt<List<OrganizationView>>();
     }
 
+    [IdValidation]
     public async Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
-        return organization.Adapt<OrganizationView>();
+        return organization!.Adapt<OrganizationView>();
     }
 
     public async Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto)
@@ -50,24 +50,22 @@ public class OrganizationService : IOrganizationService
         await _unitOfWork.Organizations.AddAsync(organization);
     }
 
+    [IdValidation]
     public async Task UpdateOrganization(Guid organizationId, UpdateOrganizationDto updateOrganizationDto)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
-        organization.Name = updateOrganizationDto.Name;
+        organization!.Name = updateOrganizationDto.Name;
 
         await _unitOfWork.Organizations.Update(organization);
     }
 
+    [IdValidation]
     public async Task DeleteOrganization(Guid organizationId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
-        await _unitOfWork.Organizations.Remove(organization);
+        await _unitOfWork.Organizations.Remove(organization!);
     }
 
     public async Task<OrganizationView> GetOrganizationByNameAsync(string organizationName)

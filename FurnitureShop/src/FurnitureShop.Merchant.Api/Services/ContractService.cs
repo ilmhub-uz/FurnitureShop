@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.ViewModel;
@@ -20,11 +21,10 @@ public class ContractService : IContractService
         => (await _context.Contracts!.ToListAsync()).Adapt<List<ContractView>>();
 
     public async Task<ContractView> GetContractByIdAsync(Guid contractId)
+
+    public async Task<ContractView> GetContractById(Guid contractId)
     {
         var contract = await _context.Contracts!.FirstAsync(c => c.Id == contractId);
-
-        if (contract is null)
-            throw new NotFoundException<Contract>();
 
         return contract.Adapt<ContractView>();
     }
@@ -41,15 +41,7 @@ public class ContractService : IContractService
     {
         var contract = await _context.Contracts!.FirstOrDefaultAsync(c => c.Id == contractId);
 
-        if (contract == null)
-            throw new NotFoundException<Contract>();
-
-        _context.Contracts!.Remove(contract);
+        _context.Contracts!.Remove(contract!);
         _context.SaveChanges();
     }
-
-
-
-
-
 }
