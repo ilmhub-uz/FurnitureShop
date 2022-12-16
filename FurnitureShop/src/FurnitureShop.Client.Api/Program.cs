@@ -4,7 +4,6 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
 using System.Reflection;
-using FurnitureShop.Client.Api.Loggers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddCors();
-builder.SerilogExtension();
+builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
 
@@ -41,4 +40,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
