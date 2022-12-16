@@ -161,6 +161,10 @@ namespace FurnitureShop.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<Guid>("CategoryImageId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_image_id");
+
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -169,13 +173,44 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("parent_id");
 
+                    b.Property<int>("Views")
+                        .HasColumnType("integer")
+                        .HasColumnName("views");
+
                     b.HasKey("Id")
                         .HasName("pk_categories");
+
+                    b.HasIndex("CategoryImageId")
+                        .HasDatabaseName("ix_categories_category_image_id");
 
                     b.HasIndex("ParentId")
                         .HasDatabaseName("ix_categories_parent_id");
 
                     b.ToTable("categories", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.CategoryImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("text")
+                        .HasColumnName("image_path");
+
+                    b.HasKey("Id")
+                        .HasName("pk_category_images");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_category_images_category_id");
+
+                    b.ToTable("category_images", (string)null);
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Contract", b =>
@@ -188,6 +223,14 @@ namespace FurnitureShop.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
+
+                    b.Property<DateTime>("FinishDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("finish_date");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
 
                     b.Property<long>("ProductCount")
                         .HasColumnType("bigint")
@@ -216,6 +259,9 @@ namespace FurnitureShop.Data.Migrations
                     b.HasKey("Id")
                         .HasName("pk_contracts");
 
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_contracts_order_id");
+
                     b.HasIndex("ProductId")
                         .HasDatabaseName("ix_contracts_product_id");
 
@@ -223,6 +269,133 @@ namespace FurnitureShop.Data.Migrations
                         .HasDatabaseName("ix_contracts_user_id");
 
                     b.ToTable("contracts", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.FavouriteProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_favourite_products");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_favourite_products_product_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_favourite_products_user_id");
+
+                    b.ToTable("favourite_products", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.LikeProduct", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.HasKey("UserId", "ProductId")
+                        .HasName("pk_like_products");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_like_products_product_id");
+
+                    b.ToTable("like_products", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ContractId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("contract_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_at");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("organization_id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_orders");
+
+                    b.HasIndex("ContractId")
+                        .HasDatabaseName("ix_orders_contract_id");
+
+                    b.HasIndex("OrganizationId")
+                        .HasDatabaseName("ix_orders_organization_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_orders_user_id");
+
+                    b.ToTable("orders", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.OrderProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<long>("Count")
+                        .HasColumnType("bigint")
+                        .HasColumnName("count");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("text")
+                        .HasColumnName("properties");
+
+                    b.HasKey("Id")
+                        .HasName("pk_order_product");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_order_product_order_id");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_order_product_product_id");
+
+                    b.ToTable("order_product", (string)null);
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Organization", b =>
@@ -280,6 +453,10 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("Brend")
+                        .HasColumnType("text")
+                        .HasColumnName("brend");
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer")
                         .HasColumnName("category_id");
@@ -295,6 +472,10 @@ namespace FurnitureShop.Data.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean")
                         .HasColumnName("is_available");
+
+                    b.Property<string>("Material")
+                        .HasColumnType("text")
+                        .HasColumnName("material");
 
                     b.Property<string>("Name")
                         .HasColumnType("text")
@@ -316,9 +497,17 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("bigint[]")
                         .HasColumnName("rates");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<int>("Views")
                         .HasColumnType("integer")
                         .HasColumnName("views");
+
+                    b.Property<bool?>("WithInstallation")
+                        .HasColumnType("boolean")
+                        .HasColumnName("with_installation");
 
                     b.HasKey("Id")
                         .HasName("pk_products");
@@ -330,6 +519,48 @@ namespace FurnitureShop.Data.Migrations
                         .HasDatabaseName("ix_products_organization_id");
 
                     b.ToTable("products", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.ProductComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text")
+                        .HasColumnName("comment");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("parent_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_product_comments");
+
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_product_comments_parent_id");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_product_comments_product_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_product_comments_user_id");
+
+                    b.ToTable("product_comments", (string)null);
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.ProductImage", b =>
@@ -492,16 +723,44 @@ namespace FurnitureShop.Data.Migrations
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Category", b =>
                 {
+                    b.HasOne("FurnitureShop.Data.Entities.CategoryImage", "CategoryImage")
+                        .WithMany()
+                        .HasForeignKey("CategoryImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_categories_category_images_category_image_id");
+
                     b.HasOne("FurnitureShop.Data.Entities.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .HasConstraintName("fk_categories_categories_parent_id");
 
+                    b.Navigation("CategoryImage");
+
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.CategoryImage", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_category_images_categories_category_id");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Contract", b =>
                 {
+                    b.HasOne("FurnitureShop.Data.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_contracts_orders_order_id");
+
                     b.HasOne("FurnitureShop.Data.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -516,9 +775,104 @@ namespace FurnitureShop.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_contracts_users_user_id");
 
+                    b.Navigation("Order");
+
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.FavouriteProduct", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_favourite_products_products_product_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_favourite_products_users_user_id");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.LikeProduct", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_like_products_products_product_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_like_products_users_user_id");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.Order", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.Contract", "Contract")
+                        .WithMany()
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_contracts_contract_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_organizations_organization_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_users_user_id");
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.OrderProduct", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_product_orders_order_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_product_products_product_id");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.OrganizationUser", b =>
@@ -559,6 +913,32 @@ namespace FurnitureShop.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.ProductComment", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.ProductComment", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_product_comments_product_comments_parent_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.Product", null)
+                        .WithMany("ProductComments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_comments_products_product_id");
+
+                    b.HasOne("FurnitureShop.Data.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_comments_users_user_id");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.ProductImage", b =>
@@ -644,6 +1024,11 @@ namespace FurnitureShop.Data.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("FurnitureShop.Data.Entities.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
             modelBuilder.Entity("FurnitureShop.Data.Entities.Organization", b =>
                 {
                     b.Navigation("Products");
@@ -654,6 +1039,13 @@ namespace FurnitureShop.Data.Migrations
             modelBuilder.Entity("FurnitureShop.Data.Entities.Product", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("ProductComments");
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.ProductComment", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

@@ -69,4 +69,14 @@ public class OrganizationService : IOrganizationService
 
         await _unitOfWork.Organizations.Remove(organization);
     }
+
+    public async Task<OrganizationView> GetOrganizationByName(string organizationName)
+    {
+        var organization = await _unitOfWork.Organizations.GetAll()
+            .FirstOrDefaultAsync(org => org.Name == organizationName);
+        if(organization is null)
+            throw new NotFoundException<Organization>();
+
+        return organization.Adapt<OrganizationView>();
+    }
 }

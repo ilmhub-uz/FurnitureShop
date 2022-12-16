@@ -4,7 +4,7 @@ using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace FurnitureShop.Common.Email_Sender.Services;
 
-public class EmailSender
+public class EmailSender : IEmailSender
 {
     private readonly EmailConfiguration _emailConfig;
     public EmailSender(EmailConfiguration emailConfig)

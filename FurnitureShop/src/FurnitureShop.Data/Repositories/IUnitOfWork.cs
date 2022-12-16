@@ -11,5 +11,6 @@ public interface IUnitOfWork
     IOrderRepository Orders { get; }
     ICartRepository Carts { get; }
     IFavoriteRepository Favorites { get; }
+    IAppUserRepository AppUsers { get ;}
     int Save();
 }

@@ -10,7 +10,7 @@ public class Category
     public Guid CategoryImageId { get; set; }
 
     [ForeignKey(nameof(CategoryImageId))]
-    public CategoryImage CategoryImage { get; set; }
+    public virtual CategoryImage? CategoryImage { get; set; }
     public int? ParentId { get; set; }
     public virtual Category? Parent { get; set; }
 

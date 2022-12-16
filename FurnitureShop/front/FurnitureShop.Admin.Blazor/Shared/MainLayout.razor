@@ -1,80 +1,49 @@
-﻿@using MudBlazor.ThemeManager
-@using FurnitureShop.Admin.Blazor.Theme
-
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 
-<MudThemeProvider Theme="_themeManager.Theme" />
-<MudDialogProvider />
-<MudSnackbarProvider />
-<MudLayout>
-    <MudAppBar Elevation="1" Style="@($"background:{Colors.Green.Lighten1};")">
-        
-        <MudHidden Breakpoint="Breakpoint.MdAndUp">
-            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Typo="Typo.h6" Class="ml-4">Admin Dashboard</MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-            <MudText Typo="Typo.subtitle2">Admin Dashboard</MudText>
-        </MudHidden>
-        <MudSpacer />
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <NavMenu/>
+        <!-- Layout container -->
+        <div class="layout-page">
+            <NavBar/>
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-fluid flex-grow-1 container-p-y">
+                @Body
+                </div>
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+                    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                        <div class="mb-2 mb-md-0">
+                            ©
+                            , made with ❤️ by
+                            <a href="https://ilmhub.uz" target="_blank"
+                               class="footer-link fw-bolder">Ilmhub.uz Students</a>
+                        </div>
+                        @*<div>
+                            <a href="https://themeselection.com/license/" class="footer-link me-4"
+                                target="_blank">License</a>
+                            <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More
+                                Themes</a>
 
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="3" ClipMode="DrawerClipMode.Never">
-        <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudToolBar DisableGutters="true">
-                <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
-                <MudBreadcrumbs Items="_items"></MudBreadcrumbs>
-                <MudSpacer />
-                <MudElement HtmlTag="p">Right float</MudElement>
-            </MudToolBar>
-        </MudHidden>
-        <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
-            @Body
-        </MudContainer>
-    </MudMainContent>
-</MudLayout>
+                            <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                                target="_blank" class="footer-link me-4">Documentation</a>
 
+                            <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                                target="_blank" class="footer-link me-4">Support</a>
+                        </div>*@
+                    </div>
+                </footer>
+                <!-- / Footer -->
 
-@code {
-    private ThemeManagerTheme _themeManager = new ThemeManagerTheme
-        {
-            Theme = new MudBlazorAdminDashboard(),
-            DrawerClipMode = DrawerClipMode.Always,
-            FontFamily = "Montserrat",
-            DefaultBorderRadius = 6,
-            AppBarElevation = 1,
-            DrawerElevation = 1
-        };
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
 
-
-    public bool _drawerOpen = true;
-    public bool _themeManagerOpen = false;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    void UpdateTheme(ThemeManagerTheme value)
-    {
-        _themeManager = value;
-        StateHasChanged();
-    }
-
-    protected override void OnInitialized()
-    {
-        StateHasChanged();
-    }
-
-    private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
-    {
-            new BreadcrumbItem("Personal", href: "/personal"),
-            new BreadcrumbItem("Dashboard", href: "/dashboard"),
-    };
-}
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
