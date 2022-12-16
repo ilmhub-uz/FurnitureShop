@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Client.Api.Dtos;
+using FurnitureShop.Client.Api.Filters;
 using FurnitureShop.Client.Api.Services;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
@@ -8,6 +9,7 @@ namespace FurnitureShop.Client.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[LanguageFilter]
 public class OrdersController : ControllerBase
 {
     private readonly IOrderService _orderService;

@@ -4,6 +4,7 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
 using System.Reflection;
+using FurnitureShop.Client.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,11 +32,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<LanguageMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseErrorHandlerMiddleware();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapControllers();
 
