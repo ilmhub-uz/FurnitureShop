@@ -9,8 +9,8 @@ namespace FurnitureShop.Admin.Api.Controllers
     [ApiController]
     public class ContractsController : ControllerBase
     {
-        private readonly ContractsService _service;
-        public ContractsController(ContractsService service)
+        private readonly IContractsService _service;
+        public ContractsController(IContractsService service)
         {
             _service = service;
         }
