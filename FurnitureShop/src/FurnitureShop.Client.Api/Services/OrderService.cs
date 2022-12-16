@@ -2,6 +2,7 @@
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
@@ -38,12 +39,12 @@ public class OrderService : IOrderService
         return (await _unitOfWork.Orders.GetAll().ToListAsync()).Adapt<List<OrderView>>();
     }
 
+    [IdValidation]
     public async Task<OrderView> UpdateOrder(UpdateOrderDto updateOrderDto, Guid orderId)
     {
         var existingOrder = await _unitOfWork.Orders.GetAll().FirstOrDefaultAsync(o => o.Id == orderId);
-        if (existingOrder is null) throw new NotFoundException<Order>();
 
-        existingOrder.Status = updateOrderDto.Status;
+        existingOrder!.Status = updateOrderDto.Status;
 
         await _unitOfWork.Orders.Update(existingOrder);
 
