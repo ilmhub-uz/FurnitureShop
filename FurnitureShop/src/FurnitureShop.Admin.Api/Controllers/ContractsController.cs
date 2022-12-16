@@ -18,15 +18,15 @@ namespace FurnitureShop.Admin.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetContracts([FromQuery]ContractsFilterDto filter)
         {
-            await _service.GetContracts(filter);
-            return Ok();
+            var contracts = await _service.GetContracts(filter);
+            return Ok(contracts);
         }
 
         [HttpGet("{contractId:Guid}")]
         public async Task<IActionResult> GetContract(Guid contractId)
         {
-            await _service.GetContract(contractId);
-            return Ok();
+            var contract = await _service.GetContract(contractId);
+            return Ok(contract);
         }
         [HttpGet("{contractId:Guid}")]
         public async Task<IActionResult> UpdateContract(Guid contractId, [FromBody] UpdateContractDto contractDto)
