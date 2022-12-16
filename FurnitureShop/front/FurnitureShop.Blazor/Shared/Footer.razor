@@ -1,0 +1,31 @@
+﻿
+<MudNavMenu>
+    <div class="footer-hr">
+        <hr />
+    </div>
+    <div class="home-footer">
+        <MudTextField @bind-Value="TextValue" Label="Number" Variant="Variant.Outlined" />
+        <MudTextField T="string" Label="Text" Variant="Variant.Outlined" Lines="3" />
+    </div>
+</MudNavMenu>
+
+
+
+@code{
+    public string TextValue { get; set; }
+}
+
+<style>
+    .footer-hr {
+        display: flex;
+        justify-content:center;
+    }
+    hr {
+        width: 90%;
+        border: 1px solid #594ae2;
+    }
+    .home-footer {
+        background-color: white;
+        padding: 35px 225px;
+    }
+</style>

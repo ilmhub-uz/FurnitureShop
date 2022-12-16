@@ -2,13 +2,15 @@
 
 <MudNavMenu>
     <MudNavGroup Title="Sofas" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="sofas" Match="NavLinkMatch.All">Frameless sofas</MudNavLink>
+        <MudNavLink Href="sofas" Match="NavLinkMatch.All"><MudImage Class="img" Src="https://mebel.shop/upload/iblock/14c/pdslcuh71fu5dksm0fzjnok0qcnkihr9.png" Alt="" />Frameless sofas</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Armchairs" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="armchairs" Match="NavLinkMatch.Prefix">Armchairs</MudNavLink>
+        <MudNavLink Href="armchairs" Match="NavLinkMatch.Prefix"><MudImage Class="img"
+          Src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" Alt="" />Armchairs</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Beds" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="beds" Match="NavLinkMatch.Prefix">Beds</MudNavLink>
+        <MudNavLink Href="beds" Match="NavLinkMatch.Prefix"><MudImage Class="img"
+          Src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" Alt="" />Beds</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Mattresses" Icon="@Icons.Filled.Chair" Class="NavCat">
         <MudNavLink Href="categories" Match="NavLinkMatch.Prefix">Mattresses</MudNavLink>
@@ -25,4 +27,18 @@
     .NavCat .mud-nav-link-text {
         color: black !important;
     }
+    .img {
+        margin-right: 20px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .mud-nav-link-text {
+        display: flex !important;
+    }
+
+    .mud-nav-item .mud-ripple a {
+        padding: 0px !important;
+    }
+
 </style>
