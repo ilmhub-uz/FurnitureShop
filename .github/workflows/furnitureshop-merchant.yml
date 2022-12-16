@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    if: ${{ contains(github.event.head_commit.message, 'merchant') }}
+    if: ${{ contains(github.event.head_commit.message, 'fmerchant') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
