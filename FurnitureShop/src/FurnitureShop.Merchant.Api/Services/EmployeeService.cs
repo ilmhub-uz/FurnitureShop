@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using FurnitureShop.Common.Email_Sender.Services;
 using FurnitureShop.Merchant.Api.Dtos;
+using FurnitureShop.Common.Filters;
 
 namespace FurnitureShop.Merchant.Api.Services;
 
@@ -51,20 +52,18 @@ public class EmployeeService : IEmployeeService
         _emailSender.SendEmail(message);
     }
 
+    [IdValidation]
     public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
         return (organization.Users.Where(e => e.Role == ERole.Manager).ToList()).Adapt<List<GetEmployeesView>>();
     }
 
+    [IdValidation]
     public async Task RemoveEmployee(Guid organizationId, Guid employeeId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
         var manager = organization.Users.FirstOrDefault(u => u.UserId == employeeId);
         if (manager is null)
@@ -73,20 +72,18 @@ public class EmployeeService : IEmployeeService
         organization.Users.Remove(manager);
     }
 
+    [IdValidation]
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
         return (organization.Users.Where(e => e.Role == ERole.Seller).ToList()).Adapt<List<GetEmployeesView>>();
     }
 
+    [IdValidation]
     public async Task<List<GetEmployeesView>> GetStaff(Guid organizationId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
 
         return (organization.Users.ToList()).Adapt<List<GetEmployeesView>>();
     }
