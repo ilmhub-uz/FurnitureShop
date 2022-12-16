@@ -3,7 +3,8 @@
 <PageTitle>Index</PageTitle>
 <div class="Div">
 <div class="form-floating">
-    <input type="search" class="form-control" placeholder="Search" />
+    <MudTextField @bind-Value="Search" Label="Search" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="form-control" />
+
 </div>
 <div >
     <MudNavLink Class="icon" Icon="@Icons.Filled.LocalPhone"> <a>+998908506808</a><p style="color:orange">Call</p></MudNavLink>
@@ -54,7 +55,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" Alt="chairs" />
                 </div>
 
                 <p>
@@ -65,7 +66,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" Alt="tab" />
                 </div>
 
                 <p>
@@ -76,7 +77,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/379/k66a15dow4vx9nppr4y3839u6j2saz1w.png" alt="imgs" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/379/k66a15dow4vx9nppr4y3839u6j2saz1w.png" Alt="imgs" />
                 </div>
                 <p>Frameless sofas</p>
             </div>
@@ -84,7 +85,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/b8a/lfr6ljaax0je7n306vtzr206uobtr1rg.png" alt="beds" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/b8a/lfr6ljaax0je7n306vtzr206uobtr1rg.png" Alt="beds" />
                 </div>
 
                 <p>
@@ -95,7 +96,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" alt="archairs" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" Alt="archairs" />
                 </div>
                 <p>
                     Armchairs
@@ -108,7 +109,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" Alt="chairs" />
                 </div>
 
                 <p>
@@ -119,7 +120,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" Alt="tab" />
                 </div>
 
                 <p>
@@ -130,7 +131,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/e8d/754g8e8es3tb4xyuyn802ov7apxwcz7n.png" alt="matras" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/e8d/754g8e8es3tb4xyuyn802ov7apxwcz7n.png" Alt="matras" />
                 </div>
 
                 <p>Mattresses</p>
@@ -139,7 +140,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" Alt="chairs" />
                 </div>
 
                 <p>
@@ -150,7 +151,7 @@
         <div class="col-4">
             <div class="popular-category">
                 <div class="home-img">
-                    <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                    <MudImage Src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" Alt="tab" />
                 </div>
 
                 <p>
@@ -159,8 +160,9 @@
             </div>
         </div>
     </div>
-
 </div>
+
+
 
 @code{
     private bool arrows = true;
@@ -168,6 +170,8 @@
     private bool enableSwipeGesture = true;
     private bool autocycle = true;
     private Transition transition = Transition.Slide;
+    public string TextValue { get; set; }
+    public string Search { get; set; }
 }
 
 <style>
