@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  if: ${{ contains(github.event.head_commit.message, 'merchant') }}
   build:
+    if: ${{ contains(github.event.head_commit.message, 'merchant') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
