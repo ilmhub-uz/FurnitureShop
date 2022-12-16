@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
@@ -37,10 +38,64 @@ namespace FurnitureShop.Admin.Api.Controllers
             }
             return Ok(popularCategories);
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts(PaginationParams pagination)
         {
-            _unitOfWork
+            List<MostSoldProducts> mostSoldProducts = new();
+            var contracts = _unitOfWork.Contracts.GetAll().OrderByDescending(c=>c.ProductCount);
+            foreach (var contract in await contracts.ToPagedListAsync(pagination))
+            {
+                mostSoldProducts.Add(new MostSoldProducts()
+                {
+                   Name = contract.Product!.Name,
+                   SoldCount = contract.ProductCount,
+                   TotalSales = contract.TotalPrice
+                });
+            }
+            return Ok(mostSoldProducts);
         }
-    }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTotalSales([FromQuery] OrganizationFilterDto filter)
+        {
+            var contracts =  _unitOfWork.Contracts.GetAll();
+            var totalSales = new TotalSales();
+
+            if(filter.OrganizationId is not null)
+            {
+                var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(o => o.Id == filter.OrganizationId);
+                if (organization is null)
+                    throw new NotFoundException<Organization>();
+                contracts = contracts.Where(c => c.Product!.OrganizationId == filter.OrganizationId);
+
+                totalSales.Name = organization.Name!;
+            }
+            
+            totalSales.TotalSale =  await contracts.Select(c => c.TotalPrice).SumAsync();
+            return Ok(totalSales);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTotalOrders([FromQuery]OrderFilterDto filter)
+        {
+            var orders = _unitOfWork.Orders.GetAll();
+            var ordersCount = new OrdersCount();
+
+            if(filter.OrganizationId!=null && filter.Status != null)
+            {
+                orders = orders.Where(o => o.Status == filter.Status && o.OrganizationId==filter.OrganizationId);
+                ordersCount.Status = filter.Status.ToString()!;
+                ordersCount.OrganizationId = filter.OrganizationId;
+            }
+            if(filter.Status is not null)
+            {
+                orders = orders.Where(o => o.Status == filter.Status);
+                ordersCount.Status = filter.Status.ToString()!;
+            }
+
+            ordersCount.TotalCount = await orders.CountAsync();
+            return Ok(ordersCount);
+        }
+    }   
 }
