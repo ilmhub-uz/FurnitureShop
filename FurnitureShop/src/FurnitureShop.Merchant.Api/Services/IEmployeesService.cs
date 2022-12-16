@@ -5,9 +5,9 @@ namespace FurnitureShop.Merchant.Api.Services;
 
 public interface IEmployeeService
 {
-    Task AddEmployee(EmployeeServiceDto employeeDto);
+    Task AddEmployee(EmployeeServiceDto dto);
     Task<List<GetEmployeesView>> GetManagers(Guid organizationId);
-    Task RemoveEmployee(EmployeeServiceDto dto);
+    Task RemoveEmployee(Guid organizationId, Guid employeeId);
     Task<List<GetEmployeesView>> GetSellers(Guid organizationId);
     Task<List<GetEmployeesView>> GetStaff(Guid organizationId);
 }
