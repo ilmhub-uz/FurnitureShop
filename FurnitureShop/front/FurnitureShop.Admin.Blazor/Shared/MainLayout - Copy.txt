@@ -1,0 +1,80 @@
+﻿@using MudBlazor.ThemeManager
+@using FurnitureShop.Admin.Blazor.Theme
+
+@inherits LayoutComponentBase
+
+
+<MudThemeProvider Theme="_themeManager.Theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="1" Style="@($"background:{Colors.Green.Lighten1};")">
+        
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Typo="Typo.h6" Class="ml-4">Admin Dashboard</MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+            <MudText Typo="Typo.subtitle2">Admin Dashboard</MudText>
+        </MudHidden>
+        <MudSpacer />
+
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="3" ClipMode="DrawerClipMode.Never">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudToolBar DisableGutters="true">
+                <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
+                <MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+                <MudSpacer />
+                <MudElement HtmlTag="p">Right float</MudElement>
+            </MudToolBar>
+        </MudHidden>
+        <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    private ThemeManagerTheme _themeManager = new ThemeManagerTheme
+        {
+            Theme = new MudBlazorAdminDashboard(),
+            DrawerClipMode = DrawerClipMode.Always,
+            FontFamily = "Montserrat",
+            DefaultBorderRadius = 6,
+            AppBarElevation = 1,
+            DrawerElevation = 1
+        };
+
+
+    public bool _drawerOpen = true;
+    public bool _themeManagerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    void UpdateTheme(ThemeManagerTheme value)
+    {
+        _themeManager = value;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
+
+    private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
+    {
+            new BreadcrumbItem("Personal", href: "/personal"),
+            new BreadcrumbItem("Dashboard", href: "/dashboard"),
+    };
+}
