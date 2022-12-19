@@ -17,7 +17,7 @@ public partial class ProductsController
 
     [IdValidation]
     [Authorize]
-    [HttpPost("{productId:guid}/AddComment")]
+    [HttpPost("{productId:guid}/Comment")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> AddProductComment(Guid productId,[FromBody] CreateProductComment commentDto)
     { 

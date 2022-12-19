@@ -1,9 +1,10 @@
 ﻿using FurnitureShop.Common.Email_Sender.Dtos;
+using JFA.DependencyInjection;
 using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace FurnitureShop.Common.Email_Sender.Services;
-
+[Scoped]
 public class EmailSender : IEmailSender
 {
     private readonly EmailConfiguration _emailConfig;
