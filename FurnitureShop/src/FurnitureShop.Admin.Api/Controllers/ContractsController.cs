@@ -51,6 +51,7 @@ namespace FurnitureShop.Admin.Api.Controllers
         public async Task<IActionResult> GetTotalSales([FromQuery] OrganizationFilterDto filter)
         {
             var contracts = _unitOfWork.Contracts.GetAll();
+            var totalSales = new TotalSales();
 
             if (filter.OrganizationId is not null)
             {
@@ -58,10 +59,12 @@ namespace FurnitureShop.Admin.Api.Controllers
                 if (organization is null)
                     throw new NotFoundException<Organization>();
                 contracts = contracts.Where(c => c.Product!.OrganizationId == filter.OrganizationId);
+
+                totalSales.Name = organization.Name!;
             }
 
-            var totalSale = await contracts.Select(c => c.TotalPrice).SumAsync();
-            return Ok(totalSale);
+            totalSales.TotalSale = await contracts.Select(c => c.TotalPrice).SumAsync();
+            return Ok(totalSales);
         }
     }
 }
