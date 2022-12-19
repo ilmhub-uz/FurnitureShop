@@ -48,7 +48,7 @@ public class ContractsController : ControllerBase
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
     public async Task<IActionResult>GetContractById(Guid contractId)
     {
-        var category = await _contractService.GetContractById(contractId);
+        var category = await _contractService.GetContractByIdAsync(contractId);
 
         return Ok(category.Adapt<ContractView>());
     }
@@ -56,7 +56,7 @@ public class ContractsController : ControllerBase
     [HttpDelete("{contractId:guid}")]
     public async Task<IActionResult>DeleteProduct(Guid contractId)
     {
-        await _contractService.DeleteContract(contractId);
+        await _contractService.DeleteContractAsync(contractId);
 
         return Ok();
     }

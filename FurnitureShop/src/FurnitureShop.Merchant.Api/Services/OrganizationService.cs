@@ -68,7 +68,7 @@ public class OrganizationService : IOrganizationService
         await _unitOfWork.Organizations.Remove(organization!);
     }
 
-    public async Task<OrganizationView> GetOrganizationByName(string organizationName)
+    public async Task<OrganizationView> GetOrganizationByNameAsync(string organizationName)
     {
         var organization = await _unitOfWork.Organizations.GetAll()
             .FirstOrDefaultAsync(org => org.Name == organizationName);

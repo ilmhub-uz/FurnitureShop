@@ -20,7 +20,9 @@ public class ContractService : IContractService
     public async Task<List<ContractView>> GetContractsAsync()
         => (await _context.Contracts!.ToListAsync()).Adapt<List<ContractView>>();
 
-    [IdValidation]
+    public async Task<ContractView> GetContractByIdAsync(Guid contractId)
+        => (await _context.Contracts.FirstOrDefaultAsync(c => c.Id == contractId)).Adapt<ContractView>();
+
     public async Task<ContractView> GetContractById(Guid contractId)
     {
         var contract = await _context.Contracts!.FirstAsync(c => c.Id == contractId);
@@ -36,8 +38,7 @@ public class ContractService : IContractService
         await _context.SaveChangesAsync();
     }
 
-    [IdValidation]
-    public async Task DeleteContract(Guid contractId)
+    public async Task DeleteContractAsync(Guid contractId)
     {
         var contract = await _context.Contracts!.FirstOrDefaultAsync(c => c.Id == contractId);
 
