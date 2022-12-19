@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FurnitureShop.Admin.Api.Controllers;
 [Route("api/accounts")]
 [ApiController]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class AccountController : ControllerBase
 {
 
@@ -23,7 +23,6 @@ public class AccountController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> SignUp([FromForm] RegisterUserDto registerUserDto)
     {
-
         var user = registerUserDto.Adapt<AppUser>();
         var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 

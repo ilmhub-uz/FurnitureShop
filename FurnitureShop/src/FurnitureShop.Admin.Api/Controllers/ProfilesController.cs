@@ -10,7 +10,7 @@ namespace FurnitureShop.Admin.Api.Controllers;
 
 [Route("api/profiles")]
 [ApiController]
-[Authorize(Roles = "Admin")]
+/*[Authorize(Roles = "Admin")]*/
 public class ProfilesController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager ;

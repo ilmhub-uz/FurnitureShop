@@ -13,7 +13,7 @@ builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddCors();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
-
+builder.Services.AddIdentityManagers();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
