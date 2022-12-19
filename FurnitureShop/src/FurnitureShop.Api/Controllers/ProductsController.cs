@@ -22,21 +22,17 @@ public partial class ProductsController : ControllerBase
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly IProductCommentService _productCommentService;
-    private readonly IValidator<CreateProductComment> _validator;
 
     public ProductsController(
         IProductService productService,
         AppDbContext appDbContext,
         IProductCommentService productCommentService,
-        UserManager<AppUser> userManager,
-        IValidator<CreateProductComment> validator
-        )
+        UserManager<AppUser> userManager)
     {
         _productService = productService;
         _context = appDbContext;
         _productCommentService = productCommentService;
-        _userManager = userManager; 
-        _validator = validator; 
+        _userManager = userManager;
     }
 
     [HttpGet]
