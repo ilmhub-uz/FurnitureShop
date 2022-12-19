@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
     {
         var result = await _updateproductdtovalidator.ValidateAsync(dtoModel);
         if (!result.IsValid)
-            return BadRequest();
+            return BadRequest(result.Errors);
         await _service.UpdateProduct(productId, dtoModel);
         return Ok();
     }

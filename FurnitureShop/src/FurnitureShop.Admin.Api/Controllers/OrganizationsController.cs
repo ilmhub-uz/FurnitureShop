@@ -41,7 +41,7 @@ public class OrganizationsController : ControllerBase
     {
         var result = await _updateorganizationvalidator.ValidateAsync(updateOrganizationDto);
         if (!result.IsValid)
-        return BadRequest();
+        return BadRequest(result.Errors);
         
         await _service.UpdateOrganization(organizationId, updateOrganizationDto);
         return Ok();
