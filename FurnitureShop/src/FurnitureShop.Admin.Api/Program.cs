@@ -1,6 +1,8 @@
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using FurnitureShop.Common.Extensions;
 using JFA.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,11 @@ builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddCors();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
+
+builder.Services.AddFluentValidationAutoValidation(o =>
+{
+    o.DisableDataAnnotationsValidation = false;
+});
 builder.Services.AddIdentityManagers();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
