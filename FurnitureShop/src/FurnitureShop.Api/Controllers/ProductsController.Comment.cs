@@ -2,29 +2,34 @@
 using FurnitureShop.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
+using Microsoft.AspNetCore.Authorization;
+
 namespace FurnitureShop.Api.Controllers;
-[Route("api/[controller]")]
+
 public partial class ProductsController
 {
-    [HttpGet("{productId}")]
-    [ProducesResponseType(typeof(List<ProductComment>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetProductComments(Guid productId)
-    {
-        return Ok(await _productCommentService.GetProductComments(productId));
-    }
+    [HttpGet("{productId:guid}/Comments")]
+    [ProducesResponseType(typeof(List<ProductCommentView>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetProductComments(Guid productId) => 
+        Ok(await _productCommentService.GetProductComments(productId));
 
-    [HttpPost("{productId}")]
+    [IdValidation]
+    [Authorize]
+    [HttpPost("{productId:guid}/Comment")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> AddProductComment(ClaimsPrincipal? claims, Guid productId,[FromBody] CreateProductComment commentDto)
+    public async Task<IActionResult> AddProductComment(Guid productId,[FromBody] CreateProductComment commentDto)
     { 
-        var result = _validator.Validate(commentDto);
-
-        if (!result.IsValid)
+        if (!ModelState.IsValid)
             return BadRequest();
 
-        var user = _userManager.GetUserAsync(User);
-        var claim = User;
-        await _productCommentService.AddProductComments(claim, productId, commentDto);
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user is null)
+            return BadRequest();
+        
+        await _productCommentService.AddProductComments(user, productId, commentDto);
 
         return Ok();
     }

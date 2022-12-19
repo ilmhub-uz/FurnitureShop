@@ -44,7 +44,7 @@ namespace FurnitureShop.Admin.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
+        public async Task<IActionResult> CreateCategory([FromBody]CreateCategoryDto createCategoryDto)
         {
             var result = _createCategoryValidator.Validate(createCategoryDto);
             if (!result.IsValid)

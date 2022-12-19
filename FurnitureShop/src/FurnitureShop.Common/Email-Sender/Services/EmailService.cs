@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Common.Email_Sender.Dtos;
+using JFA.DependencyInjection;
 using MimeKit;
 
 namespace FurnitureShop.Common.Email_Sender.Services;
@@ -11,6 +12,7 @@ public class EmailService
     {
         _emailConfig = emailConfig;
     }
+
     public List<MailboxAddress> To { get; set; }
     public string Subject { get; set; }
     public string Content { get; set; }

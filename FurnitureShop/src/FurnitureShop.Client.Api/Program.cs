@@ -15,6 +15,7 @@ builder.Services.AddCors();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
+builder.Services.AddServicesFromAttribute();
 
 builder.Services.AddFluentValidationAutoValidation(o =>
 {
