@@ -13,14 +13,20 @@ public class ProductCommentService : IProductCommentService
 {
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
+
     public ProductCommentService(AppDbContext context, UserManager<AppUser> userManager)
     {
         _userManager = userManager;
         _context = context;
     }
-    public async Task AddProductComments(ClaimsPrincipal principal, Guid ProductId, CreateProductComment commentDto)
+
+    public async Task AddProductComments(AppUser user, Guid productId, CreateProductComment commentDto)
     {
         var comment = commentDto.Adapt<ProductComment>();
+
+        comment.UserId = user.Id;
+        comment.ProductId = productId;
+
         await _context.ProductComments.AddAsync(comment);
         await _context.SaveChangesAsync();
     }
@@ -57,10 +63,7 @@ public class ProductCommentService : IProductCommentService
             return commentDto;
 
         foreach (var child in comment.Children)
-        {
-            commentDto.Children = new List<ProductCommentView>();
-            commentDto.Children.Add(ToProductCommentDto(child));
-        }
+            commentDto.Children = new List<ProductCommentView> { ToProductCommentDto(child) };
 
         return commentDto;
     }

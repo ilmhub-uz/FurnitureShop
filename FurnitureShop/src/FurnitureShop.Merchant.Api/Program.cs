@@ -15,7 +15,6 @@ var emailConfig = builder.Configuration
 
 builder.Services.AddSingleton(emailConfig);
 
-builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
