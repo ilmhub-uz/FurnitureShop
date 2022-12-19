@@ -3,6 +3,8 @@ using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
+
 namespace FurnitureShop.Admin.Api.Controllers;
 
 [Route("api/organizations")]
@@ -10,7 +12,8 @@ namespace FurnitureShop.Admin.Api.Controllers;
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationsService _service;
-
+    private readonly IValidator<CreateOrganizationDto> _createorganizationvalidator;
+    private readonly IValidator<UpdateOrganizationDto> _updateorganizationvalidator;
     public OrganizationsController(IOrganizationsService service)
     {
         _service = service;
@@ -36,6 +39,10 @@ public class OrganizationsController : ControllerBase
     public async Task<IActionResult> UpdateOrganization(Guid organizationId,
         UpdateOrganizationDto updateOrganizationDto)
     {
+        var result = await _updateorganizationvalidator.ValidateAsync(updateOrganizationDto);
+        if (!result.IsValid)
+        return BadRequest();
+        
         await _service.UpdateOrganization(organizationId, updateOrganizationDto);
         return Ok();
     }

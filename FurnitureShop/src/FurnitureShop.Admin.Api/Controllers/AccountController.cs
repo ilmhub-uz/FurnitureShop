@@ -26,11 +26,12 @@ public class AccountController : ControllerBase
       
         var user = registerUserDto.Adapt<AppUser>();
         var result = await _userManager.CreateAsync(user, registerUserDto.Password);
-
+        //user ma'lumotlarini databasega saqlaydi va jwt token generate qiladi 
         if (!result.Succeeded)
             return BadRequest();
 
         await _signInManager.SignInAsync(user, true);
+        // user tizimga kirishi uchun apilarni taqdim etadi // true esa user cookiesi browserga saqlansinmi deb so'raydi
         return Ok();
     }
 
