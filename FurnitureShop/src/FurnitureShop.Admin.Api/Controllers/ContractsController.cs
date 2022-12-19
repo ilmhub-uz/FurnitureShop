@@ -47,7 +47,7 @@ namespace FurnitureShop.Admin.Api.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("total-sales")]
         public async Task<IActionResult> GetTotalSales([FromQuery] OrganizationFilterDto filter)
         {
             var contracts = _unitOfWork.Contracts.GetAll();
