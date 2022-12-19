@@ -50,7 +50,6 @@ public class OrganizationService : IOrganizationService
         await _unitOfWork.Organizations.AddAsync(organization);
     }
 
-    [IdValidation]
     public async Task UpdateOrganization(Guid organizationId, UpdateOrganizationDto updateOrganizationDto)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
@@ -60,7 +59,6 @@ public class OrganizationService : IOrganizationService
         await _unitOfWork.Organizations.Update(organization);
     }
 
-    [IdValidation]
     public async Task DeleteOrganization(Guid organizationId)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
