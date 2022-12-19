@@ -102,4 +102,10 @@ public partial class ProductsController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("{productId}/images")]
+    public async Task<IActionResult> AddProductImage(Guid productId, [FromForm] CreateProductImageDto imageDto)
+    {
+        return Ok();
+    }
 }

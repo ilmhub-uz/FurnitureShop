@@ -12,7 +12,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
 
     public DbSet<Category>? Categories { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<ProductImage>? ProductImages { get; set; }
     public DbSet<CategoryImage> CategoryImages { get; set; }
     public DbSet<ProductComment> ProductComments { get; set; }
     public DbSet<Contract>? Contracts { get; set; } 

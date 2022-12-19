@@ -20,16 +20,6 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IProductImageRepository _productImageRepository;
-    public IProductImageRepository ProductImages
-    {
-        get
-        {
-            if (_productImageRepository is null) _productImageRepository = new ProductImageRepository(_context);
-            return _productImageRepository;
-        }
-    }
-
     private IProductRepository _productRepository;
     public IProductRepository Products
     {

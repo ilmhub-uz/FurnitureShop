@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FurnitureShop.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FurnitureShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219182942_changed-productImaget-to-ListProductImage")]
+    partial class changedproductImagettoListProductImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,10 +471,6 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<List<string>>("Images")
-                        .HasColumnType("text[]")
-                        .HasColumnName("images");
-
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean")
                         .HasColumnName("is_available");
@@ -565,6 +563,34 @@ namespace FurnitureShop.Data.Migrations
                         .HasDatabaseName("ix_product_comments_user_id");
 
                     b.ToTable("product_comments", (string)null);
+                });
+
+            modelBuilder.Entity("FurnitureShop.Data.Entities.ProductImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<List<string>>("ImagePath")
+                        .HasColumnType("text[]")
+                        .HasColumnName("image_path");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_product_images");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_product_images_product_id");
+
+                    b.ToTable("product_images", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -915,6 +941,18 @@ namespace FurnitureShop.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FurnitureShop.Data.Entities.ProductImage", b =>
+                {
+                    b.HasOne("FurnitureShop.Data.Entities.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_images_products_product_id");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("FurnitureShop.Data.Entities.AppUserRole", null)
@@ -1000,6 +1038,8 @@ namespace FurnitureShop.Data.Migrations
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Product", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("ProductComments");
                 });
 
