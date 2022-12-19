@@ -103,9 +103,11 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("{productId}/images")]
-    public async Task<IActionResult> AddProductImage(Guid productId, [FromForm] CreateProductImageDto imageDto)
+    [HttpPut("{productId}/images")]
+    public async Task<IActionResult> AddProductImage(Guid productId, [FromForm] CreateOrUpdateProductImageDto imageDto)
     {
-        return Ok();
+        var result = await _productService.AddOrUpdateProductImageAsync(productId, imageDto);
+
+        return Ok(result);
     }
 }
