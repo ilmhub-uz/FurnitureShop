@@ -23,16 +23,16 @@ public class ProductService : IProductService
 
     public async Task<List<ProductView>> GetProductsAsync(OrderDto orderDto)
     {
-        var products = await _unitOfWork.Products.GetAll().ToPagedListAsync((PaginationParams)orderDto);
+        var products = _unitOfWork.Products.GetAll();
 
-        var orderedProducts = orderDto.OrderBy switch
+        products = orderDto.OrderBy switch
         {
             "id" => products.OrderBy(p => p.Id),
             "name" => products.OrderBy(p => p.Name),
             _ => products
         };
 
-        return orderedProducts.ToList().Adapt<List<ProductView>>();
+        return (await products.ToPagedListAsync((PaginationParams)orderDto)).Adapt<List<ProductView>>();
     }
 
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
