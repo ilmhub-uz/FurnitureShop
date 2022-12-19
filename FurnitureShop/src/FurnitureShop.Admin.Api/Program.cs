@@ -1,6 +1,7 @@
 using FluentValidation;
 using FurnitureShop.Common.Extensions;
 using JFA.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,10 @@ builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddCors();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
+builder.Services.AddServicesFromAttribute();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 
