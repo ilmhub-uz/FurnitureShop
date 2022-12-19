@@ -65,4 +65,8 @@ public class OrganizationsController : ControllerBase
         await _organizationService.DeleteOrganization(organizationId);
         return Ok();
     }
+
+    [HttpGet("{organizationName}")]
+    public async Task<ActionResult<OrganizationView>> GetOrganizationByName(string organizationName) =>
+        await _organizationService.GetOrganizationByNameAsync(organizationName);
 }
