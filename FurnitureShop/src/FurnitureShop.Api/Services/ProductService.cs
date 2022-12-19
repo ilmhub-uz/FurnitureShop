@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Api.ViewModel;
+﻿using FurnitureShop.Api.Dtos;
+using FurnitureShop.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Common.Models;
@@ -20,11 +21,18 @@ public class ProductService : IProductService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<ProductView>> GetProducts(PaginationParams paginationParams)
+    public async Task<List<ProductView>> GetProductsAsync(OrderDto orderDto)
     {
-        var products = await _unitOfWork.Products.GetAll().ToPagedListAsync(paginationParams);
+        var products = _unitOfWork.Products.GetAll();
 
-        return (products.ToList()).Adapt<List<ProductView>>();
+        products = orderDto.OrderBy switch
+        {
+            "id" => products.OrderBy(p => p.Id),
+            "name" => products.OrderBy(p => p.Name),
+            _ => products
+        };
+
+        return (await products.ToPagedListAsync((PaginationParams)orderDto)).Adapt<List<ProductView>>();
     }
 
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
