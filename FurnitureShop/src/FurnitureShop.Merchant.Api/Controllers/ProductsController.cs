@@ -79,6 +79,7 @@ public partial class ProductsController : ControllerBase
             product.Rates = new List<uint>();
         
         product.Rates.Add(rate);
+        _context.SaveChangesAsync();
         return Ok();
     }
 
