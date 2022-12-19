@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace FurnitureShop.Admin.Api.Controllers;
 [Route("api/accounts")]
 [ApiController]
-[Authorize(Roles = "Admin")]
 public class AccountController : ControllerBase
 {
 
@@ -21,7 +20,7 @@ public class AccountController : ControllerBase
         _userManager = userManager;
     }
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromForm] RegisterUserDto registerUserDto)
+    public async Task<IActionResult> SignUp([FromBody] RegisterUserDto registerUserDto)
     {
 
         var user = registerUserDto.Adapt<AppUser>();
@@ -33,6 +32,7 @@ public class AccountController : ControllerBase
         await _signInManager.SignInAsync(user, true);
         return Ok();
     }
+
     [HttpPost("signin")]
     public async Task<IActionResult> SignIn(string userName, string password)
     {

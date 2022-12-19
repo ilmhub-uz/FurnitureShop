@@ -5,11 +5,13 @@ using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Client.Api.Services;
 
+[Scoped]
 public class OrderService : IOrderService
 {
     private readonly AppDbContext _context;
