@@ -48,7 +48,7 @@ namespace FurnitureShop.Admin.Api.Controllers
         {
             var result = _createCategoryValidator.Validate(createCategoryDto);
             if (!result.IsValid)
-                return BadRequest();
+                return BadRequest(result.Errors);
 
             await _categoriesService.AddCategory(createCategoryDto);
 
@@ -58,6 +58,10 @@ namespace FurnitureShop.Admin.Api.Controllers
         [HttpPut("{categoryId:int}")]
         public async Task<IActionResult> UpdateCategory(int categoryId, UpdateCategoryDto updateCategoryDto)
         {
+            var result = await _updateCategoryValidator.ValidateAsync(updateCategoryDto);
+            if (!result.IsValid)
+                return BadRequest(result.Errors);
+
             await _categoriesService.UpdateCategory(categoryId, updateCategoryDto);
 
             return Ok();
