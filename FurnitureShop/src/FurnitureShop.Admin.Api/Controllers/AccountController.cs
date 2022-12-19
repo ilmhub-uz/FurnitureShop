@@ -34,9 +34,9 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<IActionResult> SignIn(string userName, string password)
+    public async Task<IActionResult> SignIn([FromBody]LoginUserDto userDto)
     {
-        var result = await _signInManager.PasswordSignInAsync(userName, password, true, true);
+        var result = await _signInManager.PasswordSignInAsync(userDto.UserName, userDto.Password, true, true);
         if (!result.Succeeded)
             return BadRequest();
 
