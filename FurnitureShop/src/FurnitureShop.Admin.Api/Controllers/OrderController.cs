@@ -36,7 +36,7 @@ public class OrderController : ControllerBase
         return Ok(order);
     }
 
-    [HttpGet]
+    [HttpGet("total-orders")]
     public async Task<IActionResult> GetTotalOrders([FromQuery] OrderFilterDto filter)
     {
         var orders = _unitOfWork.Orders.GetAll();
