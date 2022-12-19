@@ -46,6 +46,9 @@ public class AccountController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> SignUp([FromBody] RegisterUserDto dtoModel)
     {
+        if(_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
+            return BadRequest("This username already exists");
+
         var user = dtoModel.Adapt<AppUser>();
         var result = await _userManager.CreateAsync(user, dtoModel.Password);
 
