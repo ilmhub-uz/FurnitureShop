@@ -12,10 +12,10 @@ namespace FurnitureShop.Admin.Api.Controllers;
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationsService _service;
-    private readonly IValidator<CreateOrganizationDto> _createorganizationvalidator;
     private readonly IValidator<UpdateOrganizationDto> _updateorganizationvalidator;
-    public OrganizationsController(IOrganizationsService service)
+    public OrganizationsController(IOrganizationsService service , IValidator<UpdateOrganizationDto> validator)
     {
+        _updateorganizationvalidator = validator;
         _service = service;
     }
 
