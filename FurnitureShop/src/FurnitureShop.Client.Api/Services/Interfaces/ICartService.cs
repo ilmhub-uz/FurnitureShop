@@ -11,5 +11,4 @@ public interface ICartService
     Task AddToCart(ClaimsPrincipal claims, Guid productId, CreateCartDto createCartDto);
     Task DeleteCartProductById(Guid cartProductId, Guid productId);
     Task DeletCartAllProducts(Guid cartId);
-
 }
