@@ -1,0 +1,46 @@
+﻿
+<MudNavMenu>
+    <div class="footer-hr">
+        <hr />
+    </div>
+    <div class="footer">
+        <div class="NavImage">
+            <MudImage Src="https://mebel.shop/upload/CMax/d16/cl3u49q2mh70oq542dl2jl01jt1a8u50.png" Alt="image" Style="width: 300px;" />
+        </div>
+        <div class="home-footer" style="">
+            <MudTextField @bind-Value="TextValue" Label="Number" Variant="Variant.Outlined" />
+            <MudTextField T="string" Label="Text" Variant="Variant.Outlined" Lines="3" />
+        </div>
+    </div>
+</MudNavMenu>
+
+
+
+
+@code{
+    public string TextValue { get; set; }
+}
+
+<style>
+    .footer {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 55px;
+    }
+    .NavImage {
+        padding: 10px 20px;
+    }
+    .footer-hr {
+        display: flex;
+        justify-content:center;
+        margin-top: 200px;
+        margin-bottom: 50px;
+    }
+    hr {
+        width: 90%;
+        border: 1px solid #594ae2;
+    }
+    .home-footer {
+        background-color: white;
+    }
+</style>

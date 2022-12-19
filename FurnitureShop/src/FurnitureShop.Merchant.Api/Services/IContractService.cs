@@ -5,7 +5,7 @@ namespace FurnitureShop.Merchant.Api.Services;
 public interface IContractService
 {
     Task<List<ContractView>> GetContractsAsync();
-    Task<ContractView> GetContractById(Guid contractId);
+    Task<ContractView> GetContractByIdAsync(Guid contractId);
     Task AddContractAsync(CreateContractDto contractDto);
-    Task DeleteContract(Guid contractId);
+    Task DeleteContractAsync(Guid contractId);
 }

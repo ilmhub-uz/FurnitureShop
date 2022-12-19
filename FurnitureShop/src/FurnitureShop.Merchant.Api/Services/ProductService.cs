@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
@@ -39,23 +40,21 @@ public class ProductService : IProductService
 
         await _unitOfWork.Products.AddAsync(productEntity);
     }
-
+    
+    [IdValidation]
     public async Task DeleteProductById(Guid productId)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
-        if (existingProduct is null)
-            throw new NotFoundException<Product>();
 
-        await _unitOfWork.Products.Remove(existingProduct);
+        await _unitOfWork.Products.Remove(existingProduct!);
     }
 
+    [IdValidation]
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
     {
         var existingProduct = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
-        if (existingProduct is null)
-            throw new NotFoundException<Product>();
 
-        return existingProduct.Adapt<ProductView>();
+        return existingProduct!.Adapt<ProductView>();
     }
 
     public async Task<List<ProductView>> GetProducts()
@@ -63,11 +62,10 @@ public class ProductService : IProductService
         return (await _unitOfWork.Products.GetAll().ToListAsync()).Adapt<List<ProductView>>();
     }
 
+    [IdValidation]
     public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
-        if (existingProduct is null)
-            throw new NotFoundException<Product>();
 
         var organization = _unitOfWork.Organizations.GetById(dtoModel.OrganizationId);
         if (organization is null)

@@ -15,4 +15,14 @@ public static class PagedListHelper
 
         return await source.Skip(pageParams.Size * (pageParams.Page - 1)).Take(pageParams.Size).ToListAsync();
     }
+
+    public static IEnumerable<T> ToPagedList<T>(this IEnumerable<T> source, PaginationParams pageParams)
+    {
+        pageParams ??= new PaginationParams();
+
+        HttpContextHelper.AddResponseHeader("X-Pagination",
+            JsonConvert.SerializeObject(new PaginationMetaData(source.Count(), pageParams.Size, pageParams.Page)));
+
+        return source.Skip(pageParams.Size * (pageParams.Page - 1)).Take(pageParams.Size).ToList();
+    }
 }
