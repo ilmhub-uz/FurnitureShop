@@ -28,7 +28,7 @@ public class ProductService : IProductService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        var category = _unitOfWork.Categories.GetAll().FirstOrDefaultAsync(c => c.Id == dtoModel.CategoryId);
+        var category = await _unitOfWork.Categories.GetAll().FirstOrDefaultAsync(c => c.Id == dtoModel.CategoryId); //await added
         if (category is null)
             throw new NotFoundException<Category>();
 

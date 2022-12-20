@@ -1,0 +1,16 @@
+﻿@page "/products"
+@using FurnitureShop.Admin.Blazor.ViewModel
+@inject HttpClient http;
+<PageTitle>Product</PageTitle>
+
+<h1>Product Page</h1>
+
+
+@code{
+    private List<ProductView>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await http.GetFromJsonAsync<List<ProductView>>("");
+    }
+}
