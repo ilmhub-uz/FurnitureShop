@@ -50,7 +50,7 @@ namespace FurnitureShop.Admin.Api.Services
             else if(Status == ESortStatus.LastData)
             {
                 contracts = _unitOfWork.Contracts.GetAll()
-                    .OrderBy(contract => contract.CreatedAt)
+                    .OrderBy(contract => contract.FinishDate)
                     .ToListAsync().Adapt<List<ContractView>>();
             }
 
