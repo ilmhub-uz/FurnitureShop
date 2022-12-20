@@ -7,6 +7,7 @@ using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Merchant.Api.Services;
@@ -34,6 +35,7 @@ public class OrganizationService : IOrganizationService
         return organization!.Adapt<OrganizationView>();
     }
 
+    [Authorize]
     public async Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto)
     {
         var organization = createOrganizationDto.Adapt<Organization>();
