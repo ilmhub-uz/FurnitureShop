@@ -9,5 +9,6 @@ namespace FurnitureShop.Data.Repositories.ConcreteTypeRepositories
 {
     public interface IContractRepository : IGenericRepository<Contract>
     {
+        Task Find(Guid contractId);
     }
 }
