@@ -20,14 +20,14 @@ namespace FurnitureShop.Admin.Api.Controllers
             _unitOfWork = unitOfWork;
             _contractService = contractService;
         }
-        [HttpPut("update/contract")]
+        [HttpPut("{contractId:guid}")]
         public async Task<IActionResult> UpdateContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
         {
             await _contractService.UpdateContract(contractId , updateContractDto);
             return Ok();
         }
 
-        [HttpDelete("delete/contract")]
+        [HttpDelete("{contractId:guid}")]
         public async Task<IActionResult> DeleteContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
         {
             await _contractService.DeleteContract(contractId);
