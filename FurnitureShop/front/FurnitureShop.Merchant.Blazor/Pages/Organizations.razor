@@ -1,8 +1,11 @@
-﻿@page "/organization"
+﻿@page "/organizations"
+@using FurnitureShop.Admin.Blazor.ViewModel
+@inject HttpClient http;
+
 
 <PageTitle>Organization</PageTitle>
 
-<body class="body">
+@*<body class="body">
 
     <div class="Div">
         <div class="organizations">
@@ -43,35 +46,47 @@
             </div>
         </div>
     </div>
-</body>
-<style>
-    .Div {
-        margin-top: 120px;
-    }
+</body>*@
 
-    .text-center {
-        text-align: center;
-        padding: 18px 0px;
-    }
 
-    .container {
-        padding: 10px 0px;
+@if (organizations is not null)
+{
+    foreach (var organization in organizations)
+    {
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderAvatar>
+                    <MudAvatar Color="Color.Secondary">I</MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.body1">@organization.Name</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardMedia Image="https://thumbs.dreamstime.com/b/minsk-belarus-april-samsung-logo-south-korean-multinational-electronics-company-minsk-belarus-april-samsung-logo-south-korean-114937717.jpg" Height="250" />
+            <MudCardContent>
+                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
+                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
+            </MudCardActions>
+        </MudCard>
     }
+}
+else
+{
+    <p> May be null</p>
+}
 
-    .organizations {
-        display: flex;
-        justify-content: space-between;
-    }
 
-    .organization {
-        padding: 10px;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        border-radius: 18px;
-        width: 280px;
-    }
+@code {
+    private List<OrganizationView>? organizations;
 
-    img {
-        width: 100%;
-        padding: 10px 0px 0px 0px;
+    protected override async Task OnInitializedAsync()
+    {
+        organizations = await http.GetFromJsonAsync<List<OrganizationView>>("https://localhost:7113/api/Organizations");
     }
-</style>
+}

@@ -1,0 +1,32 @@
+﻿@page "/products"
+@using FurnitureShop.Blazor.Pages.ViewModel
+@inject HttpClient Http
+
+<h3>Products</h3>
+
+@if (productViews is not null)
+{
+    @foreach (var product in productViews)
+    {
+        <MudCard >
+             <MudCardMedia Style="max-width: 100px" Image="images/redmi.jpg" Height="200" />
+             <MudCardContent>
+                 <MudText Typo="Typo.h5">@product.Name</MudText>
+                 <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
+                 <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+             </MudCardContent>
+             <MudCardActions>
+                 <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                 <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+             </MudCardActions>
+        </MudCard>
+    }
+}
+
+@code {
+    private List<ProductView>? productViews;
+    protected override async Task OnInitializedAsync()
+    {
+        productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7235/api/products");
+    }
+}
