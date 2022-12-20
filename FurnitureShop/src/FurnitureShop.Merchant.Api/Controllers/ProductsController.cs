@@ -89,7 +89,7 @@ public partial class ProductsController : ControllerBase
         if (!validateResult.IsValid)
             return BadRequest();
 
-        await _productService.UpdateProduct(productId, dtoModel);
+        await _productService.UpdateProduct(productId, dtoModel, User);
 
         return Ok();
     }
