@@ -3,6 +3,7 @@ using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
+using FurnitureShop.Merchant.Api.Helpers;
 using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
 using Mapster;
@@ -55,9 +56,12 @@ public class ProductService : IProductService
         return existingProduct!.Adapt<ProductView>();
     }
 
-    public async Task<List<ProductView>> GetProducts()
+    public async Task<List<ProductView>> GetProducts(ProductFilterDto filter)
     {
-        return (await _unitOfWork.Products.GetAll().ToListAsync()).Adapt<List<ProductView>>();
+        var existingProducts = _unitOfWork.Products.GetAll();
+        var productsList = await existingProducts.ToProductPagedListAsync(filter);
+
+        return productsList.Adapt<List<ProductView>>();
     }
 
     public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel)

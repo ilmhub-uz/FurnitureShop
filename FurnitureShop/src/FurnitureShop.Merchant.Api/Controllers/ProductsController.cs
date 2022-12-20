@@ -45,8 +45,8 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts()
-    => await _productService.GetProducts();
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] ProductFilterDto filter)
+    => await _productService.GetProducts(filter);
 
     [HttpGet("{productId:guid}")]
     [IdValidation]
