@@ -24,7 +24,7 @@ namespace FurnitureShop.Merchant.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(EmployeeServiceDto dto)
+        public async Task<IActionResult> AddEmployee([FromBody] EmployeeServiceDto dto)
         {
             await _employeeService.AddEmployee(User, dto);
             return Ok();
