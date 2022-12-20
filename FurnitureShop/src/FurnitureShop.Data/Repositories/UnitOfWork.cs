@@ -90,6 +90,16 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    private IContractRepository _contractRepository;
+    public IContractRepository Contracts 
+    {
+        get
+        {
+            if( _contractRepository is null ) _contractRepository = new ContractRepository(_context);
+            return _contractRepository;
+        }
+    }
+
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
