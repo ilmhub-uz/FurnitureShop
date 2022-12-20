@@ -11,7 +11,7 @@ namespace FurnitureShop.Client.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[ValidateModel]
+//[ValidateModel]
 public class AccountController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -35,8 +35,8 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> SignUp([FromForm] RegisterUserDto dtoModel)
     {
         var user = dtoModel.Adapt<AppUser>();
-        if (dtoModel.Avatar is not null)
-            user.AvatarUrl = await _fileHelperService.SaveFileAsync(dtoModel.Avatar, EFileType.Images, EFileFolder.User);
+        //if (dtoModel.Avatar is not null)
+        //    user.AvatarUrl = await _fileHelperService.SaveFileAsync(dtoModel.Avatar, EFileType.Images, EFileFolder.User);
 
         var result = await _userManager.CreateAsync(user, dtoModel.Password);
 
