@@ -34,14 +34,6 @@ namespace FurnitureShop.Admin.Api.Controllers
             return Ok();
         }
 
-
-        [HttpGet("get/contracts")]
-        public async Task<IActionResult> GetContracts([FromBody]ESortStatus sortStatus)
-        {
-           var contracts =  await _contractService.GetContracts(sortStatus);
-            return Ok(contracts);
-        }
-
     }
 }
 
