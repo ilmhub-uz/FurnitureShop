@@ -44,7 +44,7 @@ public class CartsController : ControllerBase
     }
 
     [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
-    [HttpDelete("cart/{cartId}/products/{productId}")]
+    [HttpDelete("{cartId}/products/{productId}")]
     public async Task<ActionResult<CartView>> DeleteCartProductById(Guid cartId, Guid productId)
     {
         await _cartService.DeleteCartProductById(cartId, productId);
@@ -52,10 +52,10 @@ public class CartsController : ControllerBase
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
-    [HttpDelete("{cartProductId}")]
-    public async Task<ActionResult<List<CartView>>> DeleteCart(Guid cartProductId)
+    [HttpDelete("{cartId}")]
+    public async Task<ActionResult<List<CartView>>> DeleteCart(Guid cartId)
     {
-        await _cartService.DeletCartAllProducts(cartProductId);
+        await _cartService.DeletCartAllProducts(cartId);
         return Ok();
     }
 }

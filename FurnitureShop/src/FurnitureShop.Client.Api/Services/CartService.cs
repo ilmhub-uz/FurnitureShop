@@ -30,8 +30,7 @@ public class CartService : ICartService
     public async Task AddToCart(ClaimsPrincipal claims, Guid cartId, CreateCartProductDto createCartProductDto)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-        var cart = _unitOfWork.Carts.GetById(cartId);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
         if (cart is null)
         {
             cart = new Cart()
