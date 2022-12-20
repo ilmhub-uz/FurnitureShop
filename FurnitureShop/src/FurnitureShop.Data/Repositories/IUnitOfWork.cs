@@ -9,6 +9,7 @@ public interface IUnitOfWork
     IOrganizationRepository Organizations { get; }
     IOrderRepository Orders { get; }
     ICartRepository Carts { get; }
+    ICartProductRepository CartProduct { get; }
     IFavoriteRepository Favorites { get; }
     IAppUserRepository AppUsers { get ;}
     IContractRepository Contracts { get; }
