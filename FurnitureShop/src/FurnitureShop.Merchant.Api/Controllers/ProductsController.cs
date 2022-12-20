@@ -69,7 +69,7 @@ public partial class ProductsController : ControllerBase
 
     [HttpPost]
     [Route($"RateProduct")]
-    public IActionResult RateProduct(Guid productId, uint rate)
+    public async Task<IActionResult> RateProductAsync(Guid productId, uint rate)
     {
         var product = _context.Products.FirstOrDefault(p => p.Id == productId);
         if (product is null)
@@ -79,7 +79,7 @@ public partial class ProductsController : ControllerBase
             product.Rates = new List<uint>();
         
         product.Rates.Add(rate);
-        _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
         return Ok();
     }
 
