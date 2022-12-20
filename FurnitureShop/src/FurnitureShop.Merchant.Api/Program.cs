@@ -13,7 +13,7 @@ var emailConfig = builder.Configuration
     .GetSection("EmailConfiguration")
     .Get<EmailConfiguration>();
 
-builder.Services.AddSingleton(emailConfig);
+//builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

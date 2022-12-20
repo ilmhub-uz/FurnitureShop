@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.Dtos.Enums;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
@@ -31,6 +32,27 @@ public class ProductsService : IProductsService
         if (filter.Brend is not null)
             existingProducts = existingProducts.Where(p => p.Brend == filter.Brend);
 
+        if(filter.Status != null)
+        {
+            existingProducts = filter.Status switch
+            {
+                EProductStatus.Created => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.Created),
+                EProductStatus.Active => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.Active),
+                EProductStatus.InActive => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.InActive),
+                EProductStatus.Deleted => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.Deleted),
+                _ => existingProducts
+            };
+        }
+
+        if(filter.SortingName is not null)
+        {
+            existingProducts = filter.SortingName switch
+            {
+                EProductSorting.Name => existingProducts.OrderByDescending(p => p.Name),
+                EProductSorting.Price => existingProducts.OrderByDescending(p => p.Price),
+                EProductSorting.Views => existingProducts.OrderByDescending(p => p.Views)
+            };
+        }
 
         var productsList = await existingProducts.ToPagedListAsync(filter);
         return productsList.Adapt<List<ProductView>>();
