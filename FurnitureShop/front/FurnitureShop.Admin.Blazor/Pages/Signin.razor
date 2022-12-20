@@ -3,9 +3,11 @@
 <PageTitle>Authentication</PageTitle>
 
 @using FurnitureShop.Admin.Blazor.Dtos
+@using Microsoft.AspNetCore.Authorization
+@using System.Net
 @inject NavigationManager NavManager
 <!-- Content -->
-
+    
     <div class="container-xxl" style="margin-top: -30px;">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
@@ -17,38 +19,32 @@
                   <_Logo/>
               </div>
               <!-- /Logo -->
-              <p class="mb-4">Please sign-in to your account and start the adventure</p>
-
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                @if(error != null)
+                {
+                    <div class="alert-error">Username or password is incorrect</div>
+                }else
+                {
+                    <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                }
+              @*<EditForm  Model="@model" OnValidSubmit="OnValidSubmit">*@
+              <EditForm id="formAuthentication" Class="mb-3" Model="@model" OnValidSubmit="OnValidSubmit">
+              <DataAnnotationsValidator />
                 <div class="mb-3">
                   <label for="username" class="form-label">Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Enter your username"
-                    autofocus
-                  />
+                    <MudTextField id="username" placeholder="Enter your username"
+                                  @bind-Value="model.UserName" For="@(() => model.UserName)" />                                                          
+                    
                 </div>
                 <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
-                    <a href="/resetpassword">
-                      <small>Forgot Password?</small>
-                    </a>
-                  </div>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password"
-                    />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label" for="password">Password</label>
+                        <a href="/resetpassword">
+                            <small>Forgot Password?</small>
+                        </a>
+                    </div>
+                    
+                    <MudTextField placeholder="Enter your password" id="password" Class="mt-3"
+                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
                 </div>
                 <div class="mb-3">
                   <div class="form-check">
@@ -56,11 +52,10 @@
                     <label class="form-check-label" for="remember-me"> Remember Me </label>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
-                </div>
-              </form>
-
+              <MudCardActions class="mb-3">
+                  <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="btn btn-primary d-grid w-100">Log in</MudButton>
+              </MudCardActions>
+              </EditForm>
               <p class="text-center">
                 <span>New on our platform?</span>
                 <a href="/signup">
@@ -76,26 +71,28 @@
 
 <!-- / Content -->
 @code {
-
+    
     LoginUserDto model = new LoginUserDto();
-
-    protected void Redirect(string route = "/profile")
+    string? error = null;
+    protected void Redirect(string route = "/dashboard")
     {
         NavManager.NavigateTo(route);
     }
 
-    private async Task OnvalidSubmit(EditContext context)
+    private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7237");
-
-        var message = new HttpRequestMessage(HttpMethod.Post, "api/accounts/singin");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/accounts/signin");
+        message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
-        var result = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        if (result is not null)
-        {
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if(status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+
+        if (responseMessage.IsSuccessStatusCode)
             Redirect();
-        }
     }
 }

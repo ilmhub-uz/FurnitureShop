@@ -17,14 +17,11 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 public class ProfileController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly IFileHelperService _fileHelperService;
 
     public ProfileController(
-        UserManager<AppUser> userManager,
-        IFileHelperService fileHelperService)
+        UserManager<AppUser> userManager)
     {
         _userManager = userManager;
-        _fileHelperService = fileHelperService;
     }
 
     [HttpGet]

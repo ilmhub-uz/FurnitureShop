@@ -10,4 +10,5 @@ public interface IProductService
     Task AddProduct(CreateProductDto dtoModel);
     Task UpdateProduct(Guid productId, UpdateProductDto dtoModel);
     Task DeleteProductById(Guid productId);
+    Task<ProductView> AddOrUpdateProductImageAsync(Guid productId, CreateOrUpdateProductImageDto createProductImageDto);
 }

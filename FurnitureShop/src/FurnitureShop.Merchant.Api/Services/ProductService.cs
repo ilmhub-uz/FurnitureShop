@@ -41,7 +41,6 @@ public class ProductService : IProductService
         await _unitOfWork.Products.AddAsync(productEntity);
     }
     
-    [IdValidation]
     public async Task DeleteProductById(Guid productId)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
@@ -49,7 +48,6 @@ public class ProductService : IProductService
         await _unitOfWork.Products.Remove(existingProduct!);
     }
 
-    [IdValidation]
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
     {
         var existingProduct = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
@@ -62,7 +60,6 @@ public class ProductService : IProductService
         return (await _unitOfWork.Products.GetAll().ToListAsync()).Adapt<List<ProductView>>();
     }
 
-    [IdValidation]
     public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
@@ -84,5 +81,22 @@ public class ProductService : IProductService
         existingProduct = dtoModel.Adapt<Product>();
 
         await _unitOfWork.Products.Update(existingProduct);
+    }
+
+    public async Task<ProductView> AddOrUpdateProductImageAsync(Guid productId, CreateOrUpdateProductImageDto createProductImageDto)
+    {
+        var existingProduct = _unitOfWork.Products.GetById(productId);
+        if (existingProduct is null)
+            throw new NotFoundException<Product>();
+
+        var productImages = createProductImageDto.ImageFile;
+        if (productImages is null)
+            throw new BadRequestException("Please enter product images.");
+
+        existingProduct.Images = productImages;
+
+        await _unitOfWork.Products.Update(existingProduct);
+
+        return existingProduct.Adapt<ProductView>();
     }
 }

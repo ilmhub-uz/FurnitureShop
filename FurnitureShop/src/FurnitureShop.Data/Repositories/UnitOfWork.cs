@@ -20,16 +20,6 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IProductImageRepository _productImageRepository;
-    public IProductImageRepository ProductImages
-    {
-        get
-        {
-            if (_productImageRepository is null) _productImageRepository = new ProductImageRepository(_context);
-            return _productImageRepository;
-        }
-    }
-
     private IProductRepository _productRepository;
     public IProductRepository Products
     {
@@ -87,6 +77,16 @@ public class UnitOfWork : IUnitOfWork
         {
             if(_appUserRepository is null ) _appUserRepository = new AppUserRepository(_context);
             return _appUserRepository ;
+        }
+    }
+
+    private IContractRepository _contractRepository;
+    public IContractRepository Contracts 
+    {
+        get
+        {
+            if( _contractRepository is null ) _contractRepository = new ContractRepository(_context);
+            return _contractRepository;
         }
     }
 

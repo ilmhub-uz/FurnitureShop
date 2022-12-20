@@ -32,6 +32,7 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]
+    [IdValidation]
     public async Task<ActionResult<OrganizationView>> GetOrganizationById(Guid organizationId) =>
         await _organizationService.GetOrganizationByIdAsync(organizationId);
 
@@ -48,6 +49,7 @@ public class OrganizationsController : ControllerBase
     }
 
     [HttpPut("{organizationId:guid}")]
+    [IdValidation]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
     {
         var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);
@@ -60,6 +62,7 @@ public class OrganizationsController : ControllerBase
     }
 
     [HttpDelete("{organizationId:guid}")]
+    [IdValidation]
     public async Task<IActionResult> DeleteOrganization(Guid organizationId)
     {
         await _organizationService.DeleteOrganization(organizationId);

@@ -1,4 +1,5 @@
 ﻿@page "/category"
+@inject HttpClient Http
 
 <PageTitle>Category</PageTitle>
 
@@ -6,7 +7,15 @@
     <MudText Typo="Typo.h3" Class="text-center">Sub Categories</MudText>
     <div class="categories">
         <div class="category">
-            <h3 class="text-center">Laptops</h3>
+            
+            <h3 class="text-center">
+                @*<MudTable Items="categories" Elevation="0">
+                    <RowTemplate>
+                        <MudLink>@context.Children / </MudLink>
+                    </RowTemplate>
+                </MudTable>*@
+                Laptops
+            </h3>
             <img src="https://cdn.macbro.uz/macbro/38f5c97f-48a9-4582-b508-df528b6faf4d" alt="mac" />
         </div>
         <div class="category">
@@ -14,13 +23,13 @@
             <img src="https://olcha.uz/image/150x150/category/b9ndmxu7R1o0rNIfa66oTO5C8yGLz0rqSKPVIgsNOXf11pmxhJkp7zTOCZet.png" alt="screen" />
         </div>
         <div class="category">
-                <h3 class="text-center">Computer devices</h3>
-                <img src="https://olcha.uz/image/150x150/category/Iq6S7Cpq55aiyWLPqwZlQ2xUfoflhJEdZMA6134N6LNtL6vm1T5Gx0HK7zHD.png" alt="comp" />
-            </div>
-            <div class="category">
-                <h3 class="text-center">Office equipment</h3>
-                <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
-            </div>
+            <h3 class="text-center">Computer devices</h3>
+            <img src="https://olcha.uz/image/150x150/category/Iq6S7Cpq55aiyWLPqwZlQ2xUfoflhJEdZMA6134N6LNtL6vm1T5Gx0HK7zHD.png" alt="comp" />
+        </div>
+        <div class="category">
+            <h3 class="text-center">Office equipment</h3>
+            <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
+        </div>
     </div>
 </div>
 
@@ -53,5 +62,10 @@
 </style>
 
 @code {
-    private CategoryView[] categories;
+    private CategoryView[]? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235");
+    }
 }

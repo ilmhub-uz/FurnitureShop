@@ -1,4 +1,5 @@
 ﻿@page "/organizations"
+@inject HttpClient Http
 
 <PageTitle>Organizations</PageTitle>
 
@@ -7,9 +8,14 @@
     <div class="organizations">
         <div class="organization">
             <MudLink Href="category">
+                @*<MudTable Items="organizations" Elevation="0">
+                    <RowTemplate>
+                        <MudLink>@context.Name / </MudLink>
+                    </RowTemplate>
+                </MudTable>*@ 
                 <h3 class="text-center">Apple</h3>
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAe1BMVEX///8ODg4AAAAICAjh4eF9fX0zMzNOTk7X19cqKiphYWGsrKwKCgr7+/vm5uZ0dHS8vLzu7u5DQ0OdnZ3Nzc1TU1OTk5O/v7+GhoZJSUl5eXlYWFi2trZmZmbx8fEmJiZubm45OTkeHh4YGBjIyMijo6Ourq6YmJiDg4OqYIa4AAAEDUlEQVR4nO3cWWOiMBQFYLmIomLdWxds1S76/3/hAC4VSpxOPc690vM985AjCTcJkVqNiIiIiIiIiIiIiIiIiIiIiIiIiIiIiOiXCTtBoN2GGxr3JPGi3Yyb6bdEIs/zX7UbciNhQ8RLSUO7KbexO+RLEja123ILz41jviThXLs1N1CXz4CevGs3B68uvneWMNRuD9xzLmAk2u3Ba5110UoOwyAXsIKdNCwEbGk3CK5RSNjXbhBavxCwehOaVtVH4bgQsHorp16+UlTvMVNLl0snvgy02wOXKxW+1LXbg9c5n3FXMWCyKjwbg9Xroon2adlbwadoZnHYuJBh5ergwUL8dHdtMdZuyM2s5HUYxM/azaDvCePRNAge4wsDrt4Jmpuk067b0/jOKsfgvSmf2nG35JqnbL9b/CiK9pfN3/57O3/qLY33WdnTAMtC68OdSG4Ct79sVPZTmDNuSH79sC8P0fZU4LudRjHeKaT9ncVuuyTffhIqs04y2Ab9pTguyTK2jA/Isbvx6Y3cc1+RXfShHeKSUWnn+0cy1Y7hFly+Pd+OaHbKCgqYRHzUjlJuiwqYRDRZGp9wAZPHjcHC+Ix4yBwDvlgsGU1gH11qhynTBwa0WS1yrwSvC2jzQfoOu4Wy085SDnYLZaIdpRysUvgWy0RqApvNmCz1aS1EBWxrR3H4gCW0ug2+BCWUlXYSF9SEzewL4QfQLfQ32klcULXC6GymhlsYitm3GT1UQqPVHrZwijztIE4bzKRUZtpBnEDFwubCN4NK2NMO4lT5GQ0soeFeCko41A7iBBqHhg98+6iJt9mKv678rG1R+Zk36p2T3dOmI9gmhsXXFSnYXqLV3eBaHbfhbfVpikto9f02qlzYHYk7XEKjj1Pky0Ob/2QbIF/h2zz3BdrH2EfsaKcpMwXeRE9G2nFKvCET2tzOAB41SSMaPKC4gt5ET2RqbXaD7aZZRmtLKWw39QzuD0OfplnCWDtSAW59cUxobSDWZuBnjb2KgTx86dl84f0KnLl5staOU6IDnbk9accpgzueaPXMAvAmmisVB7CRaPb7ZrhdRaPn92A10fDHv0CHo+RBO4jbIyKiuVVFTuv6iFY3FA8A/dTqpvDR1Yf2Zasd4W+uPPJt+LjCUfeqyVskd/A1gvCam2i31p+7Yn5q9C9PX/z4vb4stJv+Xc6z+5GffUXBFdD+U+akXRIx+zbEZjZptuTL9xTuLmDJwegk1Co+zjcH/d7Xv+Wb/b+MQ6fwZYxh8fOI8TqXUUy+cbroYSL7ypgOvXnZTCxcHbpr2n/bhtcTTmGQfSdi03N+3bLbn6/TS5rbe8yX6Q6s/lWLiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIfq8/tzAurNL1lJsAAAAASUVORK5CYII="
-                    alt="aple" />
+                     alt="aple" />
             </MudLink>
         </div>
         <div class="organization">
@@ -18,7 +24,7 @@
                     Xiaomi
                 </h3>
                 <img src="https://i.pinimg.com/736x/f2/35/62/f23562f57c5ee08623a044eeaea3b36d.jpg"
-                    alt="mi" />
+                     alt="mi" />
             </MudLink>
         </div>
         <div class="organization">
@@ -27,7 +33,7 @@
                     Samsung
                 </h3>
                 <img src="https://cdn.freebiesupply.com/logos/large/2x/samsung-4-logo-png-transparent.png"
-                    alt="samsung" />
+                     alt="samsung" />
             </MudLink>
 
         </div>
@@ -37,7 +43,7 @@
                     Huawei
                 </h3>
                 <img src="https://i0.wp.com/www.dafontfree.io/wp-content/uploads/2021/08/Huawei-Logo-Font.jpg?fit=1062%2C728&ssl=1"
-                    alt="huawei" />
+                     alt="huawei" />
             </MudLink>
 
         </div>
@@ -75,4 +81,8 @@
 @code {
     private OrganizationView[]? organizations;
 
+    protected override async Task OnInitializedAsync()
+    {
+        organizations = await Http.GetFromJsonAsync<OrganizationView[]>("https://localhost:7235");
+    }
 }

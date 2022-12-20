@@ -36,8 +36,8 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] PaginationParams paginationParams)
-    => await _productService.GetProducts(paginationParams);
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] OrderDto orderDto)
+    => await _productService.GetProductsAsync(orderDto);
 
     [HttpGet("{productId:guid}")]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
@@ -51,7 +51,7 @@ public partial class ProductsController : ControllerBase
 
         if (product.Rates is { Count: > 0 })
         {
-            productView.Rate = product.Rates.Select(t => (int)t).ToList().Sum() / product.Rates.Count();
+            productView.Rate = product.Rates.Select(t => (int)t).Sum() / product.Rates.Count();
         }
 
         await _context.SaveChangesAsync();
