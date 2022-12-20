@@ -69,14 +69,15 @@ public partial class ProductsController : ControllerBase
     [HttpPost]
     [Route($"RateProduct")]
     [IdValidation]
-    public IActionResult RateProduct(Guid productId, uint rate)
+    public async Task<IActionResult> RateProduct(Guid productId, uint rate)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
         
         if (product!.Rates is null) 
             product.Rates = new List<uint>();
         
         product.Rates.Add(rate);
+        await _context.SaveChangesAsync();
         return Ok();
     }
 
