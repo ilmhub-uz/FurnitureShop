@@ -8,8 +8,11 @@ namespace FurnitureShop.Data.Entities
 {
     public enum ESortStatus
     {
+        Id ,
         Price,
-        LastData,
-        Name
+        CreatedDate,
+        Name,
+        ViewsCount,
+        SoldCount,
     }
 }

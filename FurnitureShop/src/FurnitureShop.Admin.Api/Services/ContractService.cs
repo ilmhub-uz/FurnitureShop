@@ -15,7 +15,7 @@ namespace FurnitureShop.Admin.Api.Services
     {
        
         private readonly IUnitOfWork _unitOfWork;
-
+       
         public ContractService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -29,32 +29,9 @@ namespace FurnitureShop.Admin.Api.Services
             await _unitOfWork.Contracts.Update(contract);
         }
 
-        public async Task<List<ContractView>> GetContracts(ESortStatus Status)
+        public Task<List<ContractView>> GetContracts(ESortStatus Status)
         {
-            if (await _unitOfWork.Contracts.GetAll().ToListAsync() is null)
-                return new List<ContractView>();
-
-            var contracts = new List<ContractView>();
-            if(Status == ESortStatus.Price)
-            {
-                contracts =  _unitOfWork.Contracts.GetAll()
-                    .OrderBy(contract => contract.TotalPrice).ToListAsync()
-                    .Adapt<List<ContractView>>();
-            }
-            else if(Status == ESortStatus.Name)
-            {
-                contracts = _unitOfWork.Contracts.GetAll()
-                    .OrderBy(contract => contract.Product!.Name)
-                    .ToListAsync().Adapt<List<ContractView>>();
-            }
-            else if(Status == ESortStatus.LastData)
-            {
-                contracts = _unitOfWork.Contracts.GetAll()
-                    .OrderBy(contract => contract.FinishDate)
-                    .ToListAsync().Adapt<List<ContractView>>();
-            }
-
-            return contracts;
+            throw new NotImplementedException();
         }
 
         public async Task UpdateContract(Guid contractId, UpdateContractDto updateContractDto)
@@ -68,7 +45,7 @@ namespace FurnitureShop.Admin.Api.Services
             await _unitOfWork.Contracts.Update(contract);
         }
 
-    
+
     }
 }
 
