@@ -27,27 +27,37 @@ public class CartService : ICartService
 
 
 
-    public async Task AddToCart(ClaimsPrincipal claims, Guid productId, CreateCartDto createCartDto)
+    public async Task AddToCart(ClaimsPrincipal claims, Guid cartId, CreateCartProductDto createCartProductDto)
     {
-        var cart = createCartDto.Adapt<Cart>();
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        cart.UserId = userId;
-        cart.CartProducts = new List<CartProduct>()
+        var cart = _unitOfWork.Carts.GetById(cartId);
+        if (cart is null)
         {
-            new CartProduct()
+            cart = new Cart()
             {
-                 ProductId = productId,
-                 CartId = cart.Id
-            }
+                UserId = userId,
+            };
+
+            await _unitOfWork.Carts.AddAsync(cart);
+        }
+
+        var product = new CartProduct()
+        {
+            ProductId = createCartProductDto.ProductId,
+            Count = createCartProductDto.Count,
+            Properties = createCartProductDto.Properties
         };
 
-        await _unitOfWork.Carts.AddAsync(cart);
+        cart.CartProducts ??= new List<CartProduct>();
+        cart.CartProducts.Add(product);
+
+        _unitOfWork.Save();
     }
 
     public async Task DeletCartAllProducts(Guid cartId)
     {
-        var cart = _unitOfWork.Carts.GetById(cartId);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
         if (cart is null)
         {
             throw new NotFoundException<Cart>();
@@ -55,19 +65,20 @@ public class CartService : ICartService
 
         if (cart.CartProducts is not null)
         {
-            await _unitOfWork.Carts.Remove(cart);
+            cart.CartProducts.Clear();
+             _unitOfWork.Save();
         }
     }
 
     public async Task DeleteCartProductById(Guid cartId, Guid productId)
     {
-        var cart =  _unitOfWork.Carts.GetById(cartId);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
         if (cart is null)
         {
             throw new NotFoundException<Cart>();
         }
 
-        var product = cart.CartProducts?.FirstOrDefault(p => p.Id == productId);
+        var product = cart.CartProducts?.FirstOrDefault(p => p.ProductId == productId);
         if (product is null)
         {
             throw new NotFoundException<Product>();
@@ -86,8 +97,7 @@ public class CartService : ICartService
         }
 
         var pagedList = cart.CartProducts?.AsQueryable().ToPagedList(paginationParams);
-        if (pagedList is null)
-            return new List<CartProductView>();
+        cart.CartProducts ??= new List<CartProduct>();
 
         var result = pagedList.Adapt<List<CartProductView>>();
         return result;
