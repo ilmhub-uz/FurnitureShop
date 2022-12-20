@@ -2,7 +2,6 @@
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
-using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
@@ -33,6 +32,17 @@ public class OrdersService : IOrdersService
             orders = orders.Where(o => o.OrderProducts!.Any(p => p.ProductId == filter.ProductId));
         if (filter.ContractId is not null)
             orders = orders.Where(o => o.ContractId == filter.ContractId);
+
+        if (filter.OrderStatus is not null)
+        {
+            orders = filter.OrderStatus switch
+            {
+                EOrderStatus.Created => orders.Where(o => o.Status == EOrderStatus.Created),
+                EOrderStatus.Accepted => orders.Where(o => o.Status == EOrderStatus.Accepted),
+                EOrderStatus.Canceled => orders.Where(o => o.Status == EOrderStatus.Canceled),
+                _ => orders
+            };
+        }
 
         var orderList = await orders.ToPagedListAsync(filter);
         return orderList.Adapt<List<OrderView>>();
