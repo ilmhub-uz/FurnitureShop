@@ -46,6 +46,7 @@ public class ContractsController : ControllerBase
 
     [HttpGet("{contractId:guid}")]
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
+    [IdValidation]
     public async Task<IActionResult>GetContractById(Guid contractId)
     {
         var category = await _contractService.GetContractByIdAsync(contractId);
@@ -54,6 +55,7 @@ public class ContractsController : ControllerBase
     }
 
     [HttpDelete("{contractId:guid}")]
+    [IdValidation]
     public async Task<IActionResult>DeleteProduct(Guid contractId)
     {
         await _contractService.DeleteContractAsync(contractId);
