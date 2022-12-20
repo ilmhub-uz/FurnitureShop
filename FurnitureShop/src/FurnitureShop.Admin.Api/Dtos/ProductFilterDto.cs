@@ -1,3 +1,4 @@
+using FurnitureShop.Admin.Api.Enums;
 using FurnitureShop.Common.Models;
 
 namespace FurnitureShop.Admin.Api.Dtos;
@@ -6,5 +7,8 @@ public class ProductFilterDto : PaginationParams
 {
     public Guid? OrganizationId { get; set; }
     public int? CategoryId { get; set; }
-    public EProductSorting ProductSorting { get; set; }
+    public uint? Price { get; set; }
+    public string? Brend { get; set; }
+    public DateTime? DateTime { get; set; }
+    public EProductSorting? ProductSorting { get; set; }
 }
