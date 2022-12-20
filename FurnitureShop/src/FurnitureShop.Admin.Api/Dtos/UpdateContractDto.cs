@@ -1,7 +1,9 @@
-﻿namespace FurnitureShop.Admin.Api.Dtos
+﻿using FurnitureShop.Data.Entities;
+
+namespace FurnitureShop.Admin.Api.Dtos
 {
     public class UpdateContractDto
     {
-        public Guid? OrderId { get; set; }
+       public EOrderStatus OrderStatus { get; set; }
     }
 }

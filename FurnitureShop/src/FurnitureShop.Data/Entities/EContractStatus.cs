@@ -4,7 +4,6 @@ public enum EContractStatus
 {
     Created,
     Confirmed,
-    Update,
     Closed,
     Deleted
 }

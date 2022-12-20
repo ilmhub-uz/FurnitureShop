@@ -15,24 +15,13 @@ namespace FurnitureShop.Admin.Api.Services
         {
             _unitOfWork = unitOfWork;
         }
-
-        public async Task CreateContract(CreateContractDto createContractDto)
-        {
-            var contract = new Contract()
-            {
-                OrderId = (Guid)createContractDto.OrderId,
-            };
-
-            await _unitOfWork.Contracts.AddAsync(contract);
-        }
-
         public async Task DeleteContract(Guid contractId)
         {
             if (!await _unitOfWork.Contracts.GetAll().AnyAsync(contract => contract.Id == contractId))
                 throw new NotFoundException<Contract>();
             var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(contract => contract.Id == contractId);
             contract.Status = EContractStatus.Deleted;
-           
+            await _unitOfWork.Contracts.Update(contract);
         }
 
         public async Task UpdateContract(Guid contractId , UpdateContractDto updateContractDto)
@@ -42,8 +31,7 @@ namespace FurnitureShop.Admin.Api.Services
 
             var contract = await _unitOfWork.Contracts.GetAll().
                 FirstOrDefaultAsync(con => con.Id == contractId);
-            contract.OrderId = (Guid)updateContractDto.OrderId;
-            contract.Status = EContractStatus.Update;
+            contract.Order.Status = updateContractDto.OrderStatus;
             await _unitOfWork.Contracts.Update(contract);
         }
     }
