@@ -5,6 +5,11 @@ namespace FurnitureShop.Admin.Api.Dtos
 {
     public class ContractFilterDto : PaginationParams
     {
-       public ESortStatus Status { get; set; }
+       public Guid? OrderId { get; set; }
+       public Guid? OrganizationId { get; set; }
+       public Guid? UserId { get; set; }
+       public ESortStatus? SortStatus { get; set; }
+       public EContractStatus? ContractStatus { get; set; }
+       
     }
 }

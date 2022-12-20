@@ -9,6 +9,6 @@ namespace FurnitureShop.Admin.Api.Services
     {
         Task UpdateContract(Guid contractId, UpdateContractDto updateContractDto);
         Task DeleteContract(Guid contractId);
-        Task<List<ContractView>> GetContracts(ESortStatus Status);
+        Task<List<ContractView>> GetContracts(ContractFilterDto filterDto);
     }
 }
