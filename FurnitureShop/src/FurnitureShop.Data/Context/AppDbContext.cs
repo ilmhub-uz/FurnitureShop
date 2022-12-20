@@ -8,6 +8,7 @@ namespace FurnitureShop.Data.Context;
 public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
+
     public DbSet<OrganizationUser>? OrganizationUsers { get; set; }
 
     public DbSet<Category>? Categories { get; set; }
