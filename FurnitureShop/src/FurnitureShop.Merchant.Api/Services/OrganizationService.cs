@@ -43,7 +43,7 @@ public class OrganizationService : IOrganizationService
             new OrganizationUser()
             {
                 Role = ERole.Owner,
-                UserId = userId
+                UserId = userId,
             }
         };
 

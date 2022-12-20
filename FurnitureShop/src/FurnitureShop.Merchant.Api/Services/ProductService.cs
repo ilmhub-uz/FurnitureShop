@@ -85,4 +85,21 @@ public class ProductService : IProductService
 
         await _unitOfWork.Products.Update(existingProduct);
     }
+
+    public async Task<ProductView> AddOrUpdateProductImageAsync(Guid productId, CreateOrUpdateProductImageDto createProductImageDto)
+    {
+        var existingProduct = _unitOfWork.Products.GetById(productId);
+        if (existingProduct is null)
+            throw new NotFoundException<Product>();
+
+        var productImages = createProductImageDto.ImageFile;
+        if (productImages is null)
+            throw new BadRequestException("Please enter product images.");
+
+        existingProduct.Images = productImages;
+
+        await _unitOfWork.Products.Update(existingProduct);
+
+        return existingProduct.Adapt<ProductView>();
+    }
 }
