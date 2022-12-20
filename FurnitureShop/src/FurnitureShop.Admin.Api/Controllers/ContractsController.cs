@@ -21,14 +21,14 @@ namespace FurnitureShop.Admin.Api.Controllers
             _contractService = contractService;
         }
         [HttpPut("update/contract")]
-        public async Task<IActionResult> UpdateContract(Guid contractId , UpdateContractDto updateContractDto)
+        public async Task<IActionResult> UpdateContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
         {
             await _contractService.UpdateContract(contractId , updateContractDto);
             return Ok();
         }
 
         [HttpDelete("delete/contract")]
-        public async Task<IActionResult> DeleteContract(Guid contractId, UpdateContractDto updateContractDto)
+        public async Task<IActionResult> DeleteContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
         {
             await _contractService.DeleteContract(contractId);
             return Ok();
@@ -36,7 +36,7 @@ namespace FurnitureShop.Admin.Api.Controllers
 
 
         [HttpGet("get/contracts")]
-        public async Task<IActionResult> GetContracts(ESortStatus sortStatus)
+        public async Task<IActionResult> GetContracts([FromBody]ESortStatus sortStatus)
         {
            var contracts =  await _contractService.GetContracts(sortStatus);
             return Ok(contracts);
