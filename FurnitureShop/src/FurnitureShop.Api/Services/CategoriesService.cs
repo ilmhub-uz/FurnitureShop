@@ -57,13 +57,16 @@ public class CategoriesService : ICategoriesService
         return categoryView;
     }
 
-    public async Task<CategoryView> GetCategoryByIdAsync(int categoryId)
+    public async Task<List<CategoryView>> GetCategoryChildrenAsync(int categoryId)
     {
-        var category = await _unitOfWork.Categories.GetAll().FirstOrDefaultAsync(c => c.Id == categoryId);
+        var categoryChildren = 
+            await _unitOfWork.Categories.GetAll()
+                .Where(category=>category.ParentId == categoryId)
+                .ToListAsync();
 
-        if (category is null)
-            throw new NotFoundException<Category>();
+        var categoryChildrenViews = 
+            categoryChildren.Select(categoryChild => ConvertToCategoryView(categoryChild)).ToList();
 
-        return ConvertToCategoryView(category);
+        return categoryChildrenViews;
     }
 }

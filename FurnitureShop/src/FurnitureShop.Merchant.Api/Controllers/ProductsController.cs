@@ -49,13 +49,12 @@ public partial class ProductsController : ControllerBase
     => await _productService.GetProducts();
 
     [HttpGet("{productId:guid}")]
+    [IdValidation]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
     {
         var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
-        if (product is null)
-            return NotFound();
 
-        product.Views += 1;
+        product!.Views += 1;
         var productView = await _productService.GetProductByIdAsync(productId);
 
         if (product.Rates is {Count:>0})
@@ -69,20 +68,21 @@ public partial class ProductsController : ControllerBase
 
     [HttpPost]
     [Route($"RateProduct")]
-    public IActionResult RateProduct(Guid productId, uint rate)
+    [IdValidation]
+    public async Task<IActionResult> RateProduct(Guid productId, uint rate)
     {
-        var product = _context.Products.FirstOrDefault(p => p.Id == productId);
-        if (product is null)
-            return NotFound();
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
         
-        if (product.Rates is null) 
+        if (product!.Rates is null) 
             product.Rates = new List<uint>();
         
         product.Rates.Add(rate);
+        await _context.SaveChangesAsync();
         return Ok();
     }
 
     [HttpPut("{productId:guid}")]
+    [IdValidation]
     public async Task<IActionResult> UpdateProduct(Guid productId, UpdateProductDto dtoModel)
     {
         var validateResult = _updateProductValidator.Validate(dtoModel);
@@ -96,10 +96,19 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpDelete]
+    [IdValidation]
     public async Task<IActionResult> DeleteProduct(Guid productId)
     {
         await _productService.DeleteProductById(productId);
 
         return Ok();
+    }
+
+    [HttpPut("{productId}/images")]
+    public async Task<IActionResult> AddProductImage(Guid productId, [FromForm] CreateOrUpdateProductImageDto imageDto)
+    {
+        var result = await _productService.AddOrUpdateProductImageAsync(productId, imageDto);
+
+        return Ok(result);
     }
 }

@@ -2,6 +2,7 @@
 using FurnitureShop.Api.ViewModel;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,13 @@ using System.Security.Claims;
 
 namespace FurnitureShop.Api.Services;
 
+[Scoped]
 public class ProductCommentService : IProductCommentService
 {
     private readonly AppDbContext _context;
-    private readonly UserManager<AppUser> _userManager;
 
-    public ProductCommentService(AppDbContext context, UserManager<AppUser> userManager)
+    public ProductCommentService(AppDbContext context)
     {
-        _userManager = userManager;
         _context = context;
     }
 

@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Admin.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -6,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace FurnitureShop.Admin.Api.Controllers;
 [Route("api/products")]
 [ApiController]
-
 public class ProductsController : ControllerBase
 {
     private readonly IProductsService _service;
-
-    public ProductsController(IProductsService service)
+    private readonly IValidator<UpdateProductDto> _updateproductdtovalidator;
+    public ProductsController(IProductsService service , IValidator<UpdateProductDto> validator )
     {
+        _updateproductdtovalidator = validator;
         _service = service;
     }
 
@@ -33,6 +34,9 @@ public class ProductsController : ControllerBase
     [HttpPut("{productId:Guid}")]
     public async Task<IActionResult> UpdateProduct(Guid productId, UpdateProductDto dtoModel)
     {
+        var result = await _updateproductdtovalidator.ValidateAsync(dtoModel);
+        if (!result.IsValid)
+            return BadRequest(result.Errors);
         await _service.UpdateProduct(productId, dtoModel);
         return Ok();
     }

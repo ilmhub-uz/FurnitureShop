@@ -8,17 +8,21 @@ namespace FurnitureShop.Data.Context;
 public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
+
     public DbSet<OrganizationUser>? OrganizationUsers { get; set; }
 
     public DbSet<Category>? Categories { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<ProductImage>? ProductImages { get; set; }
     public DbSet<CategoryImage> CategoryImages { get; set; }
     public DbSet<ProductComment> ProductComments { get; set; }
     public DbSet<Contract>? Contracts { get; set; } 
     public DbSet<FavouriteProduct> FavouriteProducts { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<LikeProduct> LikeProducts { get; set; }
+    public DbSet<Cart>? Carts { get; set; }
+    public DbSet<CartProduct>? CartProducts { get; set; }
+ 
+
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

@@ -1,14 +1,10 @@
 ﻿@page "/"
+@using FurnitureShop.Blazor.Pages.ViewModel
+@inject HttpClient Http
 
 <PageTitle>Index</PageTitle>
-<div class="Div">
 <div class="form-floating">
-    <MudTextField @bind-Value="Search" Label="Search" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="form-control" />
-
-</div>
-<div >
-    <MudNavLink Class="icon" Icon="@Icons.Filled.LocalPhone"> <a>+998908506808</a><p style="color:orange">Call</p></MudNavLink>
-    </div>
+    <input type="search" class="form-control" placeholder="Search" />
 </div>
 <MudCarousel Class="mud-width-full" Style="height:700px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
     <MudCarouselItem Transition="transition">
@@ -27,142 +23,338 @@
         </div>
     </MudCarouselItem>
 </MudCarousel>
-<div class="Bosh">
-    <div class="Trentdagilar">
-        <MudImage Class="rasm" Src="https://mebel.shop/upload/resize_cache/iblock/9c7/600_600_140cd750bba9870f18aada2478b24840a/vzrw0wa45oiv7xge4gw21mkz61hx5ocs.jpg"></MudImage>
-       <div class="star">
 
-       </div>
-       <div class="p">
-
-       </div>
-    </div>
-    <div class="Trentdagilar">
-        <MudImage Class="rasm" Src="https://mebel.shop/upload/resize_cache/iblock/df7/600_600_140cd750bba9870f18aada2478b24840a/r2id4ylipx9twnl05040z6p3gt2mmqfb.jpg"></MudImage>
-    </div>  
-    <div class="Trentdagilar">
-        <MudImage Class="rasm" Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"></MudImage>
-    </div> 
-    <div class="Trentdagilar">
-        <MudImage Class="rasm" Src="https://mebel.shop/upload/resize_cache/iblock/e45/600_600_140cd750bba9870f18aada2478b24840a/htnfkyp4pf1jmf2zdmh5lajibuyf6r0a.png"></MudImage>
-    </div>
-</div>
 <div class="home-category">
-    <h1>
-        Popular categories
-    </h1>
-    <div class="row">
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" Alt="chairs" />
-                </div>
+    <div class="product">
+        <h1>
+            Best offers
+        </h1>
 
-                <p>
-                    Chairs
-                </p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" Alt="tab" />
-                </div>
+        <div class="d-flex">
+            <div class="product" style="display: flex; justify-content: space-around">
+                <div class="images">
+                    <div class="product-image">
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/9c7/600_600_140cd750bba9870f18aada2478b24840a/vzrw0wa45oiv7xge4gw21mkz61hx5ocs.jpg" Alt="" Class="image" />
+                    </div>
+                    <div class="stars">
+                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                    </div>
+                    <div class="product-name">
 
-                <p>
-                    Tables
-                </p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/379/k66a15dow4vx9nppr4y3839u6j2saz1w.png" Alt="imgs" />
+                        <h3>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Name /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Table Galleon leather
+                        </h3>
+                        <p>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Description /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Description
+                        </p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Price /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            500$
+                        </h4>
+                    </div>
+                    <p>
+                        Views: @*<MudTable Items="products" Elevation="0">
+                    <RowTemplate>
+                        <MudLink>@context.Price /</MudLink>
+                    </RowTemplate>
+                </MudTable>*@
+                        999+
+                    </p>
                 </div>
-                <p>Frameless sofas</p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/b8a/lfr6ljaax0je7n306vtzr206uobtr1rg.png" Alt="beds" />
-                </div>
+                <div class="images">
+                    <div class="product-image">
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/df7/600_600_140cd750bba9870f18aada2478b24840a/r2id4ylipx9twnl05040z6p3gt2mmqfb.jpg" Alt="" Class="image" />
+                    </div>
+                    <div class="stars">
+                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                    </div>
+                    <div class="product-name">
 
-                <p>
-                    Beds
-                </p>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" Alt="archairs" />
+                        <h3>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Name /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Table Galleon leather
+                        </h3>
+                        <p>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Description /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Description
+                        </p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Price /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            500$
+                        </h4>
+                    </div>
+                    <p>
+                        Views: @*<MudTable Items="products" Elevation="0">
+                    <RowTemplate>
+                        <MudLink>@context.Price /</MudLink>
+                    </RowTemplate>
+                </MudTable>*@
+                        999+
+                    </p>
                 </div>
-                <p>
-                    Armchairs
-                </p>
+                <div class="images">
+                    <div class="product-image">
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg" Alt="" Class="image" />
+                    </div>
+                    <div class="stars">
+                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                    </div>
+                    <div class="product-name">
+
+                        <h3>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Name /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Table Galleon leather
+                        </h3>
+                        <p>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Description /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Description
+                        </p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Price /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            500$
+                        </h4>
+                    </div>
+                    <p>
+                        Views: @*<MudTable Items="products" Elevation="0">
+                    <RowTemplate>
+                        <MudLink>@context.Price /</MudLink>
+                    </RowTemplate>
+                </MudTable>*@
+                        999+
+                    </p>
+                </div>
+                <div class="images">
+                    <div class="product-image">
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/e45/600_600_140cd750bba9870f18aada2478b24840a/htnfkyp4pf1jmf2zdmh5lajibuyf6r0a.png" Alt="" Class="image" />
+                    </div>
+                    <div class="stars">
+                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                    </div>
+                    <div class="product-name">
+
+                        <h3>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Name /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Table Galleon leather
+                        </h3>
+                        <p>
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Description /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            Description
+                        </p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">
+                            @*<MudTable Items="products" Elevation="0">
+                        <RowTemplate>
+                            <MudLink>@context.Price /</MudLink>
+                        </RowTemplate>
+                    </MudTable>*@
+                            500$
+                        </h4>
+                    </div>
+                    <p>
+                        Views: @*<MudTable Items="products" Elevation="0">
+                    <RowTemplate>
+                        <MudLink>@context.Price /</MudLink>
+                    </RowTemplate>
+                </MudTable>*@
+                        999+
+                    </p>
+                </div>
             </div>
         </div>
-
     </div>
-    <div class="row">
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" Alt="chairs" />
+    <div class="category">
+        <h1>
+            Popular categories
+        </h1>
+        <div class="row">
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                    </div>
+                
+                    <p>
+                        @*<MudTable Items="categories" Elevation="0">
+                            <RowTemplate>
+                                <MudLink>@context.Children /</MudLink>
+                            </RowTemplate>
+                        </MudTable>*@
+                        Chairs
+                    </p>
                 </div>
-
-                <p>
-                    Chairs
-                </p>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" Alt="tab" />
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                    </div>
+                    <p>
+                        Tables
+                    </p>
                 </div>
-
-                <p>
-                    Tables
-                </p>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/e8d/754g8e8es3tb4xyuyn802ov7apxwcz7n.png" Alt="matras" />
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/379/k66a15dow4vx9nppr4y3839u6j2saz1w.png" alt="imgs" />
+                    </div>
+                    <p>Frameless sofas</p>
                 </div>
-
-                <p>Mattresses</p>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" Alt="chairs" />
-                </div>
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/b8a/lfr6ljaax0je7n306vtzr206uobtr1rg.png" alt="beds" />
+                    </div>
 
-                <p>
-                    Chairs
-                </p>
+                    <p>
+                        Beds
+                    </p>
+                </div>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="popular-category">
-                <div class="home-img">
-                    <MudImage Src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" Alt="tab" />
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/d05/lyrkcqt8nwq1sju3ofjrvma7zncf2fj0.png" alt="archairs" />
+                    </div>
+                    <p>
+                        Armchairs
+                    </p>
                 </div>
+            </div>
 
-                <p>
-                    Tables
-                </p>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                    </div>
+
+                    <p>
+                        Chairs
+                    </p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                    </div>
+
+                    <p>
+                        Tables
+                    </p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/e8d/754g8e8es3tb4xyuyn802ov7apxwcz7n.png" alt="matras" />
+                    </div>
+
+                    <p>Mattresses</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png" alt="chairs" />
+                    </div>
+
+                    <p>
+                        Chairs
+                    </p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="popular-category">
+                    <div class="home-img">
+                        <img src="https://mebel.shop/upload/iblock/69d/nyo5qy7pr2spxot5o2oex2eibi4g3c02.png" alt="tab" />
+                    </div>
+
+                    <p>
+                        Tables
+                    </p>
+                </div>
             </div>
         </div>
     </div>
+    
 </div>
-
-
 
 @code{
     private bool arrows = true;
@@ -170,48 +362,49 @@
     private bool enableSwipeGesture = true;
     private bool autocycle = true;
     private Transition transition = Transition.Slide;
-    public string TextValue { get; set; }
-    public string Search { get; set; }
+
+    private CategoryView[]? categories;
+    private ProductView[]? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<ProductView[]>("https://localhost:7235");
+        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235");
+    }
 }
 
 <style>
-    .icon{
-       
-        color:black !important;    
-        
+    .d-flex {
+        display: flex;
+        justify-content: space-around;
     }
-
-    .Trentdagilar{
-        border:1px solid black;
-        
+    .image {
+        width: 100%;
     }
-    .rasm{
-        width:300px;
+    .product-image {
+        padding: 45px 1px;
+    }
+    .images {
+        padding: 25px;
+        border: 1px solid rgb(241, 241, 241);
     }
     .rounded-lg {
         width: 100%;
         height: 100%;
     }
-    .Bosh{
-        margin-top:30px;
-        display:flex;
-    }
 
-    .popular-category{
+    .popular-category {
         height: 150px;
     }
-    .popular-category .home-img {
-        display: flex;
-        justify-content: center;
-    }
-    .Div{
-        display:flex;
-        justify-content: space-between;
-    }
 
-    .popular-category p {
-        text-align: center;
-    }
+        .popular-category .home-img {
+            display: flex;
+            justify-content: center;
+        }
+
+        .popular-category p {
+            text-align: center;
+        }
 
     .home-category h1 {
         margin-top: 100px;
@@ -224,7 +417,6 @@
         grid-row: 1;
         align-items: center;
     }
-   
 
     .col-4 {
         padding: 10px;
@@ -234,7 +426,7 @@
         width: 280px;
     }
 
-    .pt-16{
+    .pt-16 {
         padding-top: 18px !important;
     }
 
@@ -245,13 +437,12 @@
 
     .form-floating {
         margin-bottom: 10px;
-        width: 90%;
     }
+
     .form-control {
         border-radius: 10px;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        width: 90%;
+        width: 70%;
         padding: 10px 10px;
     }
-    
 </style>

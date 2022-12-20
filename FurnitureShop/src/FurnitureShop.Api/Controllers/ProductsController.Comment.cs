@@ -19,7 +19,7 @@ public partial class ProductsController
     [Authorize]
     [HttpPost("{productId:guid}/Comment")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> AddProductComment(Guid productId,[FromBody] CreateProductComment commentDto)
+    public async Task<IActionResult> AddProductComment(Guid productId, [FromBody] CreateProductComment commentDto)
     { 
         if (!ModelState.IsValid)
             return BadRequest();

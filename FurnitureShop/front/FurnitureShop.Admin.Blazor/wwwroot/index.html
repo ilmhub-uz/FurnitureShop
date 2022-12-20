@@ -11,7 +11,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets//img/favicon/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.svg" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,8 +24,8 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="/assets/css/demo.css" />
     <!--<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet">-->
+    <link href="/assets/css/demo.css" rel="stylesheet">
     <!--<link href="assets/css/dashboard.custom.css" rel="stylesheet">-->
 
     <!-- Vendors CSS -->
@@ -41,8 +41,20 @@
 </head>
 
 <body>
-    <div id="app" class="page-loader-component"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div><div class="alert alert-warning" style="display: flex; justify-content: center;position: fixed; bottom: -15px; z-index: 9999; width: 100%" role="alert">An unhandled error has occurred.<a href="" class="reload">Reload</a><a class="dismiss">🗙</a></div>
-
+    <div id="app"><div class="page-loader-component"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
+    
+    <div id="blazor-error-ui" class="bs-toast toast fade show bg-danger" style="z-index: 99999; position: fixed; top: 20px; right: 21px;" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="bx bx-bug-alt me-2"></i>
+            <div class="me-auto fw-semibold">System</div>
+            <small>11 mins ago</small>
+            <a class="dismiss btn-close" data-bs-dismiss="toast" aria-label="Close">&nbsp;</a>
+        </div>
+        <div class="toast-body">
+            An unhandled error has occurred.
+            <a href="" class="reload">Reload</a>
+        </div>
+    </div>
     <script src="/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="/assets/vendor/libs/popper/popper.js"></script>
     <script src="/assets/vendor/js/bootstrap.js"></script>
@@ -57,7 +69,6 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="/assets/js/main.js"></script>
-
 </body>
 
 </html>
