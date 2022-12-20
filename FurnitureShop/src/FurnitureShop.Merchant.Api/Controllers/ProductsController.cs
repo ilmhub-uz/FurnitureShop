@@ -69,6 +69,7 @@ public partial class ProductsController : ControllerBase
 
     [HttpPost]
     [Route($"RateProduct")]
+    [IdValidation]
     public async Task<IActionResult> RateProductAsync(Guid productId, uint rate)
     {
         var product = _context.Products.FirstOrDefault(p => p.Id == productId);
