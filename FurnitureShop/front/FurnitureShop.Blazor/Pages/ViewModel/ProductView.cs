@@ -1,6 +1,8 @@
 ﻿// using FurnitureShop.Data.Entities;
 
-namespace FurnitureShop.Blazor.Shared;
+using FurnitureShop.Blazor.Shared;
+
+namespace FurnitureShop.Blazor.Pages.ViewModel;
 
 public class ProductView
 {
@@ -9,7 +11,6 @@ public class ProductView
     public string? Description { get; set; }
     public Dictionary<string, string>? Properties { get; set; }
     public decimal Price { get; set; }
-    // public virtual List<ProductImage>? Images { get; set; }
     public bool OnTrend { get; set; }
     public bool OnSale { get; set; }
     public bool IsAvailable { get; set; }

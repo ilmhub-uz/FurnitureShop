@@ -15,7 +15,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
-builder.Services.AddCors();
+builder.Services.AddCorsPolicy();
 builder.SerilogConfig();
 
 builder.Services.AddServicesFromAttribute();
@@ -24,6 +24,7 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program))
 builder.Services.AddIdentityManagers();
 
 var app = builder.Build();
+
 
 
 if (((IApplicationBuilder)app).ApplicationServices.GetService<IHttpContextAccessor>() != null)
