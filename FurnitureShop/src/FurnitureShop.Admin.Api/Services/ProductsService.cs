@@ -24,7 +24,7 @@ public class ProductsService : IProductsService
 
         if (filter.OrganizationId is not null)
             existingProducts = existingProducts.Where(o => o.OrganizationId == filter.OrganizationId);
-        else if (filter.CategoryId != null)
+        if (filter.CategoryId is not null)
             existingProducts = existingProducts.Where(o => o.CategoryId == filter.CategoryId);
 
         var productsList = await existingProducts.ToPagedListAsync(filter);
