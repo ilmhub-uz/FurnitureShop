@@ -7136,7 +7136,7 @@ button:focus {
 }
 
 .tab-content {
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   border-radius: 0.375rem;
 }
 
