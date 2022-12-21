@@ -26,12 +26,13 @@
     <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <!--<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet">-->
     <link href="/assets/css/demo.css" rel="stylesheet">
-    <!--<link href="assets/css/dashboard.custom.css" rel="stylesheet">-->
 
+    <!--<link href="assets/css/dashboard.custom.css" rel="stylesheet">-->
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/sweetalert2/sweetalert2.css" />
 
     <!-- Page CSS -->
     <!-- Helpers -->
@@ -42,7 +43,7 @@
 
 <body>
     <div id="app"><div class="page-loader-component"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
-    
+
     <div id="blazor-error-ui" class="bs-toast toast fade show bg-danger" style="z-index: 99999; position: fixed; top: 20px; right: 21px;" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <i class="bx bx-bug-alt me-2"></i>
@@ -55,6 +56,14 @@
             <a href="" class="reload">Reload</a>
         </div>
     </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script>
+        Swal.bindClickHandler()
+        Swal.mixin({
+            toast: true,
+        }).bindClickHandler('data-swal-toast-template')
+    </script>
     <script src="/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="/assets/vendor/libs/popper/popper.js"></script>
     <script src="/assets/vendor/js/bootstrap.js"></script>
