@@ -11,7 +11,7 @@ namespace FurnitureShop.Client.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[ValidateModel]
+//[ValidateModel]
 public class AccountController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -31,15 +31,19 @@ public class AccountController : ControllerBase
         _fileHelperService = fileHelperService;
     }
 
-    [HttpPost("signup")]
+    [HttpPost("sign-up")]
     public async Task<IActionResult> SignUp([FromForm] RegisterUserDto dtoModel)
     {
+        if (_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
+        {
+            return BadRequest("This username already exists");
+        }
+
         var user = dtoModel.Adapt<AppUser>();
         if (dtoModel.Avatar is not null)
             user.AvatarUrl = await _fileHelperService.SaveFileAsync(dtoModel.Avatar, EFileType.Images, EFileFolder.User);
 
         var result = await _userManager.CreateAsync(user, dtoModel.Password);
-
         if (!result.Succeeded)
             return BadRequest();
 
@@ -48,7 +52,7 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("signin")]
+    [HttpPost("sign-in")]
     public async Task<IActionResult> SignIn(LoginUserDto dtoModel)
     {
         var result = await _signInManager.PasswordSignInAsync(dtoModel.UserName, dtoModel.Password, true, true);

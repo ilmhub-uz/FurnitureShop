@@ -22,7 +22,7 @@ public class OrganizationsService : IOrganizationsService
     {
         var organizations = _unitOfWork.Organizations.GetAll();
 
-        if (organizations is not null)
+        if (filter.UserId is not null)
         {
             organizations = organizations.Where(o => o.Users!
             .Any(uo => uo.UserId == filter.UserId));

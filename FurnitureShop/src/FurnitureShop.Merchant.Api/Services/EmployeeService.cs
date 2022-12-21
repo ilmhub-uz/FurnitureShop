@@ -26,7 +26,7 @@ public class EmployeeService : IEmployeeService
         _userManager = userManager;
     }
 
-    public async Task AddEmployee(EmployeeServiceDto dto)
+    public async Task AddEmployee(ClaimsPrincipal appuser, EmployeeServiceDto dto)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dto.OrganizationId);
         if (organization is null)
@@ -36,9 +36,9 @@ public class EmployeeService : IEmployeeService
         if (joiner is null)
             throw new NotFoundException<AppUser>();
 
-        var user = await _userManager.GetUserAsync(dto.User);
+        var user = await _userManager.GetUserAsync(appuser);
 
-        organization.Users.Add(new OrganizationUser()
+        organization.Users!.Add(new OrganizationUser()
         {
             UserId = joiner.Id,
             User = joiner,
@@ -57,7 +57,7 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        return (organization.Users.Where(e => e.Role == ERole.Manager).ToList()).Adapt<List<GetEmployeesView>>();
+        return (organization.Users!.Where(e => e.Role == ERole.Manager).ToList()).Adapt<List<GetEmployeesView>>();
     }
 
     public async Task RemoveEmployee(Guid organizationId, Guid employeeId)
@@ -66,11 +66,11 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        var manager = organization.Users.FirstOrDefault(u => u.UserId == employeeId);
+        var manager = organization.Users!.FirstOrDefault(u => u.UserId == employeeId);
         if (manager is null)
             throw new NotFoundException<Organization>();
 
-        organization.Users.Remove(manager);
+        organization.Users!.Remove(manager);
     }
 
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
@@ -79,7 +79,7 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        return (organization.Users.Where(e => e.Role == ERole.Seller).ToList()).Adapt<List<GetEmployeesView>>();
+        return (organization.Users!.Where(e => e.Role == ERole.Seller).ToList()).Adapt<List<GetEmployeesView>>();
     }
 
     public async Task<List<GetEmployeesView>> GetStaff(Guid organizationId)
@@ -88,6 +88,6 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        return (organization.Users.ToList()).Adapt<List<GetEmployeesView>>();
+        return (organization.Users!.ToList()).Adapt<List<GetEmployeesView>>();
     }
 }

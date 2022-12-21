@@ -2,5 +2,5 @@
 
 public class CartProductView
 {
-    public ProductView? Products { get; set; }
+    public virtual ProductView? Product { get; set; }
 }

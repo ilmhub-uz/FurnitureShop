@@ -27,7 +27,6 @@ public class ContractsController : ControllerBase
     public async Task<IActionResult> CreateContract([FromBody] Guid orderId)
     {
         var contract = await _contractService.AddContractAsync(orderId);
-
         return Ok(contract);
     }
 

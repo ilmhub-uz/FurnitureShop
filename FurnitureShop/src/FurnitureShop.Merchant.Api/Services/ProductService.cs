@@ -1,8 +1,12 @@
-﻿using FurnitureShop.Common.Exceptions;
+﻿using System.Security.Claims;
+using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
+using FurnitureShop.Merchant.Api.Dtos.Enums;
 using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
 using Mapster;
@@ -29,7 +33,6 @@ public class ProductService : IProductService
             throw new NotFoundException<Organization>();
 
         var category = await _unitOfWork.Categories.GetAll().FirstOrDefaultAsync(c => c.Id == dtoModel.CategoryId);
-
         if (category is null)
             throw new NotFoundException<Category>();
 
@@ -56,14 +59,46 @@ public class ProductService : IProductService
         return existingProduct!.Adapt<ProductView>();
     }
 
-    public async Task<List<ProductView>> GetProducts()
+    public async Task<List<ProductView>> GetProducts(ProductSortingFilter sortingFilter)
     {
-        return (await _unitOfWork.Products.GetAll().ToListAsync()).Adapt<List<ProductView>>();
+        var existingProducts = _unitOfWork.Products.GetAll();
+
+        if (sortingFilter.OrganizationId is not null)
+            existingProducts = existingProducts.Where(p => p.OrganizationId == sortingFilter.OrganizationId);
+
+        if(sortingFilter.Brend is not null)
+            existingProducts = existingProducts.Where(p => p.Brend == sortingFilter.Brend);
+
+        if(sortingFilter.Price is not null)
+            existingProducts = existingProducts.Where(p => p.Price == sortingFilter.Price); 
+
+        if(sortingFilter.SortingParams is not null)
+        {
+            existingProducts = sortingFilter.SortingParams switch
+            {
+                //ESortingParameters.ItemsSold => existingProducts.OrderByDescending(p => p.Count),
+                ESortingParameters.Rate => existingProducts.OrderByDescending(p => p.Rates),
+                ESortingParameters.Name => existingProducts.OrderBy(p => p.Name),
+                ESortingParameters.Views => existingProducts.OrderBy(p => p.Views),
+                _ => existingProducts
+            };
+        }
+
+        var products = await existingProducts.ToPagedListAsync(sortingFilter);
+
+        return products.Adapt<List<ProductView>>();
     }
 
-    public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel)
+    public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel, ClaimsPrincipal principal)
     {
+        var userId = Guid.Parse(principal.GetUserId());
+
         var existingProduct = _unitOfWork.Products.GetById(productId);
+        if(existingProduct is null)
+            throw new NotFoundException<Product>();
+        
+        if(!existingProduct.Organization.Users.Any(u => u.UserId == userId))
+            throw new BadRequestException("You have no access to update the product");
 
         var organization = _unitOfWork.Organizations.GetById(dtoModel.OrganizationId);
         if (organization is null)

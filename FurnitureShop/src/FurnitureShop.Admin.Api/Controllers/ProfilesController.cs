@@ -26,4 +26,17 @@ public class ProfilesController : ControllerBase
         var user = await _userManager.GetUserAsync(User);
         return Ok(user.Adapt<UserView>());
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateProfile)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null) return BadRequest();
+        user.Email = updateProfile.Email;
+        user.FirstName = updateProfile.FirstName;
+        user.UserName = updateProfile.UserName;
+        await _userManager.UpdateAsync(user);
+        return Ok();
+    }
+
 }

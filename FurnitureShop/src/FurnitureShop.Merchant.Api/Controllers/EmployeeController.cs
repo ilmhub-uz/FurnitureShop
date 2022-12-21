@@ -1,7 +1,10 @@
-﻿using FurnitureShop.Common.Filters;
+﻿using System.Security.Claims;
+using FurnitureShop.Common.Filters;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Merchant.Api.Controllers
@@ -11,17 +14,19 @@ namespace FurnitureShop.Merchant.Api.Controllers
     [ValidateModel]
     public class EmployeeController : ControllerBase
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly IEmployeeService _employeeService;
 
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService, UserManager<AppUser> userManager)
         {
             _employeeService = employeeService;
+            _userManager = userManager;
         }
 
         [HttpPost]
-        public IActionResult AddEmployee(EmployeeServiceDto dto)
+        public async Task<IActionResult> AddEmployee([FromBody] EmployeeServiceDto dto)
         {
-            _employeeService.AddEmployee(dto);
+            await _employeeService.AddEmployee(User, dto);
             return Ok();
         }
 
