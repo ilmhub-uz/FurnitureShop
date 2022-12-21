@@ -28,12 +28,18 @@ namespace FurnitureShop.Admin.Api.Controllers
         }
 
         [HttpDelete("{contractId:guid}")]
-        public async Task<IActionResult> DeleteContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
+        public async Task<IActionResult> DeleteContract(Guid contractId)
         {
             await _contractService.DeleteContract(contractId);
             return Ok();
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ContractFilterDto>), statusCode:StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetContracts([FromBody]ContractFilterDto contractFilter)
+        {
+         return Ok(await _contractService.GetContracts(contractFilter));
+        }
     }
 }
 
