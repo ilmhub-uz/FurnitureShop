@@ -26,4 +26,5 @@ public class ProfilesController : ControllerBase
         var user = await _userManager.GetUserAsync(User);
         return Ok(user.Adapt<UserView>());
     }
+ 
 }

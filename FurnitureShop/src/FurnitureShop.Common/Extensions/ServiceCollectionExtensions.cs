@@ -42,7 +42,8 @@ public static class ServiceCollectionExtensions
                                 "http://localhost:34445", // File.Api
                                 "https://localhost:7019",
                                 "http://localhost:5285",
-                                "https://localhost:44398")
+                                "https://localhost:44398",
+                                 "https://localhost:5001")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
