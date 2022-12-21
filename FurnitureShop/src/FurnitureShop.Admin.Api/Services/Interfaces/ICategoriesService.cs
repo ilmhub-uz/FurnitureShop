@@ -2,7 +2,7 @@
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Models;
 
-namespace FurnitureShop.Admin.Api.Services;
+namespace FurnitureShop.Admin.Api.Services.Interfaces;
 
 public interface ICategoriesService
 {

@@ -1,9 +1,10 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
-using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
+using FurnitureShop.Admin.Api.Services.Interfaces;
+using FurnitureShop.Admin.Api.Dtos.FilterDtos;
 
 namespace FurnitureShop.Admin.Api.Controllers;
 

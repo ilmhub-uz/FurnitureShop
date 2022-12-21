@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FurnitureShop.Admin.Api.Dtos;
-using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Admin.Api.Services.Interfaces;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Models;

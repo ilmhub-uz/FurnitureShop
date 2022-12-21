@@ -1,5 +1,5 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
-using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Admin.Api.Services.Interfaces;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Microsoft.AspNetCore.Http;

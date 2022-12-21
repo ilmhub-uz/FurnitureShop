@@ -1,7 +1,7 @@
 ﻿using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+namespace FurnitureShop.Admin.Api.Dtos.FilterDtos;
 
 public class OrderFilterDto : PaginationParams
 {

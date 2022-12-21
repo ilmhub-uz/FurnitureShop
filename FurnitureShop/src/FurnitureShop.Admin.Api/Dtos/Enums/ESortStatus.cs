@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FurnitureShop.Data.Entities
+namespace FurnitureShop.Admin.Api.Dtos.Enums
 {
     public enum ESortStatus
     {
-        Id ,
+        Id,
         Price,
         CreatedDate,
         Name,

@@ -1,8 +1,9 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
+using FurnitureShop.Admin.Api.Dtos.FilterDtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Models;
 
-namespace FurnitureShop.Admin.Api.Services;
+namespace FurnitureShop.Admin.Api.Services.Interfaces;
 
 public interface IProductsService
 {

@@ -3,7 +3,7 @@ using FurnitureShop.Admin.Api.Dtos.Enums;
 using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+namespace FurnitureShop.Admin.Api.Dtos.FilterDtos;
 
 public class ProductFilterDto : PaginationParams
 {
@@ -13,6 +13,6 @@ public class ProductFilterDto : PaginationParams
     public string? Brend { get; set; }
     public DateTime? DateTime { get; set; }
     public EProductSorting? ProductSorting { get; set; }
-    public EProductStatus? Status {get;set;}
+    public EProductStatus? Status { get; set; }
     public EProductSorting? SortingName { get; set; }
 }
