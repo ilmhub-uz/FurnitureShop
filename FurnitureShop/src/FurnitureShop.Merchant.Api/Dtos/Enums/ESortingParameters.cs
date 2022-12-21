@@ -5,5 +5,6 @@ public enum ESortingParameters
     Date,
     Price,
     Views,
-    ItemsSold
+    Rate,
+    ItemsSold,
 }

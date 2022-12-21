@@ -27,7 +27,7 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations(OrganizationFilterDto filter) =>
+    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations(OrganizationSortingFilter filter) =>
         await _organizationService.GetOrganizationsAsync(filter);
 
     [HttpGet("{organizationId:guid}")]

@@ -5,7 +5,7 @@ namespace FurnitureShop.Merchant.Api.Services;
 
 public interface IProductService
 {
-    Task<List<ProductView>> GetProducts();
+    Task<List<ProductView>> GetProducts(ProductSortingFilter sortnigFilter);
     Task<ProductView> GetProductByIdAsync(Guid productId);
     Task AddProduct(CreateProductDto dtoModel);
     Task UpdateProduct(Guid productId, UpdateProductDto dtoModel);

@@ -24,7 +24,7 @@ public class OrganizationService : IOrganizationService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationFilterDto filter)
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter)
     {
         var existingOrganizations = _unitOfWork.Organizations.GetAll();
 
