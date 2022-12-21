@@ -1,0 +1,20 @@
+﻿@page "/order"
+@inject HttpClient Http
+
+<PageTitle>Order</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Order</MudText>
+
+@* Order da sotib olingan productlar va ularni propertiylari yani (productni nomi va rasmi, descriptioni, 
+    u haqida malumoti yani propertiylari bo`ladi va narxi) bo`ladi va yoni da cart bo`ladi :
+    cartda - productni nomi, narxi, nechta sotib olinayotgani, rasmi bo`ladi,
+    qo`shib o`chiradigan buttonlari bo`ladi va hammasini bittadi olib tashiydigan trash-button bo`ladi *@
+
+
+@code {
+    private OrderProductView[]? orderProducts;
+    protected override async Task OnInitialAsync()
+    {
+        orderProducts = Http.GetFromJsonAsync<OrderProductView[]>("https://localhost:7235/api/Orders");
+    }
+}
