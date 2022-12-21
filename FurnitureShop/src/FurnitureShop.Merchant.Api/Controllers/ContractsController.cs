@@ -30,7 +30,7 @@ public class ContractsController : ControllerBase
         if (!validateResult.IsValid)
             return BadRequest();
 
-        await _contractService.AddContractAsync(createContractDto);
+        await _contractService.AddContractAsync (createContractDto);
 
         return Ok();
     }

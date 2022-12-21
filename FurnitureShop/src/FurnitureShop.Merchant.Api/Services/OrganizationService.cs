@@ -1,9 +1,11 @@
 ﻿using System.Security.Claims;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
+using FurnitureShop.Merchant.Api.Dtos.Enums;
 using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
 using Mapster;
@@ -22,9 +24,45 @@ public class OrganizationService : IOrganizationService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<OrganizationView>> GetOrganizationsAsync()
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter)
     {
-        return (await _unitOfWork.Organizations.GetAll().ToListAsync()).Adapt<List<OrganizationView>>();
+        var existingOrganizations = _unitOfWork.Organizations.GetAll();
+
+        if(filter.OrganizationId is not null)
+            existingOrganizations = existingOrganizations.Where(organization => organization.Id == filter.OrganizationId);
+        
+        if(filter.Status != null)
+        {
+            existingOrganizations = filter.Status switch
+            {
+                EOrganizationStatus.Created => existingOrganizations = 
+                    existingOrganizations.Where(o => o.Status == EOrganizationStatus.Created),
+                
+                EOrganizationStatus.Active => existingOrganizations = 
+                    existingOrganizations.Where(o => o.Status == EOrganizationStatus.Active),
+
+                EOrganizationStatus.InActive => existingOrganizations = 
+                    existingOrganizations.Where((o) => o.Status == EOrganizationStatus.InActive),
+
+                EOrganizationStatus.Deleted => existingOrganizations = 
+                    existingOrganizations.Where(o => o.Status == EOrganizationStatus.Deleted),
+
+                _ => existingOrganizations,
+            };
+        }
+
+        if(filter.SortingParams != null)
+        {
+            existingOrganizations = filter.SortingParams switch
+            {
+                ESortingParameters.Name => existingOrganizations.OrderByDescending(o => o.Name),
+                _ => existingOrganizations,
+            };
+        }
+
+        var organizations = await existingOrganizations.ToPagedListAsync(filter);
+
+        return organizations.Adapt<List<OrganizationView>>();
     }
 
     [IdValidation]
