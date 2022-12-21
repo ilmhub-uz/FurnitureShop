@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using FurnitureShop.Common.Email_Sender.Services;
+using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
 
 namespace FurnitureShop.Merchant.Api.Services;
@@ -15,15 +16,17 @@ namespace FurnitureShop.Merchant.Api.Services;
 [Scoped]
 public class EmployeeService : IEmployeeService
 {
+    private AppDbContext _context;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailSender _emailSender;
     private readonly UserManager<AppUser> _userManager;
 
-    public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
+    public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager, AppDbContext context)
     {
         _unitOfWork = unitOfWork;
         _emailSender = emailSender;
         _userManager = userManager;
+        _context = context;
     }
 
     public async Task AddEmployee(ClaimsPrincipal appuser, EmployeeServiceDto dto)
@@ -32,13 +35,14 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        var joiner = _userManager.Users.FirstOrDefault(u => u.Email == dto.Email);
-        if (joiner is null)
-            throw new NotFoundException<AppUser>();
+        await _userManager.CreateAsync(dto.Adapt<AppUser>());
+
+        await _userManager.CreateAsync(dto.Adapt<AppUser>(), Guid.NewGuid().ToString());
+        var joiner = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == dto.UserName);
 
         var user = await _userManager.GetUserAsync(appuser);
 
-        organization.Users.Add(new OrganizationUser()
+        _context.OrganizationUsers.Add(new OrganizationUser()
         {
             UserId = joiner.Id,
             User = joiner,
@@ -47,8 +51,9 @@ public class EmployeeService : IEmployeeService
             Role = ERole.Manager
         });
 
-        var message = new EmailService(new string[] { $"{dto.Email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
-        _emailSender.SendEmail(message);
+        await _context.SaveChangesAsync();
+        //var message = new EmailService(new string[] { $"{dto.Email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
+        //_emailSender.SendEmail(message);
     }
 
     public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId)
