@@ -51,9 +51,8 @@ public class AccountController : ControllerBase
 
         if (!result.Succeeded)
             return BadRequest();
-
         await _signInManager.SignInAsync(user, true);
-
+        
         return Ok();
     }
 
