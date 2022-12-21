@@ -83,14 +83,14 @@ public partial class ProductsController : ControllerBase
 
     [HttpPut("{productId:guid}")]
     [IdValidation]
-    public async Task<IActionResult> UpdateProduct(Guid productId, UpdateProductDto dtoModel)
+    public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] UpdateProductDto dtoModel)
     {
         var validateResult = _updateProductValidator.Validate(dtoModel);
 
         if (!validateResult.IsValid)
             return BadRequest();
 
-        await _productService.UpdateProduct(productId, dtoModel);
+        await _productService.UpdateProduct(productId, dtoModel, User);
 
         return Ok();
     }

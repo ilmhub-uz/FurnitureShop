@@ -3,7 +3,7 @@ using FurnitureShop.Client.Api.Dtos;
 
 namespace FurnitureShop.Client.Api.Validators;
 
-public class CreateCartDtoValidator : AbstractValidator<CreateCartDto>
+public class CreateCartDtoValidator : AbstractValidator<CreateCartProductDto>
 {
     public CreateCartDtoValidator()
     {

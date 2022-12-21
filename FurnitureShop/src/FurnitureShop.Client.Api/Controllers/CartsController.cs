@@ -15,9 +15,9 @@ namespace FurnitureShop.Client.Api.Controllers;
 public class CartsController : ControllerBase
 {
     private readonly ICartService _cartService;
-    private readonly IValidator<CreateCartDto> _createUserValidator;
+    private readonly IValidator<CreateCartProductDto> _createUserValidator;
 
-    public CartsController(ICartService cartService, IValidator<CreateCartDto> createUserValidator)
+    public CartsController(ICartService cartService, IValidator<CreateCartProductDto> createUserValidator)
     {
         _cartService = cartService;
         _createUserValidator = createUserValidator;
@@ -27,36 +27,35 @@ public class CartsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<CartProductView>>> GetCartsProduct([FromQuery] PaginationParams paginationParams, Guid cartId)
     {
-        await _cartService.GetUserCart(paginationParams, cartId);
-        return Ok();
+        return Ok(await _cartService.GetUserCart(paginationParams, cartId));
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(Guid productId, CreateCartDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(Guid cartId, CreateCartProductDto createCartDto)
     {
         var result = _createUserValidator.Validate(createCartDto);
 
         if (!result.IsValid)
             return BadRequest(result.Errors);
 
-        await _cartService.AddToCart(User, productId, createCartDto);
+        await _cartService.AddToCart(User, cartId, createCartDto);
         return Ok();
     }
 
     [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
-    [HttpGet("{cartProductId}")]
-    public async Task<ActionResult<CartView>> DeleteCartProductById(Guid cartProductId, Guid productId)
+    [HttpDelete("{cartId}/products/{productId}")]
+    public async Task<ActionResult<CartView>> DeleteCartProductById(Guid cartId, Guid productId)
     {
-        await _cartService.DeleteCartProductById(cartProductId, productId);
+        await _cartService.DeleteCartProductById(cartId, productId);
         return Ok();
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
-    [HttpPut("{cartProductId}")]
-    public async Task<ActionResult<List<CartView>>> DeleteCart(Guid cartProductId)
+    [HttpDelete("{cartId}")]
+    public async Task<ActionResult<List<CartView>>> DeleteCart(Guid cartId)
     {
-        await _cartService.DeletCartAllProducts(cartProductId);
+        await _cartService.DeletCartAllProducts(cartId);
         return Ok();
     }
 }

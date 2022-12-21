@@ -1,0 +1,140 @@
+﻿@page "/organizations"
+@using FurnitureShop.Admin.Blazor.Dtos;
+@inject HttpClient Http
+
+<PageTitle>Organizations</PageTitle>
+    <div class="card">
+        <div class="card-datatable table-responsive">
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                <div class="card-header border-bottom flex-column flex-md-row mb-3">
+                    <div class="head-label text-center">
+                        <h5 class="card-title mb-0">Organizations</h5>
+                    </div>
+                    
+                </div>
+                
+            
+        
+    <MudTable @ref="_table" T="OrganizationView" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                      OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick" Filter="new Func<OrganizationView,bool>(FilterFunc1)">
+        <ToolBarContent>
+                    <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
+                        <MudSpacer/>
+                        <div class="dt-action-buttons text-end pt-3 pt-md-0 mr-5">
+                        <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Add New Record</span></span></button>                        </div>
+                        </div>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nr">@context.Name</MudTd>
+                        <MudTd DataLabel="Sign">@StatusBadge(context.Status)</MudTd>
+                        <MudTd DataLabel="Actions">
+                            <div class="d-inline-block">
+                            <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
+                                <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end m-0">
+                                    <li>
+                                        <a href="javascript:;" class="dropdown-item">Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" class="dropdown-item">Archive</a>
+                                    </li>
+                                    <div class="dropdown-divider"></div>
+                                    <li>
+                                        <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="leverow-ifs-btn">Delete</MudButton>
+                                    </li>
+                                </ul>
+                            </div>
+                        </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{1, 5}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="2">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+            </div>
+        </div>
+    </div>
+    <template id="notify-delete">
+        <swal-title>
+            Successfully deleted!
+        </swal-title>
+        <swal-icon type="success"></swal-icon>
+        <swal-param name="allowEscapeKey" value="false" />
+    </template>
+ <_AddOrganization />
+@code {
+
+    private bool FilterFunc1(OrganizationView element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(OrganizationView element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (searchString == element.Id)
+            return true;
+        return false;
+    }
+    public MarkupString StatusBadge(int type)
+    {
+        if (type == 3) return (MarkupString)$"<span class='badge bg-label-danger'>Deleted</span>";
+        if (type == 0) return (MarkupString)$"<span class='badge bg-label-success'>Active</span>";
+
+        return (MarkupString)$"<span class='badge bg-label-secondary'>InActive</span>";
+    }
+    public async void DeleteOrganizationById(string organizationId)
+    {
+        await Http.DeleteAsync($"https://localhost:7237/api/organizations/{organizationId}");
+    }
+    private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
+    private List<OrganizationView> Elements = new List<OrganizationView>();
+    private bool _selectOnRowClick = true;
+    private string _selectedItemText = "No row clicked";
+    private string searchString1 = "";
+    private MudTable<OrganizationView> _table;
+    Dictionary<string, OrganizationView> tayyorlist = new()
+    {
+        { "1", new OrganizationView() { Name = "sample", Status = 2 }},
+        { "2", new OrganizationView() { Name = "Lorem", Status = 2 }},
+        { "3", new OrganizationView() { Name = "Ipsum", Status = 2 }},
+        { "4", new OrganizationView() { Name = "Dolor", Status = 2 }},
+        { "5", new OrganizationView() { Name = "Sit", Status = 2 }},
+        { "6", new OrganizationView() { Name = "Amet", Status = 2 }},
+        { "7", new OrganizationView() { Name = "Yet", Status = 2 }},
+        { "8", new OrganizationView() { Name = "sample2", Status = 2 }},
+        { "9", new OrganizationView() { Name = "sample2", Status = 2 }},
+        { "10", new OrganizationView() { Name = "sample2", Status = 2 }},
+        { "11", new OrganizationView() { Name = "sample2", Status = 2 }},
+        { "12", new OrganizationView() { Name = "sample2", Status = 2 }},
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await Http.GetFromJsonAsync<List<OrganizationView>>("https://localhost:7237/api/organizations");
+        Elements.Add(tayyorlist["1"]);
+        Elements.Add(tayyorlist["2"]);
+        Elements.Add(tayyorlist["3"]);
+        Elements.Add(tayyorlist["4"]);
+        Elements.Add(tayyorlist["5"]);
+        Elements.Add(tayyorlist["6"]);
+        Elements.Add(tayyorlist["7"]);
+        Elements.Add(tayyorlist["8"]);
+        Elements.Add(tayyorlist["9"]);
+        Elements.Add(tayyorlist["10"]);
+        Elements.Add(tayyorlist["11"]);
+    }
+
+    void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
+}

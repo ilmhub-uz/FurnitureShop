@@ -1,4 +1,6 @@
-﻿using FurnitureShop.Common.Exceptions;
+﻿using System.Security.Claims;
+using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
@@ -29,7 +31,6 @@ public class ProductService : IProductService
             throw new NotFoundException<Organization>();
 
         var category = await _unitOfWork.Categories.GetAll().FirstOrDefaultAsync(c => c.Id == dtoModel.CategoryId);
-
         if (category is null)
             throw new NotFoundException<Category>();
 
@@ -61,9 +62,16 @@ public class ProductService : IProductService
         return (await _unitOfWork.Products.GetAll().ToListAsync()).Adapt<List<ProductView>>();
     }
 
-    public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel)
+    public async Task UpdateProduct(Guid productId, UpdateProductDto dtoModel, ClaimsPrincipal principal)
     {
+        var userId = Guid.Parse(principal.GetUserId());
+
         var existingProduct = _unitOfWork.Products.GetById(productId);
+        if(existingProduct is null)
+            throw new NotFoundException<Product>();
+        
+        if(!existingProduct.Organization.Users.Any(u => u.UserId == userId))
+            throw new BadRequestException("You have no access to update the product");
 
         var organization = _unitOfWork.Organizations.GetById(dtoModel.OrganizationId);
         if (organization is null)

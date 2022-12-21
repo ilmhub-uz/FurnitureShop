@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Common.Models;
+using FurnitureShop.Data.Entities;
 
 namespace FurnitureShop.Admin.Api.Dtos;
 
@@ -10,4 +11,5 @@ public class OrderFilterDto : PaginationParams
     public DateTime? CreatedAt { get; set; }
     public Guid? ContractId { get; set; }
 
+    public EOrderStatus? OrderStatus { get; set; }
 }

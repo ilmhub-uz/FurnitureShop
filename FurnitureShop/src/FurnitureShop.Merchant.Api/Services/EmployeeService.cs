@@ -26,7 +26,7 @@ public class EmployeeService : IEmployeeService
         _userManager = userManager;
     }
 
-    public async Task AddEmployee(EmployeeServiceDto dto)
+    public async Task AddEmployee(ClaimsPrincipal appuser, EmployeeServiceDto dto)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dto.OrganizationId);
         if (organization is null)
@@ -36,7 +36,7 @@ public class EmployeeService : IEmployeeService
         if (joiner is null)
             throw new NotFoundException<AppUser>();
 
-        var user = await _userManager.GetUserAsync(dto.User);
+        var user = await _userManager.GetUserAsync(appuser);
 
         organization.Users.Add(new OrganizationUser()
         {
