@@ -67,27 +67,43 @@ public class ProductService : IProductService
         var userId = Guid.Parse(principal.GetUserId());
 
         var existingProduct = _unitOfWork.Products.GetById(productId);
-        if(existingProduct is null)
-            throw new NotFoundException<Product>();
-        
-        if(!existingProduct.Organization.Users.Any(u => u.UserId == userId))
+
+        if (!existingProduct!.Organization!.Users!.Any(u => u.UserId == userId))
             throw new BadRequestException("You have no access to update the product");
 
-        var organization = _unitOfWork.Organizations.GetById(dtoModel.OrganizationId);
-        if (organization is null)
-            throw new NotFoundException<Organization>();
+        if (dtoModel.OrganizationId is not null)
+        {
+            var organization = _unitOfWork.Organizations.GetById(dtoModel.OrganizationId ?? Guid.NewGuid());
+            if (organization is null)
+                throw new NotFoundException<Organization>();
+        }
 
-        var category = _unitOfWork.Categories.GetById(dtoModel.CategoryId);
-        if (category is null)
-            throw new NotFoundException<Category>();
+        if (dtoModel.OrganizationId is not null)
+        {
+            var category = _unitOfWork.Categories.GetById(dtoModel.CategoryId ?? 0);
+            if (category is null)
+                throw new NotFoundException<Category>();
+        }
 
-        if (dtoModel.Count < 0)
-            throw new BadRequestException("Product count was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
-        
-        if (dtoModel.Price <= 0)
-            throw new BadRequestException("Product price was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
+        if (dtoModel.Count is not null)
+            if (dtoModel.Count < 0)
+                throw new BadRequestException("Product count was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
+        if (dtoModel.Price is not null)
+            if (dtoModel.Price <= 0)
+                throw new BadRequestException("Product price was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
 
-        existingProduct = dtoModel.Adapt<Product>();
+        existingProduct.Name = dtoModel.Name ?? existingProduct.Name;
+        existingProduct.Description = dtoModel.Description ?? existingProduct.Description;
+        existingProduct.WithInstallation = dtoModel.WithInstallation ?? existingProduct.WithInstallation;
+        existingProduct.Material = dtoModel.Material ?? existingProduct.Material;
+        existingProduct.Brend = dtoModel.Brend ?? dtoModel.Brend;
+        existingProduct.Properties = dtoModel.Properties ?? existingProduct.Properties;
+        existingProduct.Price = dtoModel.Price ?? existingProduct.Price;
+        existingProduct.IsAvailable = dtoModel.IsAvailable ?? existingProduct.IsAvailable;
+        existingProduct.Count = dtoModel.Count ?? existingProduct.Count;
+        existingProduct.CategoryId = dtoModel.CategoryId ?? existingProduct.CategoryId;
+        existingProduct.OrganizationId = dtoModel.OrganizationId ?? existingProduct.OrganizationId;
+
 
         await _unitOfWork.Products.Update(existingProduct);
     }
