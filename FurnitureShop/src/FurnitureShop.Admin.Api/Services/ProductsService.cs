@@ -3,7 +3,6 @@ using FurnitureShop.Admin.Api.Dtos.Enums;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
-using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Mapster;
@@ -31,20 +30,22 @@ public class ProductsService : IProductsService
             existingProducts = existingProducts.Where(p => p.Price == filter.Price);
         if (filter.Brend is not null)
             existingProducts = existingProducts.Where(p => p.Brend == filter.Brend);
+        if (filter.Rate is not null)
+            existingProducts = existingProducts.Where(p => p.Rates.Select(t => (int)t).ToList().Sum() / p.Rates.Count() >= filter.Rate);
 
-        if(filter.Status != null)
+        if (filter.Status != null)
         {
             existingProducts = filter.Status switch
             {
-                EProductStatus.Created => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.Created),
-                EProductStatus.Active => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.Active),
-                EProductStatus.InActive => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.InActive),
-                EProductStatus.Deleted => existingProducts = existingProducts.Where(p=>p.Status == EProductStatus.Deleted),
+                EProductStatus.Created => existingProducts = existingProducts.Where(p => p.Status == EProductStatus.Created),
+                EProductStatus.Active => existingProducts = existingProducts.Where(p => p.Status == EProductStatus.Active),
+                EProductStatus.InActive => existingProducts = existingProducts.Where(p => p.Status == EProductStatus.InActive),
+                EProductStatus.Deleted => existingProducts = existingProducts.Where(p => p.Status == EProductStatus.Deleted),
                 _ => existingProducts
             };
         }
 
-        if(filter.SortingName is not null)
+        if (filter.SortingName is not null)
         {
             existingProducts = filter.SortingName switch
             {
