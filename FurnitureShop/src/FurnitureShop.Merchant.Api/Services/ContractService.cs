@@ -1,48 +1,79 @@
 ﻿using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Entities;
+using FurnitureShop.Data.Repositories;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Cryptography;
 using Contract = FurnitureShop.Data.Entities.Contract;
 
 namespace FurnitureShop.Merchant.Api.Services;
 public class ContractService : IContractService
 {
-    private readonly AppDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ContractService(AppDbContext context)
+    public ContractService( 
+        IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<ContractView>> GetContractsAsync()
-        => (await _context.Contracts!.ToListAsync()).Adapt<List<ContractView>>();
+    public async Task<List<ContractView>> GetContractsAsync(Guid oreganizationId)
+    {
+        var contracts = _unitOfWork.Contracts.GetAll();
+        return contracts.Select(contract => contract.Adapt<ContractView>()).ToList();
+    }
 
     public async Task<ContractView> GetContractByIdAsync(Guid contractId)
-        => (await _context.Contracts.FirstOrDefaultAsync(c => c.Id == contractId)).Adapt<ContractView>();
-
-    public async Task<ContractView> GetContractById(Guid contractId)
     {
-        var contract = await _context.Contracts!.FirstAsync(c => c.Id == contractId);
-
+        var contract = _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.Id == contractId);
+        if(contract is null)
+            throw new BadRequestException("Can't fount contract by Id") { ErrorCode = StatusCodes.Status404NotFound };
+    
         return contract.Adapt<ContractView>();
     }
 
-    public async Task AddContractAsync(CreateContractDto contractDto)
+    public async Task<ContractView> AddContractAsync(Guid orderId)
     {
-        var contract = contractDto.Adapt<Contract>();
+        var order = _unitOfWork.Orders.GetById(orderId);
+        if (order is null)
+            throw new BadRequestException("can't fount order by id");
 
-        await _context.AddAsync(contract);
-        await _context.SaveChangesAsync();
+        uint productsCount = 0;
+        decimal totalPrice = 0;
+
+        foreach (var product in order.OrderProducts)
+        {
+            productsCount+=product.Count;
+            totalPrice += product.Product.Price;
+        }
+
+        var contract = new Contract()
+        {
+            UserId = order.UserId,
+            Status = EContractStatus.Created,
+            CreatedAt = DateTime.Now,
+            ProductCount = productsCount,
+            TotalPrice = totalPrice,
+            OrderId = order.Id
+        };
+
+        var createdContract = await _unitOfWork.Contracts.AddAsync(contract);
+        if (createdContract is null)
+            throw new BadRequestException("Contract can't create");
+
+        return createdContract.Adapt<ContractView>();
     }
 
     public async Task DeleteContractAsync(Guid contractId)
     {
-        var contract = await _context.Contracts!.FirstOrDefaultAsync(c => c.Id == contractId);
+        var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.Id == contractId);
+        if (contract is null)
+            throw new BadRequestException("Can't fount contract by Id") { ErrorCode = StatusCodes.Status404NotFound };
 
-        _context.Contracts!.Remove(contract!);
-        _context.SaveChanges();
+        await _unitOfWork.Contracts.Remove(contract);
     }
 }
