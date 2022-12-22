@@ -31,8 +31,6 @@ namespace FurnitureShop.Merchant.Api.Controllers
         }
 
         [HttpGet("managers")]
-        public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId) 
-            => await _employeeService.GetManagers(organizationId);
         public async Task<ActionResult<List<GetEmployeesView>>> GetManagers(Guid organizationId)
         {
         
