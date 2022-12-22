@@ -13,7 +13,7 @@
 
 @code {
     private OrderProductView[]? orderProducts;
-    protected override async Task OnInitialAsync()
+    protected override async Task OnInitializedAsync()
     {
         orderProducts = Http.GetFromJsonAsync<OrderProductView[]>("https://localhost:7235/api/Orders");
     }

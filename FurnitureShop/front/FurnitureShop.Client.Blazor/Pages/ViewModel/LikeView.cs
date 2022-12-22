@@ -1,4 +1,4 @@
-﻿namespace FurnitureShop.Client.Blazor.Shared
+﻿namespace FurnitureShop.Admin.Blazor.Shared
 {
     public class LikeView
     {
