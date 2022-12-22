@@ -10,4 +10,3 @@ public class CreateCategoryDtoValidator : AbstractValidator<CreateCategoryDto>
         RuleFor(categoryDto => categoryDto.Name).Length(3, 30).When(categoryDto => categoryDto.Name != null);
     }
 }
-

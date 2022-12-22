@@ -4,12 +4,14 @@ using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ContractsController : ControllerBase
 {
     private readonly IContractService _contractService;
@@ -23,25 +25,20 @@ public class ContractsController : ControllerBase
 
     [HttpPost]
     [ValidateModel]
-    public async Task<IActionResult> CreateContract([FromBody] CreateContractDto createContractDto)
+    [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CreateContract([FromBody] Guid orderId)
     {
-        var validateResult = _createContractValidator.Validate(createContractDto);
-        
-        if (!validateResult.IsValid)
-            return BadRequest();
-
-        await _contractService.AddContractAsync(createContractDto);
-
-        return Ok();
+        var contract = await _contractService.AddContractAsync(orderId);
+        return Ok(contract);
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<ContractView>),StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetContracts()
+    public async Task<IActionResult> GetContracts(Guid organizationId)
     {
-        var contracts = await _contractService.GetContractsAsync();
+        var contracts = await _contractService.GetContractsAsync(organizationId);
 
-        return Ok(contracts.Adapt<List<ContractView>>());
+        return Ok(contracts);
     }
 
     [HttpGet("{contractId:guid}")]
@@ -51,7 +48,7 @@ public class ContractsController : ControllerBase
     {
         var category = await _contractService.GetContractByIdAsync(contractId);
 
-        return Ok(category.Adapt<ContractView>());
+        return Ok(category);
     }
 
     [HttpDelete("{contractId:guid}")]

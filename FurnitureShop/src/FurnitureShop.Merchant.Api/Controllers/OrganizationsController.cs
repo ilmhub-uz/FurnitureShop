@@ -3,6 +3,7 @@ using FurnitureShop.Common.Filters;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
@@ -10,6 +11,7 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
+[Authorize]
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationService _organizationService;
@@ -27,8 +29,8 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations() =>
-        await _organizationService.GetOrganizationsAsync();
+    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations(OrganizationSortingFilter filter) =>
+        await _organizationService.GetOrganizationsAsync(filter);
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]

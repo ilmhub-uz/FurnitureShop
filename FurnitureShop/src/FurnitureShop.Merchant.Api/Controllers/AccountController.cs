@@ -1,8 +1,10 @@
-﻿using FurnitureShop.Common.Filters;
+﻿using FluentValidation;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
+using FurnitureShop.Merchant.Api.Validators;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,8 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [ValidateModel]
 public class AccountController : ControllerBase
 {
+    private readonly IValidator<LoginUserDto> _validateLogin;
+    private readonly IValidator<RegisterUserDto> _validationRegister;
     private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
@@ -21,8 +25,12 @@ public class AccountController : ControllerBase
     public AccountController(
         AppDbContext context,
         UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager)
+        SignInManager<AppUser> signInManager,
+        IValidator<RegisterUserDto> validation,
+        IValidator<LoginUserDto> validateLogin)
     {
+        _validateLogin = validateLogin;
+        _validationRegister = validation;
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
@@ -43,6 +51,10 @@ public class AccountController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> SignUp([FromBody] RegisterUserDto dtoModel)
     {
+        var validate = _validationRegister.Validate(dtoModel);
+        if (!validate.IsValid)
+            return BadRequest("Dto is not valid");
+
         if(_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
             return BadRequest("This username already exists");
 
@@ -51,15 +63,18 @@ public class AccountController : ControllerBase
 
         if (!result.Succeeded)
             return BadRequest();
-
         await _signInManager.SignInAsync(user, true);
-
+        
         return Ok();
     }
 
     [HttpPost("signin")]
     public async Task<IActionResult> SignIn([FromBody] LoginUserDto dtoModel)
     {
+        var validate = _validateLogin.Validate(dtoModel);
+        if (!validate.IsValid)
+            return BadRequest("Dto is not valid");
+
         var result = await _signInManager.PasswordSignInAsync(dtoModel.UserName, dtoModel.Password, true, true);
         if (!result.Succeeded)
             return BadRequest();
