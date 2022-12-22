@@ -2,7 +2,7 @@
 
 namespace FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 
-public interface IFavoriteRepository : IGenericRepository<FavouriteProduct>
+public interface IFavoriteRepository : IGenericRepository<Favourite>
 {
 
 }

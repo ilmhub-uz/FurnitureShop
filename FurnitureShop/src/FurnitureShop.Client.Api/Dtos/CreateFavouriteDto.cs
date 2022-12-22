@@ -1,7 +1,6 @@
-﻿namespace FurnitureShop.Client.Api.Dtos
+﻿namespace FurnitureShop.Client.Api.Dtos;
+
+public class CreateFavouriteDto
 {
-    public class CreateFavouriteDto
-    {
-        public int? ProductId { get; set; }
-    }
+    public Guid ProductId { get; set; }
 }

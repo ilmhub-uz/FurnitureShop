@@ -2,58 +2,103 @@
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Helpers;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
+using FurnitureShop.Data.Repositories;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace FurnitureShop.Client.Api.Services
+namespace FurnitureShop.Client.Api.Services;
+
+public class FavouriteService : IFavouriteService
 {
-    public class FavouriteService : IFavouriteService
+    private readonly IUnitOfWork _unitOfWork;
+
+
+    public FavouriteService(IUnitOfWork unitOfWork)
     {
-        private readonly AppDbContext _context;
-        
-        public FavouriteService(AppDbContext appDbContext)
-        {
-            _context = appDbContext;
-        }
+        _unitOfWork = unitOfWork;
+    }
 
-        public async Task AddToFavourites(ClaimsPrincipal claims, Guid productId, CreateFavouriteDto dtoModel)
-        {
-            var favourite = dtoModel.Adapt<FavouriteProduct>();
-            var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            favourite.UserId = userId;
-            new FavouriteProduct()
+
+    public async Task AddToFavourite(ClaimsPrincipal claims, CreateFavouriteDto createFavouriteDto)
+    {
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var favourite = await _unitOfWork.Favorites.GetAll().FirstOrDefaultAsync(f => f.UserId == userId);
+        if (favourite is null)
+        {
+            favourite = new Favourite()
             {
-                ProductId = productId
+                UserId = userId
             };
 
-            await _context.FavouriteProducts.AddAsync(favourite);
-            _context.SaveChanges();
+            await _unitOfWork.Favorites.AddAsync(favourite);
         }
 
-        public async Task<FavouriteView> GetFavouriteByIdAsync(Guid favouriteId)
+        var product = new FavouriteProduct()
         {
-            var existingFavourite = await _context.FavouriteProducts.FirstOrDefaultAsync(f => f.Id == favouriteId);
-            if(existingFavourite is null)
-                throw new NotFoundException<FavouriteProduct>();
+            ProductId = createFavouriteDto.ProductId
+        };
 
-            _context.SaveChanges();
-            return existingFavourite.Adapt<FavouriteView>();
-        }
+        favourite.FavouriteProducts ??= new List<FavouriteProduct>();
+        favourite.FavouriteProducts.Add(product);
 
-        public async Task RemoveFavourites(Guid favouriteId)
+        await _unitOfWork.Favorites.Update(favourite);
+    }
+
+    public async Task DeleteFromFavouriteAllProducts(ClaimsPrincipal claims)
+    {
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var favourite = await _unitOfWork.Favorites.GetAll().FirstOrDefaultAsync(f => f.UserId == userId);
+        if (favourite is null)
         {
-            var favourite = await _context.FavouriteProducts.FirstAsync(f => f.Id == favouriteId);
-
-            if (favourite is null)
-                throw new Exception();
-
-            _context.FavouriteProducts.Remove(favourite);
-            _context.SaveChanges();
+            throw new NotFoundException<Favourite>();
         }
 
+        if (favourite.FavouriteProducts is not null)
+        {
+            favourite.FavouriteProducts.Clear();
+            _unitOfWork.Save();
+        }
+    }
+
+    public async Task DeleteFromFavouriteProductById(ClaimsPrincipal claims, Guid productId)
+    {
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var favourite = await _unitOfWork.Favorites.GetAll().FirstOrDefaultAsync(f => f.UserId == userId);
+        if (favourite is null)
+        {
+            throw new NotFoundException<Favourite>();
+        }
+
+        var product = favourite.FavouriteProducts.FirstOrDefault(p => p.ProductId == productId);
+        if (product is null)
+        {
+            throw new NotFoundException<Product>();
+        }
+
+        favourite.FavouriteProducts.Remove(product);
+        await _unitOfWork.Favorites.Update(favourite);
+
+    }
+
+    public async Task<FavouriteView> GetUserFavourite(PaginationParams paginationParams, ClaimsPrincipal claims)
+    {
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var favourite = await _unitOfWork.Favorites.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
+        if (favourite is null)
+        {
+            throw new NotFoundException<Cart>();
+        }
+
+        var pagedList = favourite.FavouriteProducts?.AsQueryable().ToPagedList(paginationParams);
+        favourite.FavouriteProducts ??= new List<FavouriteProduct>();
+
+        var productPaged = pagedList.Adapt<List<FavouriteProductView>>();
+        return favourite.Adapt<FavouriteView>();
     }
 }
