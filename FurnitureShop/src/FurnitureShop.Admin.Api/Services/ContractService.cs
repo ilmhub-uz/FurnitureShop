@@ -66,7 +66,6 @@ namespace FurnitureShop.Admin.Api.Services
 
             if (filterDto.UserId != null)
                 query = query.Where(c => c.UserId == filterDto.UserId);
-          
             //select from contracts where id = orderid and orgid= odrgod;
             var contracts = await query.ToPagedListAsync(filterDto);
             return  contracts.Adapt<List<ContractView>>();
