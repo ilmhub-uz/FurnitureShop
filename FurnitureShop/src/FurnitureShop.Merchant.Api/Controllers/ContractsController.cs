@@ -4,12 +4,14 @@ using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ContractsController : ControllerBase
 {
     private readonly IContractService _contractService;

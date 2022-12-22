@@ -13,6 +13,7 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
+[Authorize]
 public partial class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
@@ -46,8 +47,8 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] ProductSortingFilter productSortingFilter)
-    => await _productService.GetProducts(productSortingFilter);
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts(ProductSortingFilter sortingFilter)
+    => await _productService.GetProducts(sortingFilter);
 
     [HttpGet("{productId:guid}")]
     [IdValidation]

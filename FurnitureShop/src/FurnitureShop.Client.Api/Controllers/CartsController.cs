@@ -23,39 +23,39 @@ public class CartsController : ControllerBase
         _createUserValidator = createUserValidator;
     }
 
-    [ProducesResponseType(typeof(List<CartProductView>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<List<CartProductView>>> GetCartsProduct([FromQuery] PaginationParams paginationParams, Guid cartId)
+    public async Task<ActionResult<CartView>> GetCartsProduct([FromQuery] PaginationParams paginationParams)
     {
-        return Ok(await _cartService.GetUserCart(paginationParams, cartId));
+        return Ok(await _cartService.GetUserCart(paginationParams, User));
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(Guid cartId, CreateCartProductDto createCartDto)
+    public async Task<ActionResult<CartView>> AddToCart(CreateCartProductDto createCartDto)
     {
         var result = _createUserValidator.Validate(createCartDto);
 
         if (!result.IsValid)
             return BadRequest(result.Errors);
 
-        await _cartService.AddToCart(User, cartId, createCartDto);
+        await _cartService.AddToCart(User, createCartDto);
         return Ok();
     }
 
     [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
     [HttpDelete("{cartId}/products/{productId}")]
-    public async Task<ActionResult<CartView>> DeleteCartProductById(Guid cartId, Guid productId)
+    public async Task<ActionResult<CartView>> DeleteCartProductById(Guid productId)
     {
-        await _cartService.DeleteCartProductById(cartId, productId);
+        await _cartService.DeleteCartProductById(User, productId);
         return Ok();
     }
 
     [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
     [HttpDelete("{cartId}")]
-    public async Task<ActionResult<List<CartView>>> DeleteCart(Guid cartId)
+    public async Task<ActionResult<List<CartView>>> DeleteCart()
     {
-        await _cartService.DeletCartAllProducts(cartId);
+        await _cartService.DeletCartAllProducts(User);
         return Ok();
     }
 }

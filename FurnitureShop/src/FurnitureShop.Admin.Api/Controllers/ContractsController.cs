@@ -20,6 +20,7 @@ namespace FurnitureShop.Admin.Api.Controllers
             _unitOfWork = unitOfWork;
             _contractService = contractService;
         }
+
         [HttpPut("{contractId:guid}")]
         public async Task<IActionResult> UpdateContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
         {
