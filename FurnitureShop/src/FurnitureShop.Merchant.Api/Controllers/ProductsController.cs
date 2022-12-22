@@ -4,6 +4,7 @@ using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +35,7 @@ public partial class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
     {
-        var validateResult = _createProductValidator.Validate(dtoModel);
+        var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
 
         if (!validateResult.IsValid)
             return BadRequest();
@@ -45,8 +46,8 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts()
-    => await _productService.GetProducts();
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] ProductSortingFilter productSortingFilter)
+    => await _productService.GetProducts(productSortingFilter);
 
     [HttpGet("{productId:guid}")]
     [IdValidation]
