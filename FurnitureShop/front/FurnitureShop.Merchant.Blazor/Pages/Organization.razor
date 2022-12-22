@@ -1,0 +1,30 @@
+﻿@page "/organizations/{id}"
+@using FurnitureShop.Admin.Blazor.ViewModel
+@inject HttpClient http;
+
+@if (organization is not null)
+{
+    <h3>@organization.Name</h3>
+}
+else
+{
+    <h3> Model is null</h3>
+}
+
+@code {
+    private OrganizationView? organization;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetOrganizationAsync(Id);
+    }
+
+    public async Task<OrganizationView?> GetOrganizationAsync(string organizationId)
+    {
+        return await http.GetFromJsonAsync<OrganizationView>($"https://localhost:7113/api/Organizations/{organizationId}");
+    }
+
+
+    [Parameter]
+    public string Id { get; set; }
+}
