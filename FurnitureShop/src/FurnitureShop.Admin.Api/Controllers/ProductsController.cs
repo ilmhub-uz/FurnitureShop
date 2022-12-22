@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
+using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,14 @@ public class ProductsController : ControllerBase
 {
     private readonly IProductsService _service;
     private readonly IValidator<UpdateProductDto> _updateproductdtovalidator;
-    public ProductsController(IProductsService service , IValidator<UpdateProductDto> validator )
+    public ProductsController(IProductsService service, IValidator<UpdateProductDto> validator)
     {
         _updateproductdtovalidator = validator;
         _service = service;
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<ProductView>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProducts([FromQuery] ProductFilterDto filter)
     {
         var products = await _service.GetProducts(filter);
