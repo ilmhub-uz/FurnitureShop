@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
 	  <PackageReference Include="JFA.DependencyInjection" Version="1.0.7" />
 	  <PackageReference Include="Mapster" Version="7.3.0" />
