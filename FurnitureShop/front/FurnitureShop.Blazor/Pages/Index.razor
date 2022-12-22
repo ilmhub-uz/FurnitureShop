@@ -298,6 +298,9 @@
                     </p>
                 </div>
             </div>
+            @if (categories is not null)
+            {
+                
             @foreach (var category in categories)
             {
                 <div class="col-4">
@@ -307,10 +310,25 @@
                                 alt="chairs" />
                         </div>
                         <p>
-                            @category.Children
+                            @if(category?.Children is not null){
+                            @foreach (var childCategory in category?.Children)
+            {
+                <div class="col-4">
+                    <div class="popular-category">
+                        <div class="home-img">
+                            <img src="https://mebel.shop/upload/iblock/1a7/zis5v7y5r3t5ylu75q6m6vwsqrkl0a5h.png"
+                                alt="chairs" />
+                        </div>
+                        <p>
+                            @childCategory.Name
                         </p>
                     </div>
                 </div>
+            }}
+                        </p>
+                    </div>
+                </div>
+            }
             }
         </div>
     </div>
@@ -328,8 +346,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<ProductView[]>("https://localhost:7235/api/products");
-        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235/api/Categories/childrenId/children");
+        products = await Http.GetFromJsonAsync<ProductView[]?>("https://localhost:7235/api/products");
+        categories = await Http.GetFromJsonAsync<CategoryView[]?>("https://localhost:7235/api/Categories");
     }
 }
 
