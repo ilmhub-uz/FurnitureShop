@@ -39,10 +39,12 @@ public class EmployeeService : IEmployeeService
 
         await _userManager.CreateAsync(dto.Adapt<AppUser>(), Guid.NewGuid().ToString());
         var joiner = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == dto.UserName);
+        if(joiner is null)
+            throw new NotFoundException("Joinerni olishda muammo");
 
         var user = await _userManager.GetUserAsync(appuser);
 
-        _context.OrganizationUsers.Add(new OrganizationUser()
+        _context.OrganizationUsers.Add(new OrganizationUser());
         organization.Users!.Add(new OrganizationUser()
         {
             UserId = joiner.Id,
