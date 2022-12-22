@@ -100,6 +100,15 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    private IFavouriteProductRepository _favouriteProductRepository;
+    public IFavouriteProductRepository FavoritesProduct
+    {
+        get
+        {
+            if (_favouriteProductRepository is null) _favouriteProductRepository = new FavouriteProductRepository(_context);
+            return _favouriteProductRepository;
+        }
+    }
 
     public UnitOfWork(AppDbContext context)
     {

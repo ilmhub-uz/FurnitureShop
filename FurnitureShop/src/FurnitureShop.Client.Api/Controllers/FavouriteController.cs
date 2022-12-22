@@ -1,6 +1,7 @@
 ﻿using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
+using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,33 +14,45 @@ namespace FurnitureShop.Client.Api.Controllers
     [ApiController]
     public class FavouriteController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly IFavouriteService _favouriteService;
 
 
+        public FavouriteController(IFavouriteService favouriteService)
+        {
+            _favouriteService = favouriteService;
+        }
+
+
+
+        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<ActionResult<List<FavouriteView>>> GetFavourite(Guid favouriteId)
+        public async Task<ActionResult<FavouriteView>> GetUserFavourite([FromQuery] PaginationParams paginationParams)
         {
-            var favourite = await _context.FavouriteProducts.FirstOrDefaultAsync(f => f.Id == favouriteId);
-            if (favourite is null)
-                return NotFound();
-
-            var favouriteView = await _favouriteService.GetFavouriteByIdAsync(favouriteId);
-
-            return Ok();
+            return Ok(await _favouriteService.GetUserFavourite(paginationParams, User));
         }
 
+        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
         [HttpPost]
-        public async Task<ActionResult<List<FavouriteView>>> AddToFavourite(Guid productId, [FromBody] CreateFavouriteDto dtoModel)
+        public async Task<ActionResult<FavouriteView>> AddToFavourite(CreateFavouriteDto dtoModel)
         {
-            await _favouriteService.AddToFavourites(User, productId, dtoModel);
+            await _favouriteService.AddToFavourite(User, dtoModel);
             return Ok();
         }
 
+
+        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
         [HttpDelete]
-        public async Task<ActionResult<List<FavouriteView>>> DeleteFavourite(Guid favouriteId)
+        public async Task<ActionResult<FavouriteView>> DeleteFromFavouriteAllProducts()
         {
-            await _favouriteService.RemoveFavourites(favouriteId);
+            await _favouriteService.DeleteFromFavouriteAllProducts(User);
+            return Ok();
+        }
+
+        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
+        [HttpDelete("{productId}")]
+        public async Task<ActionResult<FavouriteView>> DeleteFromCartProductById(Guid productId)
+        {
+            await _favouriteService.DeleteFromFavouriteProductById(User, productId);
             return Ok();
         }
 

@@ -25,12 +25,12 @@ public class CartsController : ControllerBase
 
     [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<CartView>> GetCartsProduct([FromQuery] PaginationParams paginationParams)
+    public async Task<ActionResult<CartView>> GetUserCart([FromQuery] PaginationParams paginationParams)
     {
         return Ok(await _cartService.GetUserCart(paginationParams, User));
     }
 
-    [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
     [HttpPost]
     public async Task<ActionResult<CartView>> AddToCart(CreateCartProductDto createCartDto)
     {
@@ -44,16 +44,16 @@ public class CartsController : ControllerBase
     }
 
     [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
-    [HttpDelete("{cartId}/products/{productId}")]
-    public async Task<ActionResult<CartView>> DeleteCartProductById(Guid productId)
+    [HttpDelete("{productId}")]
+    public async Task<ActionResult<CartView>> DeleteFromCartProductById(Guid productId)
     {
         await _cartService.DeleteCartProductById(User, productId);
         return Ok();
     }
 
-    [ProducesResponseType(typeof(List<CartView>), StatusCodes.Status200OK)]
-    [HttpDelete("{cartId}")]
-    public async Task<ActionResult<List<CartView>>> DeleteCart()
+    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
+    [HttpDelete()]
+    public async Task<ActionResult<CartView>> DeleteFromCartAllProducts()
     {
         await _cartService.DeletCartAllProducts(User);
         return Ok();
