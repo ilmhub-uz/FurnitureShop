@@ -28,7 +28,7 @@ public class ProfilesController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateProfile(UpdateProfileDto updateProfile)
+    public async Task<IActionResult> UpdateProfile([FromBody]UpdateProfileDto updateProfile)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user is null) return BadRequest();
