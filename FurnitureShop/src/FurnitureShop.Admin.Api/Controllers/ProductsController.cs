@@ -24,15 +24,15 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("{productId:Guid}")]
-    public async Task<IActionResult> GetProduct(Guid productId)
+    [HttpGet("getbyId")]
+    public async Task<IActionResult> GetProduct([FromQuery]Guid productId)
     {
         var product = await _service.GetProductByIdAsync(productId);
         return Ok(product);
     }
 
-    [HttpPut("{productId:Guid}")]
-    public async Task<IActionResult> UpdateProduct(Guid productId, UpdateProductDto dtoModel)
+    [HttpPut]
+    public async Task<IActionResult> UpdateProduct([FromQuery]Guid productId,[FromBody] UpdateProductDto dtoModel)
     {
         var result = await _updateproductdtovalidator.ValidateAsync(dtoModel);
         if (!result.IsValid)
@@ -41,8 +41,8 @@ public class ProductsController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("{productId:Guid}")]
-    public async Task<IActionResult> DeleteProduct(Guid productId)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteProduct([FromQuery] Guid productId)
     {
         await _service.DeleteProductById(productId);
         return NoContent();

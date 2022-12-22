@@ -21,6 +21,7 @@ builder.Services.AddFluentValidationAutoValidation(o =>
 });
 builder.Services.AddIdentityManagers();
 
+builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
