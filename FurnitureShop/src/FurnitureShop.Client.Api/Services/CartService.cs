@@ -18,15 +18,12 @@ namespace FurnitureShop.Client.Api.Services;
 public class CartService : ICartService
 {
     private readonly IUnitOfWork _unitOfWork;
-
-
+    
     public CartService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-
-
-
+    
     public async Task AddToCart(ClaimsPrincipal claims, CreateCartProductDto createCartProductDto)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);

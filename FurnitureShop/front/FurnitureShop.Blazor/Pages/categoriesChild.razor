@@ -1,0 +1,14 @@
+@page "categories/{categoryId}/children"
+
+@code {
+   
+   [Parameter] 
+   public int categoryId {get;set;}
+
+   private CategoryView[]? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //categories = await Http.GetFromJsonAsync<CategoryView[]>($"https://localhost:7235/api/Categories/{categoryId}/children");
+    }
+}
