@@ -21,7 +21,7 @@
                     <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
                         <MudSpacer/>
                         <div class="dt-action-buttons text-end pt-3 pt-md-0 mr-5">
-                        <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Add New Record</span></span></button>                        </div>
+                        <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Create new organization</span></span></button>                        </div>
                         </div>
         </ToolBarContent>
         <HeaderContent>
@@ -54,10 +54,10 @@
                         </MudTd>
         </RowTemplate>
         <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{1, 5}" />
+            <MudTablePager PageSizeOptions="new int[]{1, 100}" />
         </PagerContent>
         <FooterContent>
-            <MudTd colspan="2">Select All</MudTd>
+            <MudTd colspan="5">Select All</MudTd>
         </FooterContent>
     </MudTable>
             </div>
@@ -102,35 +102,10 @@
     private string _selectedItemText = "No row clicked";
     private string searchString1 = "";
     private MudTable<OrganizationView> _table;
-    Dictionary<string, OrganizationView> tayyorlist = new()
-    {
-        { "1", new OrganizationView() { Name = "sample", Status = 2 }},
-        { "2", new OrganizationView() { Name = "Lorem", Status = 2 }},
-        { "3", new OrganizationView() { Name = "Ipsum", Status = 2 }},
-        { "4", new OrganizationView() { Name = "Dolor", Status = 2 }},
-        { "5", new OrganizationView() { Name = "Sit", Status = 2 }},
-        { "6", new OrganizationView() { Name = "Amet", Status = 2 }},
-        { "7", new OrganizationView() { Name = "Yet", Status = 2 }},
-        { "8", new OrganizationView() { Name = "sample2", Status = 2 }},
-        { "9", new OrganizationView() { Name = "sample2", Status = 2 }},
-        { "10", new OrganizationView() { Name = "sample2", Status = 2 }},
-        { "11", new OrganizationView() { Name = "sample2", Status = 2 }},
-        { "12", new OrganizationView() { Name = "sample2", Status = 2 }},
-    };
+    
     protected override async Task OnInitializedAsync()
     {
         Elements = await Http.GetFromJsonAsync<List<OrganizationView>>("https://localhost:7237/api/organizations");
-        Elements.Add(tayyorlist["1"]);
-        Elements.Add(tayyorlist["2"]);
-        Elements.Add(tayyorlist["3"]);
-        Elements.Add(tayyorlist["4"]);
-        Elements.Add(tayyorlist["5"]);
-        Elements.Add(tayyorlist["6"]);
-        Elements.Add(tayyorlist["7"]);
-        Elements.Add(tayyorlist["8"]);
-        Elements.Add(tayyorlist["9"]);
-        Elements.Add(tayyorlist["10"]);
-        Elements.Add(tayyorlist["11"]);
     }
 
     void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
