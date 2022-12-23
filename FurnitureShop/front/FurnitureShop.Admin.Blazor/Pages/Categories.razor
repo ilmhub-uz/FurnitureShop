@@ -24,7 +24,7 @@
                 <div class="row h-100">
                     <div class="col-sm-12">
                         <div class="card-body text-sm-center text-center">
-                        <button data-bs-target="#addRoleModal" data-bs-toggle="modal" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Organization</button>
+                        <button type="submit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCategory" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Category</button>
                         <p class="mb-0">You can create new category</p>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ else
                             <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
                                 <MudSpacer/>
                                 <div class="dt-action-buttons text-end pt-3 pt-md-0 mr-5">
-                                <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Create new organization</span></span></button>                        </div>
+                                <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCategory"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Create new category</span></span></button>                        </div>
                                 </div>
                 </ToolBarContent>
                 <HeaderContent>
@@ -90,6 +90,34 @@ else
         </div>
     </div>
 </div>
+
+
+<div class="offcanvas offcanvas-end show" tabindex="-1" id="offcanvasAddCategory" aria-labelledby="offcanvasAddCategoryLabel" aria-modal="true" role="dialog">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasAddCategoryLabel" class="offcanvas-title">Add Organization</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-0 flex-grow-0">
+        <EditForm id="addNewUserForm" Class="mb-3 add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" Model="@model" OnValidSubmit="OnValidSubmit">
+              <DataAnnotationsValidator />
+            <div class="mb-3 fv-plugins-icon-container">
+                <label class="form-label" for="category-name">Category name</label>
+                <MudTextField class="form-control" id="category-name" placeholder="E.g: Sofa" @bind-Value="model.Name" For="@(() => model.Name)" />
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="mb-3 fv-plugins-icon-container">
+                <label class="form-label" for="add-owner">Parent Category</label>
+                <MudTextField type="number" class="form-control" id="add-organization-name" placeholder="Parent category id" @bind-Value="model.ParentId" For="@(() => model.ParentId)" />
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" data-bs-dismiss="offcanvas" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</MudButton>
+            </MudCardActions>
+            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            <input type="hidden">
+        </EditForm>
+    </div>
+</div>
 }
 @code {
 
@@ -125,5 +153,25 @@ else
     void OnRowClick(TableRowClickEventArgs<CategoryView> args)
     {
         _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
+
+    string? error = null;
+    CreateCategoryDto? model = new CreateCategoryDto();
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7237");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Categories");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+        
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7237/api/categories");
+        await InvokeAsync(() => StateHasChanged());
+        StateHasChanged();
     }
 }
