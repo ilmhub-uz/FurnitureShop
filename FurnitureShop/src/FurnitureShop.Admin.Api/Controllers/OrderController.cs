@@ -24,9 +24,9 @@ public class OrderController : ControllerBase
         return Ok(orders);
     }
 
-    [HttpGet("{orderId:guid}")]
+    [HttpGet("getbyId")]
     [ProducesResponseType(typeof(OrderView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrderById(Guid orderId)
+    public async Task<IActionResult> GetOrderById([FromQuery]Guid orderId)
     {
         var order = await _ordersService.GetOrderByIdAsync(orderId);
         return Ok(order);
