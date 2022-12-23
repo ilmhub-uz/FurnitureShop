@@ -32,13 +32,9 @@ public class EmployeeController : ControllerBase
         return Ok();
     }
 
-        [HttpGet("managers")]
-        public async Task<ActionResult<List<GetEmployeesView>>> GetManagers(Guid organizationId)
-        {
-        
-            var a = await _employeeService.GetManagers(organizationId);
-            return Ok(a);
-        }
+    [HttpGet("managers")]
+    public async Task<ActionResult<List<GetEmployeesView>>> GetManagers(Guid organizationId) 
+            => Ok(await _employeeService.GetManagers(organizationId);
 
     [HttpGet("sellers")]
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)

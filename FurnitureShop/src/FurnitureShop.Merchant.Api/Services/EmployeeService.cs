@@ -43,7 +43,6 @@ public class EmployeeService : IEmployeeService
             throw new NotFoundException("Joinerni olishda muammo");
 
         var user = await _userManager.GetUserAsync(appuser);
-
         _context.OrganizationUsers.Add(new OrganizationUser());
         organization.Users!.Add(new OrganizationUser()
         {
