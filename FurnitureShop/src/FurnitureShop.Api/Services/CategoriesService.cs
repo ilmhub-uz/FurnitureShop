@@ -65,7 +65,7 @@ public class CategoriesService : ICategoriesService
                 .ToListAsync();
 
         var categoryChildrenViews = 
-            categoryChildren.Select(categoryChild => ConvertToCategoryView(categoryChild)).ToList();
+            categoryChildren.Select(ConvertToCategoryView).ToList();
 
         return categoryChildrenViews;
     }

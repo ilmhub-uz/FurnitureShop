@@ -36,7 +36,7 @@ public partial class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
     {
-        var validateResult = _createProductValidator.Validate(dtoModel);
+        var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
 
         if (!validateResult.IsValid)
             return BadRequest();
@@ -47,7 +47,7 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts(ProductSortingFilter sortingFilter)
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery]ProductSortingFilter sortingFilter)
     => await _productService.GetProducts(sortingFilter);
 
     [HttpGet("{productId:guid}")]

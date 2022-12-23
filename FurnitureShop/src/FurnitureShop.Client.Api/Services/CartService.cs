@@ -18,19 +18,16 @@ namespace FurnitureShop.Client.Api.Services;
 public class CartService : ICartService
 {
     private readonly IUnitOfWork _unitOfWork;
-
-
+    
     public CartService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-
-
-
-    public async Task AddToCart(ClaimsPrincipal claims, Guid cartId, CreateCartProductDto createCartProductDto)
+    
+    public async Task AddToCart(ClaimsPrincipal claims, CreateCartProductDto createCartProductDto)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
         if (cart is null)
         {
             cart = new Cart()
@@ -51,12 +48,13 @@ public class CartService : ICartService
         cart.CartProducts ??= new List<CartProduct>();
         cart.CartProducts.Add(product);
 
-        _unitOfWork.Save();
+        await _unitOfWork.Carts.Update(cart);
     }
 
-    public async Task DeletCartAllProducts(Guid cartId)
+    public async Task DeletCartAllProducts(ClaimsPrincipal claims)
     {
-        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
         if (cart is null)
         {
             throw new NotFoundException<Cart>();
@@ -69,9 +67,10 @@ public class CartService : ICartService
         }
     }
 
-    public async Task DeleteCartProductById(Guid cartId, Guid productId)
+    public async Task DeleteCartProductById(ClaimsPrincipal claims, Guid productId)
     {
-        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
         if (cart is null)
         {
             throw new NotFoundException<Cart>();
@@ -87,9 +86,10 @@ public class CartService : ICartService
         await _unitOfWork.Carts.Update(cart);
     }
 
-    public async Task<List<CartProductView>> GetUserCart(PaginationParams paginationParams, Guid cartId)
+    public async Task<CartView> GetUserCart(PaginationParams paginationParams, ClaimsPrincipal claims)
     {
-        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.Id == cartId);
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
         if (cart is null)
         {
             throw new NotFoundException<Cart>();
@@ -98,7 +98,7 @@ public class CartService : ICartService
         var pagedList = cart.CartProducts?.AsQueryable().ToPagedList(paginationParams);
         cart.CartProducts ??= new List<CartProduct>();
 
-        var result = pagedList.Adapt<List<CartProductView>>();
-        return result;
+        var productPaged = pagedList.Adapt<List<CartProductView>>();
+        return cart.Adapt<CartView>();
     }
 }

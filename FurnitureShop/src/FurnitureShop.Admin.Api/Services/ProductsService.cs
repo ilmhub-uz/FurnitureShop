@@ -5,11 +5,13 @@ using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Admin.Api.Services;
 
+[Scoped]
 public class ProductsService : IProductsService
 {
     private readonly IUnitOfWork _unitOfWork;

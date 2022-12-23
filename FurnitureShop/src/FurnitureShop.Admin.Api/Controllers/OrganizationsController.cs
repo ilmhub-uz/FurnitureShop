@@ -26,17 +26,17 @@ public class OrganizationsController : ControllerBase
         var organization = await _service.GetOrganizationsAsync(filter);
         return Ok(organization);
     }
-
-    [HttpGet("{organizationId:Guid}", Name = "OrganizationById")]
+    
+    [HttpGet("getbyId")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganization(Guid organizationId)
+    public async Task<IActionResult> GetOrganization([FromQuery]Guid organizationId)
     {
         var organization = await _service.GetOrganizationByIdAsync(organizationId);
         return Ok(organization);
     }
 
-    [HttpPut("{organizationId:Guid}")]
-    public async Task<IActionResult> UpdateOrganization(Guid organizationId,
+    [HttpPut]
+    public async Task<IActionResult> UpdateOrganization([FromQuery]Guid organizationId,
         UpdateOrganizationDto updateOrganizationDto)
     {
         var result = await _updateorganizationvalidator.ValidateAsync(updateOrganizationDto);
@@ -46,8 +46,8 @@ public class OrganizationsController : ControllerBase
         await _service.UpdateOrganization(organizationId, updateOrganizationDto);
         return Ok();
     }
-    [HttpDelete("{organizationId:Guid}")]
-    public async Task<IActionResult> DeleteOrganization(Guid organizationId)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteOrganization([FromQuery]Guid organizationId)
     {
         await _service.DeleteOrganization(organizationId);
         return Ok();

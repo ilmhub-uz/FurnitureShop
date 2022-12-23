@@ -5,7 +5,7 @@ using JFA.DependencyInjection;
 namespace FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 
 [Scoped]
-public class FavoriteRepository : GenericRepository<FavouriteProduct>, IFavoriteRepository, IEntityExistsRepository
+public class FavoriteRepository : GenericRepository<Favourite>, IFavoriteRepository, IEntityExistsRepository
 {
 	public FavoriteRepository(AppDbContext context) : base(context) { }
 }

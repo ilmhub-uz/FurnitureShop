@@ -20,15 +20,18 @@ namespace FurnitureShop.Admin.Api.Controllers
             _unitOfWork = unitOfWork;
             _contractService = contractService;
         }
-        [HttpPut("{contractId:guid}")]
-        public async Task<IActionResult> UpdateContract([FromBody]UpdateContractDto updateContractDto , Guid contractId)
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateContract([FromQuery]Guid contractId, [FromBody]UpdateContractDto updateContractDto )
+
         {
             await _contractService.UpdateContract(contractId , updateContractDto);
             return Ok();
         }
 
-        [HttpDelete("{contractId:guid}")]
-        public async Task<IActionResult> DeleteContract(Guid contractId)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteContract([FromQuery]Guid contractId)
+
         {
             await _contractService.DeleteContract(contractId);
             return Ok();
@@ -36,7 +39,7 @@ namespace FurnitureShop.Admin.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<ContractFilterDto>), statusCode:StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetContracts([FromBody]ContractFilterDto contractFilter)
+        public async Task<IActionResult> GetContracts([FromQuery]ContractFilterDto contractFilter)
         {
          return Ok(await _contractService.GetContracts(contractFilter));
         }

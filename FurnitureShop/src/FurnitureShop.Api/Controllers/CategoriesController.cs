@@ -17,7 +17,7 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<CategoryView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganizations([FromQuery] PaginationParams paginationParams) => 
+    public async Task<IActionResult> GetCategories([FromQuery] PaginationParams paginationParams) => 
         Ok(await _categoriesService.GetCategoriesAsync(paginationParams));
 
     [HttpGet("{categoryId:int}/children")]
