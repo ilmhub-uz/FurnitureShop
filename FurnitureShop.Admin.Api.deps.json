@@ -11,6 +11,7 @@
           "FurnitureShop.Common": "1.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.11",
           "Microsoft.EntityFrameworkCore.Design": "6.0.11",
+          "Microsoft.EntityFrameworkCore.Tools": "6.0.11",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "6.0.7",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
@@ -361,6 +362,11 @@
             "assemblyVersion": "6.0.11.0",
             "fileVersion": "6.0.1122.51302"
           }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Tools/6.0.11": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "6.0.11"
         }
       },
       "Microsoft.Extensions.ApiDescription.Server/3.0.0": {},
@@ -1841,6 +1847,13 @@
       "sha512": "sha512-cB1n/Hj8HLYuyIE6fEZyaAKn5qdU9QpDtFZ3KNLWyiZfftmY2T7Bz1Aea1DIUM/KQF22URRLkj7bs4S6CIEp+w==",
       "path": "microsoft.entityframeworkcore.relational/6.0.11",
       "hashPath": "microsoft.entityframeworkcore.relational.6.0.11.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Tools/6.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GDmG27PBUbWjUCxDHOtXRkHZZNGLGWX/2eFyQI1mzLyVuFHKWPTojZlzjztchCA50d6+2LcZiEStps5OoP90eA==",
+      "path": "microsoft.entityframeworkcore.tools/6.0.11",
+      "hashPath": "microsoft.entityframeworkcore.tools.6.0.11.nupkg.sha512"
     },
     "Microsoft.Extensions.ApiDescription.Server/3.0.0": {
       "type": "package",
