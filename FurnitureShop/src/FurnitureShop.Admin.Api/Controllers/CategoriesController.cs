@@ -34,9 +34,9 @@ namespace FurnitureShop.Admin.Api.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{categoryId:int}")]
+        [HttpGet("getbyId")]
         [ProducesResponseType(typeof(CategoryView), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCategoryById(int categoryId)
+        public async Task<IActionResult> GetCategoryById([FromQuery]int categoryId)
         {
             var category = await _categoriesService.GetCategoryByIdAsync(categoryId);
 
@@ -55,8 +55,8 @@ namespace FurnitureShop.Admin.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("{categoryId:int}")]
-        public async Task<IActionResult> UpdateCategory(int categoryId, UpdateCategoryDto updateCategoryDto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateCategory([FromQuery]int categoryId, [FromBody]UpdateCategoryDto updateCategoryDto)
         {
             var result = await _updateCategoryValidator.ValidateAsync(updateCategoryDto);
             if (!result.IsValid)
@@ -67,8 +67,8 @@ namespace FurnitureShop.Admin.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("{categoryId:int}")]
-        public async Task<IActionResult> DeleteCategory(int categoryId)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCategory([FromQuery] int categoryId)
         {
             await _categoriesService.DeleteCategory(categoryId);
 
