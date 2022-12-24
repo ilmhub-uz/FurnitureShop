@@ -1,5 +1,6 @@
 ﻿@page "/products"
-@inject HttClient Http
+@using FurnitureShop.Client.Blazor.Shared
+@inject HttpClient Http
 
 <PageTitle>Products</PageTitle>
 
@@ -23,10 +24,5 @@
 @code {
     private List<ProductView> productViews;
     
-    protected override async Task OnInitialzedAsync()
-    {
-        productViews = Http.GetFromJsonAsync<List<ProductView>("https://localhost:7235/api/Products");
-    }
-
     
 }

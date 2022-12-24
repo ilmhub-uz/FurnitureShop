@@ -12,6 +12,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddCors();
+/*builder.Services.AddCors(cors =>
+{
+    cors.AddDefaultPolicy(cors =>
+    {
+        cors.AllowAnyHeader()
+        .AllowAnyOrigin()
+        .AllowAnyMethod();
+    });
+});*/
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
