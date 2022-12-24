@@ -7,12 +7,15 @@ using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace FurnitureShop.Client.Api.Services;
 
+
+[Scoped]
 public class FavouriteService : IFavouriteService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -39,11 +42,15 @@ public class FavouriteService : IFavouriteService
             await _unitOfWork.Favorites.AddAsync(favourite);
         }
 
+        if (favourite.FavouriteProducts.Any(p => p.ProductId == createFavouriteDto.ProductId))
+        {
+            throw new BadRequestException("Product already exists");
+        }
+
         var product = new FavouriteProduct()
         {
             ProductId = createFavouriteDto.ProductId
         };
-
         favourite.FavouriteProducts ??= new List<FavouriteProduct>();
         favourite.FavouriteProducts.Add(product);
 
