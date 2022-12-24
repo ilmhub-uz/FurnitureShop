@@ -43,6 +43,7 @@ public class CategoriesService : ICategoriesService
         {
             Id = category.Id,
             Name = category.Name,
+            ImageUrl = category.CategoryImage?.ImagePath
         };
 
         if (category.Children is null)
