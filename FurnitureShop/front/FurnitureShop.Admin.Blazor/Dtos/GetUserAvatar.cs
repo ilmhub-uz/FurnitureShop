@@ -2,7 +2,7 @@
 
 namespace FurnitureShop.Admin.Blazor.Dtos
 {
-    public class GetUserAvatar
+    public class GetUserAvatarDto
     {
         [Required] 
         public Guid UserId { get; set; }
