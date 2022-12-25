@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Api.Dtos;
 using FurnitureShop.Api.ViewModel;
+using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using JFA.DependencyInjection;
@@ -22,6 +23,11 @@ public class ProductCommentService : IProductCommentService
 
     public async Task AddProductComments(AppUser user, Guid productId, CreateProductComment commentDto)
     {
+        var product = await _context.Products.FindAsync(productId);
+
+        if (product == null)
+            throw new NotFoundException<Product>();
+
         var comment = commentDto.Adapt<ProductComment>();
 
         comment.UserId = user.Id;
@@ -33,6 +39,11 @@ public class ProductCommentService : IProductCommentService
 
     public async Task<List<ProductCommentView>> GetProductComments(Guid productId)
     {
+        var product = await _context.Products.FindAsync(productId);
+
+        if (product == null)
+            throw new NotFoundException<Product>();
+
         var mainComments = await _context.ProductComments
             .Where(tc => tc.ParentId == null && tc.ProductId == productId)
             .ToListAsync();
