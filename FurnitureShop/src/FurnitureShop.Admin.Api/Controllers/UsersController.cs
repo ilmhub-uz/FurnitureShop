@@ -13,16 +13,14 @@ namespace FurnitureShop.Admin.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ValidateModel]
     public class UsersController : ControllerBase
     {
-        private readonly IUnitOfWork? unitOfWork;
+       
         private readonly UserManager<AppUser> userManager;
         private readonly IUserService userService;
-        public UsersController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IUserService userService)
+        public UsersController(UserManager<AppUser> userManager, IUserService userService)
         {
             this.userService = userService;
-            this.unitOfWork = unitOfWork;
             this.userManager = userManager;
         }
 
@@ -34,6 +32,7 @@ namespace FurnitureShop.Admin.Api.Controllers
             if (!result.Succeeded) return BadRequest();
             return Ok();
         }
+
         [HttpGet]
         [ProducesResponseType(typeof(List<UserView>),StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsers([FromQuery] UserFilterDto userFilterDto)
@@ -41,13 +40,15 @@ namespace FurnitureShop.Admin.Api.Controllers
             var users = await userService.GetUsers(userFilterDto);
             return Ok(users);
         }
-        [HttpGet("getbyId")]
+        [HttpGet("{userId:guid}")]
         [ProducesResponseType(typeof(UserView),StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUserById(Guid userId)
         {
             return Ok(await userService.GetUserById(userId));
         }
+
         [HttpPut]
+        [ValidateModel]
         public async Task<IActionResult> UpdateUser(Guid userId, UpdateUserDto updateUserDto)
         {
             await userService.UpdateUser(userId, updateUserDto);
