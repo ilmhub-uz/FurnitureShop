@@ -60,6 +60,9 @@ public class CategoriesService : ICategoriesService
 
     public async Task<List<CategoryView>> GetCategoryChildrenAsync(int categoryId)
     {
+        if (_unitOfWork.Categories.GetById(categoryId) == null)
+            throw new NotFoundException<Category>();
+
         var categoryChildren = 
             await _unitOfWork.Categories.GetAll()
                 .Where(category=>category.ParentId == categoryId)

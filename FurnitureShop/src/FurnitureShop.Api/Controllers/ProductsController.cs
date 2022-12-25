@@ -43,10 +43,12 @@ public partial class ProductsController : ControllerBase
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
     {
         var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
         if (product is null)
             return NotFound();
 
         product.Views += 1;
+        
         var productView = await _productService.GetProductByIdAsync(productId);
 
         if (product.Rates is { Count: > 0 })
@@ -55,6 +57,7 @@ public partial class ProductsController : ControllerBase
         }
 
         await _context.SaveChangesAsync();
+
         return productView;
     }
 }
