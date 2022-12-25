@@ -15,7 +15,6 @@ namespace FurnitureShop.Admin.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-       
         private readonly UserManager<AppUser> userManager;
         private readonly IUserService userService;
         public UsersController(UserManager<AppUser> userManager, IUserService userService)
@@ -25,38 +24,33 @@ namespace FurnitureShop.Admin.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromQuery] RegisterUserDto addedUser)
+        public async Task<IActionResult> CreateUser([FromQuery] RegisterUserDto registerUser)
         {
-            var user = addedUser.Adapt<AppUser>();
-            var result = await userManager.CreateAsync(user, addedUser.Password);
+            var user = registerUser.Adapt<AppUser>();
+            var result = await userManager.CreateAsync(user, registerUser.Password);
             if (!result.Succeeded) return BadRequest();
             return Ok();
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<UserView>),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<UserView>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsers([FromQuery] UserFilterDto userFilterDto)
-        {
-            var users = await userService.GetUsers(userFilterDto);
-            return Ok(users);
-        }
-        [HttpGet("{userId:guid}")]
-        [ProducesResponseType(typeof(UserView),StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUserById(Guid userId)
-        {
-            return Ok(await userService.GetUserById(userId));
-        }
+        => Ok(await userService.GetUsers(userFilterDto));
 
-        [HttpPut]
-        [ValidateModel]
-        public async Task<IActionResult> UpdateUser(Guid userId, UpdateUserDto updateUserDto)
+        [HttpGet("{userId:guid}")]
+        [ProducesResponseType(typeof(UserView), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserById([FromRoute] Guid userId)
+        => Ok(await userService.GetUserById(userId));
+        
+        [HttpPut("{userId:Guid}")]
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid userId,[FromBody] UpdateUserDto updateUserDto)
         {
             await userService.UpdateUser(userId, updateUserDto);
             return Ok();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(Guid userId)
+        [HttpDelete("{userId:guid}")]
+        public async Task<IActionResult> DeleteUser([FromRoute]Guid userId)
         {
             await userService.DeleteUser(userId);
             return Ok();
