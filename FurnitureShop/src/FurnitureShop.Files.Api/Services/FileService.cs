@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Files.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace FurnitureShop.Files.Api.Services;
 
@@ -29,6 +30,21 @@ public class FileService : IFileService
         var savedFiles = await _fileHelper.SaveFileAsync(files.Files, filesType!, filesFolder!);
 
         return ToDto(savedFiles, filesType!, filesFolder!);
+    }
+
+    public async Task<FileContentResult?> GetUserAvatarAsync(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+            return new FileContentResult(System.IO.File.ReadAllBytes(Path.Combine(new string[5] { "wwwroot", "Media", "User", "Images", "avatar.png" })), "image/png");
+
+        string contentType = string.Empty;
+        new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType);
+
+        string path = Path.Combine(new string[4] { "wwwroot", EFileType.Images.ToString(), EFileFolder.User.ToString(), fileName });
+
+        byte[] bytes = await System.IO.File.ReadAllBytesAsync(path);
+
+        return new FileContentResult(bytes, contentType);
     }
 
     public FilesView ToDto(List<string> files, string filesType, string filesFolder)
