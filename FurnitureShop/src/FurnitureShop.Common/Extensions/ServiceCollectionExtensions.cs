@@ -1,8 +1,10 @@
 ﻿using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 namespace FurnitureShop.Common.Extensions;
 
@@ -28,6 +30,15 @@ public static class ServiceCollectionExtensions
                 options.Password.RequireUppercase = false;
             })
             .AddEntityFrameworkStores<AppDbContext>();
+
+        collection.ConfigureApplicationCookie(options =>
+        {
+            options.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Task.CompletedTask;
+            };
+        });
     }
 
     public static void AddCorsPolicy(this IServiceCollection collection)
