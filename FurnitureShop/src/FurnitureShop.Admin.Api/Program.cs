@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using FurnitureShop.Admin.Api.Services;
 using FurnitureShop.Common.Extensions;
 using JFA.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -23,7 +24,6 @@ builder.Services.AddIdentityManagers();
 
 builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

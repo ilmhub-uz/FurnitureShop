@@ -5,12 +5,14 @@ using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace FurnitureShop.Admin.Api.Services
 {
+    [Scoped]
     public class UserService : IUserService
     {
         private readonly IUnitOfWork? unitOfWork;
@@ -22,7 +24,8 @@ namespace FurnitureShop.Admin.Api.Services
           var user = unitOfWork.AppUsers.GetById(userId);
             if (user is null)
                 throw new NotFoundException<AppUser>();
-            await unitOfWork.AppUsers.Remove(user); 
+            user.Status = EUserStatus.Deleted;
+          await unitOfWork.AppUsers.Update(user);
         }
 
         public async Task<UserView> GetUserById(Guid userId)
@@ -48,11 +51,12 @@ namespace FurnitureShop.Admin.Api.Services
                 };
             
             var data =  await query.ToPagedListAsync(userFilterDto);
+            if(data is null) new List<UserView>();
 
             return data.Adapt<List<UserView>>();
         }
-       
 
+        [HttpPut]
         public async Task UpdateUser(Guid userId, UpdateUserDto updateUserDto)
         {
             var user = unitOfWork.AppUsers.GetById(userId);
