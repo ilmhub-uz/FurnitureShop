@@ -28,10 +28,10 @@ namespace FurnitureShop.Admin.Api.Services
 
         public async Task<UserView> GetUserById(Guid userId)
         {
-            var userview = unitOfWork.AppUsers.Find(user => user.Id == userId).Adapt<UserView>();
-            if (userview is null)
+            var user = unitOfWork.AppUsers.GetById(userId);
+            if (user is null)
                 throw new NotFoundException<AppUser>();
-            return userview;
+            return user.Adapt<UserView>();
         }
 
         public async Task<List<UserView>> GetUsers(UserFilterDto userFilterDto)
@@ -54,7 +54,7 @@ namespace FurnitureShop.Admin.Api.Services
             return data.Adapt<List<UserView>>();
         }
 
-        [HttpPut]
+        
         public async Task UpdateUser(Guid userId, UpdateUserDto updateUserDto)
         {
             var user = unitOfWork.AppUsers.GetById(userId);
