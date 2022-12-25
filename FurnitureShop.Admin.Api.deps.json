@@ -9,6 +9,7 @@
       "FurnitureShop.Admin.Api/1.0.0": {
         "dependencies": {
           "FurnitureShop.Common": "1.0.0",
+          "Mapster": "7.3.0",
           "Microsoft.EntityFrameworkCore": "6.0.11",
           "Microsoft.EntityFrameworkCore.Design": "6.0.11",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.11",
