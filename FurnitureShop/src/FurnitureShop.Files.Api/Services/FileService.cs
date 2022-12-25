@@ -34,15 +34,14 @@ public class FileService : IFileService
 
     public async Task<FileContentResult?> GetUserAvatarAsync(string fileName)
     {
-        if (string.IsNullOrWhiteSpace(fileName))
-            return new FileContentResult(System.IO.File.ReadAllBytes(Path.Combine(new string[5] { "wwwroot", "Media", "User", "Images", "avatar.png" })), "image/png");
-
-        string contentType = string.Empty;
-        new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType);
-
-        string path = Path.Combine(new string[4] { "wwwroot", EFileType.Images.ToString(), EFileFolder.User.ToString(), fileName });
-
+        string path = Path.Combine(new string[4] { "wwwroot", EFileType.Images.ToString(), EFileFolder.User.ToString(), fileName ?? "avatar.png" });
         byte[] bytes = await System.IO.File.ReadAllBytesAsync(path);
+
+        if (string.IsNullOrWhiteSpace(fileName))
+            return new FileContentResult(bytes, "image/png");
+        
+        string contentType = string.Empty;
+        new FileExtensionContentTypeProvider().TryGetContentType(fileName, out contentType!);
 
         return new FileContentResult(bytes, contentType);
     }
