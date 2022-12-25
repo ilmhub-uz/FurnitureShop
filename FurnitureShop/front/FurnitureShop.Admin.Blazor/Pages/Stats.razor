@@ -1,5 +1,4 @@
-﻿@page "/dashboard"
-<PageTitle>Dashboard</PageTitle>
+﻿@page "/stats"
 
 @using Microsoft.AspNetCore.SignalR.Client
 
@@ -69,16 +68,16 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end"
                                      aria-labelledby="cardOpt3">
-                                    <a class="dropdown-item" href="/products">
+                                    <a class="dropdown-item" href="javascript:void(0);">
                                         View
                                         More
                                     </a>
-                                    <a class="dropdown-item" href="/edit">Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                 </div>
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Products</span>
-                        <h3 class="card-title mb-2">@Products</h3>
+                        <h3 class="card-title mb-2">@informations["productsCount"]</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i>
                             +72.80%
@@ -91,9 +90,8 @@
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <span class="badge bg-label-danger p-2"><i class='bx bx-buildings' ></i></span>
-                                @* <img src="/assets/img/icons/unicons/wallet-info.png"
-                                     alt="Credit Card" class="rounded" /> *@
+                                <img src="/assets/img/icons/unicons/wallet-info.png"
+                                     alt="Credit Card" class="rounded" />
                             </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" id="cardOpt6"
@@ -103,16 +101,16 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end"
                                      aria-labelledby="cardOpt6">
-                                    <a class="dropdown-item" href="/organizations">
+                                    <a class="dropdown-item" href="javascript:void(0);">
                                         View
                                         More
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                 </div>
                             </div>
                         </div>
-                        <span class="fw-semibold d-block mb-1">Organizations</span>
-                        <h3 class="card-title text-nowrap mb-1">@Organizations</h3>
+                        <span>Sales</span>
+                        <h3 class="card-title text-nowrap mb-1">$4,679</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i>
                             +28.42%
@@ -125,9 +123,8 @@
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <span class="badge bg-label-primary p-2"><i class='bx bx-category'></i></span>
-                                @* <img src="/assets/img/icons/unicons/paypal.png" alt="Credit Card"
-                                     class="rounded" /> *@
+                                <img src="/assets/img/icons/unicons/paypal.png" alt="Credit Card"
+                                     class="rounded" />
                             </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" id="cardOpt4"
@@ -137,16 +134,16 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end"
                                      aria-labelledby="cardOpt4">
-                                    <a class="dropdown-item" href="/categories">
+                                    <a class="dropdown-item" href="javascript:void(0);">
                                         View
                                         More
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                 </div>
                             </div>
                         </div>
-                        <span class="fw-semibold d-block mb-1">Categories</span>
-                        <h3 class="card-title text-nowrap mb-2">@Categories</h3>
+                        <span class="d-block mb-1">Payments</span>
+                        <h3 class="card-title text-nowrap mb-2">$2,456</h3>
                         <small class="text-danger fw-semibold">
                             <i class="bx bx-down-arrow-alt"></i>
                             -14.82%
@@ -159,9 +156,8 @@
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                                <span class="badge bg-label-warning p-2"><i class='bx bx-user'></i></span>
-                                @* <img src="/assets/img/icons/unicons/cc-primary.png"
-                                     alt="Credit Card" class="rounded" /> *@
+                                <img src="/assets/img/icons/unicons/cc-primary.png"
+                                     alt="Credit Card" class="rounded" />
                             </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" id="cardOpt1"
@@ -174,12 +170,12 @@
                                         View
                                         More
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                 </div>
                             </div>
                         </div>
-                        <span class="fw-semibold d-block mb-1">Users</span>
-                        <h3 class="card-title mb-2">15.000</h3>
+                        <span class="fw-semibold d-block mb-1">Transactions</span>
+                        <h3 class="card-title mb-2">$14,857</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i>
                             +28.14%
@@ -554,10 +550,12 @@
     <!--/ Transactions -->
 </div>
 <!-- / Content -->
+@*
 @code {
     private int Categories;
     private int Organizations;
     private int Products;
+
     private HubConnection? _hubConnection;
 
     protected override async Task OnInitializedAsync()
@@ -578,7 +576,7 @@
         Products = Product;
         StateHasChanged();
     }
-}
+}*@
 
 @code
 {
