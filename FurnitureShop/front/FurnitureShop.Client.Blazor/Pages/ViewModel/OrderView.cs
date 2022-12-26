@@ -1,5 +1,4 @@
 ﻿//using FurnitureShop.Data.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
 namespace FurnitureShop.Client.Blazor.Shared;
 
 public class OrderView
@@ -13,7 +12,7 @@ public class OrderView
     //public EOrderStatus Status { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    
+
     public DateTime? LastUpdatedAt { get; set; }
 
     public virtual ICollection<OrderProductView>? OrderProducts { get; set; }
