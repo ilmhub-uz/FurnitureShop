@@ -29,7 +29,8 @@ public class OrganizationService : IOrganizationService
 
     public async Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId)
     {
-        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
+        var organization = _unitOfWork.Organizations.GetById(organizationId);
+
         if (organization is null)
             throw new NotFoundException<Organization>();
 

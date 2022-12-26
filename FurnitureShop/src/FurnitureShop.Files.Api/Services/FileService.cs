@@ -31,7 +31,6 @@ public class FileService : IFileService
 
         return ToDto(savedFiles, filesType!, filesFolder!);
     }
-
     public async Task<FileContentResult> GetUserAvatarAsync(string? fileName)
     {
         string path = Path.Combine(new string[4] { "wwwroot", EFileType.Images.ToString(), EFileFolder.User.ToString(), fileName ?? "avatar.png" });
