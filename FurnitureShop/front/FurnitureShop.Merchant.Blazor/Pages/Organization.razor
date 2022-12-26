@@ -16,7 +16,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        organization = await GetOrganizationAsync(Id);
+        organization = await GetOrganizationAsync(id);
     }
 
     public async Task<OrganizationView?> GetOrganizationAsync(string organizationId)
@@ -26,5 +26,5 @@ else
 
 
     [Parameter]
-    public string Id { get; set; }
+    public string id { get; set; }
 }
