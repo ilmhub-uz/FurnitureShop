@@ -8,4 +8,5 @@ public interface IProductService
 {
     Task<List<ProductView>> GetProductsAsync(OrderDto orderDto);
     Task<ProductView> GetProductByIdAsync(Guid productId);
+    List<ProductView> GetProductsByCategoryId(int categoryId);
 }

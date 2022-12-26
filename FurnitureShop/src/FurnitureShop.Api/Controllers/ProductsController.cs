@@ -36,10 +36,12 @@ public partial class ProductsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<ProductView>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] OrderDto orderDto)
     => await _productService.GetProductsAsync(orderDto);
 
     [HttpGet("{productId:guid}")]
+    [ProducesResponseType(typeof(ProductView), StatusCodes.Status200OK)]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
     {
         var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
@@ -53,11 +55,16 @@ public partial class ProductsController : ControllerBase
 
         if (product.Rates is { Count: > 0 })
         {
-            productView.Rate = product.Rates.Select(t => (int)t).Sum() / product.Rates.Count();
+            productView.Rate = product.Rates.Select(t => (int)t).Sum() / product.Rates.Count;
         }
 
         await _context.SaveChangesAsync();
 
         return productView;
     }
+
+    [HttpGet("{categoryId:int}")]
+    [ProducesResponseType(typeof(List<ProductView>), StatusCodes.Status200OK)]
+    public ActionResult<List<ProductView>> GetProductsByCategoryId(int categoryId)
+        => _productService.GetProductsByCategoryId(categoryId);
 }

@@ -25,6 +25,6 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]
-    public async Task<ActionResult<OrganizationView>> GetOrganizationById(Guid organizationId) =>
-        await _organizationService.GetOrganizationByIdAsync(organizationId);
+    public ActionResult<OrganizationView> GetOrganizationById(Guid organizationId) =>
+        _organizationService.GetOrganizationById(organizationId);
 }

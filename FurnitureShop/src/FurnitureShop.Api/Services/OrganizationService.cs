@@ -27,7 +27,7 @@ public class OrganizationService : IOrganizationService
         return organizations.ToList().Adapt<List<OrganizationView>>();
     }
 
-    public async Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId)
+    public OrganizationView GetOrganizationById(Guid organizationId)
     {
         var organization = _unitOfWork.Organizations.GetById(organizationId);
 

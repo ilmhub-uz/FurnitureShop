@@ -43,4 +43,14 @@ public class ProductService : IProductService
 
         return existingProduct.Adapt<ProductView>();
     }
+
+    public List<ProductView> GetProductsByCategoryId(int categoryId)
+    {
+        var category = _unitOfWork.Categories.GetById(categoryId);
+
+        if (category is null)
+            throw new NotFoundException<Category>();
+
+        return category.Products?.ToList().Adapt<List<ProductView>>() ?? new List<ProductView>();
+    }
 }
