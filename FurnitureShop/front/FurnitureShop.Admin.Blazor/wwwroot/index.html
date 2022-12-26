@@ -24,7 +24,7 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <!--<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet">-->
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet">
     <link href="/assets/css/demo.css" rel="stylesheet">
 
     <!--<link href="assets/css/dashboard.custom.css" rel="stylesheet">-->
@@ -40,44 +40,43 @@
 
     <script src="/assets/js/config.js"></script>
 </head>
+    <body style="background-color: #f5f5f9;">
+        <div id="app"><div class="page-loader-component"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
 
-<body>
-    <div id="app"><div class="page-loader-component"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
-
-    <div id="blazor-error-ui" class="bs-toast toast fade show bg-danger" style="z-index: 99999; position: fixed; top: 20px; right: 21px;" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <i class="bx bx-bug-alt me-2"></i>
-            <div class="me-auto fw-semibold">System</div>
-            <small>11 mins ago</small>
-            <a class="dismiss btn-close" data-bs-dismiss="toast" aria-label="Close">&nbsp;</a>
+        <div id="blazor-error-ui" class="bs-toast toast fade show bg-danger" style="z-index: 99999; position: fixed; top: 20px; right: 21px;" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bx bx-bug-alt me-2"></i>
+                <div class="me-auto fw-semibold">System</div>
+                <small>11 mins ago</small>
+                <a class="dismiss btn-close" data-bs-dismiss="toast" aria-label="Close">&nbsp;</a>
+            </div>
+            <div class="toast-body">
+                An unhandled error has occurred.
+                <a href="" class="reload">Reload</a>
+            </div>
         </div>
-        <div class="toast-body">
-            An unhandled error has occurred.
-            <a href="" class="reload">Reload</a>
-        </div>
-    </div>
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <script>
-        Swal.bindClickHandler()
-        Swal.mixin({
-            toast: true,
-        }).bindClickHandler('data-swal-toast-template')
-    </script>
-    <script src="/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="/assets/vendor/libs/popper/popper.js"></script>
-    <script src="/assets/vendor/js/bootstrap.js"></script>
-    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <script>
+            Swal.bindClickHandler()
+            Swal.mixin({
+                toast: true,
+            }).bindClickHandler('data-swal-toast-template')
+        </script>
+        <script src="/assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="/assets/vendor/libs/popper/popper.js"></script>
+        <script src="/assets/vendor/js/bootstrap.js"></script>
+        <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="/assets/vendor/js/menu.js"></script>
-    <script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+        <script src="/assets/vendor/js/menu.js"></script>
+        <script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-    <script src="/assets/js/dashboards-analytics.js"></script>
+        <script src="/assets/js/dashboards-analytics.js"></script>
 
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-</body>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script src="_framework/blazor.webassembly.js"></script>
+        <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+    </body>
 
 </html>
