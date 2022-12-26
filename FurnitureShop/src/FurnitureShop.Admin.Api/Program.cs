@@ -23,7 +23,15 @@ builder.Services.AddIdentityManagers();
 
 builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
-
+builder.Services.AddCors(cors =>
+{
+    cors.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyHeader()
+        .AllowAnyOrigin()
+        .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
