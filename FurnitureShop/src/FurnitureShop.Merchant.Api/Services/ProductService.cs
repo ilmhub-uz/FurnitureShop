@@ -97,7 +97,7 @@ public class ProductService : IProductService
         if(existingProduct is null)
             throw new NotFoundException<Product>();
         
-        if(!existingProduct.Organization.Users.Any(u => u.UserId == userId))
+        if(!existingProduct.Organization!.Users!.Any(u => u.UserId == userId))
             throw new BadRequestException("You have no access to update the product");
 
         var organization = _unitOfWork.Organizations.GetById(dtoModel.OrganizationId);
@@ -134,5 +134,15 @@ public class ProductService : IProductService
         await _unitOfWork.Products.Update(existingProduct);
 
         return existingProduct.Adapt<ProductView>();
+    }
+
+    public async Task<ProductView> GetProductByNameAsync(string productName)
+    {
+        var product = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Name == productName);
+
+        if (product is null)
+            throw new NotFoundException<Product>();
+
+        return product.Adapt<ProductView>();
     }
 }
