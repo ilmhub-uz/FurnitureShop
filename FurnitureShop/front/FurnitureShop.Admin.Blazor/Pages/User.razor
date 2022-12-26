@@ -1,0 +1,30 @@
+﻿@page "/users"
+@using FurnitureShop.Admin.Blazor.Dtos
+@inject HttpClient Http;
+ 
+@if (_users is null)
+        {
+<p>user is not found</p>
+        }
+        else
+        {
+
+            foreach (var user in _users)
+            {
+             <p>Id: @user.Id</p>
+             <p>FirstName : @user.FirstName</p>
+             <p>UserName: @user.UserName</p>
+             <p>LastName: @user.LastName</p>
+             <p>Email: @user.Email</p>
+             <br />
+            }
+        }
+@code {
+    List<UserView>? _users = new List<UserView>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _users = await Http.GetFromJsonAsync<List<UserView>>("https://localhost:7237/api/Users");
+    }
+  
+}
