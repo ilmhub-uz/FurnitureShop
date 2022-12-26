@@ -1,8 +1,8 @@
 ﻿@using FurnitureShop.Admin.Blazor.Dtos
+@using System.Net;
 @inherits LayoutComponentBase
 @inject NavigationManager NavManager
-
-
+@inject HttpClient Http
 
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
@@ -20,7 +20,7 @@
                     <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
                         <div class="mb-2 mb-md-0">
                             ©
-                            , made with ❤️ by
+                            , made with 🧠 by 
                             <a href="https://ilmhub.uz" target="_blank"
                                class="footer-link fw-bolder">Ilmhub.uz Students</a>
                         </div>
@@ -39,41 +39,25 @@
                     </div>
                 </footer>
                 <!-- / Footer -->
-
                 <div class="content-backdrop fade"></div>
             </div>
             <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
     </div>
-
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
 </div>
-
-                            
 @code {
-    string? error = null;
-    protected void Redirect(string route = "/signin")
+    protected override async Task OnInitializedAsync()
     {
-        NavManager.NavigateTo(route);
-    }
-
-    private async Task OnValidSubmit()
-    {
-        var model = new GetUserAvatarDto();
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7237");
-        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/accounts/GetUserAvatar");
-        message.Content = JsonContent.Create(model);
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/profiles/check");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
         var responseMessage = await client.SendAsync(message);
-        //var status = responseMessage.StatusCode;
-        //if(status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
-        //    error = "10000400";
 
-        if (!responseMessage.IsSuccessStatusCode)
-            Redirect();
+        if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            NavManager.NavigateTo("/signin");
     }
 }
