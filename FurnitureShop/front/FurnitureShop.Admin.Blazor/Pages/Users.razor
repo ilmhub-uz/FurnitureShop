@@ -2,9 +2,9 @@
 @using FurnitureShop.Admin.Blazor.Dtos
 @inject HttpClient Http;
  
-@if (_users is null)
+@if(_users.Count <= 0)
     {
-      <p>user is not found</p>
+    <p>users does not exist</p>
     }
 else
     {
