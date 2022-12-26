@@ -2,7 +2,6 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FurnitureShop.Common.Extensions;
 using JFA.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,23 +14,13 @@ builder.Services.AddCorsPolicy();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 builder.Services.AddFluentValidationAutoValidation(o =>
 {
-    o.DisableDataAnnotationsValidation = false;
+    o.DisableDataAnnotationsValidation = true;
 });
 builder.Services.AddIdentityManagers();
 
-builder.Services.AddAppDbContext(builder.Configuration);
-builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
-builder.Services.AddCors(cors =>
-{
-    cors.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyHeader()
-        .AllowAnyOrigin()
-        .AllowAnyMethod();
-    });
-});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
