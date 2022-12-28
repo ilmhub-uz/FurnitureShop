@@ -1,10 +1,16 @@
-﻿@page "/organizations/{id}"
+﻿@page "/organizations/{Id}"
 @using FurnitureShop.Admin.Blazor.ViewModel
 @inject HttpClient http;
 
 @if (organization is not null)
 {
-    <h3>@organization.Name</h3>
+    <MudGrid Justify="Justify.Center">
+        <MudCard Height="420px" Width="460px" Class="mt-10">
+            <img src="@organization.ImageUrl" style="width:420px; height:350px;">
+            <h4>Name: @organization.Name</h4>
+            <h5>Status: @organization.Status</h5>
+        </MudCard>
+    </MudGrid>
 }
 else
 {
@@ -16,7 +22,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        organization = await GetOrganizationAsync(id);
+        organization = await GetOrganizationAsync(Id);
     }
 
     public async Task<OrganizationView?> GetOrganizationAsync(string organizationId)
@@ -26,5 +32,5 @@ else
 
 
     [Parameter]
-    public string id { get; set; }
+    public string Id { get; set; }
 }

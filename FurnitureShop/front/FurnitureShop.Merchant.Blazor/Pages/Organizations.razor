@@ -11,32 +11,20 @@
     foreach (var organization in organizations)
     {
         var organizationLink = $"/organizations/{organization.Id}";
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderAvatar>
-                    <MudAvatar Color="Color.Secondary">I</MudAvatar>
-                </CardHeaderAvatar>
-                <CardHeaderContent>
-                    <MudLink Href="@organizationLink">@organization.Name</MudLink>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardMedia Image="@organization.ImageUrl" Height="250" />
-            <MudCardContent>
-                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
-                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
-            </MudCardActions>
-        </MudCard>
+
+        <MudGrid Justify="Justify.SpaceBetween">
+            <MudCard Height="300px" Width="250px" Class="mt-5 ml-10 mr-10"> 
+                <MudLink Href="@organizationLink">
+                    <h4>@organization.Name</h4>
+                </MudLink>
+                <img src="@organization.ImageUrl" style="width:250px; height:250px;">
+            </MudCard>
+        </MudGrid>
     }
 }
 else
 {
-    <p> May be null</p>
+    <p> Model is null</p>
 }
 
 
