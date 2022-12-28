@@ -1,8 +1,22 @@
 ﻿@page "/create-organization"
+@using FurnitureShop.Admin.Blazor.Dtos
+@inject HttpClient _http;
 
-<PageTitle>Create Organization</PageTitle>
+<MudGrid Justify="Justify.Center">
+    <MudCard Height="200px" Width="370px" Class="mt-5 ml-10 mr-10">
+        <h2>Create Organization Form</h2>
+        <MudTextField @bind-Value="dtoModel.Name" Label="Organization Name" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="dtoModel.ImageUrl" Label="Organization Image" Variant="Variant.Text"></MudTextField>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Filled.Done"
+                   Color="Color.Primary" OnClick="OnInitializedAsync" Class="ma-2">Submit</MudButton>
+    </MudCard>
+</MudGrid>
 
-<h1>Create Organization Page</h1>
+@code {
+    CreateOrganizationDto dtoModel = new CreateOrganizationDto();
 
-
-
+    protected override async Task OnInitializedAsync()
+    {
+        var postResponse = await _http.PostAsJsonAsync("https://localhost:7113/api/Organizations", dtoModel);
+    }
+}
