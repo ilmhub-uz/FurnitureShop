@@ -1,7 +1,41 @@
-﻿@page "/products/{id}"
+﻿@page "/products/{Id}"
+@using FurnitureShop.Admin.Blazor.ViewModel
+@inject HttpClient _http;
 
-<h3>Product</h3>
+@if (product is not null)
+{
+    <MudGrid Justify="Justify.Center">
+        <MudCard Height="450px" Width="350px" Class="mt-5 ml-10 mr-10">
+            <MudImage Fluid="true" Src="https://i.pcmag.com/imagery/articles/03I4dUwc3pIRf5ylbLdQ3Mv-19..v1610462221.jpg"
+                  Class="rounded-lg mb-2" Height="200" />
+            <h3>@product.Name</h3>
+            <h5>Price: @product.Price$</h5>
+            <h5>Count: @product.Count</h5>
+            <h5>Description: @product.Description</h5>
+            <h5>Views: @product.Views</h5>
+            <h5>Organization: @product.Organization!.Name</h5>
+            <MudRating SelectedValue="4" />
+        </MudCard>
+    </MudGrid>
+}
+else
+{
+    <h2> Model is null</h2>
+}
 
 @code {
+    private ProductView? product;
 
+    protected override async Task OnInitializedAsync()
+    {
+        product = await GetProductByIdAsync(Id!);
+    }
+
+    public async Task<ProductView?> GetProductByIdAsync(string productId)
+    {
+        return await _http.GetFromJsonAsync<ProductView>($"https://localhost:7113/api/Products/{productId}");
+    }
+
+    [Parameter]
+    public string? Id { get; set; }
 }
