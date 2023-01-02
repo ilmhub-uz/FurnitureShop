@@ -63,6 +63,12 @@ strong {
     width: 100%;
 }
 
+.carousel_img {
+    height:375px;
+    width:100%;
+    border-radius:8px;
+}
+
 .db__bars-cell-bar {
     background-image: linear-gradient(var(--primary),var(--secondary),var(--tertiary));
     border-radius: 0.25em;
