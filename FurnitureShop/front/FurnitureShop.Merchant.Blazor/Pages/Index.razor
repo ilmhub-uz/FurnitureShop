@@ -70,7 +70,7 @@
 </svg>
 <main class="db">
     <div class="db__toolbar">
-        <h1 class="db__heading">Sales</h1>
+        <h1 class="db__heading">Sales statistics</h1>
         <div class="db__toolbar-btns">
             <button class="db__select" type="button">
                 <svg class="db__select-icon" width="24px" height="24px" aria-hidden="true">
@@ -305,29 +305,26 @@
         </table>
     </div>
     <div class="db__cell">
-        
-        @*<div class="db__bubbles">
-        <img src="https://c4.wallpaperflare.com/wallpaper/582/443/760/white-design-room-sofa-wallpaper-preview.jpg"
-        style="height:300px; width:100%"/>
-        </div>*@
-        <MudCarousel Class="mud-width-full" Style="height:380px;width:100%;" ShowArrows="@arrows" 
-        ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-            <MudCarouselItem Transition="transition" >
+        <MudCarousel Class="mud-width-full" Style="height:380px;width:100%;border-radius:8px;" ShowArrows="@arrows"
+                     ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+            <MudCarouselItem Transition="transition">
                 <div class="d-flex" style="height:100%">
-                    <img src="https://c4.wallpaperflare.com/wallpaper/582/443/760/white-design-room-sofa-wallpaper-preview.jpg"
-                    style="height:375px;width:100%;border-radius:8px;"/>
+                    <img src="https://c4.wallpaperflare.com/wallpaper/582/443/760/white-design-room-sofa-wallpaper-preview.jpg" class="carousel_img" />
                 </div>
             </MudCarouselItem>
             <MudCarouselItem Transition="transition">
                 <div class="d-flex" style="height:100%">
-                  <img src="https://w0.peakpx.com/wallpaper/18/944/HD-wallpaper-blue-living-room-blue-interior-modern-design-blue-walls-blue-sofas-creative-floor-lamp.jpg"
-                    style="height:375px;width:100%;border-radius:8px;"/>
+                    <img src="https://images6.alphacoders.com/103/1035008.jpg" class="carousel_img" />
                 </div>
             </MudCarouselItem>
             <MudCarouselItem Transition="transition">
                 <div class="d-flex" style="height:100%">
-                     <img src="https://images6.alphacoders.com/647/647568.jpg"
-                    style="height:375px;width:100%;border-radius:8px;"/>
+                    <img src="https://img5.goodfon.com/wallpaper/nbig/0/89/stil-interer-mebel-divan-gostinaia-style-interior-furniture.jpg" class="carousel_img"/>
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="transition">
+                <div class="d-flex" style="height:100%">
+                    <img src="https://images.wallpaperscraft.com/image/single/living_graphics_furniture_design_80100_3840x2400.jpg" class="carousel_img" />
                 </div>
             </MudCarouselItem>
         </MudCarousel>

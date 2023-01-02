@@ -11,7 +11,3 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();
-//https://codepen.io/aybukeceylan/pen/OJRNbZp
-//https://codepen.io/michaelmcshinsky/pen/vYMdrb
-//chart https://codepen.io/apexcharts/pen/pxZKqL
-//https://codepen.io/jkantner/pen/mdLXQPq
