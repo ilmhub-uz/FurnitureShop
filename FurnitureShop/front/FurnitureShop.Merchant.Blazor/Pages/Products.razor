@@ -9,15 +9,17 @@
     {
         var productLink = $"/products/{product.Id}";
 
-        <MudGrid Justify="Justify.SpaceBetween">
-            <MudCard Height="280px" Width="240px" Class="mt-5 ml-10 mr-10">
+        <MudGrid   Justify="Justify.SpaceAround">
+            <MudCard Height="310px" Width="240px" Class="mt-5 ml-10 mr-10">
                 <MudImage Fluid="true" Src="https://i.pcmag.com/imagery/articles/03I4dUwc3pIRf5ylbLdQ3Mv-19..v1610462221.jpg"
                   Class="rounded-lg mb-2" Height="150" />
                 <MudLink Href="@productLink">
                     <h5>@product.Name</h5>
                 </MudLink>
+                <h5>Organization: @product.Organization.Name</h5>
                 <h5>Price: @product.Price$</h5>
-                <h5>Count: @product.Count</h5>
+                <h6>Count: @product.Count</h6>
+                <h6>Views: @product.Views</h6>
                 <MudRating SelectedValue="4" />
             </MudCard>
         </MudGrid>
