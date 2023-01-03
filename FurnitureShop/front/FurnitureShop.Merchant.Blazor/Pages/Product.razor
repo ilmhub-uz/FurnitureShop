@@ -4,23 +4,82 @@
 
 @if (product is not null)
 {
-    <MudGrid Justify="Justify.Center">
-        <MudCard Height="450px" Width="350px" Class="mt-5 ml-10 mr-10">
-            <MudImage Fluid="true" Src="https://i.pcmag.com/imagery/articles/03I4dUwc3pIRf5ylbLdQ3Mv-19..v1610462221.jpg"
-                  Class="rounded-lg mb-2" Height="200" />
-            <h3>@product.Name</h3>
-            <h5>Price: @product.Price$</h5>
-            <h5>Count: @product.Count</h5>
-            <h5>Description: @product.Description</h5>
-            <h5>Views: @product.Views</h5>
-            <h5>Organization: @product.Organization!.Name</h5>
-            <MudRating SelectedValue="4" />
-        </MudCard>
-    </MudGrid>
+    <div class="productMainContainer">
+        <div id="container">
+            <div class="product-details">
+
+                <h1>@product.Name</h1>
+                <h5 style="color:#344055;"> Organization: @product.Organization.Name</h5>
+                <span class="hint-star star">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>
+                <p class="information">
+                    "@product.Description. Feel comfort with this product."
+                </p>
+
+                <div class="control" style="margin-top:60px;">
+
+                    <button class="btn">
+
+                        <span class="price">@product.Price $</span>
+
+                        <span class="shopping-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <span class="buy">Buy Now</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="product-image">
+
+                <img src="https://wallpaperaccess.com/full/2829006.jpg" alt="Omar Dsoky">
+
+            </div>
+        </div>
+    </div>
 }
 else
 {
-    <h2> Model is null</h2>
+    <h4>Model is null sample card is below</h4>
+    <div class="productMainContainer">
+        <div id="container">
+            <div class="product-details">
+
+                <h1>Trone Chair</h1>
+                <span class="hint-star star">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>
+                <p class="information">
+                    "German quality Trone Chair. Especially good for living rooms that can catch attention of your loved guests."
+                </p>
+
+                <div class="control">
+                    <button class="btn">
+
+                        <span class="price">1.200 $</span>
+
+                        <span class="shopping-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                        <span class="buy">Buy Now</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="product-image">
+
+                <img src="https://static5.depositphotos.com/1060649/531/i/950/depositphotos_5315433-stock-photo-royal-furniture-in-a-luxurious.jpg" alt="Omar Dsoky">
+
+            </div>
+        </div>
+    </div>
 }
 
 @code {
