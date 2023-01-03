@@ -17,6 +17,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var postResponse = await _http.PostAsJsonAsync("https://localhost:7113/api/Organizations", dtoModel);
+        await _http.PostAsJsonAsync("https://localhost:7113/api/Organizations", dtoModel);
     }
 }
