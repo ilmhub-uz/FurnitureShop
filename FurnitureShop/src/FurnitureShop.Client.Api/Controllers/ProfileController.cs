@@ -34,10 +34,16 @@ public class ProfileController : ControllerBase
 
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateUserDto updateUserDto)
+    public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserDto)
     {
         var user = await _userManager.GetUserAsync(User);
 
+        if (_userManager.Users.Any(u => u.UserName == updateUserDto.UserName))
+        {
+            return BadRequest("User with the username already exists");
+        }
+
+        user.UserName = updateUserDto.UserName;
         user.FirstName = updateUserDto.FirstName;
         user.LastName = updateUserDto.LastName;
         user.AvatarUrl = updateUserDto.Avatar;

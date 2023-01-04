@@ -36,7 +36,7 @@ public class AccountController : ControllerBase
     {
         if (_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
         {
-            return BadRequest("This username already exists");
+            return BadRequest("User with the username already exists");
         }
 
         var user = dtoModel.Adapt<AppUser>();
