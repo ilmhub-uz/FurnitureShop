@@ -4,6 +4,7 @@
 
 @if (product is not null)
 {
+    var productLink = $"/update-products/{Id}";
     <div class="productMainContainer">
         <div id="container">
             <div class="product-details">
@@ -22,9 +23,11 @@
                 </p><br>
 
                 <div>
-                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" 
-                    Color="Color.Error" OnClick="DeleteProduct">Delete</MudButton>
-                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete"
+                           Color="Color.Error" OnClick="DeleteProduct">Delete</MudButton>
+                    <MudLink Href="@productLink" Underline="Underline.None">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
+                    </MudLink>
                 </div>
 
             </div>
