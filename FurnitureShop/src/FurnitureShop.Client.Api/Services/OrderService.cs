@@ -8,6 +8,8 @@ using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using FurnitureShop.Common.Extensions;
 
 namespace FurnitureShop.Client.Api.Services;
 
@@ -23,13 +25,26 @@ public class OrderService : IOrderService
         _context = context;
     }
 
-    public async Task<OrderView> CreateOrder(CreateOrderDto createOrderDto)
+    public async Task<OrderView> CreateOrder(ClaimsPrincipal claims,CreateOrderDto createOrderDto)
     {
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        
         if (createOrderDto is null)
             throw new BadRequestException("createOrderDto is not null");
 
-        var newOrder = createOrderDto.Adapt<Order>();
+        var newOrder = new Order()
+        {
+            UserId = userId,
+            OrganizationId = createOrderDto.OrganizationId,
+            OrderProducts = createOrderDto.CartProductIds.Select(id => new OrderProduct()
+            {
+                ProductId = id.ProductId,
+                Count = id.Count,
+                Properties = id.Properties
+            }).ToList()
+        };
         await _context.Orders.AddAsync(newOrder);
+
         await _context.SaveChangesAsync();
 
         return newOrder.Adapt<OrderView>();
