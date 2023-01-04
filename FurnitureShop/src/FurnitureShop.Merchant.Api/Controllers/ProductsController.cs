@@ -97,7 +97,7 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete]
+    [HttpDelete("{productId:guid}")]
     [IdValidation]
     public async Task<IActionResult> DeleteProduct(Guid productId)
     {
