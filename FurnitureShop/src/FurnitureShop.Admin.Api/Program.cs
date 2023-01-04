@@ -18,14 +18,12 @@ builder.Services.AddServicesFromAttribute();
 builder.Services.AddSignalR();
 
 
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 builder.Services.AddFluentValidationAutoValidation(o =>
 {
-    o.DisableDataAnnotationsValidation = false;
+    o.DisableDataAnnotationsValidation = true;
 });
 builder.Services.AddIdentityManagers();
-
-builder.Services.AddAppDbContext(builder.Configuration);
-builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
 
@@ -35,6 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

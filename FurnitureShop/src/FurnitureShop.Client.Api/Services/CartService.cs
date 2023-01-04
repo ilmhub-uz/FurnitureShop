@@ -86,19 +86,24 @@ public class CartService : ICartService
         await _unitOfWork.Carts.Update(cart);
     }
 
-    public async Task<CartView> GetUserCart(PaginationParams paginationParams, ClaimsPrincipal claims)
+    public async Task<List<CartProductView>> GetUserCart(PaginationParams paginationParams, ClaimsPrincipal claims)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var cart = await _unitOfWork.Carts.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
         if (cart is null)
         {
-            throw new NotFoundException<Cart>();
+            cart = new Cart()
+            {
+                UserId = userId,
+            };
+
+            await _unitOfWork.Carts.AddAsync(cart);
         }
 
         var pagedList = cart.CartProducts?.AsQueryable().ToPagedList(paginationParams);
         cart.CartProducts ??= new List<CartProduct>();
+        var cartProductList = pagedList.Adapt<List<CartProductView>>();
 
-        var productPaged = pagedList.Adapt<List<CartProductView>>();
-        return cart.Adapt<CartView>();
+        return cartProductList;
     }
 }

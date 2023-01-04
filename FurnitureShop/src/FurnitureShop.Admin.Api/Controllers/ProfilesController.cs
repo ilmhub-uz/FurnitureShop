@@ -1,5 +1,6 @@
 using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
+using FurnitureShop.Common.Extensions;
 using FurnitureShop.Data.Entities;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
@@ -39,4 +40,13 @@ public class ProfilesController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("check")]
+    [Authorize]
+    public IActionResult IsAuthenticated()
+    {
+        if(User.Identity is null || User.Identity.IsAuthenticated == false)
+            return Unauthorized();
+        
+        return Ok();
+    }
 }

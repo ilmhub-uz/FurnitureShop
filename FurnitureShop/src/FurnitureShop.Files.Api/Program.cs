@@ -1,4 +1,6 @@
+using FurnitureShop.Common.Extensions;
 using FurnitureShop.Files.Api.Services;
+using JFA.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
+builder.Services.AddAppDbContext(builder.Configuration);
 
 var app = builder.Build();
 
@@ -18,7 +21,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

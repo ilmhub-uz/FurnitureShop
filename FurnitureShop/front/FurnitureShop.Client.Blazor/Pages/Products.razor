@@ -1,5 +1,6 @@
 ﻿@page "/products"
-@inject HttClient Http
+@using FurnitureShop.Client.Blazor.Shared
+@inject HttpClient Http;
 
 <PageTitle>Products</PageTitle>
 
@@ -21,11 +22,11 @@
 </MudCard>
 
 @code {
-    private List<ProductView> productViews;
+    private List<ProductView>? productViews;
     
-    protected override async Task OnInitialzedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        productViews = Http.GetFromJsonAsync<List<ProductView>("https://localhost:7235/api/Products");
+        productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7235/api/Products");
     }
 
     

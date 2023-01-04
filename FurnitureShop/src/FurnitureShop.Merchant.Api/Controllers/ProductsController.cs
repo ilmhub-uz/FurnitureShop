@@ -13,7 +13,7 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-[Authorize]
+//[Authorize]
 public partial class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
@@ -97,7 +97,7 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete]
+    [HttpDelete("{productId:guid}")]
     [IdValidation]
     public async Task<IActionResult> DeleteProduct(Guid productId)
     {

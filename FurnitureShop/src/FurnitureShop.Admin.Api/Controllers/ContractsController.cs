@@ -23,7 +23,6 @@ namespace FurnitureShop.Admin.Api.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateContract([FromQuery]Guid contractId, [FromBody]UpdateContractDto updateContractDto )
-
         {
             await _contractService.UpdateContract(contractId , updateContractDto);
             return Ok();
@@ -31,7 +30,6 @@ namespace FurnitureShop.Admin.Api.Controllers
 
         [HttpDelete]
         public async Task<IActionResult> DeleteContract([FromQuery]Guid contractId)
-
         {
             await _contractService.DeleteContract(contractId);
             return Ok();
