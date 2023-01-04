@@ -54,7 +54,9 @@ public static class ServiceCollectionExtensions
                                 "https://localhost:7019",
                                 "http://localhost:5285",
                                 "https://localhost:44398",
-                                 "https://localhost:5001")
+                                "https://localhost:5001",
+                                "https://localhost:5011",
+                                "https://localhost:44398")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
