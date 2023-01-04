@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Products</span>
-                        <h3 class="card-title mb-2">@Products</h3>
+                        <h3 class="card-title mb-2">@ProductsCount</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i>
                             +72.80%
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Organizations</span>
-                        <h3 class="card-title text-nowrap mb-1">@Organizations</h3>
+                        <h3 class="card-title text-nowrap mb-1">@OrganizationsCount</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i>
                             +28.42%
@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Categories</span>
-                        <h3 class="card-title text-nowrap mb-2">@Categories</h3>
+                        <h3 class="card-title text-nowrap mb-2">@CategoriesCount</h3>
                         <small class="text-danger fw-semibold">
                             <i class="bx bx-down-arrow-alt"></i>
                             -14.82%
@@ -179,7 +179,7 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Users</span>
-                        <h3 class="card-title mb-2">15.000</h3>
+                        <h3 class="card-title mb-2">@UsersCount</h3>
                         <small class="text-success fw-semibold">
                             <i class="bx bx-up-arrow-alt"></i>
                             +28.14%
@@ -555,9 +555,10 @@
 </div>
 <!-- / Content -->
 @code {
-    private int Categories;
-    private int Organizations;
-    private int Products;
+    private int CategoriesCount;
+    private int OrganizationsCount;
+    private int ProductsCount;
+    private int UsersCount;
     private HubConnection? _hubConnection;
 
     protected override async Task OnInitializedAsync()
@@ -566,16 +567,17 @@
             .WithUrl("https://localhost:7237/hub")
             .Build();
 
-        _hubConnection.On<int, int, int>(nameof(GetAllStatistcs), GetAllStatistcs);
+        _hubConnection.On<int, int, int, int>(nameof(GetAllStatistcs), GetAllStatistcs);
         await _hubConnection.StartAsync();
         await _hubConnection.InvokeAsync("GetAllStatistcs");
     }
 
-    private async Task GetAllStatistcs(int Category, int Organization, int Product)
+    private async Task GetAllStatistcs(int categorysCount, int organizationsCount, int productsCount, int usersCount)
     {
-        Categories = Category;
-        Organizations = Organization;
-        Products = Product;
+        CategoriesCount = categorysCount;
+        OrganizationsCount = organizationsCount;
+        ProductsCount = productsCount;
+        UsersCount = usersCount;
         StateHasChanged();
     }
 }

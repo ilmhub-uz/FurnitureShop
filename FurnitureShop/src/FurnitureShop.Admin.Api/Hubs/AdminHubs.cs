@@ -10,21 +10,19 @@ namespace FurnitureShop.Admin.Api.Hubs;
 public class AdminHubs : Hub
 {
     private readonly AppDbContext context;
-    private List<Category> Categoryes;  
-    private List<Organization> Organizations;  
-    private List<Product> Products;
 
     public AdminHubs(AppDbContext context)
     {
         this.context = context;
-        Categoryes = this.context.Categories.ToList();
-        Organizations = this.context.Organizations.ToList();
-        Products = this.context.Products.ToList();
     }
 
     [Authorize]
     public async Task GetAllStatistcs()
     {
-        await Clients.All.SendAsync(nameof(GetAllStatistcs), Categoryes.Count, Organizations.Count, Products.Count);
+        var categorysCount = context.Categories.Count();
+        var organizationsCount = context.Organizations.Count();
+        var productsCount = context.Products.Count();
+        var usersCount = context.Users.Count();
+        await Clients.All.SendAsync(nameof(GetAllStatistcs), categorysCount, organizationsCount, productsCount, usersCount);
     }
 }
