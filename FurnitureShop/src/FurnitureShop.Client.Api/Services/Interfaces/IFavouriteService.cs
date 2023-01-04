@@ -7,7 +7,7 @@ namespace FurnitureShop.Client.Api.Services.Interfaces;
 
 public interface IFavouriteService
 {
-    Task<FavouriteView> GetUserFavourite(PaginationParams paginationParams, ClaimsPrincipal claims);
+    Task<List<FavouriteProductView>> GetUserFavourite(PaginationParams paginationParams, ClaimsPrincipal claims);
     Task AddToFavourite(ClaimsPrincipal claims, CreateFavouriteDto createFavouriteDto);
     Task DeleteFromFavouriteProductById(ClaimsPrincipal claims, Guid productId);
     Task DeleteFromFavouriteAllProducts(ClaimsPrincipal claims);

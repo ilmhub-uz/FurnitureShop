@@ -25,6 +25,7 @@ public class ProfileController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(UserView), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UserProfile()
     {
         var user = await _userManager.GetUserAsync(User);
