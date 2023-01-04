@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Manager
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -8,6 +9,7 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Login" OnClick="Navigate" />
         <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
     </MudAppBar>
@@ -30,5 +32,9 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+    void Navigate()
+    {
+        Manager.NavigateTo("/Login");
     }
 }
