@@ -2,7 +2,7 @@
 @using FurnitureShop.Client.Api.Dtos;
 @inject NavigationManager NavManager
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Login</PageTitle>
 
 <div style="margin:auto; position:relative;">
     <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
@@ -10,7 +10,7 @@
     <MudButton Style="width:300px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
 </div>
 @code {
-    RegisterUserDto model = new RegisterUserDto();
+    LoginUserDto model = new LoginUserDto();
 
 
     protected void Redirect(string s = "/profile")
@@ -20,9 +20,9 @@
     private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7113");
+        client.BaseAddress = new Uri("https://localhost:7148");
 
-        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signup");
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signin");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
