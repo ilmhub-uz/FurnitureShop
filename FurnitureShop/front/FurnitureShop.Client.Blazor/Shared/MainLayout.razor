@@ -7,12 +7,10 @@
 <MudLayout>
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Style="width:150px">Furnitures</MudText>
-        <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Style="color:white; width:720px; height:48px"/>
-        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Style="color:white" Link="https://furnitures.uz/favorites"></MudIconButton>
-        <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Style="color:white" Link="https://furnitures.uz/cart"></MudIconButton>
-        <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Style="color:white" Link="https://furnitures.uz/favorites"></MudIconButton>
-        <MudIconButton Icon="@Icons.Material.Filled.Language" Style="color:white"></MudIconButton>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Login" />
+        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
