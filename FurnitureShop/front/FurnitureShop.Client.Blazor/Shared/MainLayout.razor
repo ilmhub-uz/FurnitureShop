@@ -14,9 +14,10 @@
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">FurnitureShop.Client.Blazor</MudText>
+            <MudText Typo="Typo.h6">Client</MudText>
         </MudDrawerHeader>
         <NavMenu />
+
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
@@ -28,6 +29,7 @@
 @code {
     bool _drawerOpen = true;
 
+    public string Search { get; set; }
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
