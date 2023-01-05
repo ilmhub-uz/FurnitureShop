@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace FurnitureShop.Client.Api.Dtos;
 
 public class RegisterUserDto
@@ -19,6 +17,6 @@ public class RegisterUserDto
 
     public string? Email { get; set; }
 
-    public IFormFile? Avatar { get; set; }
+    //public IFormFile? Avatar { get; set; }
 
 }
