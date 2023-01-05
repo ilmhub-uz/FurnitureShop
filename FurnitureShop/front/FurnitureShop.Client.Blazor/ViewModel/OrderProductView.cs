@@ -1,7 +1,7 @@
 ﻿//using FurnitureShop.Data.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FurnitureShop.Client.Blazor.Shared;
+namespace FurnitureShop.Client.Blazor.ViewModel;
 
 public class OrderProductView
 {
