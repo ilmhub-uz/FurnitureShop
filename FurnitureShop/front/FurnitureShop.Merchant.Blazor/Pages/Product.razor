@@ -4,6 +4,7 @@
 
 @if (product is not null)
 {
+    var productLink = $"/update-products/{Id}";
     <div class="productMainContainer">
         <div id="container">
             <div class="product-details">
@@ -19,17 +20,14 @@
                 </span>
                 <p class="information">
                     "@product.Description. Feel comfort with this product."
-                </p>
+                </p><br>
 
-                <div class="control" style="margin-top:60px;">
-
-                    <button class="btn">
-
-                        <span class="price">@product.Price $</span>
-
-                        <span class="shopping-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-                        <span class="buy">Buy Now</span>
-                    </button>
+                <div>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete"
+                           Color="Color.Error" OnClick="DeleteProduct">Delete</MudButton>
+                    <MudLink Href="@productLink" Underline="Underline.None">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
+                    </MudLink>
                 </div>
 
             </div>
@@ -59,23 +57,18 @@ else
                 </span>
                 <p class="information">
                     "German quality Trone Chair. Especially good for living rooms that can catch attention of your loved guests."
-                </p>
+                </p><br>
 
-                <div class="control">
-                    <button class="btn">
-
-                        <span class="price">1.200 $</span>
-
-                        <span class="shopping-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-                        <span class="buy">Buy Now</span>
-                    </button>
+                <div>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
                 </div>
 
             </div>
 
             <div class="product-image">
 
-                <img src="https://static5.depositphotos.com/1060649/531/i/950/depositphotos_5315433-stock-photo-royal-furniture-in-a-luxurious.jpg" alt="Omar Dsoky">
+                <img src="https://static5.depositphotos.com/1060649/531/i/950/depositphotos_5315433-stock-photo-royal-furniture-in-a-luxurious.jpg" alt="Chair">
 
             </div>
         </div>
@@ -93,6 +86,11 @@ else
     public async Task<ProductView?> GetProductByIdAsync(string productId)
     {
         return await _http.GetFromJsonAsync<ProductView>($"https://localhost:7113/api/Products/{productId}");
+    }
+
+    public async Task DeleteProduct()
+    {
+        await _http.DeleteAsync($"https://localhost:7113/api/Products/{Id}");
     }
 
     [Parameter]

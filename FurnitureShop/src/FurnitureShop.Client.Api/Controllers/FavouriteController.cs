@@ -8,53 +8,47 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace FurnitureShop.Client.Api.Controllers
+namespace FurnitureShop.Client.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class FavouriteController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FavouriteController : ControllerBase
+    private readonly IFavouriteService _favouriteService;
+
+
+    public FavouriteController(IFavouriteService favouriteService)
     {
-        private readonly IFavouriteService _favouriteService;
-
-
-        public FavouriteController(IFavouriteService favouriteService)
-        {
-            _favouriteService = favouriteService;
-        }
-
-
-
-        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
-        [HttpGet]
-        public async Task<ActionResult<FavouriteView>> GetUserFavourite([FromQuery] PaginationParams paginationParams)
-        {
-            return Ok(await _favouriteService.GetUserFavourite(paginationParams, User));
-        }
-
-        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
-        [HttpPost]
-        public async Task<ActionResult<FavouriteView>> AddToFavourite(CreateFavouriteDto dtoModel)
-        {
-            await _favouriteService.AddToFavourite(User, dtoModel);
-            return Ok();
-        }
-
-
-        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
-        [HttpDelete]
-        public async Task<ActionResult<FavouriteView>> DeleteFromFavouriteAllProducts()
-        {
-            await _favouriteService.DeleteFromFavouriteAllProducts(User);
-            return Ok();
-        }
-
-        [ProducesResponseType(typeof(FavouriteView), StatusCodes.Status200OK)]
-        [HttpDelete("{productId}")]
-        public async Task<ActionResult<FavouriteView>> DeleteFromCartProductById(Guid productId)
-        {
-            await _favouriteService.DeleteFromFavouriteProductById(User, productId);
-            return Ok();
-        }
-
+        _favouriteService = favouriteService;
     }
+
+    [ProducesResponseType(typeof(List<FavouriteProductView>), StatusCodes.Status200OK)]
+    [HttpGet]
+    public async Task<IActionResult> GetUserFavourite([FromQuery] PaginationParams paginationParams)
+    {
+        return Ok(await _favouriteService.GetUserFavourite(paginationParams, User));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddToFavourite(CreateFavouriteDto dtoModel)
+    {
+        await _favouriteService.AddToFavourite(User, dtoModel);
+        return Ok();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteFromFavouriteAllProducts()
+    {
+        await _favouriteService.DeleteFromFavouriteAllProducts(User);
+        return Ok();
+    }
+
+    [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
+    [HttpDelete("{productId}")]
+    public async Task<IActionResult> DeleteFromCartProductById(Guid productId)
+    {
+        await _favouriteService.DeleteFromFavouriteProductById(User, productId);
+        return Ok();
+    }
+
 }

@@ -1,0 +1,29 @@
+﻿@page "/update-products/{Id}"
+@inject HttpClient _http;
+@using FurnitureShop.Admin.Blazor.Dtos
+
+<MudGrid Justify="Justify.Center">
+    <MudCard Height="450px" Width="480px" Class="mt-5 ml-10 mr-10">
+        <h2>Update Product Form</h2>
+        <MudTextField @bind-Value="dtoModel.Name" Label="Name" Variant="Variant.Text" Required></MudTextField>
+        <MudTextField @bind-Value="dtoModel.Description" Label="Desciption" Variant="Variant.Text" Required></MudTextField>
+        <MudTextField @bind-Value="dtoModel.Price" Label="Price" Variant="Variant.Text" Required></MudTextField>
+        <MudTextField @bind-Value="dtoModel.Count" Label="Count" Variant="Variant.Text" Required></MudTextField>
+        <MudTextField @bind-Value="dtoModel.CategoryId" Label="Category id" Variant="Variant.Text" Required></MudTextField>
+        <MudTextField @bind-Value="dtoModel.OrganizationId" Label="Organization id" Variant="Variant.Text" Required></MudTextField>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Filled.Done"
+                   Color="Color.Primary" OnClick="OnInitializedAsync" Class="ma-5">Submit</MudButton>
+    </MudCard>
+</MudGrid>
+
+@code {
+    private UpdateProductDto dtoModel = new UpdateProductDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _http.PutAsJsonAsync($"https://localhost:7113/api/Products/{Id}", dtoModel);
+    }
+
+    [Parameter]
+    public string? Id { get; set; }
+}

@@ -19,7 +19,7 @@ public class OrdersController : ControllerBase
 
     [HttpPost]
     public async Task<ActionResult<OrderView>> CreateOrder([FromBody] CreateOrderDto createOrderDto) =>
-        await _orderService.CreateOrder(createOrderDto);
+        await _orderService.CreateOrder(User,createOrderDto);
 
     [HttpGet]
     public async Task<ActionResult<List<OrderView>>> GetOrders() => 

@@ -94,8 +94,6 @@ public class ProductService : IProductService
         var userId = Guid.Parse(principal.GetUserId());
 
         var existingProduct = _unitOfWork.Products.GetById(productId);
-        if(existingProduct is null)
-            throw new NotFoundException<Product>();
         
         if(!existingProduct.Organization.Users.Any(u => u.UserId == userId))
             throw new BadRequestException("You have no access to update the product");
@@ -114,7 +112,17 @@ public class ProductService : IProductService
         if (dtoModel.Price <= 0)
             throw new BadRequestException("Product price was entered incorrectly") { ErrorCode = StatusCodes.Status400BadRequest };
 
-        existingProduct = dtoModel.Adapt<Product>();
+        existingProduct.Name = dtoModel.Name;
+        existingProduct.Description = dtoModel.Description;
+        existingProduct.WithInstallation = dtoModel.WithInstallation;
+        existingProduct.Brend = dtoModel.Brend;
+        existingProduct.Material = dtoModel.Material;
+        existingProduct.Properties = dtoModel.Properties;
+        existingProduct.Price = dtoModel.Price;
+        existingProduct.IsAvailable = dtoModel.IsAvailable;
+        existingProduct.Count = dtoModel.Count;
+        existingProduct.CategoryId = dtoModel.CategoryId;
+        existingProduct.OrganizationId = dtoModel.OrganizationId;
 
         await _unitOfWork.Products.Update(existingProduct);
     }

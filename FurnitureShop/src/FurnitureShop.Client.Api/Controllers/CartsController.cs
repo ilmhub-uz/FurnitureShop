@@ -23,16 +23,18 @@ public class CartsController : ControllerBase
         _createUserValidator = createUserValidator;
     }
 
-    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<CartProductView>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpGet]
-    public async Task<ActionResult<CartView>> GetUserCart([FromQuery] PaginationParams paginationParams)
+    public async Task<IActionResult> GetUserCart([FromQuery] PaginationParams paginationParams)
     {
         return Ok(await _cartService.GetUserCart(paginationParams, User));
     }
 
-    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpPost]
-    public async Task<ActionResult<CartView>> AddToCart(CreateCartProductDto createCartDto)
+    public async Task<IActionResult> AddToCart(CreateCartProductDto createCartDto)
     {
         var result = _createUserValidator.Validate(createCartDto);
 
@@ -43,17 +45,19 @@ public class CartsController : ControllerBase
         return Ok();
     }
 
-    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpDelete("{productId}")]
-    public async Task<ActionResult<CartView>> DeleteFromCartProductById(Guid productId)
+    public async Task<IActionResult> DeleteFromCartProductById(Guid productId)
     {
         await _cartService.DeleteCartProductById(User, productId);
         return Ok();
     }
 
-    [ProducesResponseType(typeof(CartView), StatusCodes.Status200OK)]
-    [HttpDelete()]
-    public async Task<ActionResult<CartView>> DeleteFromCartAllProducts()
+    [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteFromCartAllProducts()
     {
         await _cartService.DeletCartAllProducts(User);
         return Ok();

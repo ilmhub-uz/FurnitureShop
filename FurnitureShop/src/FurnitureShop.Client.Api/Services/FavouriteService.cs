@@ -93,19 +93,24 @@ public class FavouriteService : IFavouriteService
 
     }
 
-    public async Task<FavouriteView> GetUserFavourite(PaginationParams paginationParams, ClaimsPrincipal claims)
+    public async Task<List<FavouriteProductView>> GetUserFavourite(PaginationParams paginationParams, ClaimsPrincipal claims)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var favourite = await _unitOfWork.Favorites.GetAll().FirstOrDefaultAsync(c => c.UserId == userId);
         if (favourite is null)
         {
-            throw new NotFoundException<Cart>();
+            favourite = new Favourite()
+            {
+                UserId = userId
+            };
+
+            await _unitOfWork.Favorites.AddAsync(favourite);
         }
 
         var pagedList = favourite.FavouriteProducts?.AsQueryable().ToPagedList(paginationParams);
         favourite.FavouriteProducts ??= new List<FavouriteProduct>();
 
         var productPaged = pagedList.Adapt<List<FavouriteProductView>>();
-        return favourite.Adapt<FavouriteView>();
+        return productPaged;
     }
 }
