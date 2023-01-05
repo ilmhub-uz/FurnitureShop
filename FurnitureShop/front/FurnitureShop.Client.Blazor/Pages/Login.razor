@@ -1,0 +1,35 @@
+﻿@page "/login"
+@using FurnitureShop.Client.Api.Dtos;
+@inject NavigationManager NavManager
+
+<PageTitle>Login</PageTitle>
+
+<div style="margin:auto; position:relative;">
+    <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+    <MudTextField Style="width:300px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
+    <MudButton Style="width:300px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+</div>
+@code {
+    LoginUserDto model = new LoginUserDto();
+
+
+    protected void Redirect(string s = "/profile")
+    {
+        NavManager.NavigateTo(s);
+    }
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7148");
+
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signin");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var result = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        if (result is not null)
+        {
+            Redirect();
+        }
+    }
+}

@@ -4,13 +4,40 @@
 
 @if (organization is not null)
 {
-    <MudGrid Justify="Justify.Center">
-        <MudCard Height="420px" Width="460px" Class="mt-10">
-            <img src="@organization.ImageUrl" style="width:420px; height:350px;">
-            <h4>Name: @organization.Name</h4>
-            <h5>Status: @organization.Status</h5>
-        </MudCard>
-    </MudGrid>
+    var organizationLinkToUpdate = $"/update-organizations/{Id}";
+    <div class="productMainContainer">
+        <div id="container">
+            <div class="product-details">
+
+                <h1>@organization.Name</h1>
+                <span class="hint-star star">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                </span>
+                <p class="information">
+                    "@organization.. Feel comfort with this product."
+                </p><br>
+
+                <div>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete"
+                           Color="Color.Error" OnClick="DeleteOrganization">Delete</MudButton>
+                    <MudLink Href="@organizationLinkToUpdate" Underline="Underline.None">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
+                    </MudLink>
+                </div>
+
+            </div>
+
+            <div class="product-image">
+
+                <img src="@organization.ImageUrl" alt="Omar Dsoky">
+
+            </div>
+        </div>
+    </div>
 }
 else
 {
@@ -28,6 +55,11 @@ else
     public async Task<OrganizationView?> GetOrganizationAsync(string organizationId)
     {
         return await http.GetFromJsonAsync<OrganizationView>($"https://localhost:7113/api/Organizations/{organizationId}");
+    }
+
+    public async Task DeleteOrganization()
+    {
+        await http.DeleteAsync($"https://localhost:7113/api/Organizations/{Id}");
     }
 
 
