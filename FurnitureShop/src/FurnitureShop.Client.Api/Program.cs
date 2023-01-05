@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
-builder.Services.AddCors();
+builder.Services.AddCorsPolicy();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();

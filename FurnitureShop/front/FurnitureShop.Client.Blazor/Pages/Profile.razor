@@ -1,0 +1,51 @@
+﻿@page "/profile"
+@inject HttpClient Http
+@using FurnitureShop.Client.Blazor.ViewModel;
+@using Newtonsoft.Json;
+@using System.Text;
+@using System.Net.Http.Headers;
+@using System.Net;
+<h3>Profile</h3>
+@{
+    string url = $"https://localhost:7019/api/Files/users/avatar?userId={user!.Id}";
+}
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            <MudAvatar Image=@url Color="Color.Success" Variant="Variant.Outlined">U</MudAvatar>
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body1">@user.UserName</MudText>
+            <MudText Typo="Typo.body2">@user.Email</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body1"><b>FirstName: </b>@user.FirstName</MudText>
+        <MudText Typo="Typo.body1"><b>LastName: </b>@user.LastName</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" DisableElevation="true">Edit</MudButton>
+    </MudCardActions>
+</MudCard>
+@code {
+    UserView? user = new UserView();
+    HttpStatusCode? responseCode;
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7148");
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/Account/sign-in");
+        message.Content = JsonContent.Create(new TempData("Ashot","qwerty123"));
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var response = await client.SendAsync(message);
+        responseCode = response.StatusCode;
+
+        //user = await Http.GetFromJsonAsync<UserView?>("https://localhost:7148/api/Profile");
+        var getMessage = new HttpRequestMessage(HttpMethod.Get, "/api/Profile");
+        getMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var profileJson = await (await client.SendAsync(getMessage)).Content.ReadAsStringAsync();
+        user = JsonConvert.DeserializeObject<UserView>(profileJson);
+    }
+
+    public record TempData(string userName,string password);
+}

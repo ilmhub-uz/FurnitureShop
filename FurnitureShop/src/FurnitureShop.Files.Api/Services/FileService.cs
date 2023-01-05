@@ -34,6 +34,9 @@ public class FileService : IFileService
     public async Task<FileContentResult> GetUserAvatarAsync(string? fileName)
     {
         string path = Path.Combine(new string[4] { "wwwroot", EFileType.Images.ToString(), EFileFolder.User.ToString(), fileName ?? "avatar.png" });
+        if (!File.Exists(path))
+            return new FileContentResult(await System.IO.File.ReadAllBytesAsync(Path.Combine(new string[4] { "wwwroot", EFileType.Images.ToString(), EFileFolder.User.ToString(), "avatar.png" })), "image/png");
+        
         byte[] bytes = await System.IO.File.ReadAllBytesAsync(path);
 
         if (string.IsNullOrWhiteSpace(fileName))
