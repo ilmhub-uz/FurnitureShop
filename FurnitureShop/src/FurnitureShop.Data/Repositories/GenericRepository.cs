@@ -29,7 +29,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         await DbSet.AddRangeAsync(entities);
 
         await _context.SaveChangesAsync();
-    }
+    }   
 
     public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression)
         => DbSet.Where(expression);
