@@ -7,11 +7,12 @@
 <MudLayout>
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.AddShoppingCart" />
-        <MudIconButton Icon="@Icons.Material.Filled.Bookmark" />
-        <MudIconButton Href="/login" Icon="@Icons.Material.Filled.Login" />
-        <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" />
+        <MudText Typo="Typo.h5" Style="width:150px">Furnitures</MudText>
+        <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Style="color:white; width:720px; height:48px"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Style="color:white" Link="/"></MudIconButton>
+        <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Style="color:white" Link="/"></MudIconButton>
+        <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Style="color:white" Link="https://localhost:44398/profile"></MudIconButton>
+        <MudIconButton Icon="@Icons.Material.Filled.Language" Style="color:white"></MudIconButton>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
@@ -21,7 +22,7 @@
 
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-2 pt-2">
             @Body
         </MudContainer>
     </MudMainContent>

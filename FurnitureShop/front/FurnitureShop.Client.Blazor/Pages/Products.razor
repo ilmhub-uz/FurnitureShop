@@ -1,34 +1,45 @@
-﻿@page "/products"
-@using FurnitureShop.Client.Blazor.Shared
+﻿@page "/"
 @using FurnitureShop.Client.Blazor.ViewModel;
 @inject HttpClient Http;
 
-<PageTitle>Products</PageTitle>
+@if(productViews is  null)
+{
+    <MudText>Products</MudText>
+}
 
-<MudText Typo="Typo.h3" GutterBottom="true">Products</MudText>
-@* Products da productlarni rasmi, nomi, kichik descriptioni, narxi,
-    2 ta button (- va +) agar productni bosganda boshqa page ochilib propertiylarini ham ko`rsatsin. *@
+<h3 class="mb-5">Products</h3>
 
-<MudCard>
-    <MudCardMedia Src="https://www.apple.com/uz/iphone/home/images/meta/iphone__btp62hy2cbea_og.png" Height="200" Style="width: 100%" />
-    <MudCardContent>
-        <MudText Typo="Typo.h5">Old Paint</MudText>
-        <MudText Typo="Typo.body2">Old paint found on a stone house door.</MudText>
-        <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-    </MudCardActions>
-</MudCard>
+<div class="row mt-1" style="display: flex; flex-wrap:wrap; justify-content: flex-start">
+    @foreach (var prodGroup in productViews?? new List<ProductView>())
+    {
+        <div class="col-md-3 mb-2" style="border: 1px solid black; margin-right:20px;">
+
+            <a href="/">
+                <div class="card">
+                    <img class="img-thumbnail" style="border-bottom:1px solid black;" src="images/Furniture3.png" height="200" width="250">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            @prodGroup.Name
+                        </h5>
+                        <p class="card-text">
+                            <b>@prodGroup.Price</b>
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    }
+</div>
+<hr class="mb-3" />
+
+
+
 
 @code {
-    private List<ProductView>? productViews;
-    
+    private IEnumerable<ProductView>? productViews;
     protected override async Task OnInitializedAsync()
     {
-        productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7235/api/Products");
+        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("https://localhost:7148/api/Products");
     }
-
-    
 }

@@ -1,8 +1,9 @@
-﻿@using FurnitureShop.Client.Blazor.Dtos;
+@using FurnitureShop.Client.Blazor.Dtos;
 @using Newtonsoft.Json;
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Account</MudNavLink>
+
     <MudListSubheader Href="categories" Match="NavLinkMatch.Prefix" >Categories</MudListSubheader>
     <MudNavGroup Icon="@Icons.Material.Filled.Category" Title="Categories">
         @foreach (var category in categories)
@@ -83,3 +84,4 @@
         categories = JsonConvert.DeserializeObject<List<CategoryView>>(profileJson);
     }
 }
+</MudNavMenu>
