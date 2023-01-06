@@ -1,4 +1,4 @@
-﻿@page "/products"
+﻿@page "/"
 @using FurnitureShop.Client.Blazor.ViewModel;
 @inject HttpClient Http;
 
@@ -9,14 +9,14 @@
 
 <h3 class="mb-5">Products</h3>
 
-<div class="row mt-3" style="display: flex; flex-wrap:wrap; justify-content:space-between;">
+<div class="row mt-1" style="display: flex; flex-wrap:wrap; justify-content: flex-start">
     @foreach (var prodGroup in productViews?? new List<ProductView>())
     {
-        <div class="col-md-3 mb-2" style="border: 1px solid black;">
+        <div class="col-md-3 mb-2" style="border: 1px solid black; margin-right:20px;">
 
             <a href="/">
                 <div class="card">
-                    <img class="img-thumbnail" style="border-bottom:1px solid black;" src="images/Furniture3.png" height="200" width="300">
+                    <img class="img-thumbnail" style="border-bottom:1px solid black;" src="images/Furniture3.png" height="200" width="250">
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             @prodGroup.Name
@@ -42,6 +42,4 @@
     {
         productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("https://localhost:7148/api/Products");
     }
-
-
 }
