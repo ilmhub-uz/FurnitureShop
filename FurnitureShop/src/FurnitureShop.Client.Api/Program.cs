@@ -13,18 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(o =>
-{
-    o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-
 builder.Services.AddCorsPolicy();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
 builder.Services.AddServicesFromAttribute();
-
+builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddFluentValidationAutoValidation(o =>
 {
     o.DisableDataAnnotationsValidation = false;

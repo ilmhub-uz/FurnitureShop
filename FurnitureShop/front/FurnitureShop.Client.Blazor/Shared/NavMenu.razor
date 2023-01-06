@@ -1,66 +1,27 @@
 @using FurnitureShop.Client.Blazor.Dtos;
 @using Newtonsoft.Json;
+@inject HttpClient Http;
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Account</MudNavLink>
 
-    <MudListSubheader Href="categories" Match="NavLinkMatch.Prefix" >Categories</MudListSubheader>
+    <MudListSubheader Href="categories" Match="NavLinkMatch.Prefix">Categories</MudListSubheader>
     <MudNavGroup Icon="@Icons.Material.Filled.Category" Title="Categories">
-        @foreach (var category in categories)
+        @if(categories is null)
         {
-            <MudNavLink Href="/@category.Name">@category.Name</MudNavLink>
+            <MudNavLink Href="/security">Security</MudNavLink>
         }
-        <MudNavLink Href="/security">Security</MudNavLink>
+        else
+        {
+            @foreach (var category in categories ?? new List<CategoryView>())
+            {
+                <MudNavLink Href="@category.Name"><img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24"/>
+                @category.Name
+                </MudNavLink>
+            }           
+        }
     </MudNavGroup>
-    <MudNavLink Href="sofas" Match="NavLinkMatch.Prefix">
-        <img src="https://cdn-icons-png.flaticon.com/512/2361/2361624.png" width="24" height="24" /> Sofas
-    </MudNavLink>
-
-    <MudNavLink Href="beds" Match="NavLinkMatch.Prefix" > 
-        <img src="https://cdn-icons-png.flaticon.com/512/495/495018.png" width="24" height="24" /> Beds
-    </MudNavLink>
-
-    <MudNavLink Href="wardrobes" Match="NavLinkMatch.Prefix" >
-        <img src="https://cdn-icons-png.flaticon.com/512/182/182355.png" width="24" height="24"/> Wardrobes
-    </MudNavLink>
-
-    <MudNavLink Href="reclines" Match="NavLinkMatch.Prefix" >
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScMEt7sUUShDy6S7GHkowdelNQyixWwl20nIVTRr2MPg&s" width="24" height="24" /> Reclines
-    </MudNavLink>
-
-    <MudNavLink Href="seating" Match="NavLinkMatch.Prefix">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKMQSfRz4zreZpXcXvZ9WWBSBxvTKAzDUcyI0foc&s" width="24" height="24" /> Seating
-    </MudNavLink>
-
-    <MudNavLink Href="cofee-tables" Match="NavLinkMatch.Prefix">
-        <img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24" /> Coffee tables
-    </MudNavLink>
-        
-    <MudNavLink Href="tv-units" Match="NavLinkMatch.Prefix">
-        <img src="https://static.thenounproject.com/png/3627590-200.png" width="24" height="24" /> Tv units
-    </MudNavLink>
-
-    <MudNavLink Href="shoe-racks" Match="NavLinkMatch.Prefix">
-        <img src="https://www.shutterstock.com/image-vector/shoe-rack-thin-line-icon-260nw-2021405330.jpg" width="24" height="24" /> Shoe racks
-    </MudNavLink>
-
-    <MudNavLink Href="study" Match="NavLinkMatch.Prefix">
-        <img src="https://cdn-icons-png.flaticon.com/512/4245/4245031.png" width="24" height="24" /> Study
-    </MudNavLink>
-
-    <MudNavLink Href="bookshelves" Match="NavLinkMatch.Prefix">
-        <img src="https://thumbs.dreamstime.com/z/bookshelf-icon-vector-isolated-white-background-sign-linear-symbol-stroke-design-elements-outline-style-transparent-134061797.jpg" width="24" height="24"/> Bookshelves
-    </MudNavLink>
-
-    <MudNavLink Href="ligtning" Match="NavLinkMatch.Prefix">
-        <img src="https://www.ulcdn.net/media/web-home-popular-categories/UL_CATEGORY_ICONS-Lighting.svg?1665149591" width="24" height="24"/> Ligtning
-    </MudNavLink>
-
-    <MudNavLink Href="stores" Match="NavLinkMatch.Prefix" >
-        <img src="https://www.ulcdn.net/media/Web-home-popular-categories/store_icon.png?1535694121" width="24"; height="24" /> Stores
-    </MudNavLink>
 </MudNavMenu>
-
 <style>
     .img{
         width:24px;
@@ -70,18 +31,10 @@
 
 
 @code {
-    List<CategoryView> categories = new List<CategoryView>();
+    List<CategoryView>? categories;
 
     protected override async Task OnInitializedAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7113");
-
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        categories = JsonConvert.DeserializeObject<List<CategoryView>>(profileJson);
+        categories = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7148/api/Categories");
     }
 }
-</MudNavMenu>
