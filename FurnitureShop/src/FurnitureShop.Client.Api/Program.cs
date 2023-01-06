@@ -4,13 +4,21 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
 using System.Reflection;
+using FurnitureShop.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAppDbContext(builder.Configuration);
+
+builder.Services.AddDbContext<AppDbContext>(o =>
+{
+    o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+
 builder.Services.AddCorsPolicy();
 builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
