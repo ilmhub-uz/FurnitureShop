@@ -1,0 +1,36 @@
+﻿@page "/login"
+@using FurnitureShop.Client.Api.Dtos;
+@inject NavigationManager NavManager
+
+<PageTitle>Login</PageTitle>
+
+<div style="margin:auto; position:relative;">
+    <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+    <MudTextField Style="width:300px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
+    <MudButton Style="width:300px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+</div>
+@code {
+    LoginUserDto model = new LoginUserDto();
+    string? error = null;
+    protected void Redirect(string route = "/profile")
+    {
+        NavManager.NavigateTo(route);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7148");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/accounts/signin");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+
+        if (responseMessage.IsSuccessStatusCode)
+            Redirect();
+    }
+}

@@ -1,0 +1,42 @@
+﻿@page "/register"
+@using FurnitureShop.Client.Api.Dtos;
+@inject NavigationManager NavManager
+
+<PageTitle>Register</PageTitle>
+
+<EditForm id="formAuthentication" Class="mb-3" Model="@model" OnValidSubmit="OnValidSubmit">
+    <MudTextField Style="width:350px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+    <MudTextField Style="width:350px;" @bind-Value="model.FirstName" For="@(() => model.FirstName)" Label="FirstName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+    <MudTextField Style="width:350px;" @bind-Value="model.LastName" For="@(() => model.LastName)" Label="LastName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+    <MudTextField Style="width:350px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" InputType="InputType.Password"  Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
+    <MudTextField Style="width:350px;" @bind-Value="model.Email" For="@(() => model.Email)" Label="Email" InputType="InputType.Email" Variant="Variant.Outlined" HelperText="Iltimos kuchukcha qo'ying'"></MudTextField>
+    <MudCardActions class="mb-3">
+        <MudButton Style="width:350px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="btn btn-primary d-grid w-100">Register</MudButton>
+    </MudCardActions>
+</EditForm>
+
+@code {
+    RegisterUserDto model = new RegisterUserDto();
+
+
+    protected void Redirect(string s = "/profile")
+    {
+        NavManager.NavigateTo(s);
+    }
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7148");
+
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signup");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var result = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        if (result is not null)
+        {
+            Redirect();
+        }
+    }
+
+}
