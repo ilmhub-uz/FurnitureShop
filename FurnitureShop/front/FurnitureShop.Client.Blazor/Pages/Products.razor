@@ -10,19 +10,19 @@
 <h3 class="mb-5">Products</h3>
 
 <div class="row mt-1" style="display: flex; flex-wrap:wrap; justify-content: flex-start">
-    @foreach (var prodGroup in productViews?? new List<ProductView>())
+    @foreach (var product in productViews?? new List<ProductView>())
     {
         <div class="col-md-3 mb-2" style="border: 1px solid black; margin-right:20px;">
 
-            <a href="/">
+            <a href="/ProductDetails/@product.Id">
                 <div class="card">
                     <img class="img-thumbnail" style="border-bottom:1px solid black;" src="images/Furniture3.png" height="200" width="250">
                     <div class="card-body">
                         <h5 class="card-title mb-3">
-                            @prodGroup.Name
+                            @product.Name
                         </h5>
                         <p class="card-text">
-                            <b>@prodGroup.Price</b>
+                            <b>@product.Price</b>
                         </p>
                     </div>
                 </div>

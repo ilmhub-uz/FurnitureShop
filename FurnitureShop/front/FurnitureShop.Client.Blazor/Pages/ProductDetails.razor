@@ -1,0 +1,32 @@
+﻿@page "/ProductDetails/{ProductId}"
+@using FurnitureShop.Client.Blazor.ViewModel;
+@inject HttpClient Http;
+<h3 class="mb-5">Product Details</h3>
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <img class="img-fluid" src="images/Furniture3.png" height="100" width="200">
+    </div>
+    <div class="col-md-6">
+        <h3>@Product!.Name</h3>
+        <p class="mb-4">@Product.Description</p>
+        <p class="mb-4">
+            <b>
+                @Product.Price
+            </b>
+        </p>
+        <div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">Add to Card</MudButton>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? ProductId { get; set; }
+
+    private ProductView? Product;
+    protected override async Task OnInitializedAsync()
+    {
+        Product = await Http.GetFromJsonAsync<ProductView>($"https://localhost:7148/api/Products/{ProductId}");
+    }
+}
