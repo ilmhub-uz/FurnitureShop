@@ -24,13 +24,17 @@
             <h3 class="text-center">Office equipment</h3>
             <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
         </div>
-        @foreach (var category in categories)
-        {
-            <div class="category">
-                <h3 class="text-center">@category.Children</h3>
-                <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
-            </div>
+
+        @if(categories is not null){
+            foreach (var category in categories)
+            {
+                <div class="category">
+                    <h3 class="text-center">@category.Children</h3>
+                    <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
+                </div>
+            }
         }
+        
     </div>
 </div>
 
