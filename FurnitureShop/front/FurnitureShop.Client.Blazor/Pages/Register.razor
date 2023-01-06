@@ -4,14 +4,33 @@
 
 <PageTitle>Register</PageTitle>
 
-<div style="margin:auto; position:relative;">
-    <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
-    <MudTextField Style="width:300px;" @bind-Value="model.FirstName" For="@(() => model.FirstName)" Label="FirstName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
-    <MudTextField Style="width:300px;" @bind-Value="model.LastName" For="@(() => model.LastName)" Label="LastName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
-    <MudTextField Style="width:300px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
-    <MudTextField Style="width:300px;" @bind-Value="model.Email" For="@(() => model.Email)" Label="Email" Variant="Variant.Outlined" HelperText="Iltimos kuchukcha qo'ying'"></MudTextField>
-    <MudButton Style="width:300px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
-</div>
+<PageTitle>Register</PageTitle>
+<MudPaper Height="100vh" Width="100%" Style="border:none;">
+    <div style="margin: 20px auto; margin-left: 200px;">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
+                <MudGrid>
+                    <MudItem xs="12" sm="7">
+                        <MudCard>
+                            <MudCardContent>
+                            <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+                             <MudTextField Style="width:300px;" @bind-Value="model.FirstName" For="@(() => model.FirstName)" Label="FirstName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+                             <MudTextField Style="width:300px;" @bind-Value="model.LastName" For="@(() => model.LastName)" Label="LastName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+                             <MudTextField Style="width:300px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
+                             <MudTextField Style="width:300px;" @bind-Value="model.Email" For="@(() => model.Email)" Label="Email" Variant="Variant.Outlined" HelperText="Iltimos kuchukcha qo'ying'"></MudTextField>
+                             </MudCardContent>
+                            <MudCardActions>
+                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>             
+                </MudGrid>
+            </EditForm>
+        </MudContainer>
+    </div>
+    
+</MudPaper>
 
 
 @code {
@@ -27,7 +46,7 @@
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7148");
 
-        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signup");
+        var message = new HttpRequestMessage(HttpMethod.Post, "/api/Account/sign-up");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
