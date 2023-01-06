@@ -36,7 +36,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public IQueryable<TEntity> GetAll()
         => DbSet;
-
+        
     public TEntity? GetById(int id)
         => DbSet.Find(id);
 
