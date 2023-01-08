@@ -19,14 +19,17 @@
             <img src="https://cdn.macbro.uz/macbro/74f8a955-bba9-400c-92b2-4b30d01761e0" alt="phone"/>
         </div>
 
-        @foreach (var category in categories)
+        @if(categories is not null)
         {
-            <div class="category">
-                <h3 class="text-center">
-                    @category.Name
-                </h3>
-                <img src="https://olcha.uz/image/256x256/category/N3iMWPyvXRIXTqwloVhRb4oe2PEn38unPptNWZVenY7DJS2GYY5py94DRAX6." alt="iWatch"/>
-            </div>
+            foreach (var category in categories)
+            {
+                <div class="category">
+                    <h3 class="text-center">
+                        @category.Name
+                    </h3>
+                    <img src="https://olcha.uz/image/256x256/category/N3iMWPyvXRIXTqwloVhRb4oe2PEn38unPptNWZVenY7DJS2GYY5py94DRAX6." alt="iWatch"/>
+                </div>
+            }    
         }
     </div>
 

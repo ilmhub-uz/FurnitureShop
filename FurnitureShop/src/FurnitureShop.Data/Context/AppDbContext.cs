@@ -21,7 +21,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     public DbSet<LikeProduct> LikeProducts { get; set; }
     public DbSet<Cart>? Carts { get; set; }
     public DbSet<CartProduct>? CartProducts { get; set; }
- 
+    public DbSet<Message> Messages { get; set; }
+
 
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

@@ -1,4 +1,40 @@
-﻿<MudNavMenu>
+@using FurnitureShop.Client.Blazor.Dtos;
+@using Newtonsoft.Json;
+@inject HttpClient Http;
+<MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Account</MudNavLink>
+
+    <MudListSubheader Href="categories" Match="NavLinkMatch.Prefix">Categories</MudListSubheader>
+    <MudNavGroup Icon="@Icons.Material.Filled.Category" Title="Categories">
+        @if(categories is null)
+        {
+            <MudNavLink Href="/security">Security</MudNavLink>
+        }
+        else
+        {
+            @foreach (var category in categories ?? new List<CategoryView>())
+            {
+                <MudNavLink Href="@category.Name"><img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24"/>
+                @category.Name
+                </MudNavLink>
+            }           
+        }
+    </MudNavGroup>
 </MudNavMenu>
+<style>
+    .img{
+        width:24px;
+        height:24px;
+    }
+</style>
+
+
+@code {
+    List<CategoryView>? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7148/api/Categories");
+    }
+}

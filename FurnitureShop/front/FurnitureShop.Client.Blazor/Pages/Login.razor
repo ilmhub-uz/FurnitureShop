@@ -11,25 +11,26 @@
 </div>
 @code {
     LoginUserDto model = new LoginUserDto();
-
-
-    protected void Redirect(string s = "/profile")
+    string? error = null;
+    protected void Redirect(string route = "/profile")
     {
-        NavManager.NavigateTo(s);
+        NavManager.NavigateTo(route);
     }
+
     private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7148");
-
-        var message = new HttpRequestMessage(HttpMethod.Post, "/api/account/signin");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/accounts/signin");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
-        var result = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        if (result is not null)
-        {
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+
+        if (responseMessage.IsSuccessStatusCode)
             Redirect();
-        }
     }
 }
