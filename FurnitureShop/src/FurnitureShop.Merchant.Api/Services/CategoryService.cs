@@ -1,6 +1,8 @@
 ﻿using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
+using Mapster;
 
 namespace FurnitureShop.Merchant.Api.Services
 {
@@ -14,7 +16,10 @@ namespace FurnitureShop.Merchant.Api.Services
             unitOfWork = _unitOfWork;
         }
 
-        public List<Category> GetAllCategories() 
-            => unitOfWork.Categories.GetAll().ToList();
+        public List<CategoryView> GetAllCategories()
+        {
+            var categories = unitOfWork.Categories.GetAll().ToList();
+            return categories.Select(c => c.Adapt<CategoryView>()).ToList() ?? new List<CategoryView>();
+        }
     }
 }

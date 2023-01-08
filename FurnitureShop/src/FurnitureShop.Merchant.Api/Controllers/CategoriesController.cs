@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Services;
+using FurnitureShop.Merchant.Api.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace FurnitureShop.Merchant.Api.Controllers
         }
 
         [HttpGet]
-        public List<Category> GetAll()
+        public List<CategoryView> GetAll()
             => categoryService.GetAllCategories();
     }
 }

@@ -29,8 +29,8 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations([FromQuery]OrganizationSortingFilter filter) =>
-        await _organizationService.GetOrganizationsAsync(filter);
+    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations([FromQuery]OrganizationSortingFilter filter) 
+        => await _organizationService.GetOrganizationsAsync(filter);
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]
@@ -68,7 +68,7 @@ public class OrganizationsController : ControllerBase
     public async Task<IActionResult> DeleteOrganization(Guid organizationId)
     {
         await _organizationService.DeleteOrganization(organizationId);
-        return Ok();
+        return Ok();    
     }
 
     [HttpGet("{organizationName}")]
