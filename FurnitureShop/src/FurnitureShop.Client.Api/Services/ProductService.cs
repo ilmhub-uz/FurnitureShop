@@ -34,4 +34,9 @@ public class ProductService : IProductService
     {
         return (await _unitOfWork.Products.GetAll().ToListAsync()).ToPagedList(paginationParams).Adapt<List<ProductView>>();
     }
+
+    public async Task<List<ProductView>> GetProductsByCategoryIdAsync(int categoryId)
+    {
+        return ( _unitOfWork.Products.GetAll().Where(p => p.CategoryId == categoryId).ToList()).Adapt<List<ProductView>>();
+    }
 }

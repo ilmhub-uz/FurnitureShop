@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Client.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/products")]
 [ApiController]
 [ValidateModel]
 public partial class ProductsController : ControllerBase
@@ -31,4 +31,11 @@ public partial class ProductsController : ControllerBase
     [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
     => await _productService.GetProductByIdAsync(productId);
+
+    [HttpGet("categoryId")]
+    public async Task<ActionResult<List<ProductView>>> GetProductsByCategoryId([FromQuery] int categoryId)
+    {
+        var products = _productService.GetProductsByCategoryIdAsync(categoryId);
+        return Ok(products);
+    }
 }
