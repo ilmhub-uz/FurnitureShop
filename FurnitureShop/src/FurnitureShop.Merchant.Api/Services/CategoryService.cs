@@ -19,12 +19,7 @@ namespace FurnitureShop.Merchant.Api.Services
         public List<CategoryView> GetAllCategories()
         {
             var categories = unitOfWork.Categories.GetAll().ToList();
-            var result = new List<CategoryView>();
-            foreach (var category in categories)
-            {
-                result.Add(category.Adapt<CategoryView>());
-            }
-            return result;
+            return categories.Select(c => c.Adapt<CategoryView>()).ToList() ?? new List<CategoryView>();
         }
     }
 }
