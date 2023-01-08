@@ -72,6 +72,9 @@ public class ProductService : IProductService
         if(sortingFilter.Price is not null)
             existingProducts = existingProducts.Where(p => p.Price == sortingFilter.Price); 
 
+        if(sortingFilter.CategoryId is not null)
+            existingProducts = existingProducts.Where(p => p.CategoryId == sortingFilter.CategoryId);
+
         if(sortingFilter.SortingParams is not null)
         {
             existingProducts = sortingFilter.SortingParams switch

@@ -28,8 +28,7 @@ public class ChatHub : Hub
             await _context.SaveChangesAsync();
 
             //ma'lum bir clientga habar jo'natadi
-            await Clients.User(receiverId)
-                .SendAsync("ReceiveMessage", sender.FirstName, content);
+            await Clients.User(receiverId).SendAsync("ReceiveMessage", sender.FirstName, content);
         }
     }
 }
