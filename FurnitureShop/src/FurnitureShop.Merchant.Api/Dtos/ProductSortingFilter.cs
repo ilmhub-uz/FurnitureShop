@@ -8,5 +8,5 @@ public class ProductSortingFilter : PaginationParams
     public decimal? Price { get; set; }
     public ESortingParameters? SortingParams { get; set; }
     public string? Brend { get; set; }
-
+    public int? CategoryId { get; set; }
 }
