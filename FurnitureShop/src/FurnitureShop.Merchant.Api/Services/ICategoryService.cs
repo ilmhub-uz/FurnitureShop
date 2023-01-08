@@ -1,9 +1,9 @@
-﻿using FurnitureShop.Data.Entities;
+﻿using FurnitureShop.Merchant.Api.ViewModel;
 
 namespace FurnitureShop.Merchant.Api.Services
 {
     public interface ICategoryService
     {
-        public List<Category> GetAllCategories();
+        public List<CategoryView> GetAllCategories();
     }
 }
