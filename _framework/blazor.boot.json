@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "Blazored.LocalStorage.dll": "sha256-Jq\/dS58mO5wtL2d0x\/FeAdDZ1bUTpTzPODJpBZUre\/4=",
-      "FurnitureShop.Admin.Blazor.dll": "sha256-UhDsUImvizJDzggTbTrpi0QDfTBdfkSXBtgrjzehOnM=",
+      "FurnitureShop.Admin.Blazor.dll": "sha256-eaHdBqhWlYjOpqOHOI8HwXOWyaN6O62Sl1b1lfHePMk=",
       "Microsoft.AspNetCore.Components.dll": "sha256-7Y2P7VHhJ53ANlBrTK3ddc0Jw7vitIMOjXxI+rkLVcA=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-XdeAAr+n6yuAh+iwstHopVjT1nm8pI3BmSKe4CoVeoY=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-FSrgMvQwdoO1ZDkWN4J\/ce4yVmWs8B5jMhpmkGvovwY=",
