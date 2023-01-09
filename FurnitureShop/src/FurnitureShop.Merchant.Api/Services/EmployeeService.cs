@@ -19,14 +19,12 @@ public class EmployeeService : IEmployeeService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailSender _emailSender;
     private readonly UserManager<AppUser> _userManager;
-    private readonly AppDbContext context;
 
-    public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager, AppDbContext context)
+    public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
     {
         _unitOfWork = unitOfWork;
         _emailSender = emailSender;
         _userManager = userManager;
-        this.context = context;
     }
 
     public async Task AddEmployee(ClaimsPrincipal appuser, EmployeeServiceDto dto)
@@ -50,7 +48,7 @@ public class EmployeeService : IEmployeeService
             Role = ERole.Manager
         });
 
-        context.SaveChanges();
+        _unitOfWork.Save();
         //var message = new EmailService(new string[] { $"{dto.Email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
         //_emailSender.SendEmail(message);
     }
@@ -82,7 +80,7 @@ public class EmployeeService : IEmployeeService
             throw new NotFoundException<OrganizationUser>();
 
         organization.Users!.Remove(manager);
-        context.SaveChangesAsync();
+        _unitOfWork.Save();
     }
 
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
