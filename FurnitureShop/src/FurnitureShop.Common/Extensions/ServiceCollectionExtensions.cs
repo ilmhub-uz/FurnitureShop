@@ -1,13 +1,10 @@
 ﻿using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 using System.Net;
-using System.Reflection;
 
 namespace FurnitureShop.Common.Extensions;
 
