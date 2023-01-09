@@ -1,6 +1,6 @@
 ﻿using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +10,20 @@ namespace FurnitureShop.Common.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static void GlobalAppSettings(this ConfigureWebHostBuilder webHost)
+    {
+        webHost.ConfigureAppConfiguration((webHostBuilderContext, configurationBuilder) =>
+        {
+            
+            var pathOfcurrentDirectory = webHostBuilderContext.HostingEnvironment.ContentRootPath;
+            var pathOfCommonSettingsFile = Path.GetFullPath(Path.Combine(pathOfcurrentDirectory, @"../" , "FurnitureShop.Common", "CommonSettings.json"));
+            configurationBuilder
+                .AddJsonFile(pathOfCommonSettingsFile, true, true);
+
+            configurationBuilder.AddEnvironmentVariables();
+            configurationBuilder.Build();
+        });
+    }
     public static void AddAppDbContext(this IServiceCollection collection, ConfigurationManager configuration)
     {
         collection.AddDbContext<AppDbContext>(options =>
