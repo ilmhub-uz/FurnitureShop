@@ -8,7 +8,7 @@ namespace FurnitureShop.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("create extension hstore");
+            migrationBuilder.Sql("create extension if not exists hstore");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

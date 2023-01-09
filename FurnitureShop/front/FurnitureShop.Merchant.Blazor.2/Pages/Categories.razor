@@ -1,0 +1,177 @@
+﻿@page "/categories"
+@using FurnitureShop.Admin.Blazor.Dtos;
+@inject HttpClient Http
+
+<_CategoryHeader />
+@if(Elements.Count <= 0)
+{
+    <div class="row">
+        <h4 class="fw-bold py-3 mb-2">Categories</h4>
+        <div class="col-lg-8 col-12 mb-4">
+            <div class="card h-100">
+                <div class="row h-100">
+                    <div class="col-sm-12">
+                        <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-3">
+                            <img src="/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid" alt="Image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png" width="120">
+                            <h3 class="fw-bold py-3 mb-2" style="margin-left:10px">There is no any categories</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-12 mb-4">
+            <div class="card h-100">
+                <div class="row h-100">
+                    <div class="col-sm-12">
+                        <div class="card-body text-sm-center text-center">
+                        <button type="submit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCategory" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Category</button>
+                        <p class="mb-0">You can create new category</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+<div class="card">
+    <div class="card-datatable table-responsive">
+        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+            <div class="card-header border-bottom flex-column flex-md-row mb-3">
+                <div class="head-label text-center">
+                    <h5 class="card-title mb-0">Categories</h5>
+                </div>
+            </div>
+            
+            <MudTable @ref="_table" T="CategoryView" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                                OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick" Filter="new Func<CategoryView,bool>(FilterFunc1)">
+                <ToolBarContent>
+                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
+                                <MudSpacer/>
+                                <div class="dt-action-buttons text-end pt-3 pt-md-0 mr-5">
+                                <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCategory"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Create new category</span></span></button>                        </div>
+                                </div>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Actions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Nr">@context.Name</MudTd>
+                                <MudTd DataLabel="Actions">
+                                    <div class="d-inline-block">
+                                    <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end m-0">
+                                            <li>
+                                                <a href="javascript:;" class="dropdown-item">Details</a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;" class="dropdown-item">Archive</a>
+                                            </li>
+                                            <div class="dropdown-divider"></div>
+                                            <li>
+                                                <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="leverow-ifs-btn">Delete</MudButton>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[]{1, 100}" />
+                </PagerContent>
+                <FooterContent>
+                    <MudTd colspan="5">Select All</MudTd>
+                </FooterContent>
+            </MudTable>
+        </div>
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-end show" tabindex="-1" id="offcanvasAddCategory" aria-labelledby="offcanvasAddCategoryLabel" aria-modal="true" role="dialog">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasAddCategoryLabel" class="offcanvas-title">Add Organization</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-0 flex-grow-0">
+        <EditForm id="addNewUserForm" Class="mb-3 add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" Model="@model" OnValidSubmit="OnValidSubmit">
+              <DataAnnotationsValidator />
+            <div class="mb-3 fv-plugins-icon-container">
+                <label class="form-label" for="category-name">Category name</label>
+                <MudTextField class="form-control" id="category-name" placeholder="E.g: Sofa" @bind-Value="model.Name" For="@(() => model.Name)" />
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <div class="mb-3 fv-plugins-icon-container">
+                <label class="form-label" for="add-owner">Parent Category</label>
+                <MudTextField type="number" class="form-control" id="add-organization-name" placeholder="Parent category id" @bind-Value="model.ParentId" For="@(() => model.ParentId)" />
+                <div class="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" data-bs-dismiss="offcanvas" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</MudButton>
+            </MudCardActions>
+            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            <input type="hidden">
+        </EditForm>
+    </div>
+</div>
+}
+@code {
+
+    private bool FilterFunc1(CategoryView element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(CategoryView element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (searchString == element.Id.ToString())
+            return true;
+        return false;
+    }
+    public async void DeleteOrganizationById(int categoryId)
+    {
+        await Http.DeleteAsync($"https://localhost:7237/api/categories/{categoryId}");
+    }
+
+    private HashSet<CategoryView> selectedItems = new HashSet<CategoryView>();
+    private List<CategoryView> Elements = new List<CategoryView>();
+    private bool _selectOnRowClick = true;
+    private string _selectedItemText = "No row clicked";
+    private string searchString1 = "";
+    private MudTable<CategoryView> _table;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7237/api/categories");
+    }
+
+    void OnRowClick(TableRowClickEventArgs<CategoryView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
+
+    string? error = null;
+    CreateCategoryDto? model = new CreateCategoryDto();
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7237");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Categories");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+        
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7237/api/categories");
+        await InvokeAsync(() => StateHasChanged());
+        StateHasChanged();
+    }
+}

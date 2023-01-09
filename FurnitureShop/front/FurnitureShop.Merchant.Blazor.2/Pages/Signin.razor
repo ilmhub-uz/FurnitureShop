@@ -1,0 +1,96 @@
+﻿@page "/signin"
+@layout AdditionalLayout
+<PageTitle>Authentication</PageTitle>
+
+@using FurnitureShop.Admin.Blazor.Dtos
+@inject NavigationManager NavManager
+<!-- Content -->
+    
+    <div class="container-xxl" style="margin-top: -30px;">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <!-- Register -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                  <_Logo/>
+              </div>
+              <!-- /Logo -->
+                @if(error != null)
+                {
+                    <div class="alert-error">Username or password is incorrect</div>
+                }else
+                {
+                    <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                }
+              @*<EditForm  Model="@model" OnValidSubmit="OnValidSubmit">*@
+              <EditForm id="formAuthentication" Class="mb-3" Model="@model" OnValidSubmit="OnValidSubmit">
+              <DataAnnotationsValidator />
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                    <MudTextField id="username" placeholder="Enter your username"
+                                  @bind-Value="model.UserName" For="@(() => model.UserName)" />                                                          
+                    
+                </div>
+                <div class="mb-3 form-password-toggle">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label" for="password">Password</label>
+                        <a href="/resetpassword">
+                            <small>Forgot Password?</small>
+                        </a>
+                    </div>
+                    
+                    <MudTextField placeholder="Enter your password" id="password" Class="mt-3"
+                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember-me" />
+                    <label class="form-check-label" for="remember-me"> Remember Me </label>
+                  </div>
+                </div>
+              <MudCardActions class="mb-3">
+                  <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="btn btn-primary d-grid w-100">Log in</MudButton>
+              </MudCardActions>
+              </EditForm>
+              <p class="text-center">
+                <span>New on our platform?</span>
+                <a href="/signup">
+                  <span>Create an account</span>
+                </a>
+              </p>
+            </div>
+          </div>
+          <!-- /Register -->
+        </div>
+      </div>
+    </div>
+
+<!-- / Content -->
+@code {
+    
+    LoginUserDto model = new LoginUserDto();
+    string? error = null;
+    protected void Redirect(string route = "/dashboard")
+    {
+        NavManager.NavigateTo(route);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7237");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/accounts/signin");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if(status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+
+        if (responseMessage.IsSuccessStatusCode)
+            Redirect();
+    }
+}
