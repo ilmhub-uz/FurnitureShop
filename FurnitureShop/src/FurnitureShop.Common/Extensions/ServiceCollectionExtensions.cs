@@ -14,7 +14,6 @@ public static class ServiceCollectionExtensions
     {
         webHost.ConfigureAppConfiguration((webHostBuilderContext, configurationBuilder) =>
         {
-            
             var pathOfcurrentDirectory = webHostBuilderContext.HostingEnvironment.ContentRootPath;
             var pathOfCommonSettingsFile = Path.GetFullPath(Path.Combine(pathOfcurrentDirectory, @"../" , "FurnitureShop.Common", "CommonSettings.json"));
             configurationBuilder
