@@ -43,9 +43,6 @@ else
                         <h5 class="card-title mb-0">Organizations</h5>
                     </div>
                 </div>
-            
-                <MudTable @ref="_table" T="OrganizationView" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
-                                  OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick" Filter="new Func<OrganizationView,bool>(FilterFunc1)">
                     <ToolBarContent>
                                 <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
                                     <MudSpacer/>
@@ -53,42 +50,16 @@ else
                                     <div class="dt-buttons">    <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Create new organization</span></span></button>                        </div>
                                     </div>
                     </ToolBarContent>
-                    <HeaderContent>
-                        <MudTh>Name</MudTh>
-                        <MudTh>Status</MudTh>
-                        <MudTh>Actions</MudTh>
-                    </HeaderContent>
-                    <RowTemplate>
-                        <MudTd DataLabel="Nr">@context.Name</MudTd>
-                                    <MudTd DataLabel="Sign">@StatusBadge(context.Status)</MudTd>
-                                    <MudTd DataLabel="Actions">
-                                        <div class="d-inline-block">
-                                        <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
-                                            <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end m-0">
-                                                <li>
-                                                    <a href="javascript:;" class="dropdown-item">Details</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" class="dropdown-item">Archive</a>
-                                                </li>
-                                                <div class="dropdown-divider"></div>
-                                                <li>
-                                                    <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="leverow-ifs-btn">Delete</MudButton>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </MudTd>
-                    </RowTemplate>
-                    <PagerContent>
-                        <MudTablePager PageSizeOptions="new int[]{1, 100}" />
-                    </PagerContent>
-                    <FooterContent>
-                        <MudTd colspan="5">Select All</MudTd>
-                    </FooterContent>
-                </MudTable>
+
+                <div class="container">
+                    <div class="row">
+                        @foreach(var organization in Elements)
+                        {
+                        }
+                        
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -101,6 +72,9 @@ else
     <swal-icon type="success"></swal-icon>
     <swal-param name="allowEscapeKey" value="false" />
 </template>
+
+
+
 @code {
 
     private bool FilterFunc1(OrganizationView element) => FilterFunc(element, searchString1);
