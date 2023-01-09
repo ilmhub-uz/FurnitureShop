@@ -3,13 +3,10 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using System.Reflection;
-using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
@@ -24,8 +21,6 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program))
 builder.Services.AddIdentityManagers();
 
 var app = builder.Build();
-
-
 
 if (((IApplicationBuilder)app).ApplicationServices.GetService<IHttpContextAccessor>() != null)
     HttpContextHelper.Accessor =
