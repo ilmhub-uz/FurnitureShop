@@ -6,12 +6,26 @@ using JFA.DependencyInjection;
 using System.Reflection;
 using FurnitureShop.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using FurnitureShop.Client.Api.Hubs;
+using FurnitureShop.Client.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<HubClientsService>();
+builder.Services.AddSignalR();
+builder.Services.AddCors(cors =>
+{
+    cors.AddDefaultPolicy(corsPolicy =>
+    {
+        corsPolicy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin();
+    });
+});
 
 builder.Services.AddCorsPolicy();
 builder.SerilogConfig();
@@ -41,5 +55,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<MessagesHub>("/messages"); 
+
 
 app.Run();
