@@ -32,7 +32,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("sign-up")]
-    public async Task<IActionResult> SignUp([FromForm] RegisterUserDto dtoModel)
+    public async Task<IActionResult> SignUp([FromBody] RegisterUserDto dtoModel)
     {
         if (_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
         {

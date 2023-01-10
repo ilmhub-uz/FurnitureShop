@@ -3,7 +3,7 @@
 @inject HttpClient Http;
 <h3 class="mb-5">Product Details</h3>
 <div class="row">
-    <div class="col-md-6 mb-4">
+   @* <div class="col-md-6 mb-4">
         <img class="img-fluid" src="images/Furniture3.png" height="100" width="200">
     </div>
     <div class="col-md-6">
@@ -17,7 +17,20 @@
         <div>
             <MudButton Variant="Variant.Filled" Color="Color.Primary">Add to Card</MudButton>
         </div>
-    </div>
+    </div>*@
+    <MudPaper Class="pa-16 ma-2" Elevation="3">
+        <div class="col-md-3 mb-2">
+            <div class="card">
+                <MudText Typo="Typo.body1"><b>Name: </b>@Product.Name</MudText>
+                <MudText Typo="Typo.body1"><b>Price: </b>@Product.Price</MudText>
+                <img class="img-thumbnail" style="border-bottom:2px solid black; margin-bottom:2px" src="images/Furniture3.png" height="200" width="250">
+                <MudText Typo="Typo.body1">@Product.Description</MudText>
+            </div>
+        </div>
+        <div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">Add to Card</MudButton>
+        </div>
+    </MudPaper>
 </div>
 
 @code {
