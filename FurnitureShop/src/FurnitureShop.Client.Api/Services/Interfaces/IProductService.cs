@@ -7,4 +7,5 @@ public interface IProductService
 {
     Task<List<ProductView>> GetProducts(PaginationParams paginationParams);
     Task<ProductView> GetProductByIdAsync(Guid productId);
+    Task<List<ProductView>> GetProductsByCategoryIdAsync(int categoryId);
 }

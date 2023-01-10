@@ -35,5 +35,4 @@ public partial class ProductsController : ControllerBase
     [HttpGet("categoryId")]
     public async Task<ActionResult<List<ProductView>>> GetProductsByCategoryId([FromQuery] int categoryId)
     => await _productService.GetProductsByCategoryIdAsync(categoryId);
-    
 }

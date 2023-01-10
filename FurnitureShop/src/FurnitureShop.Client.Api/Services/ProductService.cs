@@ -20,7 +20,12 @@ public class ProductService : IProductService
     {
         _unitOfWork = unitOfWork;
     }
-    
+
+    public async Task<List<ProductView>> GetProductsByCategoryIdAsync(int categoryId)
+    {
+        return (_unitOfWork.Products.GetAll().Where(p => p.CategoryId == categoryId).ToList()).Adapt<List<ProductView>>();
+    }
+
     public async Task<ProductView> GetProductByIdAsync(Guid productId)
     {
         var existingProduct = _unitOfWork.Products.GetById(productId);
