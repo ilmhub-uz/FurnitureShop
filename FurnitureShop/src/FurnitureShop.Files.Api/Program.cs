@@ -3,7 +3,7 @@ using FurnitureShop.Files.Api.Services;
 using JFA.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
