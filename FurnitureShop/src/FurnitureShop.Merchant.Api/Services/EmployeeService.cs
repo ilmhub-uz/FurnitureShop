@@ -7,7 +7,6 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using FurnitureShop.Common.Email_Sender.Services;
 using FurnitureShop.Merchant.Api.Dtos;
 
 namespace FurnitureShop.Merchant.Api.Services;

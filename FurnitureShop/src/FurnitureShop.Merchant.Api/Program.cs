@@ -1,6 +1,4 @@
 using FluentValidation;
-using FurnitureShop.Common.Email_Sender.Dtos;
-using FurnitureShop.Common.Email_Sender.Services;
 using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
@@ -9,9 +7,6 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-var emailConfig = builder.Configuration
-    .GetSection("EmailConfiguration")
-    .Get<EmailConfiguration>();
 
 //builder.Services.AddSingleton(emailConfig);
 
