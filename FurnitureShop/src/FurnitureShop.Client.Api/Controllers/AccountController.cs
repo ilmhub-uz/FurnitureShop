@@ -32,7 +32,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("sign-up")]
-    public async Task<IActionResult> SignUp([FromForm] RegisterUserDto dtoModel)
+    public async Task<IActionResult> SignUp([FromBody] RegisterUserDto dtoModel)
     {
         if (_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
         {
@@ -40,8 +40,6 @@ public class AccountController : ControllerBase
         }
 
         var user = dtoModel.Adapt<AppUser>();
-        if (dtoModel.Avatar is not null)
-            user.AvatarUrl = await _fileHelperService.SaveFileAsync(dtoModel.Avatar, EFileType.Images, EFileFolder.User);
 
         var result = await _userManager.CreateAsync(user, dtoModel.Password);
         if (!result.Succeeded)

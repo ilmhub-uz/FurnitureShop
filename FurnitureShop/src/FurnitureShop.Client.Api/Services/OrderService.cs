@@ -10,19 +10,18 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using FurnitureShop.Common.Extensions;
+using FurnitureShop.Common.Helpers;
 
 namespace FurnitureShop.Client.Api.Services;
 
 [Scoped]
 public class OrderService : IOrderService
 {
-    private readonly AppDbContext _context;
     private readonly UnitOfWork _unitOfWork;
 
-    public OrderService(UnitOfWork unitOfWork, AppDbContext context)
+    public OrderService(UnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _context = context;
     }
 
     public async Task<OrderView> CreateOrder(ClaimsPrincipal claims,CreateOrderDto createOrderDto)
@@ -43,16 +42,39 @@ public class OrderService : IOrderService
                 Properties = id.Properties
             }).ToList()
         };
-        await _context.Orders.AddAsync(newOrder);
-
-        await _context.SaveChangesAsync();
+        await _unitOfWork.Orders.AddAsync(newOrder);
 
         return newOrder.Adapt<OrderView>();
     }
 
-    public async Task<List<OrderView>> GetOrders()
+    public async Task<List<OrderView>> GetOrders(OrderFilterDto orderFilter, ClaimsPrincipal User)
     {
-        return (await _unitOfWork.Orders.GetAll().ToListAsync()).Adapt<List<OrderView>>();
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var orders = _unitOfWork.Orders.GetAll().Where(order => order.UserId == userId);
+       
+        orders = orderFilter.OrderStatus switch
+        {
+            EOrderStatus.Created =>  _unitOfWork.Orders.GetAll().Where(or=>or.Status == EOrderStatus.Created),
+            EOrderStatus.Accepted => _unitOfWork.Orders.GetAll().Where(or=>or.Status == EOrderStatus.Accepted),
+            EOrderStatus.Canceled => _unitOfWork.Orders.GetAll().Where(or=>or.Status == EOrderStatus.Canceled),
+            _ => _unitOfWork.Orders.GetAll(),
+        };
+
+        if(orderFilter.CreatedAt is not null)
+        {
+          orders = _unitOfWork.Orders.GetAll().Where(or=>or.CreatedAt == orderFilter.CreatedAt);
+        }
+
+        if(orderFilter.ProductId is not null)
+        {
+            orders =  _unitOfWork.Orders.GetAll().Where(or => or.OrderProducts.Any(p => p.ProductId == orderFilter.ProductId));
+        }
+        if(orderFilter.OrganizationId is not null)
+        {
+            orders =  _unitOfWork.Orders.GetAll().Where(or => or.OrganizationId == orderFilter.OrganizationId);
+        }
+        var orderlist = await orders.ToPagedListAsync(orderFilter);
+        return orderlist.Adapt<List<OrderView>>();
     }
 
     public async Task<OrderView> UpdateOrder(UpdateOrderDto updateOrderDto, Guid orderId)

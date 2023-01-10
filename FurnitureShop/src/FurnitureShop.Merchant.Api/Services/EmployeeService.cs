@@ -7,7 +7,6 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using FurnitureShop.Common.Email_Sender.Services;
 using FurnitureShop.Merchant.Api.Dtos;
 
 namespace FurnitureShop.Merchant.Api.Services;
@@ -16,13 +15,11 @@ namespace FurnitureShop.Merchant.Api.Services;
 public class EmployeeService : IEmployeeService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IEmailSender _emailSender;
     private readonly UserManager<AppUser> _userManager;
 
-    public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
+    public EmployeeService(IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
     {
-        _unitOfWork = unitOfWork;
-        _emailSender = emailSender;
+        _unitOfWork = unitOfWork;   
         _userManager = userManager;
     }
 
@@ -47,8 +44,7 @@ public class EmployeeService : IEmployeeService
             Role = ERole.Manager
         });
 
-        var message = new EmailService(new string[] { $"{dto.Email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
-        _emailSender.SendEmail(message);
+        _unitOfWork.Save();
     }
 
     public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId)
@@ -57,7 +53,14 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        return (organization.Users!.Where(e => e.Role == ERole.Manager).ToList()).Adapt<List<GetEmployeesView>>();
+        return (organization.Users!.Where(e => e.Role == ERole.Manager).ToList()).Adapt<List<GetEmployeesView>>()
+            .Select(e =>
+            {
+                e.FirstName = _unitOfWork.AppUsers.GetById(e.UserId)?.FirstName;
+                e.LastName = _unitOfWork.AppUsers.GetById(e.UserId)?.LastName;
+                e.Email = _unitOfWork.AppUsers.GetById(e.UserId)?.Email;
+                return e;
+            }).ToList();
     }
 
     public async Task RemoveEmployee(Guid organizationId, Guid employeeId)
@@ -68,9 +71,10 @@ public class EmployeeService : IEmployeeService
 
         var manager = organization.Users!.FirstOrDefault(u => u.UserId == employeeId);
         if (manager is null)
-            throw new NotFoundException<Organization>();
+            throw new NotFoundException<OrganizationUser>();
 
         organization.Users!.Remove(manager);
+        _unitOfWork.Save();
     }
 
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
@@ -79,7 +83,14 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        return (organization.Users!.Where(e => e.Role == ERole.Seller).ToList()).Adapt<List<GetEmployeesView>>();
+        return (organization.Users!.Where(e => e.Role == ERole.Seller).ToList()).Adapt<List<GetEmployeesView>>()
+            .Select(e =>
+            {
+                e.FirstName = _unitOfWork.AppUsers.GetById(e.UserId)?.FirstName;
+                e.LastName = _unitOfWork.AppUsers.GetById(e.UserId)?.LastName;
+                e.Email = _unitOfWork.AppUsers.GetById(e.UserId)?.Email;
+                return e;
+            }).ToList();
     }
 
     public async Task<List<GetEmployeesView>> GetStaff(Guid organizationId)
@@ -88,6 +99,13 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        return (organization.Users!.ToList()).Adapt<List<GetEmployeesView>>();
+        return (organization.Users!.ToList()).Adapt<List<GetEmployeesView>>()
+            .Select(e =>
+            {
+                e.FirstName = _unitOfWork.AppUsers.GetById(e.UserId)?.FirstName;
+                e.LastName = _unitOfWork.AppUsers.GetById(e.UserId)?.LastName;
+                e.Email = _unitOfWork.AppUsers.GetById(e.UserId)?.Email;
+                return e;
+            }).ToList();
     }
 }

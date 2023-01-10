@@ -11,7 +11,7 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-//[Authorize]
+[Authorize]
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationService _organizationService;
@@ -30,7 +30,7 @@ public class OrganizationsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OrganizationView>>> GetOrganizations([FromQuery]OrganizationSortingFilter filter) 
-        => await _organizationService.GetOrganizationsAsync(filter);
+        => await _organizationService.GetOrganizationsAsync(filter, User);
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]

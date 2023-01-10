@@ -1,5 +1,5 @@
 @page "/products"
-@using FurnitureShop.Admin.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Dtos
 @inject HttpClient Http
 
 <h3>Products</h3>
@@ -23,11 +23,41 @@
         <br>
     }
 }
+else
+{
+     <div class="row">
+        <h4 class="fw-bold py-3 mb-2">Organizations List</h4>
+        <div class="col-lg-8 col-12 mb-4">
+            <div class="card h-100">
+                <div class="row h-100">
+                    <div class="col-sm-12">
+                        <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-3">
+                            <img src="/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid" alt="Image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png" width="120">
+                            <h3 class="fw-bold py-3 mb-2" style="margin-left:10px">There are no products</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-12 mb-4">
+            <div class="card h-100">
+                <div class="row h-100">
+                    <div class="col-sm-12">
+                        <div class="card-body text-sm-center text-center">
+                        <button data-bs-target="#addRoleModal" data-bs-toggle="modal" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Product</button>
+                        <p class="mb-0">You can create a new product</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     private List<ProductView>? productViews;
     protected override async Task OnInitializedAsync()
     {
-        productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7237/api/products");
+        productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7113/api/Products");
     }
 }

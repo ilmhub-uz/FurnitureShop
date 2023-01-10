@@ -4,11 +4,9 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
 using System.Reflection;
-using FurnitureShop.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,7 +19,7 @@ builder.Services.AddServicesFromAttribute();
 builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddFluentValidationAutoValidation(o =>
 {
-    o.DisableDataAnnotationsValidation = false;
+    o.DisableDataAnnotationsValidation = true;
 });
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));

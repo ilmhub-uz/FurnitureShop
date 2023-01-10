@@ -2,44 +2,53 @@
 @using FurnitureShop.Client.Blazor.ViewModel;
 @inject HttpClient Http;
 
-@if(productViews is  null)
-{
-    <MudText>Products</MudText>
-}
-
-<h3 class="mb-5">Products</h3>
-
-<div class="row mt-1" style="display: flex; flex-wrap:wrap; justify-content: flex-start">
-    @foreach (var product in productViews?? new List<ProductView>())
+<head style="top:0">
+    @if (productViews is null)
     {
-        <div class="col-md-3 mb-2" style="border: 1px solid black; margin-right:20px;">
-
-            <a href="/ProductDetails/@product.Id">
-                <div class="card">
-                    <img class="img-thumbnail" style="border-bottom:1px solid black;" src="images/Furniture3.png" height="200" width="250">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">
-                            @product.Name
-                        </h5>
-                        <p class="card-text">
-                            <b>@product.Price</b>
-                        </p>
-                    </div>
-                </div>
-            </a>
-
-        </div>
+        <MudText>Products</MudText>
     }
-</div>
-<hr class="mb-3" />
+</head>
+
+<body>
+    <div class="row mt-1" style="display: flex; flex-wrap:wrap; justify-content: flex-start">
+        @foreach (var product in productViews ?? new List<ProductView>())
+        {
+            var url = $"/ProductDetails/{product.Id}";
+            <a href="/ProductDetails/@product.Id">
+            <MudPaper Class="pa-16 ma-2" Elevation="3">
+                <div class="col-md-3 mb-2">
+                        <div class="card">
+                            <MudText Typo="Typo.body1"><b>Name: </b>@product.Name</MudText>
+                            <MudText Typo="Typo.body1"><b>Price: </b>@product.Price</MudText>
+                            <img class="img-thumbnail" style="border-bottom:2px solid black; margin-bottom:2px" src="images/Furniture3.png" height="200" width="250">
+                            <MudText Typo="Typo.body1">@product.Description</MudText>
+                        </div>
+                </div>
+            </MudPaper>
+            </a>
+        }
+    </div>
+    <hr class="mb-3"/>
+
+    <h3 class="mb-5">Products</h3>
+
+    @foreach(var organization in organizationViews)
+    {
+        <td> <img src="@organization.ImageURL" height="150" width="200">@organization.Name</td>
+    }
+</body>
+
 
 
 
 
 @code {
     private IEnumerable<ProductView>? productViews;
+    private IEnumerable<OrganizationView>? organizationViews;
+
     protected override async Task OnInitializedAsync()
     {
         productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("https://localhost:7148/api/Products");
+        organizationViews = await Http.GetFromJsonAsync<IEnumerable<OrganizationView>>("https://localhost:7113/api/Organizations");
     }
 }

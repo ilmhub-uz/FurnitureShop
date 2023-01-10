@@ -18,7 +18,7 @@ namespace FurnitureShop.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.11")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -415,10 +415,6 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("ContractId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("contract_id");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -441,9 +437,6 @@ namespace FurnitureShop.Data.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_orders");
-
-                    b.HasIndex("ContractId")
-                        .HasDatabaseName("ix_orders_contract_id");
 
                     b.HasIndex("OrganizationId")
                         .HasDatabaseName("ix_orders_organization_id");
@@ -927,11 +920,6 @@ namespace FurnitureShop.Data.Migrations
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Order", b =>
                 {
-                    b.HasOne("FurnitureShop.Data.Entities.Contract", "Contract")
-                        .WithMany()
-                        .HasForeignKey("ContractId")
-                        .HasConstraintName("fk_orders_contracts_contract_id");
-
                     b.HasOne("FurnitureShop.Data.Entities.Organization", "Organization")
                         .WithMany()
                         .HasForeignKey("OrganizationId")
@@ -945,8 +933,6 @@ namespace FurnitureShop.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_orders_users_user_id");
-
-                    b.Navigation("Contract");
 
                     b.Navigation("Organization");
 

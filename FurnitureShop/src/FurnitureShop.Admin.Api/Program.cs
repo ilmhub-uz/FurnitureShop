@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

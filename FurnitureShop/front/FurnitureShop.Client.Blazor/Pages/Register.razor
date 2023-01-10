@@ -4,39 +4,57 @@
 
 <PageTitle>Register</PageTitle>
 
-<PageTitle>Register</PageTitle>
-<MudPaper Height="100vh" Width="100%" Style="border:none;">
-    <div style="margin: 20px auto; margin-left: 200px;">
-        <MudContainer MaxWidth="MaxWidth.Small">
-            <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
-                <DataAnnotationsValidator />
-                <MudGrid>
-                    <MudItem xs="12" sm="7">
-                        <MudCard>
-                            <MudCardContent>
-                            <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
-                             <MudTextField Style="width:300px;" @bind-Value="model.FirstName" For="@(() => model.FirstName)" Label="FirstName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
-                             <MudTextField Style="width:300px;" @bind-Value="model.LastName" For="@(() => model.LastName)" Label="LastName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
-                             <MudTextField Style="width:300px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
-                             <MudTextField Style="width:300px;" @bind-Value="model.Email" For="@(() => model.Email)" Label="Email" Variant="Variant.Outlined" HelperText="Iltimos kuchukcha qo'ying'"></MudTextField>
-                             </MudCardContent>
-                            <MudCardActions>
-                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
-                            </MudCardActions>
-                        </MudCard>
-                    </MudItem>             
-                </MudGrid>
-            </EditForm>
-        </MudContainer>
+<!-- Section: Design Block -->
+<section class="gradient-custom-2  overflow-hidden" style="border-top-left-radius: .3rem; border-bottom-left-radius: .3rem;">
+
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class=" gx-lg-5 align-items-center mb-5" style="display:flex;">
+            <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+                <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                    The best offer <br />
+                    <span style="color: hsl(218, 81%, 75%)">for your place</span>
+                </h1>
+                <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+                    “Designing is my hobby. 
+                    If I didn’t do what I do for a living – at some point when I don’t do this for a living – I’ll probably just do design work. 
+                    I love finding really special pieces of furniture.” – Ellen DeGeneres
+                </p>
+            </div>
+                <EditForm Model="@model" OnValidSubmit="OnValidSubmit" style="width: 100%;">
+                    <DataAnnotationsValidator />
+                    <MudGrid style="justify-content:center !important;">
+                        <MudItem xs="12" sm="7">
+                            <MudCard>
+                                <MudCardContent>
+                                    <MudTextField Label="User name" HelperText="Max. 8 characters"
+                                                  @bind-Value="model.UserName" For="@(() => model.UserName)" />
+                                    <MudTextField Label="First name" Class="mt-3"
+                                                  @bind-Value="model.FirstName" For="@(() => model.FirstName)" />
+                                    <MudTextField Label="Last name" Class="mt-3"
+                                                  @bind-Value="model.LastName" For="@(() => model.LastName)" />
+                                    <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+
+                                    <MudTextField Label="Email" Class="mt-3"
+                                                  @bind-Value="model.Email" For="@(() => model.Email)" />
+                                </MudCardContent>
+                                <MudCardActions>
+                                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                                </MudCardActions>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </EditForm>
+        </div>
     </div>
-    
-</MudPaper>
+</section>
+<!-- Section: Design Block -->
 
 @code {
     RegisterUserDto model = new RegisterUserDto();
 
 
-    protected void Redirect(string s = "/profile")
+    protected void Redirect(string s = "/login")
     {
         NavManager.NavigateTo(s);
     }

@@ -1,5 +1,5 @@
 ﻿@page "/categories/detail"
-@using FurnitureShop.Admin.Blazor.Dtos;
+@using FurnitureShop.Merchant.Blazor.Dtos;
 @inject HttpClient Http
 
 <_CategoryHeader />
@@ -90,11 +90,6 @@ else {
 }
 @code { 
     Random rnd = new Random();
-    public async void DeleteOrganizationById(int categoryId)
-    {
-        await Http.DeleteAsync($"https://localhost:7237/api/categories/{categoryId}");
-    }
-
     private HashSet<CategoryView> selectedItems = new HashSet<CategoryView>();
     private List<CategoryView> Elements = new List<CategoryView>();
     private string _selectedItemText = "No row clicked";
@@ -103,6 +98,6 @@ else {
     
     protected override async Task OnInitializedAsync()
     {
-        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7237/api/categories");
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7113/api/categories");
     }
 }

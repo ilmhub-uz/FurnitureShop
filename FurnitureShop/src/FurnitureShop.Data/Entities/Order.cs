@@ -20,7 +20,5 @@ public class Order
     public DateTime? LastUpdatedAt { get; set; }
 
     public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
-    public Guid? ContractId { get; set; }
-    [ForeignKey(nameof(ContractId))]
-    public virtual Contract? Contract{ get; set; }
+
 }

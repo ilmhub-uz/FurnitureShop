@@ -1,5 +1,5 @@
 ﻿@page "/categories"
-@using FurnitureShop.Admin.Blazor.Dtos;
+@using FurnitureShop.Merchant.Blazor.Dtos;
 @inject HttpClient Http
 
 <_CategoryHeader />
@@ -59,26 +59,7 @@ else
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Nr">@context.Name</MudTd>
-                                <MudTd DataLabel="Actions">
-                                    <div class="d-inline-block">
-                                    <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end m-0">
-                                            <li>
-                                                <a href="javascript:;" class="dropdown-item">Details</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;" class="dropdown-item">Archive</a>
-                                            </li>
-                                            <div class="dropdown-divider"></div>
-                                            <li>
-                                                <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="leverow-ifs-btn">Delete</MudButton>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </MudTd>
+                                
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager PageSizeOptions="new int[]{1, 100}" />
@@ -133,10 +114,6 @@ else
             return true;
         return false;
     }
-    public async void DeleteOrganizationById(int categoryId)
-    {
-        await Http.DeleteAsync($"https://localhost:7237/api/categories/{categoryId}");
-    }
 
     private HashSet<CategoryView> selectedItems = new HashSet<CategoryView>();
     private List<CategoryView> Elements = new List<CategoryView>();
@@ -147,7 +124,7 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7237/api/categories");
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7113/api/categories");
     }
 
     void OnRowClick(TableRowClickEventArgs<CategoryView> args)
@@ -160,7 +137,7 @@ else
     private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7237");
+        client.BaseAddress = new Uri("https://localhost:7113");
         var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Categories");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
@@ -170,7 +147,7 @@ else
         if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
             error = "10000400";
         
-        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7237/api/categories");
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7113/api/categories");
         await InvokeAsync(() => StateHasChanged());
         StateHasChanged();
     }
