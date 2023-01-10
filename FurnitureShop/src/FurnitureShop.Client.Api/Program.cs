@@ -4,6 +4,7 @@ using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
 using JFA.DependencyInjection;
 using System.Reflection;
+using FurnitureShop.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.GlobalAppSettings();
