@@ -31,4 +31,9 @@ public partial class ProductsController : ControllerBase
     [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
     => await _productService.GetProductByIdAsync(productId);
+
+    [HttpGet("categoryId")]
+    public async Task<ActionResult<List<ProductView>>> GetProductsByCategoryId([FromQuery] int categoryId)
+    => await _productService.GetProductsByCategoryIdAsync(categoryId);
+    
 }
