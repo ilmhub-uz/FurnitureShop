@@ -1735,18 +1735,21 @@ tr.mud-table-row-group-indented-5 td:first-child {
     padding-inline-start: unset;
 }
 
-@media (min-width: 600px) .mud-toolbar-gutters {
+@media (min-width: 600px) {.mud-toolbar-gutters {
     padding-left: 24px;
     padding-right: 24px;
+}}
+
+@media (min-width: 600px) 
+{
+    .mud-toolbar {
+        height: 64px;
+    }
 }
 
-@media (min-width: 600px) .mud-toolbar {
-    height: 64px;
-}
-
-@media (min-width: 0px) and (orientation: landscape) .mud-toolbar {
+@media (min-width: 0px) and (orientation: landscape) {.mud-toolbar {
     height: 48px;
-}
+}}
 
 .mud-toolbar-gutters {
     padding-left: 16px;

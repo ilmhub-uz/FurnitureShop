@@ -30,8 +30,6 @@ public class OrdersService : IOrdersService
             orders = orders.Where(o => o.CreatedAt == filter.CreatedAt);
         if (filter.ProductId is not null)
             orders = orders.Where(o => o.OrderProducts!.Any(p => p.ProductId == filter.ProductId));
-        if (filter.ContractId is not null)
-            orders = orders.Where(o => o.ContractId == filter.ContractId);
 
         if (filter.OrderStatus is not null)
         {

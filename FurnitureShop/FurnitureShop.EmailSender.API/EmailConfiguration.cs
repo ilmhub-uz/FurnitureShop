@@ -1,4 +1,4 @@
-﻿namespace FurnitureShop.Common.Email_Sender.Dtos;
+﻿namespace FurnitureShop.EmailSender.API;
 
 public class EmailConfiguration
 {

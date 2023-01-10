@@ -1,30 +1,27 @@
-﻿using FurnitureShop.Common.Email_Sender.Dtos;
-using JFA.DependencyInjection;
-using Microsoft.Extensions.Options;
-using MimeKit;
+﻿using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
-namespace FurnitureShop.Common.Email_Sender.Services;
-[Scoped]
+namespace FurnitureShop.EmailSender.API.Services;
+
 public class EmailSender : IEmailSender
 {
     private readonly EmailConfiguration _emailConfig;
-    public EmailSender(IOptions<EmailConfiguration> emailConfig)
+    public EmailSender(EmailConfiguration emailConfig)
     {
-        _emailConfig = emailConfig.Value;
+        _emailConfig = emailConfig;
     }
-    public void SendEmail(EmailService emailService)
+    public void SendEmail(Message message)
     {
-        var emailMessage = CreateEmailMessage(emailService);
+        var emailMessage = CreateEmailMessage(message);
         Send(emailMessage);
     }
-    private MimeMessage CreateEmailMessage(EmailService emailService)
+    private MimeMessage CreateEmailMessage(Message message)
     {
         var emailMessage = new MimeMessage();
         emailMessage.From.Add(new MailboxAddress("email", _emailConfig.From));
-        emailMessage.To.AddRange(emailService.To);
-        emailMessage.Subject = emailService.Subject;
-        emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = emailService.Content };
+        emailMessage.To.AddRange(message.To);
+        emailMessage.Subject = message.Subject;
+        emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
         return emailMessage;
     }
     private void Send(MimeMessage mailMessage)
@@ -36,7 +33,7 @@ public class EmailSender : IEmailSender
                 client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, true);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
                 client.Authenticate(_emailConfig.UserName, _emailConfig.Password);
-                client.Send(mailMessage);
+                var response = client.Send(mailMessage);
             }
             catch
             {
