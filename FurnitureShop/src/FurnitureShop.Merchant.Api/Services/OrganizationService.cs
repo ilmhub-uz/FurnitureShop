@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
@@ -24,9 +25,10 @@ public class OrganizationService : IOrganizationService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter)
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter, ClaimsPrincipal principal)
     {
-        var existingOrganizations = _unitOfWork.Organizations.GetAll();
+        var userId = Guid.Parse(principal.GetUserId());
+        var existingOrganizations = _unitOfWork.Organizations.GetAll().Where(o => o.Users.Any(u => u.UserId ==userId));
 
         if(filter.OrganizationId is not null)
             existingOrganizations = existingOrganizations.Where(organization => organization.Id == filter.OrganizationId);

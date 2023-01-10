@@ -6,7 +6,7 @@ namespace FurnitureShop.Merchant.Api.Services;
 
 public interface IOrganizationService
 {
-    Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter);
+    Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter, ClaimsPrincipal claims);
     Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId);
     Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto);
     Task UpdateOrganization(Guid organizationId, UpdateOrganizationDto updateOrganizationDto);
