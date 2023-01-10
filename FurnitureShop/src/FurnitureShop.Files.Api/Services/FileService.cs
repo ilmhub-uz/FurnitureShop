@@ -1,9 +1,11 @@
 ﻿using FurnitureShop.Files.Api.Dtos;
+using JFA.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
 namespace FurnitureShop.Files.Api.Services;
 
+[Scoped]
 public class FileService : IFileService
 {
     private IFileHelper _fileHelper;
