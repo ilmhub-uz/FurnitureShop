@@ -5,9 +5,74 @@
 <PageTitle>Login</PageTitle>
 
 <div style="margin:auto; position:relative;">
-    <MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
+    @*<MudTextField Style="width:300px;" @bind-Value="model.UserName" For="@(() => model.UserName)" Label="UserName" Variant="Variant.Outlined" HelperText="Max. 8 characters"></MudTextField>
     <MudTextField Style="width:300px;" @bind-Value="model.Password" For="@(() => model.Password)" Label="Password" Variant="Variant.Outlined" HelperText="Minimum 8 characters"></MudTextField>
-    <MudButton Style="width:300px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+    <MudButton Style="width:300px;" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>*@
+
+    @**@
+
+    <section class="h-100 gradient-form" style="background-color: #eee;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-xl-10">
+                    <div class="card rounded-3 text-black">
+                        <div class="row g-0">
+                            <div class="col-lg-6">
+                                <div class="card-body p-md-5 mx-md-4">
+
+                                    <div class="text-center">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                                             style="width: 185px;" alt="logo">
+                                        <h4 class="mt-1 mb-5 pb-1">We are The IlmHub Team</h4>
+                                    </div>
+
+                                    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+                                        <DataAnnotationsValidator />
+                                        <MudGrid >
+                                            <MudItem style="max-width:100% !important; flex-basis:100% !important;" xs="12" sm="7">
+                                                <MudCard style="justify-content:center !important">
+                                                    <MudCardContent>
+                                                        <MudTextField Label="Username" HelperText="Max. 8 characters"
+                                                                      @bind-Value="model.UserName" For="@(() => model.UserName)" />
+                                                        <MudTextField Label="Password" Class="mt-3"
+                                                                      @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                                                    </MudCardContent>
+                                                    <MudCardActions>
+                                                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Style="width:200px" Class="ml-auto">Log in</MudButton>
+                                                       
+                                                        
+                                                    </MudCardActions>
+                                                    <MudCardActions Style="justify-content:space-between" > 
+                                                        <div class="d-flex w-100 align-items-center justify-content-center pb-4">
+                                                            <p class="mb-0 me-2">Don't have an account?</p>
+                                                            <MudButton Href="/register" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="ml-auto" Style="width:200px" Color="Color.Error">Sign Up</MudButton>
+                                                        </div>
+
+                                                    </MudCardActions>
+                                                </MudCard>
+                                            </MudItem>
+                                        </MudGrid>
+                                    </EditForm>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                    <h4 class="mb-4">We are more than just a company</h4>
+                                    <p class="small mb-0">
+                                        “Every lesson I learned as a kid was at the dinner table. 
+                                        Being Greek, Sicilian and Ruthenian – we are an emotional bunch. 
+                                        It is where we laughed, cried, and yelled – but most importantly, where we bonded and connected.” 
+                                        – Michael Symon (American chef)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 @code {
     LoginUserDto model = new LoginUserDto();
@@ -21,7 +86,7 @@
     {
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7148");
-        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/accounts/signin");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/account/sign-in");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
