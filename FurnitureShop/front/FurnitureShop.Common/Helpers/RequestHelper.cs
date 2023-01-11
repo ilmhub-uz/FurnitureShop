@@ -70,8 +70,7 @@ public class RequestHelper<TModel> : IRequestHelper<TModel> where TModel : class
     }
 }
 
-public class ResponseResult<T>
+public class ResponseResult<T> : HttpResponseMessage
 {
-    public T? Data {get; set;}
-    public HttpStatusCode StatusCode { get; set; }
+    public T? Data {get; set;} 
 }
