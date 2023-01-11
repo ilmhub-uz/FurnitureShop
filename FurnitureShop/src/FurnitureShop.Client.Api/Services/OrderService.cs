@@ -30,18 +30,16 @@ public class OrderService : IOrderService
         
         if (createOrderDto is null)
             throw new BadRequestException("createOrderDto is not null");
+        var product =  _unitOfWork.Products.GetById(createOrderDto.ProductId);
 
         var newOrder = new Order()
         {
             UserId = userId,
-            OrganizationId = createOrderDto.OrganizationId,
-            OrderProducts = createOrderDto.CartProductIds.Select(id => new OrderProduct()
-            {
-                ProductId = id.ProductId,
-                Count = id.Count,
-                Properties = id.Properties
-            }).ToList()
+            OrganizationId = product!.OrganizationId,
+            Status = EOrderStatus.Created,
+            CreatedAt = DateTime.Now,  
         };
+
         await _unitOfWork.Orders.AddAsync(newOrder);
 
         return newOrder.Adapt<OrderView>();
