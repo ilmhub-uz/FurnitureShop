@@ -1,7 +1,7 @@
 ﻿@using FurnitureShop.Merchant.Blazor.Dtos;
 @inject HttpClient Http
 
-<MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Add New Category</MudButton>
+<MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Add New Organization</MudButton>
 
 <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
     <EditForm Class="myDrawer" Model="@model" OnValidSubmit="OnValidSubmit">
@@ -11,7 +11,7 @@
                 @bind-Value="model.Name" For="@(() => model.Name)" />
                 
             <br />
-            <MudFileUpload  T="IBrowserFile" FilesChanged="UploadFiles">
+            @* <MudFileUpload  T="IBrowserFile" FilesChanged="UploadFiles">
                 <ButtonTemplate>
                 <MudButton class="drawFile" HtmlTag="label"
                                Variant="Variant.Filled"
@@ -21,7 +21,7 @@
                         Upload Files
                     </MudButton>
                 </ButtonTemplate>
-            </MudFileUpload>
+            </MudFileUpload> *@
             
             <br />
         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
