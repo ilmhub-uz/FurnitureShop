@@ -60,16 +60,19 @@ public static class ServiceCollectionExtensions
         {
             options.AddDefaultPolicy(cors =>
             {
-                cors.WithOrigins("http://localhost:65283", // Merchant.Api
-                                "https://localhost:8521", 
-                                "http://localhost:9842", 
-                                "http://localhost:34445", // File.Api
-                                "https://localhost:7019",
-                                "http://localhost:5285",
+                cors.WithOrigins("http://localhost:65283",
+                                "http://localhost:34445",
                                 "https://localhost:44398",
-                                "https://localhost:5001",
-                                "https://localhost:5011",
-                                "https://localhost:44398")
+                                "https://localhost:0001",   // Marketplace API HTTPS
+                                "http://localhost:0002",    // Marketplace API HTTP
+                                "https://localhost:0003",   // Admin API HTTPS
+                                "http://localhost:0004",    // Admin API HTTP
+                                "https://localhost:0005",   // Client API HTTPS
+                                "http://localhost:0006",    // Client API HTTP
+                                "https://localhost:0007",   // Files API HTTPS
+                                "http://localhost:0008",    // Files API HTTP
+                                "https://localhost:0009",   // Merchant API HTTPS
+                                "http://localhost:0010")    // Merchant API HTTP
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
