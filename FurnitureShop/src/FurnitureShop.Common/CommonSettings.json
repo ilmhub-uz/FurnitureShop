@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "localhost": "Host=localhost;Port=5432;Username=postgres;Password=192256;database=furnitureshop"
+    "localhost": "Host=localhost;Port=5432;Username=Abdulaziz;Password=27044072abdu;database=FurnitureSHop"
   },
   "WebSettings": {
     "DomainName": "Furnitures.uz"
