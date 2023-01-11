@@ -1,4 +1,4 @@
-﻿using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -63,12 +63,21 @@ public static class ServiceCollectionExtensions
                 cors.WithOrigins("http://localhost:65283",
                                 "http://localhost:34445",
                                 "https://localhost:44398",
+                                "https://localhost:5001",
+                                "https://localhost:5011",
+                                "https://localhost:44398",
+                                "http://localhost:5000",
+                                "https://localhost:5001",
                                 "https://localhost:0001",   // Marketplace API HTTPS
                                 "http://localhost:0002",    // Marketplace API HTTP
                                 "https://localhost:0003",   // Admin API HTTPS
                                 "http://localhost:0004",    // Admin API HTTP
                                 "https://localhost:0005",   // Client API HTTPS
                                 "http://localhost:0006",    // Client API HTTP
+                                "https://localhost:1007",   // Files API HTTPS
+                                "http://localhost:1008",    // Files API HTTP
+                                "https://localhost:1009",   // Merchant API HTTPS
+                                "http://localhost:1010")    // Merchant API HTTP
                                 "https://localhost:0007",   // Files API HTTPS
                                 "http://localhost:0008",    // Files API HTTP
                                 "https://localhost:0009",   // Merchant API HTTPS
