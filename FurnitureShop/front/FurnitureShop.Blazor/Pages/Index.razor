@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using FurnitureShop.Blazor.Pages.ViewModel
+@using FurnitureShop.Blazor.Services
 @inject HttpClient Http
+@inject CategoryService CategoryService
 
 <PageTitle>Index</PageTitle>
 
@@ -370,13 +372,13 @@
     private bool enableSwipeGesture = true;
     private bool autocycle = true;
     private Transition transition = Transition.Slide;
-    private CategoryView[]? categories;
-    private ProductView[]? products;
+    private List<CategoryView>? categories;
+    private List<ProductView>? products;
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<ProductView[]?>("https://localhost:7235/api/products");
-        categories = await Http.GetFromJsonAsync<CategoryView[]?>("https://localhost:7235/api/Categories");
+        products = await Http.GetFromJsonAsync<List<ProductView>?>("https://localhost:1001/api/products");
+        categories = await CategoryService.GetCategories();
     }
 }
 
