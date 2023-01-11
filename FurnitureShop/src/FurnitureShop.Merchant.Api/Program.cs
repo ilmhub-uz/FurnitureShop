@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 //builder.Services.AddSingleton(emailConfig);
-
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
