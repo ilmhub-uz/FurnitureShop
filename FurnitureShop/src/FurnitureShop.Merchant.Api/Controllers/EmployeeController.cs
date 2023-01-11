@@ -53,6 +53,12 @@ public class EmployeeController : ControllerBase
         => await _employeeService.GetStaff(organizationId);
 
     [HttpDelete]
-    public async Task RemoveEmployee(Guid organizationId, Guid employeeId)
-        => await _employeeService.RemoveEmployee(organizationId, employeeId);
+    public async Task RemoveEmployee(RemoveEmployeeDto dto)
+    {
+        var validationResult = validator.Validate(dto);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
+        await _employeeService.RemoveEmployee(dto);
+    }
 }

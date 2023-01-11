@@ -63,13 +63,13 @@ public class EmployeeService : IEmployeeService
             }).ToList();
     }
 
-    public async Task RemoveEmployee(Guid organizationId, Guid employeeId)
+    public async Task RemoveEmployee(RemoveEmployeeDto dto)
     {
-        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
+        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dto.OrganizationId);
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        var manager = organization.Users!.FirstOrDefault(u => u.UserId == employeeId);
+        var manager = organization.Users!.FirstOrDefault(u => u.UserId == dto.EmployeeId);
         if (manager is null)
             throw new NotFoundException<OrganizationUser>();
 
