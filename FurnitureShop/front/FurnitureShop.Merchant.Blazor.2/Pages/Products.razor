@@ -1,6 +1,7 @@
 @page "/products"
 @using FurnitureShop.Admin.Blazor.Dtos
 @inject HttpClient Http
+@inject IDialogService DialogService
 
 <h3>Products</h3>
 
@@ -8,24 +9,24 @@
 {
     @foreach (var product in productViews)
     {
-        <MudCard >
-             <MudCardContent>
-                 <MudText Typo="Typo.h5"> Name : @product.Name</MudText> 
-                 <MudText Typo="Typo.h5">Count : @product.Count  </MudText>
-                 <MudText Typo="Typo.h5">Description : @product.Description  </MudText>
-                 <MudText Typo="Typo.h5">OnSale : @product.OnSale  </MudText>
-                 <MudText Typo="Typo.h5">OnTrend : @product.OnTrend  </MudText>
-                 <MudText Typo="Typo.h5">Price :  $@product.Price  </MudText> 
-                 <MudText Typo="Typo.h5"> </MudText>
-             </MudCardContent>
-              
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo="Typo.h5"> Name : @product.Name</MudText>
+                <MudText Typo="Typo.h5">Count : @product.Count  </MudText>
+                <MudText Typo="Typo.h5">Description : @product.Description  </MudText>
+                <MudText Typo="Typo.h5">OnSale : @product.OnSale  </MudText>
+                <MudText Typo="Typo.h5">OnTrend : @product.OnTrend  </MudText>
+                <MudText Typo="Typo.h5">Price :  $@product.Price  </MudText>
+                <MudText Typo="Typo.h5"> </MudText>
+            </MudCardContent>
+
         </MudCard>
         <br>
     }
 }
 else
 {
-     <div class="row">
+    <div class="row">
         <h4 class="fw-bold py-3 mb-2">Organizations List</h4>
         <div class="col-lg-8 col-12 mb-4">
             <div class="card h-100">
@@ -44,20 +45,60 @@ else
                 <div class="row h-100">
                     <div class="col-sm-12">
                         <div class="card-body text-sm-center text-center">
-                        <button data-bs-target="#addRoleModal" data-bs-toggle="modal" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Product</button>
-                        <p class="mb-0">You can create a new product</p>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   OnClick="@(() => OpenDrawer(Anchor.End))" Style="width:150px; height:35px;border-radius:5px;">Add product</MudButton>
+                            <p class="mb-0">You can create a new product</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <MudDrawer @bind-Open="@open" Width="@width" Height="@height" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+        <MudCard Height="430px" Width="100%">
+            <h2>Add Product Form</h2>
+            <MudTextField @bind-Value="productDtoModel.Name" Label="Name" Variant="Variant.Text" Required></MudTextField>
+            <MudTextField @bind-Value="productDtoModel.Description" Label="Desciption" Variant="Variant.Text" Required></MudTextField>
+            <MudTextField @bind-Value="productDtoModel.Price" Label="Price" Variant="Variant.Text" Required></MudTextField>
+            <MudTextField @bind-Value="productDtoModel.Count" Label="Count" Variant="Variant.Text" Required></MudTextField>
+            <MudTextField @bind-Value="productDtoModel.CategoryId" Label="Category id" Variant="Variant.Text" Required></MudTextField>
+            <MudTextField @bind-Value="productDtoModel.OrganizationId" Label="Organization id" Variant="Variant.Text" Required></MudTextField>
+            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Filled.Done"Color="Color.Primary" 
+                OnClick="AddProduct" Class="ma-5" Style="height:40px;width:150px;border-radius:6px;">Submit</MudButton>
+        </MudCard>
+    </MudDrawer>
 }
 
+
 @code {
+
     private List<ProductView>? productViews;
+    private CreateProductDto? productDtoModel = new CreateProductDto();
+    bool open;
+    Anchor anchor;
+    string width, height;
+
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+
+        switch (anchor)
+        {
+            case Anchor.End:
+                width = "430px";
+                height = "480px";
+                break;
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7113/api/Products");
+    }
+
+    public async Task AddProduct()
+    {
+        await Http.PostAsJsonAsync("https://localhost:7113/api/Products", productDtoModel);
     }
 }
