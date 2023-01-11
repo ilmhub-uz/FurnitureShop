@@ -1,6 +1,6 @@
 ﻿@page "/"
-@using FurnitureShop.Client.Blazor.ViewModel;
-@inject HttpClient Http;
+@using FurnitureShop.Client.Blazor.ViewModel
+@inject HttpClient Http
 
 <head style="top:0">
     @if (productViews is null)
@@ -48,7 +48,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("https://localhost:7148/api/Products");
-        organizationViews = await Http.GetFromJsonAsync<IEnumerable<OrganizationView>>("https://localhost:7113/api/Organizations");
+        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("api/Products");
+        organizationViews = await Http.GetFromJsonAsync<IEnumerable<OrganizationView>>("Organizations");
     }
 }
