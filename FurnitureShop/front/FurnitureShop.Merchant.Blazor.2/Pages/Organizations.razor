@@ -10,14 +10,15 @@
 <PageTitle>Organizations</PageTitle>
 
 <_AddOrganization />
-@*@if(Elements.Count < 1)
+
+@if(Elements.Count < 1)
 {
     <div class="nullContent">
         <img src="/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid notImage" alt="Image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png">
         <h3 class="fw-bold py-3 mb-2" style="margin-left:10px">There is no any organizations</h3>
     </div>
 }
-else{*@
+else{
     <div class="container">
         <br>
         <br>
@@ -47,7 +48,7 @@ else{*@
             }
         </div>
     </div>
-@*}*@
+}
 
 
 @*@code{
@@ -73,11 +74,6 @@ else{*@
 }*@
 
 @code {
-    public async void DeleteOrganizationById(string organizationId)
-    {
-        await Http.DeleteAsync($"https://localhost:7113/api/Organizations/{organizationId}");
-    }
-
     private List<OrganizationView> Elements = new List<OrganizationView>();
 
     protected override async Task OnInitializedAsync()
@@ -85,10 +81,11 @@ else{*@
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7113");
 
-        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations");
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+
         Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
     }
 }
