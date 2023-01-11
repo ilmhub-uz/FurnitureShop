@@ -67,9 +67,24 @@ public static class ServiceCollectionExtensions
                                 "https://localhost:7019",
                                 "http://localhost:5285",
                                 "https://localhost:44398",
+<<<<<<< Updated upstream
                                 "https://localhost:5001",
                                 "https://localhost:5011",
                                 "https://localhost:44398")
+=======
+                                "http://localhost:5000",
+                                "https://localhost:5001",
+                                "https://localhost:0001",   // Marketplace API HTTPS
+                                "http://localhost:0002",    // Marketplace API HTTP
+                                "https://localhost:0003",   // Admin API HTTPS
+                                "http://localhost:0004",    // Admin API HTTP
+                                "https://localhost:0005",   // Client API HTTPS
+                                "http://localhost:0006",    // Client API HTTP
+                                "https://localhost:1007",   // Files API HTTPS
+                                "http://localhost:1008",    // Files API HTTP
+                                "https://localhost:1009",   // Merchant API HTTPS
+                                "http://localhost:1010")    // Merchant API HTTP
+>>>>>>> Stashed changes
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
