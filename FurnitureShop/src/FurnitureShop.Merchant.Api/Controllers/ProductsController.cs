@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Security.Claims;
+using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
@@ -41,14 +42,14 @@ public partial class ProductsController : ControllerBase
         if (!validateResult.IsValid)
             return BadRequest();
 
-        await _productService.AddProduct(dtoModel);
+        await _productService.AddProduct(dtoModel, User);
 
         return Ok();
     }
 
     [HttpGet]
     public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery]ProductSortingFilter sortingFilter)
-    => await _productService.GetProducts(sortingFilter);
+    => await _productService.GetProducts(sortingFilter, User);
 
     [HttpGet("{productId:guid}")]
     [IdValidation]

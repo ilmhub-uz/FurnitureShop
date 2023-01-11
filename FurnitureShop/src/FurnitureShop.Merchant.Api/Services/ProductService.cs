@@ -24,10 +24,11 @@ public class ProductService : IProductService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task AddProduct(CreateProductDto dtoModel)
+    public async Task AddProduct(CreateProductDto dtoModel, ClaimsPrincipal principal)
     {
         var productEntity = dtoModel.Adapt<Product>();
-        
+        productEntity.AuthorId = Guid.Parse(principal.GetUserId());
+
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dtoModel.OrganizationId);
         if (organization is null)
             throw new NotFoundException<Organization>();
@@ -59,14 +60,21 @@ public class ProductService : IProductService
         return existingProduct!.Adapt<ProductView>();
     }
 
-    public async Task<List<ProductView>> GetProducts(ProductSortingFilter sortingFilter)
+    public async Task<List<ProductView>> GetProducts(ProductSortingFilter sortingFilter, ClaimsPrincipal principal)
     {
         var existingProducts = _unitOfWork.Products.GetAll();
 
-        if (sortingFilter.OrganizationId is not null)
+        if (sortingFilter.OnlyMyProducts is true)
+        {
+            var userId = Guid.Parse(principal.GetUserId());
+            existingProducts = existingProducts.Where(p => p.OrganizationId == sortingFilter.OrganizationId && p.AuthorId == userId);
+        }
+        else
+        {
             existingProducts = existingProducts.Where(p => p.OrganizationId == sortingFilter.OrganizationId);
+        }
 
-        if(sortingFilter.Brend is not null)
+        if (sortingFilter.Brend is not null)
             existingProducts = existingProducts.Where(p => p.Brend == sortingFilter.Brend);
 
         if(sortingFilter.Price is not null)
