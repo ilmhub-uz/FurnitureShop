@@ -5,7 +5,7 @@ public class PaginationParams
     private const int MaxPageSize = 500;
     private const int MinPageNumber = 1;
 
-    private int _pageSize = 5;
+    private int _pageSize = 24;
     private int _pageNumber = 1;
 
     public int Size
