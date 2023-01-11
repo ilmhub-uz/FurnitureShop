@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FurnitureShop.Admin.Blazor.Dtos;
+namespace FurnitureShop.Merchant.Blazor.Dtos;
 
 public class LoginUserDto
 {

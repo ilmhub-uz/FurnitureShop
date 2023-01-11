@@ -1,35 +1,71 @@
-﻿@using FurnitureShop.Merchant.Api.Dtos;
+﻿@using FurnitureShop.Merchant.Blazor.Dtos;
+@inject HttpClient Http
 
-<div class="offcanvas offcanvas-end show" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel" aria-modal="true" role="dialog">
-    <div class="offcanvas-header">
-        <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add Organization</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body mx-0 flex-grow-0">
-        <EditForm id="addNewUserForm" Class="mb-3 add-new-user pt-0 fv-plugins-bootstrap5 fv-plugins-framework" Model="@model" OnValidSubmit="OnValidSubmit">
-              <DataAnnotationsValidator />
-            <div class="mb-3 fv-plugins-icon-container">
-                <label class="form-label" for="add-organization-name">Brand name</label>
-                <MudTextField class="form-control" id="add-organization-name" placeholder="E.g: Taqsim" @bind-Value="model.Name" For="@(() => model.Name)" />
-                <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
-            <div class="mb-3 fv-plugins-icon-container">
-                <label class="form-label" for="add-owner">Image path</label>
-                <MudTextField class="form-control" id="add-organization-name" placeholder="Images / Organization" @bind-Value="model.ImageUrl" For="@(() => model.ImageUrl)" />
-                <div class="fv-plugins-message-container invalid-feedback"></div>
-            </div>
-            <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" data-bs-dismiss="offcanvas" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</MudButton>
-            </MudCardActions>
-            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-            <input type="hidden">
-        </EditForm>
-    </div>
-</div>
+<MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Add New Category</MudButton>
+
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <EditForm Class="myDrawer" Model="@model" OnValidSubmit="OnValidSubmit">
+        <h4> Create Organization </h4>
+        <DataAnnotationsValidator />
+            <MudTextField Label="Name" HelperText="Max. 8 characters"
+                @bind-Value="model.Name" For="@(() => model.Name)" />
+                
+            <br />
+            <MudFileUpload  T="IBrowserFile" FilesChanged="UploadFiles">
+                <ButtonTemplate>
+                <MudButton class="drawFile" HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                               for="@context">
+                        Upload Files
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload>
+            
+            <br />
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+    </EditForm>
+</MudDrawer>
+
+@code {
+    bool open;
+    Anchor anchor;
+
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+}
 
 @code{
-    string? error = null;
     CreateOrganizationDto? model = new CreateOrganizationDto();
+    // File Api
+
+    private async Task UploadFiles(IBrowserFile file)
+    {
+        AddFiles OrganizationImage = new AddFiles();
+        OrganizationImage.Files.Add(file);
+        OrganizationImage.Folder = EFileFolder.Organization;
+        OrganizationImage.Type = EFileType.Images;
+
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7019");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Files");
+        message.Content = JsonContent.Create(OrganizationImage);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+    }
+
+    // Merchatnt API
+
+    string? error = null;
+
     private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
@@ -44,3 +80,4 @@
             error = "10000400";
     }
 }
+
