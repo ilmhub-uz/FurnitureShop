@@ -3,9 +3,9 @@ using FurnitureShop.Merchant.Api.Dtos;
 
 namespace FurnitureShop.Merchant.Api.Validators
 {
-    public class EmployeeServiceDtoValidator : AbstractValidator<EmployeeServiceDto>
+    public class AddEmployeeDtoValidator : AbstractValidator<AddEmployeeDto>
     {
-        public EmployeeServiceDtoValidator()
+        public AddEmployeeDtoValidator()
         {
             RuleFor(dto => dto.OrganizationId).NotEmpty().NotNull();
 

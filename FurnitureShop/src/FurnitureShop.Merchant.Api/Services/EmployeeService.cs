@@ -23,7 +23,7 @@ public class EmployeeService : IEmployeeService
         _userManager = userManager;
     }
 
-    public async Task AddEmployee(ClaimsPrincipal appuser, EmployeeServiceDto dto)
+    public async Task AddEmployee(ClaimsPrincipal appuser, AddEmployeeDto dto)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dto.OrganizationId);
         if (organization is null)

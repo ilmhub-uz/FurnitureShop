@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
@@ -18,17 +19,24 @@ public class EmployeeController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IEmployeeService _employeeService;
+    private readonly IValidator<AddEmployeeDto> validator;
 
-    public EmployeeController(IEmployeeService employeeService, UserManager<AppUser> userManager)
+
+    public EmployeeController(IEmployeeService employeeService, UserManager<AppUser> userManager, IValidator<AddEmployeeDto> validator)
     {
         _employeeService = employeeService;
         _userManager = userManager;
+        this.validator = validator;
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddEmployee([FromBody] EmployeeServiceDto dto)
+    public IActionResult AddEmployee([FromBody] AddEmployeeDto dto)
     {
-        await _employeeService.AddEmployee(User, dto);
+        var validationResult = validator.Validate(dto);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
+        _employeeService.AddEmployee(User, dto);
         return Ok();
     }
 
