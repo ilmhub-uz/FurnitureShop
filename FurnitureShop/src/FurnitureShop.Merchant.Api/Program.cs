@@ -36,7 +36,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//https://localhost:7113/organizationhub
+//https://localhost:1009/organizationhub
 app.MapHub<OrganizationHub>("/organizationhub");
 
 app.Run();

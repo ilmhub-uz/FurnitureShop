@@ -96,7 +96,7 @@
     {
         error = null;
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7113");
+        client.BaseAddress = new Uri("https://localhost:1009");
         var message = new HttpRequestMessage(HttpMethod.Post, $"/api/account/signup");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);

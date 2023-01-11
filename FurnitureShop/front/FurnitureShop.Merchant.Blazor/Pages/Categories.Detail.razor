@@ -98,6 +98,6 @@ else {
     
     protected override async Task OnInitializedAsync()
     {
-        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7113/api/categories");
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:1009/api/categories");
     }
 }

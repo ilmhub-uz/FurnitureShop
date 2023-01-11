@@ -1,129 +1,81 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>FurnitureShop.Admin.Blazor</title>
-    <base href="/" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link href="css/style.css" rel="stylesheet" />
-    <link href="js/site.js" />
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<body>
-    <div id="app">
-        <div class="loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+    <title>Furnitures.uz</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet">
+    <link href="/assets/css/demo.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/myStyle.css">
+
+    <!--<link href="assets/css/dashboard.custom.css" rel="stylesheet">-->
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/vendor/libs/sweetalert2/sweetalert2.css" />
+
+    <!-- Page CSS -->
+    <!-- Helpers -->
+    <script src="/assets/vendor/js/helpers.js"></script>
+
+    <script src="/assets/js/config.js"></script>
+</head>
+    <body style="background-color: #f5f5f9;">
+        <div id="app"><div class="page-loader-component"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div>
+
+        <div id="blazor-error-ui" class="bs-toast toast fade show bg-danger" style="z-index: 99999; position: fixed; top: 20px; right: 21px; width: 340px; height: 120px; margin-left: 20px;" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bx bx-bug-alt me-2"></i>
+                <div class="me-auto fw-semibold">System</div>
+                <a class="dismiss btn-close" data-bs-dismiss="toast" aria-label="Close">&nbsp;</a>
+            </div>
+            <div class="toast-body">
+                An unhandled error has occurred.
+            </div>
         </div>
 
-        <style>
-            .loading-page {
-                width: 100%;
-                height: 100vh;
-                text-align: center;
-                align-items: center;
-                justify-content: center;
-            }
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <script>
+            Swal.bindClickHandler()
+            Swal.mixin({
+                toast: true,
+            }).bindClickHandler('data-swal-toast-template')
+        </script>
+        <script src="/assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="/assets/vendor/libs/popper/popper.js"></script>
+        <script src="/assets/vendor/js/bootstrap.js"></script>
+        <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-            :root {
-                --color-bg: #eaeaea;
-                --color-loader: #222;
-                --loader-size: 100px;
-                --loader-speed: 500ms;
-            }
+        <script src="/assets/vendor/js/menu.js"></script>
+        <script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-            .loader {
-                --loader-height: calc(var(--loader-size) / 7);
-                display: flex;
-                position: relative;
-            }
+        <script src="/assets/js/dashboards-analytics.js"></script>
 
-                .loader::before {
-                    content: '';
-                    position: absolute;
-                }
-
-                .loader::before,
-                .loader > span {
-                    display: block;
-                    width: var(--loader-height);
-                    height: var(--loader-height);
-                    border-radius: 50%;
-                    background: var(--color-loader);
-                    animation-name: to-right;
-                    animation-duration: var(--loader-speed);
-                    animation-iteration-count: infinite;
-                    animation-timing-function: linear;
-                }
-
-                    .loader > span:nth-child(even) {
-                        visibility: hidden;
-                    }
-
-                    .loader > span:first-child {
-                        animation-name: scale-up;
-                    }
-
-                    .loader > span:last-child {
-                        animation-name: scale-up;
-                        animation-direction: reverse;
-                    }
-
-            @keyframes to-right {
-                to {
-                    transform: translateX(200%);
-                }
-            }
-
-            @keyframes scale-up {
-                from {
-                    transform: scale(0);
-                }
-
-                to {
-                    transform: scale(1);
-                }
-            }
-
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100vw;
-                height: 100vh;
-            }
-
-            body {
-                background-color: var(--color-bg);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        </style>
-    </div>
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-</body>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script src="_framework/blazor.webassembly.js"></script>
+        <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+    </body>
 
 </html>
