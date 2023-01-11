@@ -564,7 +564,7 @@
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7113/chathub")
+            .WithUrl("https://localhost:1009/chathub")
             .Build();
 
         _hubConnection.On<int, int, int, int>(nameof(GetAllStatistcs), GetAllStatistcs);

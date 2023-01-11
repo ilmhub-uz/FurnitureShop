@@ -124,7 +124,7 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7113/api/categories");
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:1009/api/categories");
     }
 
     void OnRowClick(TableRowClickEventArgs<CategoryView> args)
@@ -137,7 +137,7 @@ else
     private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7113");
+        client.BaseAddress = new Uri("https://localhost:1009");
         var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Categories");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
@@ -147,7 +147,7 @@ else
         if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
             error = "10000400";
         
-        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7113/api/categories");
+        Elements = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:1009/api/categories");
         await InvokeAsync(() => StateHasChanged());
         StateHasChanged();
     }
