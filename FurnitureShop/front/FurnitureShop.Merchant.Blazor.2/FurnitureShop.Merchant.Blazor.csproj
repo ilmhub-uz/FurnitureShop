@@ -13,6 +13,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.7" />
 		<PackageReference Include="MudBlazor" Version="6.0.13" />
 		<PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="RestSharp" Version="108.0.3" />
 	</ItemGroup>
 	
 	

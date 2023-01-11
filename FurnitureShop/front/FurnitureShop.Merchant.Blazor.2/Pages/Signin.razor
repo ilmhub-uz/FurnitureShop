@@ -80,8 +80,8 @@
     private async Task OnValidSubmit(EditContext context)
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7237");
-        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/accounts/signin");
+        client.BaseAddress = new Uri("https://localhost:7113");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/signin");
         message.Content = JsonContent.Create(model);
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
