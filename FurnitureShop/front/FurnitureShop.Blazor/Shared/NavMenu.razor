@@ -1,4 +1,5 @@
-﻿@inject HttpClient HttpClient
+﻿@using FurnitureShop.Blazor.Services
+@inject CategoryService CategoryService
 
 <link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
 
@@ -26,12 +27,7 @@
             }
         </MudNavGroup>
     }
-
-    @if (_catalogErrorMessage is not null)
-    {
-        <p>@_catalogErrorMessage</p>
-    }
-<!------------------------------------------------------------------------------------------------->
+    <!------------------------------------------------------------------------------------------------->
 
     <MudNavGroup Title="Sofas" Icon="@Icons.Filled.Chair" Class="NavCat">
         <MudNavLink Href="sofas" Match="NavLinkMatch.All">Frameless sofas</MudNavLink>
@@ -54,20 +50,9 @@
 </MudNavMenu>
 
 @code{
-    private string? _catalogErrorMessage;
     private List<CategoryView>? _categories;
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            _categories = await HttpClient.GetFromJsonAsync<List<CategoryView>>("https://localhost:7235/api/Categories");
-        }
-        catch (Exception e)
-        {
-            _catalogErrorMessage = e.Message;
-        }
-    }
+    protected override async Task OnInitializedAsync() => _categories = await CategoryService.GetCategories();
 }
 
 <style>
