@@ -17,7 +17,4 @@ public class RegisterUserDto
 
 
     public string? Email { get; set; }
-
-    public IFormFile? Avatar { get; set; }
-
 }
