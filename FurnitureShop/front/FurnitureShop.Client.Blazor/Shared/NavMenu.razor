@@ -4,6 +4,8 @@
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Account</MudNavLink>
+    <MudNavLink Href="cart" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ShoppingBasket">Cart</MudNavLink>
+    <MudListSubheader Href="categories" Match="NavLinkMatch.Prefix">Categories</MudListSubheader>
 
     <MudNavGroup Icon="@Icons.Material.Filled.Category" Title="Categories">
         @if(categories is null)
