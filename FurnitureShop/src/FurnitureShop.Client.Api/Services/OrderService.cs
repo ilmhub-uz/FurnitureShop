@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Client.Api.Services;
 
@@ -24,27 +25,37 @@ public class OrderService : IOrderService
         _unitOfWork = unitOfWork;
     }
 
+    public UnitOfWork Get_unitOfWork()
+    {
+        return _unitOfWork;
+    }
+
     public async Task<OrderView> CreateOrder(ClaimsPrincipal claims,CreateOrderDto createOrderDto)
     {
-        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier).Value);
         
         if (createOrderDto is null)
             throw new BadRequestException("createOrderDto is not null");
-
+        var product = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == createOrderDto.ProductId);
+        if (product is null) return new OrderView();
         var newOrder = new Order()
         {
             UserId = userId,
-            OrganizationId = createOrderDto.OrganizationId,
-            OrderProducts = createOrderDto.CartProductIds.Select(id => new OrderProduct()
-            {
-                ProductId = id.ProductId,
-                Count = id.Count,
-                Properties = id.Properties
-            }).ToList()
+            OrganizationId = product.OrganizationId,
+            Status = EOrderStatus.Created,
+            CreatedAt = DateTime.UtcNow,
         };
-        await _unitOfWork.Orders.AddAsync(newOrder);
 
-        return newOrder.Adapt<OrderView>();
+        await _unitOfWork.Orders.AddAsync(newOrder);
+        var order =  _unitOfWork.Orders.GetAll().ToList().FirstOrDefault(k => k.CreatedAt == newOrder.CreatedAt &&
+        k.UserId == userId && k.Status == newOrder.Status && k.OrganizationId == newOrder.OrganizationId); 
+
+         /*   .GetAll().AsNoTracking().FirstOrDefaultAsync(o => o.UserId == userId && o.OrganizationId == product.OrganizationId 
+        && o.CreatedAt == newOrder.CreatedAt && o.Status == newOrder.Status);*/
+      
+        if (order is null) return new OrderView(); 
+        
+        return order.Adapt<OrderView>();
     }
 
     public async Task<List<OrderView>> GetOrders(OrderFilterDto orderFilter, ClaimsPrincipal User)
