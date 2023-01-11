@@ -1,6 +1,6 @@
-﻿using FurnitureShop.Admin.Blazor.Dtos.Status;
+﻿using FurnitureShop.Merchant.Blazor.Dtos.Status;
 
-namespace FurnitureShop.Admin.Blazor.Dtos
+namespace FurnitureShop.Merchant.Blazor.Dtos
 {
     public class UserView
     {

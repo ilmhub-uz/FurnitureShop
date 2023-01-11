@@ -1,15 +1,14 @@
 ﻿@page "/organizations"
-@using FurnitureShop.Admin.Blazor.Dtos;
+@using FurnitureShop.Merchant.Blazor.Dtos;
 @inject HttpClient Http
 
 <PageTitle>Organizations</PageTitle>
 
+<_AddOrganization />
+
 <div class="container">
-    <div class="card">
-        <div class="card-body text-sm-center text-center">
-            <button  type="submit" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Category</button>
-        </div>
-    </div>
+    <br>
+    <br>
     <br>
     <div class="row">
         @foreach (var element in Elements)
@@ -38,7 +37,7 @@
     </div>
 </div>
 
-<_AddOrganization />
+
 
 @code {
     public async void DeleteOrganizationById(string organizationId)

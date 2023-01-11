@@ -1,4 +1,4 @@
-﻿namespace FurnitureShop.Admin.Blazor.Dtos.Status
+﻿namespace FurnitureShop.Merchant.Blazor.Dtos.Status
 {
     public enum EUserStatus
     {

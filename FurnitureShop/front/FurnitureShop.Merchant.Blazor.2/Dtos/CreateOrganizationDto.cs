@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FurnitureShop.Merchant.Api.Dtos;
+namespace FurnitureShop.Merchant.Blazor.Dtos;
 
 public class CreateOrganizationDto
 {
