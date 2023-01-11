@@ -77,7 +77,7 @@ public static class ServiceCollectionExtensions
                                 "https://localhost:1007",   // Files API HTTPS
                                 "http://localhost:1008",    // Files API HTTP
                                 "https://localhost:1009",   // Merchant API HTTPS
-                                "http://localhost:1010")    // Merchant API HTTP
+                                "http://localhost:1010",    // Merchant API HTTP
                                 "https://localhost:0007",   // Files API HTTPS
                                 "http://localhost:0008",    // Files API HTTP
                                 "https://localhost:0009",   // Merchant API HTTPS
