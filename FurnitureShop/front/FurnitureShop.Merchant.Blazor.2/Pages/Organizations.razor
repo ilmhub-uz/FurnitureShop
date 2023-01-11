@@ -82,18 +82,10 @@ else{*@
 
     protected override async Task OnInitializedAsync()
     {
-        @* var client = new RestClient("https://localhost:7113");
-        client.Authenticator = new HttpBasicAuthenticator("Abdula", "27044072Abdu");
-
-        var request = new RestRequest("/api​/Organizations");
-        Elements = await client.GetAsync<List<OrganizationView>>(request); *@
-
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7113");
 
-       // var urlString = HttpUtility.ParseQueryString("​/api​/Organizations");
-
-        var message = new HttpRequestMessage(HttpMethod.Get, "​api​/Organizations");
+        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
