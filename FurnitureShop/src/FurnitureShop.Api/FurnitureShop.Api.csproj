@@ -16,7 +16,6 @@
 
 
   <ItemGroup>
-	<Content Include="..\FurnitureShop.Common\CommonSettings.json" Link="CommonSettings.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="..\FurnitureShop.Common\FurnitureShop.Common.csproj" />
   </ItemGroup>
 
