@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureShop.Blazor", "Fur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureShop.Common", "FurnitureShop.Common\FurnitureShop.Common.csproj", "{595C0705-8232-4A8B-87C5-935F7C216F73}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureShop.Client.Blazor", "FurnitureShop.Client.Blazor\FurnitureShop.Client.Blazor.csproj", "{23C65311-FBAE-48A2-8A2C-6AEEF33B2586}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureShop.Merchant.Blazor", "FurnitureShop.Merchant.Blazor\FurnitureShop.Merchant.Blazor.csproj", "{90F9B2A0-CF20-473E-BF8F-01DA05B6D1D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{595C0705-8232-4A8B-87C5-935F7C216F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{595C0705-8232-4A8B-87C5-935F7C216F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{595C0705-8232-4A8B-87C5-935F7C216F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23C65311-FBAE-48A2-8A2C-6AEEF33B2586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23C65311-FBAE-48A2-8A2C-6AEEF33B2586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23C65311-FBAE-48A2-8A2C-6AEEF33B2586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23C65311-FBAE-48A2-8A2C-6AEEF33B2586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F9B2A0-CF20-473E-BF8F-01DA05B6D1D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F9B2A0-CF20-473E-BF8F-01DA05B6D1D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F9B2A0-CF20-473E-BF8F-01DA05B6D1D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F9B2A0-CF20-473E-BF8F-01DA05B6D1D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
