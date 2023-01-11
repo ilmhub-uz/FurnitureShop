@@ -1,0 +1,93 @@
+﻿@using FurnitureShop.Merchant.Blazor.Dtos;
+@inject HttpClient Http
+
+<MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Add New Organization</MudButton>
+
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <EditForm Class="myDrawer" Model="@model" OnValidSubmit="OnValidSubmit">
+        <h4> Create Organization </h4>
+        <DataAnnotationsValidator />
+            <MudTextField Label="Name" HelperText="Max. 8 characters"
+                @bind-Value="model.Name" For="@(() => model.Name)" />
+                
+            <br />
+
+         <input For="@OrganizationImage.Files" @bind-value="file2" type="file" id="myFile" name="Organization Image"> 
+            
+            @* <MudFileUpload  T="IBrowserFile" FilesChanged="UploadFiles">
+                <ButtonTemplate>
+                <MudButton class="drawFile" HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                               for="@context">
+                        Upload Files
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload> *@
+            
+            <br />
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+    </EditForm>
+</MudDrawer>
+
+@code {
+    bool open;
+    Anchor anchor;
+
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+}
+
+@code{
+    CreateOrganizationDto? model = new CreateOrganizationDto();
+    AddFiles OrganizationImage = new AddFiles();
+    IBrowserFile file2;
+    string? error = null;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+
+        // File API
+        string fileName = model.Name;
+        OrganizationImage.Folder = EFileFolder.Organization;
+        OrganizationImage.Type = EFileType.Images;
+
+        var clientFile = new HttpClient();
+        clientFile.BaseAddress = new Uri("https://localhost:1007");
+        var messageFile = new HttpRequestMessage(HttpMethod.Post, $"/api/Files");
+        messageFile.Headers.ExpectContinue = false;
+
+        var content = new MultipartFormDataContent();
+        var ms = new MemoryStream();
+        file2.OpenReadStream().CopyTo(ms);
+        var file = new ByteArrayContent(ms.ToArray());
+        content.Add(file, "organizationfile", file2.Name);
+
+        messageFile.Content = content;
+
+        messageFile.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessageFile = await clientFile.SendAsync(messageFile);
+        var statusFile = responseMessageFile.StatusCode;
+        if (statusFile == System.Net.HttpStatusCode.NotFound || statusFile == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+
+
+        //Merchant API
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Organizations");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+    }
+}
+
