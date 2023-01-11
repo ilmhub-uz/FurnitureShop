@@ -12,11 +12,15 @@ public class RegisterDtoValidator : AbstractValidator<RegisterUserDto>
             .WithMessage("'{ PropertyName}' must not start with numeric or special characters")
             .Matches(@"^[a-zA-Z0-9_]*$")
             .WithMessage("'{ PropertyName}' must contain one or more special characters.");
+
         RuleFor(registerDto => registerDto.FirstName).NotNull().Length(3, 20).NotEmpty().Matches("^[a-zA-Z']*$")
             .WithMessage("FirstName must contain only alphabetical characters.");
+
         RuleFor(registerDto => registerDto.LastName).NotNull().Length(3, 20).NotEmpty().Matches("^[a-zA-Z']*$")
             .WithMessage("LastName must contain only alphabetical characters.");
+
         RuleFor(registerDto => registerDto.Password).NotNull().MaximumLength(40).MinimumLength(5).WithMessage("Password length must be between 5 and 40");
+        
         RuleFor(registerDto => registerDto.Email).EmailAddress();
     }
 }

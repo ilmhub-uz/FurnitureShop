@@ -7,7 +7,7 @@ public class SignInDtoValidator : AbstractValidator<LoginUserDto>
 {
     public SignInDtoValidator()
     {
-        RuleFor(loginDto => loginDto.UserName).NotNull().Length(5, 40).NotEmpty();
-        RuleFor(loginDto => loginDto.Password).NotNull().Length(5, 20).NotEmpty();
+        RuleFor(loginDto => loginDto.UserName).NotNull().NotEmpty();
+        RuleFor(loginDto => loginDto.Password).NotNull().NotEmpty();
     }
 }

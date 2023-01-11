@@ -17,6 +17,6 @@ public class CreateProductDtoValidator : AbstractValidator<CreateProductDto>
 
         RuleFor(productDto => productDto.Description).NotEmpty().NotNull().Length(10, 200);
 
-        RuleFor(productDto => productDto.Count).NotEmpty().NotNull().ExclusiveBetween(0u, 200u);
+        RuleFor(productDto => productDto.Count).NotEmpty().NotNull().InclusiveBetween(0u, 1000u);
     }
 }
