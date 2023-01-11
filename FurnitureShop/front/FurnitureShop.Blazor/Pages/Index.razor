@@ -5,7 +5,29 @@
 <PageTitle>Index</PageTitle>
 
 <div class="form-floating">
-    <input type="search" class="form-control" placeholder="Search" />
+    <div class="form-control">
+        <input type="search" placeholder="Search" />
+    </div>
+    
+    <div class="icons">
+        <a href="" class="favorite iconHover">
+            <div style="display:flex; justify-content: center">
+                <a href="" class="iconHover">
+                    <MudIcon Icon="@Icons.Material.Filled.FavoriteBorder" />
+                </a>
+            </div>
+            <p>Favorite</p>
+        </a>
+        <a href="" class="cart iconHover">
+            <div style="display: flex; justify-content: center">
+                <a href="" class="iconHover">
+                    <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" />
+                </a>
+            </div>
+            <p>Cart</p>
+        </a>
+    </div>
+    
 </div>
 <MudCarousel Class="mud-width-full" Style="height:700px;" ShowArrows="@arrows" ShowBullets="@bullets"
     EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
@@ -317,8 +339,8 @@
                                 alt="chairs" />
                         </div>
                         <p>
-                            @if(category?.Children is not null){
-                            @foreach (var childCategory in category?.Children)
+            @if(category?.Children is not null){
+            @foreach (var childCategory in category?.Children)
             {
                 <div class="col-4">
                     <div class="popular-category">
@@ -426,6 +448,8 @@
 
     .form-floating {
         margin-bottom: 10px;
+        display: flex;
+        justify-content: start;
     }
 
     .form-control {
@@ -433,5 +457,14 @@
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         width: 70%;
         padding: 10px 10px;
+    }
+    .icons {
+        margin-left: 20px;
+        width: 30%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .iconHover:hover {
+        color: #594ae2ff;
     }
 </style>
