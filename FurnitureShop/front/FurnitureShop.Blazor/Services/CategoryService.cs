@@ -10,7 +10,7 @@ namespace FurnitureShop.Blazor.Services
         {
         }
 
-        public async Task<List<CategoryView>> GetCategories()
+        public async Task<List<CategoryView>?> GetCategories()
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/categories");
             httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
