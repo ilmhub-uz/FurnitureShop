@@ -22,9 +22,9 @@ public class OrdersController : ControllerBase
         await _orderService.CreateOrder(User,createOrderDto);
 
     [HttpGet]
-    public async Task<ActionResult<List<OrderView>>> GetOrders() => 
-        await _orderService.GetOrders();
-
+    public async Task<ActionResult<List<OrderView>>> GetOrders([FromQuery]OrderFilterDto filter) => 
+        await _orderService.GetOrders(filter, User);
+    //User userIdni olish uchun kerak userId esa userga tegishli orderlarni olish uchun 
     [HttpPut("{orderId}/cancel")]
     public async Task<ActionResult<OrderView>> UpdateOrder(UpdateOrderDto updateOrderDto,Guid orderId) => 
         await _orderService.UpdateOrder(updateOrderDto, orderId);
