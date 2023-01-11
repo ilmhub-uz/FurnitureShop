@@ -6,6 +6,7 @@
     <MudNavLink Href="profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Account</MudNavLink>
     <MudNavLink Href="cart" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ShoppingBasket">Cart</MudNavLink>
     <MudListSubheader Href="categories" Match="NavLinkMatch.Prefix">Categories</MudListSubheader>
+
     <MudNavGroup Icon="@Icons.Material.Filled.Category" Title="Categories">
         @if(categories is null)
         {
@@ -15,19 +16,30 @@
         {
             @foreach (var category in categories ?? new List<CategoryView>())
             {
-                <MudNavLink Href="@category.Name"><img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24"/>
-                @category.Name
-                </MudNavLink>
-            }           
+                if(category.Children is not null)
+                {
+                    <MudNavGroup Icon="@Icons.Rounded.Bed" Title="@category.Name" >
+
+                        @foreach(var childrenCategory in category.Children)
+                        {
+                            <MudNavLink Href="@childrenCategory.Name">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24" />
+                                @childrenCategory.Name
+                            </MudNavLink>
+                        }
+                    </MudNavGroup>
+                }
+                else
+                {
+                    <MudNavLink Href="@category.Name">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24" />
+                        @category.Name
+                    </MudNavLink>
+                }
+            }          
         }
     </MudNavGroup>
 </MudNavMenu>
-<style>
-    .img{
-        width:24px;
-        height:24px;
-    }
-</style>
 
 
 @code {
