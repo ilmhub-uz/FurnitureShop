@@ -74,7 +74,7 @@ else{
 }*@
 
 @code {
-    private List<OrganizationView> Elements = new List<OrganizationView>();
+    private List<OrganizationView>? Elements = new List<OrganizationView>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,5 +87,27 @@ else{
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
 
         Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
+
+        var hubConnection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7113/organizationhub")
+            .Build();
+
+        hubConnection.On(nameof(ChangeOrganization),ChangeOrganization);
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task ChangeOrganization()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7113");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
+        StateHasChanged();
+    }
     }
 }

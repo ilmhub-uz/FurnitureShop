@@ -47,6 +47,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await Http.GetFromJsonAsync<List<CategoryView>>("https://localhost:7148/api/Categories");
+        categories = await Http.GetFromJsonAsync<List<CategoryView>>("/api/Categories");
     }
 }

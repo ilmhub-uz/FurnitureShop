@@ -1,4 +1,4 @@
-﻿using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -60,18 +60,12 @@ public static class ServiceCollectionExtensions
         {
             options.AddDefaultPolicy(cors =>
             {
-                cors.WithOrigins("http://localhost:65283", // Merchant.Api
-                                "https://localhost:8521", 
-                                "http://localhost:9842", 
-                                "http://localhost:34445", // File.Api
-                                "https://localhost:7019",
-                                "http://localhost:5285",
+                cors.WithOrigins("http://localhost:65283",
+                                "http://localhost:34445",
                                 "https://localhost:44398",
-<<<<<<< Updated upstream
                                 "https://localhost:5001",
                                 "https://localhost:5011",
-                                "https://localhost:44398")
-=======
+                                "https://localhost:44398",
                                 "http://localhost:5000",
                                 "https://localhost:5001",
                                 "https://localhost:0001",   // Marketplace API HTTPS
@@ -84,7 +78,10 @@ public static class ServiceCollectionExtensions
                                 "http://localhost:1008",    // Files API HTTP
                                 "https://localhost:1009",   // Merchant API HTTPS
                                 "http://localhost:1010")    // Merchant API HTTP
->>>>>>> Stashed changes
+                                "https://localhost:0007",   // Files API HTTPS
+                                "http://localhost:0008",    // Files API HTTP
+                                "https://localhost:0009",   // Merchant API HTTPS
+                                "http://localhost:0010")    // Merchant API HTTP
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
