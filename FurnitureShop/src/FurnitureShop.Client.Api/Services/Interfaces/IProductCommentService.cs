@@ -7,7 +7,7 @@ public interface IProductCommentService
 {
     Task<List<ProductCommentView>> GetProductCommentsAsync();
     Task<ProductCommentView> GetProductCommentByIdAsync(Guid commentId);
-    Task AddProductCommentAsync(CreateProductCommentDto commentDto);
+    Task<ProductCommentView> AddProductCommentAsync(CreateProductCommentDto commentDto);
     Task<ProductCommentView> UpdateProductComment(Guid commentId, UpdateProductCommentDto updateDto);
     Task DeleteProductComment(Guid commentId);
 }

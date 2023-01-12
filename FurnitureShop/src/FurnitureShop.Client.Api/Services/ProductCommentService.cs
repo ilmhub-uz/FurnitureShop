@@ -62,7 +62,7 @@ public class ProductCommentService : IProductCommentService
         return ConvertToProductCommentView(productComment);
     }
 
-    public async Task AddProductCommentAsync(CreateProductCommentDto commentDto)
+    public async Task<ProductCommentView> AddProductCommentAsync(CreateProductCommentDto commentDto)
     {
         var existingProductComment = new ProductComment
         {
@@ -70,7 +70,8 @@ public class ProductCommentService : IProductCommentService
             ParentId = commentDto.ParentId
         };
 
-        await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+        var productComment = await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+        return productComment.Adapt<ProductCommentView>();
     }
 
     public async Task<ProductCommentView> UpdateProductComment(Guid commentId, UpdateProductCommentDto updateDto)
