@@ -1,4 +1,4 @@
-﻿@page "/cart"
+﻿@page "/favourite"
 @using FurnitureShop.Client.Blazor.ViewModel;
 @using Newtonsoft.Json
 @inject HttpClient client
@@ -7,7 +7,7 @@
 
 <div class="container">
     <div class="row">
-        @foreach (var element in Elements ?? new List<CartProductView>())
+        @foreach (var element in Elements ?? new List<FavouriteProductView>())
         {
             <div class="col-md-3">
                 <div class="card my_card">
@@ -34,22 +34,22 @@
 
 
 @code {
-    List<CartProductView> Elements = new List<CartProductView>();
+    List<FavouriteProductView> Elements = new List<FavouriteProductView>();
 
     protected override async Task OnInitializedAsync()
     {
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Carts");
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Favourite");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        Elements = JsonConvert.DeserializeObject<List<CartProductView>>(profileJson);
+        Elements = JsonConvert.DeserializeObject<List<FavouriteProductView>>(profileJson);
     }
 
     public async void DeleteProductById(Guid productId)
     {
         try
         {
-            var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Carts/{productId}");
+            var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Favourite/{productId}");
             message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
             await client.SendAsync(message);
         }
