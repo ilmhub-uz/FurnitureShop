@@ -16,7 +16,7 @@
       },
       "dotnetRunMessages": "true",
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-      "applicationUrl": "https://localhost:1009;http://localhost:1010"
+      "applicationUrl": "https://localhost:2009;http://localhost:2010"
     },
     "WSL": {
       "commandName": "WSL2",
