@@ -45,7 +45,7 @@
                             <span class="float-start"><a href="#"><i class="fas fa-question-circle"></i></a></span>
 
                             <span class="float-end">
-                                <i class="far fa-heart" style="cursor: pointer"></i>
+                                <button @onclick="(()=>{AddToFavourite(product.Id);})" class="far fa-heart" style="cursor: pointer"></button>
 
                             </span>
                         </div>
@@ -91,6 +91,27 @@
             Console.WriteLine(e.Message + "exceptionsssss");
         }
 
+    }
+    public async void AddToFavourite(Guid productId)
+    {
+        try
+        {
+            var message = new HttpRequestMessage(HttpMethod.Post, $"api/Favourite");
+
+            var model = new CreateFavouriteDto()
+                {
+                    ProductId = productId
+                };
+
+            message.Content = JsonContent.Create(model);
+            message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+            await Http.SendAsync(message);
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine(e.Message + "exceptionsssss");
+        }
     }
 }
 
