@@ -11,13 +11,7 @@ public class CreateProductCommentValidator : AbstractValidator<ProductCommentDto
             .NotNull().WithMessage("Comment can not be null")
             .NotEmpty().MinimumLength(1).WithMessage("Comment can not be empty");
 
-        RuleFor(commentDto => commentDto.Id)
-            .NotNull().NotEmpty().WithMessage("Comment id can not be null or empty");
-
         RuleFor(commentDto => commentDto.ProductId)
             .NotNull().NotEmpty().WithMessage("Product id can not be null or empty");
-
-        RuleFor(commentDto => commentDto.UserId)
-            .NotNull().NotEmpty().WithMessage("User id can not be null or empty");
     }
 }
