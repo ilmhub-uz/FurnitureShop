@@ -7,6 +7,7 @@ using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
+using MailKit.Search;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,11 @@ public class ProductService : IProductService
             existingProducts = existingProducts.Where(p => p.Brend == filter.Brend);
         if (filter.Rate is not null)
             existingProducts = existingProducts.Where(p => p.Rates.Select(t => (int)t).ToList().Sum() / p.Rates.Count() >= filter.Rate);
+        if(filter.Name is not null)
+        {
+            if (!string.IsNullOrWhiteSpace(filter.Name))
+                existingProducts = existingProducts.Where(p => p.Name.ToLower().Contains(filter.Name.Trim().ToLower()));              
+        }
 
         if (filter.ProductStatus != null)
         {

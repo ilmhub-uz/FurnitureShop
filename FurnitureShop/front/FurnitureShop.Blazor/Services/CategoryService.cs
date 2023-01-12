@@ -10,9 +10,10 @@ namespace FurnitureShop.Blazor.Services
         {
         }
 
-        public async Task<List<CategoryView>> GetCategories()
+        public async Task<List<CategoryView>?> GetCategoriesAsync()
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/categories");
+
             httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
             var response = await httpClient.SendAsync(httpRequest);
@@ -21,12 +22,11 @@ namespace FurnitureShop.Blazor.Services
             {
                 var categoriesJson = await response.Content.ReadAsStringAsync();
                 var categories = JsonConvert.DeserializeObject<List<CategoryView>>(categoriesJson);
+
                 return categories;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
     }

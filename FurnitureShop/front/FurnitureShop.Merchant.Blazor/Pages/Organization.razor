@@ -1,68 +1,11 @@
-﻿@page "/organizations/{Id}"
-@using FurnitureShop.Admin.Blazor.ViewModel
-@inject HttpClient http;
+﻿@*@page "/organization/{OrganizationId}"
 
-@if (organization is not null)
-{
-    var organizationLinkToUpdate = $"/update-organizations/{Id}";
-    <div class="productMainContainer">
-        <div id="container">
-            <div class="product-details">
 
-                <h1>@organization.Name</h1>
-                <span class="hint-star star">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                </span>
-                <p class="information">
-                    "@organization.. Feel comfort with this product."
-                </p><br>
 
-                <div>
-                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete"
-                           Color="Color.Error" OnClick="DeleteOrganization">Delete</MudButton>
-                    <MudLink Href="@organizationLinkToUpdate" Underline="Underline.None">
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
-                    </MudLink>
-                </div>
 
-            </div>
-
-            <div class="product-image">
-
-                <img src="@organization.ImageUrl" alt="Omar Dsoky">
-
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <h3> Model is null</h3>
-}
 
 @code {
-    private OrganizationView? organization;
-
-    protected override async Task OnInitializedAsync()
-    {
-        organization = await GetOrganizationAsync(Id);
-    }
-
-    public async Task<OrganizationView?> GetOrganizationAsync(string organizationId)
-    {
-        return await http.GetFromJsonAsync<OrganizationView>($"https://localhost:7113/api/Organizations/{organizationId}");
-    }
-
-    public async Task DeleteOrganization()
-    {
-        await http.DeleteAsync($"https://localhost:7113/api/Organizations/{Id}");
-    }
-
-
     [Parameter]
-    public string Id { get; set; }
+    public string OrganizationId { get; set; }
 }
+*@

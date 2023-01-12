@@ -1,62 +1,34 @@
-﻿@inject HttpClient HttpClient
+﻿@using FurnitureShop.Blazor.Services
+@inject CategoryService CategoryService
 
 <link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
 
 <!--------------------------------------------Catalog---------------------------------------------------->
-@if (_categories is not null)
-{
-    <MudNavMenu>
+<MudNavMenu>
+    @if (_categories is not null)
+    {
         <MudNavGroup Title="Catalog" Icon="@Icons.Material.Filled.Category" Class="NavCat" Expanded="false">
             @foreach (var category in _categories)
             {
                 if(category.Children is not null)
                 {
-                    <MudNavGroup Title="@category.Name" Icon="@Icons.Material.Outlined.Category" Class="NavCat" Expanded="false">
-                        <MudNavLink Href="/">@category.Name</MudNavLink>
-                        @{
-                            GenerateMudNavGroup(category.Children);
+                    <MudNavGroup Title="@category.Name" Class="NavCat" Expanded="false">
+                        <MudNavLink Href="/" Match="NavLinkMatch.Prefix">Main</MudNavLink>
+                        @foreach (var _subCategory in category.Children)
+                        {
+                            <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@_subCategory.Name</MudNavLink>
                         }
                     </MudNavGroup>
                 }
                 else
                 {
-                    <MudNavLink Href="/">@category.Name</MudNavLink>
+                    <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@category.Name</MudNavLink>
                 }
             }
         </MudNavGroup>
-    </MudNavMenu>
-}
-
-@{
-    void GenerateMudNavGroup(List<CategoryView> categories)
-    {
-        @foreach (var category in categories)
-        {
-            if(category.Children is not null)
-            {
-                <MudNavGroup Title="@category.Name" Icon="@Icons.Material.Outlined.Category" Class="NavCat" Expanded="false">
-                    <MudNavLink Href="/">@category.Name</MudNavLink>
-                    @{
-                        GenerateMudNavGroup(category.Children);
-                    }
-                </MudNavGroup>
-            }
-            else
-            {
-                <MudNavLink Href="/">@category.Name</MudNavLink>
-            }
-        }
-        
     }
-}
+    <!------------------------------------------------------------------------------------------------->
 
-@if (_catalogErrorMessage is not null)
-{
-    <p>@_catalogErrorMessage</p>
-}
-<!------------------------------------------------------------------------------------------------->
-
-<MudNavMenu>
     <MudNavGroup Title="Sofas" Icon="@Icons.Filled.Chair" Class="NavCat">
         <MudNavLink Href="sofas" Match="NavLinkMatch.All">Frameless sofas</MudNavLink>
     </MudNavGroup>
@@ -78,20 +50,9 @@
 </MudNavMenu>
 
 @code{
-    private string? _catalogErrorMessage;
     private List<CategoryView>? _categories;
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            _categories = await HttpClient.GetFromJsonAsync<List<CategoryView>>("https://localhost:7235/api/Categories");
-        }
-        catch (Exception e)
-        {
-            _catalogErrorMessage = e.Message;
-        }
-    }
+    protected override async Task OnInitializedAsync() => _categories = await CategoryService.GetCategoriesAsync();
 }
 
 <style>

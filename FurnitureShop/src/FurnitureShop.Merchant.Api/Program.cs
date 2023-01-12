@@ -1,6 +1,7 @@
 using FluentValidation;
 using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
+using FurnitureShop.Merchant.Api.Hubs;
 using JFA.DependencyInjection;
 using System.Reflection;
 
@@ -18,7 +19,7 @@ builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
-
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -34,5 +35,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//https://localhost:1009/organizationhub
+app.MapHub<OrganizationHub>("/organizationhub");
 
 app.Run();
