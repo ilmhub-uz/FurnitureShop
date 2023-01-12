@@ -20,13 +20,18 @@ public class EmployeeController : ControllerBase
     private readonly UserManager<AppUser> _userManager;
     private readonly IEmployeeService _employeeService;
     private readonly IValidator<AddEmployeeDto> validator;
+    private readonly IValidator<RemoveEmployeeDto> _removeEmployeeValidator;
 
 
-    public EmployeeController(IEmployeeService employeeService, UserManager<AppUser> userManager, IValidator<AddEmployeeDto> validator)
+    public EmployeeController(IEmployeeService employeeService,
+        UserManager<AppUser> userManager, 
+        IValidator<AddEmployeeDto> validator, 
+        IValidator<RemoveEmployeeDto> removeEmployeeValidator)
     {
         _employeeService = employeeService;
         _userManager = userManager;
         this.validator = validator;
+        _removeEmployeeValidator = removeEmployeeValidator;
     }
 
     [HttpPost]
@@ -55,7 +60,7 @@ public class EmployeeController : ControllerBase
     [HttpDelete]
     public async Task RemoveEmployee(RemoveEmployeeDto dto)
     {
-        var validationResult = validator.Validate(dto);
+        var validationResult = _removeEmployeeValidator.Validate(dto);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
