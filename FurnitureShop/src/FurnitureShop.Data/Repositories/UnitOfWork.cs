@@ -1,4 +1,3 @@
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 using JFA.DependencyInjection;
@@ -65,8 +64,8 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_favoriteRepository is null ) _favoriteRepository = new FavoriteRepository(_context);
-            return _favoriteRepository;    
+            if (_favoriteRepository is null) _favoriteRepository = new FavoriteRepository(_context);
+            return _favoriteRepository;
         }
     }
 
@@ -75,17 +74,17 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_appUserRepository is null ) _appUserRepository = new AppUserRepository(_context);
-            return _appUserRepository ;
+            if (_appUserRepository is null) _appUserRepository = new AppUserRepository(_context);
+            return _appUserRepository;
         }
     }
 
     private IContractRepository _contractRepository;
-    public IContractRepository Contracts 
+    public IContractRepository Contracts
     {
         get
         {
-            if( _contractRepository is null ) _contractRepository = new ContractRepository(_context);
+            if (_contractRepository is null) _contractRepository = new ContractRepository(_context);
             return _contractRepository;
         }
     }
@@ -95,7 +94,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if(_cartProductRepository is null) _cartProductRepository = new CartProductRepository(_context);
+            if (_cartProductRepository is null) _cartProductRepository = new CartProductRepository(_context);
             return _cartProductRepository;
         }
     }
@@ -110,9 +109,14 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public UnitOfWork(AppDbContext context)
+    private IProductCommentRepository _productCommentRepository;
+    public IProductCommentRepository ProductComments
     {
-        _context = context;
+        get
+        {
+            if (_productCommentRepository is null) _productCommentRepository = new ProductCommentRepository(_context);
+            return _productCommentRepository;
+        }
     }
 
     public int Save() => _context.SaveChanges();

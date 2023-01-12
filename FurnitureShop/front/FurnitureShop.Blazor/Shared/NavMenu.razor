@@ -7,46 +7,29 @@
 <MudNavMenu>
     @if (_categories is not null)
     {
-        <MudNavGroup Title="Catalog" Icon="@Icons.Material.Filled.Category" Class="NavCat" Expanded="false">
-            @foreach (var category in _categories)
+        
+        @foreach (var category in _categories)
+        {
+            if(category.Children is not null)
             {
-                if(category.Children is not null)
-                {
+                <a href="/products">
                     <MudNavGroup Title="@category.Name" Class="NavCat" Expanded="false">
-                        <MudNavLink Href="/" Match="NavLinkMatch.Prefix">Main</MudNavLink>
                         @foreach (var _subCategory in category.Children)
                         {
-                            <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@_subCategory.Name</MudNavLink>
+                            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix">@_subCategory.Name</MudNavLink>
                         }
                     </MudNavGroup>
-                }
-                else
-                {
-                    <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@category.Name</MudNavLink>
-                }
+                </a>
+                
             }
-        </MudNavGroup>
+            else
+            {
+                <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@category.Name</MudNavLink>
+            }
+        }
+        
     }
     <!------------------------------------------------------------------------------------------------->
-
-    <MudNavGroup Title="Sofas" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="sofas" Match="NavLinkMatch.All">Frameless sofas</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Armchairs" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="armchairs" Match="NavLinkMatch.Prefix">Armchairs</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Beds" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="beds" Match="NavLinkMatch.Prefix">Beds</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Mattresses" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix">Mattresses</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Chairs" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="category" Match="NavLinkMatch.Prefix">Сhairs</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Tables" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix">Tables</MudNavLink>
-    </MudNavGroup>
 </MudNavMenu>
 
 @code{
