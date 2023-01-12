@@ -10,11 +10,11 @@
     <MudText>Products</MudText>
 }
 
-<h1>abu</h1>
+
+<div class="container-fluid bg-trasparent my-4 p-3" style="position: relative">
+    <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
 @foreach (var product in productViews ?? new List<ProductView>())
 {
-    <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative">
-        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
             <div class="col hp">
                 <div class="card h-100 shadow-sm">
                     <a href="#">
@@ -22,7 +22,7 @@
                     </a>
 
                     <div class="label-top shadow-sm">
-                        <a class="text-white" href="#">@product.Name</a>
+                        <p>@product.Name</p>
                     </div>
                     <div class="card-body">
                         <div class="clearfix mb-3">
@@ -51,9 +51,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 }
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -143,6 +143,7 @@
     .label-top {
         position: absolute;
         color: #fff;
+        background-color: purple;
         top: 8px;
         right: 8px;
         padding: 5px 10px 5px 10px;
@@ -151,6 +152,10 @@
         border-radius: 3px;
         text-transform: uppercase;
     }
+
+        .label-top p {
+            font-size: 15px;
+        }
 
     .top-right {
         position: absolute;
