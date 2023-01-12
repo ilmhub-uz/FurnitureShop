@@ -2,7 +2,7 @@
 
 namespace FurnitureShop.Merchant.Api.Dtos;
 
-public class EmployeeServiceDto
+public class AddEmployeeDto
 {
     public Guid OrganizationId { get; set; }
     public string Email { get; set; }
