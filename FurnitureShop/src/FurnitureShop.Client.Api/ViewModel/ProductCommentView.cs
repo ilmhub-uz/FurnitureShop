@@ -1,6 +1,6 @@
-﻿namespace FurnitureShop.Client.Api.Dtos;
+﻿namespace FurnitureShop.Client.Api.ViewModel;
 
-public class ProductCommentDto
+public class ProductCommentView
 {
     public string? Comment { get; set; }
     public Guid ProductId { get; set; }
