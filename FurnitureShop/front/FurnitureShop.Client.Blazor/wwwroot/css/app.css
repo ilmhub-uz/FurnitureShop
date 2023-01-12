@@ -93,3 +93,9 @@ a, .btn-link {
         border-bottom-right-radius: .3rem;
     }
 }
+
+@media (max-width: 767.98px) {
+    .border-sm-start-none {
+        border-left: none !important;
+    }
+}
