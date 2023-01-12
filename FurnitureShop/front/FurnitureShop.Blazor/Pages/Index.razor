@@ -1,8 +1,8 @@
 ﻿@page "/"
 @using FurnitureShop.Blazor.Pages.ViewModel
 @using FurnitureShop.Blazor.Services
-@inject HttpClient Http
 @inject CategoryService CategoryService
+@inject ProductService ProductService
 
 <PageTitle>Index</PageTitle>
 
@@ -377,8 +377,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<List<ProductView>?>("https://localhost:1001/api/products");
-        categories = await CategoryService.GetCategories();
+        products = await ProductService.GetProductsAsync();
+        categories = await CategoryService.GetCategoriesAsync();
     }
 }
 

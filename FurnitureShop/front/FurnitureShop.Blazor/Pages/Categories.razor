@@ -68,5 +68,5 @@
 @code {
     private List<CategoryView>? categories;
 
-    protected override async Task OnInitializedAsync() => categories = await CategoryService.GetCategories();
+    protected override async Task OnInitializedAsync() => categories = await CategoryService.GetCategoriesAsync();
 }
