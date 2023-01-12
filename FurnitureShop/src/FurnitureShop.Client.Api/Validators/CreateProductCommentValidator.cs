@@ -1,14 +1,23 @@
 ﻿using FluentValidation;
-using FurnitureShop.Data.Entities;
+using FurnitureShop.Client.Api.Dtos;
 
 namespace FurnitureShop.Client.Api.Validators;
 
-public class CreateProductCommentValidator : AbstractValidator<ProductComment>
+public class CreateProductCommentValidator : AbstractValidator<ProductCommentDto>
 {
     public CreateProductCommentValidator()
     {
-        RuleFor(c => c.Comment).MinimumLength(1);
-        RuleFor(c => c.Comment).MaximumLength(200);
-        RuleFor(c => c.Comment).NotEmpty();
+        RuleFor(commentDto => commentDto.Comment)
+            .NotNull().WithMessage("Comment can not be null")
+            .NotEmpty().MinimumLength(1).WithMessage("Comment can not be empty");
+
+        RuleFor(commentDto => commentDto.Id)
+            .NotNull().NotEmpty().WithMessage("Comment id can not be null or empty");
+
+        RuleFor(commentDto => commentDto.ProductId)
+            .NotNull().NotEmpty().WithMessage("Product id can not be null or empty");
+
+        RuleFor(commentDto => commentDto.UserId)
+            .NotNull().NotEmpty().WithMessage("User id can not be null or empty");
     }
 }
