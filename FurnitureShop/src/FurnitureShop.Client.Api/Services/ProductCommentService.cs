@@ -85,7 +85,6 @@ public class ProductCommentService : IProductCommentService
         if (existingProductComment is null) throw new NotFoundException<ProductComment>();
 
         existingProductComment.Comment = updateDto.Comment;
-        existingProductComment.ParentId = updateDto.ParentId;
 
         await _unitOfWork.ProductComments.Update(existingProductComment);
         return existingProductComment.Adapt<ProductCommentView>();
