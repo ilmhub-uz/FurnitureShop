@@ -25,7 +25,7 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<List<OrderView>>> GetOrders([FromQuery]OrderFilterDto filter) => 
         await _orderService.GetOrders(filter, User);
     //User userIdni olish uchun kerak userId esa userga tegishli orderlarni olish uchun 
-    [HttpPut("{orderId}/cancel")]
-    public async Task<ActionResult<OrderView>> UpdateOrder(UpdateOrderDto updateOrderDto,Guid orderId) => 
-        await _orderService.UpdateOrder(updateOrderDto, orderId);
+    [HttpDelete("{orderId}/cancel")]
+    public async Task<ActionResult<OrderView>> DeleteOrder(UpdateOrderDto updateOrderDto,Guid orderId) => 
+        await _orderService.DeleteOrder(updateOrderDto, orderId);
 }
