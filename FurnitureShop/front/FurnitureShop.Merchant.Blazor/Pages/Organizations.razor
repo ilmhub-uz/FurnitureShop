@@ -1,6 +1,6 @@
 ﻿@page "/organizations"
 @using FurnitureShop.Merchant.Blazor.Dtos;
-@inject HttpClient Http
+@inject HttpClient client
 @using Microsoft.AspNetCore.SignalR.Client
 @using Newtonsoft.Json
 @using System.Web;
@@ -41,7 +41,9 @@ else{
                         <hr>
 
                         <div class="myCard_footer">
-                            <button type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">View More</button>
+                            <a href="/@element.Id">
+                                  <button  type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">View More</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -78,8 +80,6 @@ else{
 
     protected override async Task OnInitializedAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
@@ -99,8 +99,6 @@ else{
 
     private async Task ChangeOrganization()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
