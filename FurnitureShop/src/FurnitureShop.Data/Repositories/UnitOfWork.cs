@@ -9,6 +9,11 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
 
+    public UnitOfWork(AppDbContext context)
+    {
+        _context = context;
+    }
+
     private ICategoryRepository _categoryRepository;
     public ICategoryRepository Categories
     {
