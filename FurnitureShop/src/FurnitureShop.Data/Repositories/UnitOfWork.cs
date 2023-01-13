@@ -14,7 +14,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    private ICategoryRepository _categoryRepository;
+    private ICategoryRepository? _categoryRepository;
     public ICategoryRepository Categories
     {
         get
@@ -24,7 +24,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IProductRepository _productRepository;
+    private IProductRepository? _productRepository;
     public IProductRepository Products
     {
         get
@@ -34,7 +34,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IOrganizationRepository _organizationRepository;
+    private IOrganizationRepository? _organizationRepository;
     public IOrganizationRepository Organizations
     {
         get
@@ -44,7 +44,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IOrderRepository _orderRepository;
+    private IOrderRepository? _orderRepository;
     public IOrderRepository Orders
     {
         get
@@ -54,7 +54,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private ICartRepository _cartRepository;
+    private ICartRepository? _cartRepository;
     public ICartRepository Carts
     {
         get
@@ -64,7 +64,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IFavoriteRepository _favoriteRepository;
+    private IFavoriteRepository? _favoriteRepository;
     public IFavoriteRepository Favorites
     {
         get
@@ -74,7 +74,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public IAppUserRepository _appUserRepository;
+    private IAppUserRepository? _appUserRepository;
     public IAppUserRepository AppUsers
     {
         get
@@ -84,7 +84,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IContractRepository _contractRepository;
+    private IContractRepository? _contractRepository;
     public IContractRepository Contracts
     {
         get
@@ -94,7 +94,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private ICartProductRepository _cartProductRepository;
+    private ICartProductRepository? _cartProductRepository;
     public ICartProductRepository CartProduct
     {
         get
@@ -104,7 +104,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IFavouriteProductRepository _favouriteProductRepository;
+    private IFavouriteProductRepository? _favouriteProductRepository;
     public IFavouriteProductRepository FavoritesProduct
     {
         get
@@ -114,15 +114,9 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IProductCommentRepository _productCommentRepository;
-    public IProductCommentRepository ProductComments
-    {
-        get
-        {
-            if (_productCommentRepository is null) _productCommentRepository = new ProductCommentRepository(_context);
-            return _productCommentRepository;
-        }
-    }
+    private IProductCommentRepository? _productCommentRepository;
+    public IProductCommentRepository ProductComments =>
+        _productCommentRepository ??= new ProductCommentRepository(_context);
 
     public int Save() => _context.SaveChanges();
 
