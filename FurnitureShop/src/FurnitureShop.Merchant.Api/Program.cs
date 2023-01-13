@@ -38,5 +38,7 @@ app.MapControllers();
 
 //https://localhost:1009/organizationhub
 app.MapHub<OrganizationHub>("/organizationhub");
+//https://localhost:7113/producthub
+app.MapHub<ProductHub>("/producthub");
 
 app.Run();
