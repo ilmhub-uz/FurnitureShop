@@ -66,7 +66,10 @@
         productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>($"https://localhost:0005/api/Products?CategoryId={categoryId}");
     }
 
-
+    protected override async Task OnParametersSetAsync()
+    {
+        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>($"https://localhost:0005/api/Products?CategoryId={categoryId}");
+    }
     public async void AddToCartProduct(Guid productId)
     {
         try
