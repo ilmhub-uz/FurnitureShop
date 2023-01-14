@@ -1,22 +1,108 @@
 ﻿@page "/order"
 @using FurnitureShop.Client.Blazor.Shared
 @using FurnitureShop.Client.Blazor.ViewModel;
+@using Newtonsoft.Json;
 @inject HttpClient Http
 
 <PageTitle>Order</PageTitle>
-
 <MudText Typo="Typo.h3" GutterBottom="true">Order</MudText>
 
-@* Order da sotib olingan productlar va ularni propertiylari yani (productni nomi va rasmi, descriptioni, 
+@if (_orders is null)
+{
+    <p>_orders is null</p>
+}
+else
+{
+    <p> Count : @_orders.Count()</p>
+    int a = 1;
+    foreach (var order in _orders)
+    {
+        int k = 0;
+        <p>@order.Id</p>
+        <h1>Order @a</h1>
+        a++;
+        if (order.OrderProducts is not null)
+            
+        @foreach (var d in order.OrderProducts)
+        { <MudText>@k</MudText>
+            k++;
+            <div class="product-card-cart-container">
+
+                <div class="container">
+
+                    <div class="product-card-cart-container-inner mt-4 pt-4">
+
+                        <div class="product-card-cart">
+
+                            <a href="#" class="product-card-cart-link">
+                                <img style="width : 200px; height:100px;" src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80" alt="rasm yo'q'">
+                            </a>
+
+                            <div class="list-group list-group-flush product-card-cart-content">
+
+                                <div class="product-card-cart-content-name-price list-group-item">
+                                    <div class="product-card-cart-content-name"> Product Name </div>
+                                    <div class="product-card-cart-content-price"> <h4><span class="badge bg-dark">@d.Product.Name</span></h4> </div>
+                                </div>
+
+                                <div class="product-card-cart-content-quantity list-group-item">
+                                    <div>Count: </div>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                        <input type="text" class="this-product-quantity form-control product-card-details-product-quantity" value="@d.Product.Count" style="width: 36px; border-radius: 0!important;" disabled>
+
+                                    </div>
+                                </div>
+                                <div class="product-card-cart-content-size list-group-item">
+                                    <div>Price: </div>
+                                    <h5><span class="badge bg-secondary">@d.Product.Price</span></h5>
+                                </div>
+                                <div class="product-card-cart-content-remove list-group-item">
+                                    <a href="#" class="btn btn-outline-secondary">REMOVE</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+
+        <br />
+        <br />
+    }
+
+}
+
+
+
+@* Order da sotib olingan productlar va ularni propertiylari yani (productni nomi va rasmi, descriptioni,
     u haqida malumoti yani propertiylari bo`ladi va narxi) bo`ladi va yoni da cart bo`ladi :
     cartda - productni nomi, narxi, nechta sotib olinayotgani, rasmi bo`ladi,
     qo`shib o`chiradigan buttonlari bo`ladi va hammasini bittadi olib tashiydigan trash-button bo`ladi *@
 
 
 @code {
-    private OrderProductView[]? orderProducts;
+
+    List<OrderView>? _orders;
+
     protected override async Task OnInitializedAsync()
     {
-        orderProducts = await Http.GetFromJsonAsync<OrderProductView[]>("https://localhost:7235/api/Orders");        
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get,"api/Orders");
+
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await Http.SendAsync(httpRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var orders = await response.Content.ReadAsStringAsync();
+
+            _orders = JsonConvert.DeserializeObject<List<OrderView>>(orders);
+        }
     }
 }

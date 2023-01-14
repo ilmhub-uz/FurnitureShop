@@ -14,5 +14,6 @@ public interface IUnitOfWork
     IFavouriteProductRepository FavoritesProduct { get; }
     IAppUserRepository AppUsers { get ;}
     IContractRepository Contracts { get; }
+    IProductCommentRepository ProductComments { get; }
     int Save();
 }

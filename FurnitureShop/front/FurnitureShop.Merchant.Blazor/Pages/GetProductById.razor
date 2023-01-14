@@ -1,0 +1,198 @@
+﻿@page "/{OrganizationId}/Products/{ProductId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using MudBlazor
+@inject NavigationManager NavManager
+@using Newtonsoft.Json
+@inject HttpClient client
+
+<h3>Product</h3>
+@if (product is null)
+{
+    <div class="nullContent">
+        <img src="/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid notImage" alt="Image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png">
+        <h3 class="fw-bold py-3 mb-2" style="margin-left:10px">not found </h3>
+    </div>
+}
+else
+{
+        <div class="container">
+            <br>
+            <br>
+            <br>
+            <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="card my_card">
+                            <div class="myCard_image">
+                                <img class="card_image" src="https://images.samsung.com/is/image/samsung/assets/id/2208/pfs/02-03-B4-kv-Durability-pc-570x304.jpg?$FB_TYPE_J_S_JPG$" alt="Organization Image">
+                            </div>
+                            <div class="myCard_body">
+                        <b class="myCard_name">@product.Name</b>
+                           </div>
+                            <hr>
+                                <div class="myCard_footer">
+                                    <button @onclick="DeleteOrganization" type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">Delete</button>
+                                </div>
+                        </div>
+                    </div>
+
+            </div>
+            <br>
+            <br>
+            <br>
+        </div>
+}
+
+
+<MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Update Product</MudButton>
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <EditForm Class="myDrawer" Model="@product" OnValidSubmit="OnValidSubmit">
+        <h6> Update Product </h6>
+        <DataAnnotationsValidator />
+
+        <MudTextField Label="Name" HelperText="Max. 8 characters"
+                      @bind-Value="updateProduct.Name" For="@(() => updateProduct.Name)" />
+        <MudTextField Label="Description" HelperText="Max. 8 characters"
+                      @bind-Value="updateProduct.Description" For="@(() => updateProduct.Description)" />
+        <MudTextField Label="WithInstallation"
+                      @bind-Value="updateProduct.WithInstallation" For="@(() => updateProduct.WithInstallation)" />
+        <MudTextField Label="Brend" HelperText="Max. 8 characters"
+                      @bind-Value="updateProduct.Brend" For="@(() => updateProduct.Brend)" />
+        <MudTextField Label="Price"
+                      @bind-Value="updateProduct.Price" For="@(() => updateProduct.Price)" InputType="InputType.Number" />
+        <MudTextField Label="IsAvailable"
+                      @bind-Value="updateProduct.IsAvailable" For="@(() => updateProduct.IsAvailable)" />
+        <MudTextField Label="Count"
+                      @bind-Value="updateProduct.Count" For="@(() => updateProduct.Count)" InputType="InputType.Number" />
+        <MudNavGroup Title="Categories" @bind-Expanded=_isExpanded>
+            @foreach (var category in categories)
+            {
+                <button type="button" @onclick="@(()=>OnClick(category.Id))">@category.Name @Space </button>
+            }
+        </MudNavGroup>
+
+        <MudNavGroup Title="Organizations" @bind-Expanded=_isExpanded2>
+            @foreach (var organization in organizations)
+            {
+                <button type="button" @onclick="@(()=>OnClick2(organization.Id))">@organization.Name @Space </button>
+            }
+        </MudNavGroup>
+
+        @code {
+            bool _isExpanded = true;
+            bool _isExpanded2 = true;
+
+            public void OnClick(int categoryId)
+            {
+                newCategoryId = categoryId;
+            }
+
+            public void OnClick2(string organizationId)
+            {
+                newOrganizationId = organizationId;
+            }
+        }
+
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Update</MudButton>
+    </EditForm>
+</MudDrawer>
+
+
+@code {
+    string? error;
+    [Parameter]
+    public string OrganizationId { get; set; }
+    [Parameter]
+    public string ProductId { get; set; }
+    private ProductView? product = new ProductView();
+    private UpdateProductDto updateProduct = new UpdateProductDto();
+    private List<CategoryView> categories = new List<CategoryView>();
+    private List<OrganizationView> organizations = new List<OrganizationView>();
+    private int newCategoryId;
+    private string newOrganizationId;
+    private string Space = ",   ";
+    private bool open;
+    Anchor anchor;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        error = null;
+
+        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Products/{ProductId}");
+        var message2 = new HttpRequestMessage(HttpMethod.Get, $"/api/Categories");
+        var message3 = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations");
+
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        message2.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        message3.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseResult = await client.SendAsync(message);
+        var responseResult2 = await client.SendAsync(message2);
+        var responseResult3 = await client.SendAsync(message3);
+
+        var profileJson = await responseResult.Content.ReadAsStringAsync();
+        var profileJson2 = await responseResult2.Content.ReadAsStringAsync();
+        var profileJson3 = await responseResult3.Content.ReadAsStringAsync();
+
+        product = JsonConvert.DeserializeObject<ProductView>(profileJson);
+        categories = JsonConvert.DeserializeObject<List<CategoryView>>(profileJson2);
+        organizations = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson3);
+
+        if (!responseResult.IsSuccessStatusCode)
+        {
+            error = responseResult.StatusCode.ToString() + " : " + await responseResult.Content.ReadAsStringAsync();
+        }
+    }
+
+
+    private void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        Guid.TryParse(newOrganizationId, out Guid GuidOrganizationId);
+        updateProduct.OrganizationId = GuidOrganizationId;
+        updateProduct.CategoryId = newCategoryId;
+        var message = new HttpRequestMessage(HttpMethod.Put, $"/api/Products/{ProductId}");
+        message.Content = JsonContent.Create(updateProduct);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+    }
+
+
+    private async Task DeleteOrganization()
+    {
+        string error = string.Empty;
+
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Products/{ProductId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var responseResult = await client.SendAsync(message);
+
+        if (!responseResult.IsSuccessStatusCode)
+        {
+            error = responseResult.StatusCode.ToString() + " : " + await responseResult.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            NavManager.NavigateTo($"/{OrganizationId}");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+

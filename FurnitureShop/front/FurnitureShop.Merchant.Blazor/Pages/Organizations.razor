@@ -1,6 +1,6 @@
 ﻿@page "/organizations"
 @using FurnitureShop.Merchant.Blazor.Dtos;
-@inject HttpClient Http
+@inject HttpClient client
 @using Microsoft.AspNetCore.SignalR.Client
 @using Newtonsoft.Json
 @using System.Web;
@@ -35,6 +35,19 @@
                         <div class="card-body text-sm-center text-center">
                             <_AddOrganization />
                         <p class="mb-0">You can create new organization</p>
+                    
+                        <div class="myCard_body">
+                            <b class="myCard_name">@element.Name</b>
+                            <p class="myCard_owner">By Abdulaziz Abduqaxxarov</p>
+                            <span class="myCard_Span">256 prj.</span> 
+                        </div>
+
+                        <hr>
+
+                        <div class="myCard_footer">
+                            <a href="/@element.Id">
+                                  <button  type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">View More</button>
+                            </a>
                         </div>
                     </div>
                 </div>

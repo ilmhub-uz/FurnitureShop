@@ -21,6 +21,6 @@ public class CategoriesController : ControllerBase
 
     [HttpGet("{categoryId:int}")]
     [ProducesResponseType(typeof(CategoryView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCategoryById(int categoryId) =>
+    public IActionResult GetCategoryById(int categoryId) =>
         Ok(_categoriesService.GetCategoryById(categoryId));
 }

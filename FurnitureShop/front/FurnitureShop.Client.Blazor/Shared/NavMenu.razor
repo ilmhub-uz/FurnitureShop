@@ -1,6 +1,7 @@
 @using FurnitureShop.Client.Blazor.Dtos;
 @using Newtonsoft.Json;
 @inject HttpClient Http;
+@inject NavigationManager NavManager
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="profile" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Account</MudNavLink>
@@ -31,10 +32,12 @@
                 }
                 else
                 {
-                    <MudNavLink Href="@category.Name">
+                    <MudButton @onclick="() => Redirect(category.Id)">
                         <img src="https://cdn-icons-png.flaticon.com/512/2007/2007850.png" width="24" height="24" />
                         @category.Name
-                    </MudNavLink>
+                    </MudButton>
+
+                    <br />
                 }
             }          
         }
@@ -43,6 +46,10 @@
 
 
 @code {
+    protected void Redirect(int id)
+    {
+        NavManager.NavigateTo($"/category/{id}");
+    }
     List<CategoryView>? categories;
 
     protected override async Task OnInitializedAsync()
