@@ -1,22 +1,19 @@
 ﻿using FurnitureShop.Common.Exceptions;
-using FurnitureShop.Common.Filters;
-using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
-using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.ViewModel;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using MimeKit.Cryptography;
 using Contract = FurnitureShop.Data.Entities.Contract;
 
 namespace FurnitureShop.Merchant.Api.Services;
+
+[Scoped]
 public class ContractService : IContractService
 {
     private readonly IUnitOfWork _unitOfWork;
-
-    public ContractService( 
-        IUnitOfWork unitOfWork)
+    public ContractService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -29,10 +26,10 @@ public class ContractService : IContractService
 
     public async Task<ContractView> GetContractByIdAsync(Guid contractId)
     {
-        var contract = _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.Id == contractId);
-        if(contract is null)
+        var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.Id == contractId);
+        if (contract is null)
             throw new BadRequestException("Can't fount contract by Id") { ErrorCode = StatusCodes.Status404NotFound };
-    
+
         return contract.Adapt<ContractView>();
     }
 

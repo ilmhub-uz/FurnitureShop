@@ -138,16 +138,20 @@ public class OrderService : IOrderService
         return orderlist.Adapt<List<OrderView>>();
     }
 
-    public async Task<OrderView> UpdateOrder(UpdateOrderDto updateOrderDto, Guid orderId)
+    public async Task<OrderView> DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
     {
         var existingOrder = await _unitOfWork.Orders.GetAll().FirstOrDefaultAsync(o => o.Id == orderId);
         if (existingOrder is null) throw new NotFoundException<Order>();
 
-        existingOrder.Status = updateOrderDto.Status;
-
-        await _unitOfWork.Orders.Update(existingOrder);
+        if(existingOrder.Status == EOrderStatus.Accepted)
+        {
+            throw new Exception("Order uje accept qilingan, statusini o'zgartirolmaysiz");
+        }
+        else if(updateOrderDto.Status == EOrderStatus.Canceled)
+        {
+             await _unitOfWork.Orders.Remove(existingOrder);
+        }
 
         return existingOrder.Adapt<OrderView>();
     }
 }
-
