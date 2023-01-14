@@ -52,7 +52,7 @@
     {
 
         // File API
-        string fileName = model.Name;
+        @* string fileName = model.Name;
         OrganizationImage.Folder = EFileFolder.Organization;
         OrganizationImage.Type = EFileType.Images;
 
@@ -74,7 +74,7 @@
         var responseMessageFile = await clientFile.SendAsync(messageFile);
         var statusFile = responseMessageFile.StatusCode;
         if (statusFile == System.Net.HttpStatusCode.NotFound || statusFile == System.Net.HttpStatusCode.BadRequest)
-            error = "10000400";
+            error = "10000400"; *@
 
 
         //Merchant API
