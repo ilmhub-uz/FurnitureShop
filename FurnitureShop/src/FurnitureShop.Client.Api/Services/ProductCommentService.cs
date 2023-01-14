@@ -58,7 +58,7 @@ public class ProductCommentService : IProductCommentService
         return productCommentView;
     }
 
-    public async Task AddProductCommentAsync(ClaimsPrincipal claims, Guid productId, CreateProductCommentDto commentDto)
+    public async Task<ProductCommentView> AddProductCommentAsync(ClaimsPrincipal claims, Guid productId, CreateProductCommentDto commentDto)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
@@ -71,7 +71,8 @@ public class ProductCommentService : IProductCommentService
             CreatedAt = DateTime.Now
         };
 
-        await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+        var product = await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+        return product.Adapt<ProductCommentView>();
     }
 
     public async Task<ProductCommentView> UpdateProductComment(Guid productId, Guid commentId, UpdateProductCommentDto updateDto)
@@ -89,6 +90,7 @@ public class ProductCommentService : IProductCommentService
         await _unitOfWork.ProductComments.Update(existingProductComment);
         return existingProductComment.Adapt<ProductCommentView>();
     }
+
     public async Task DeleteProductComment(Guid productId, Guid commentId)
     {
         var product = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);

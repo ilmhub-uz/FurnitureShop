@@ -9,13 +9,14 @@ namespace FurnitureShop.Client.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-public class ProductsController : ControllerBase
+public partial class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
-
-    public ProductsController(IProductService productService)
+    private readonly IProductCommentService _productCommentService;
+    public ProductsController(IProductService productService, IProductCommentService productCommentService)
     {
         _productService = productService;
+        _productCommentService = productCommentService;
     }
 
     [HttpGet]
