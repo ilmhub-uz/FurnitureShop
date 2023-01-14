@@ -41,9 +41,7 @@ public class OrderService : IOrderService
         }
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier).Value);
         if (userId ==  null) throw new Exception("UserId is Not Found Ro'yxatdan o'ting"); 
-        /*if (createOrderDto is null)
-            throw new BadRequestException("createOrderDto is not null");*/
-
+       
         //korsatilgan productlar bir hil organizationga tegishliligini tekshirish
         //qaysidir productdan organizationid sini olish
         //orderni saqlash
