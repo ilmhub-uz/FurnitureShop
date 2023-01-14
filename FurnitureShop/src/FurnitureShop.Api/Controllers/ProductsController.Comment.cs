@@ -12,7 +12,7 @@ public partial class ProductsController
         Ok(await _productCommentService.GetProductComments(productId));
 
     [Authorize]
-    [HttpPost("{productId:guid}/Comment")]
+    [HttpPost("{productId:guid}/Comment")] 
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> AddProductComment(Guid productId, [FromBody] CreateProductComment commentDto)
     {
