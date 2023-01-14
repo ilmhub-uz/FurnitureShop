@@ -15,5 +15,4 @@
     <ProjectReference Include="..\FurnitureShop.Common\FurnitureShop.Common.csproj" />
     <ProjectReference Include="..\FurnitureShop.Data\FurnitureShop.Data.csproj" />
   </ItemGroup>
-
 </Project>

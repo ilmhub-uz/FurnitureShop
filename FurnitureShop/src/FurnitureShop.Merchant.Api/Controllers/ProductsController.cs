@@ -3,10 +3,12 @@ using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
+using FurnitureShop.Merchant.Api.Hubs;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
@@ -18,17 +20,20 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 public partial class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
+    private IHubContext<ProductHub> _hubContext;
     private readonly AppDbContext _context;
     private readonly IValidator<UpdateProductDto> _updateProductValidator;
     private readonly IValidator<CreateProductDto> _createProductValidator;
 
     public ProductsController(
         IProductService productService,
+        IHubContext<ProductHub> hubContext,
         AppDbContext appDbContext,
         IValidator<UpdateProductDto> updateProductValidator,
         IValidator<CreateProductDto> createProductValidator)
     {
         _productService = productService;
+        _hubContext = hubContext;
         _context = appDbContext;
         _updateProductValidator = updateProductValidator;
         _createProductValidator = createProductValidator;
@@ -43,6 +48,7 @@ public partial class ProductsController : ControllerBase
             return BadRequest();
 
         await _productService.AddProduct(dtoModel, User);
+        await _hubContext.Clients.All.SendAsync("ChangeProduct");
 
         return Ok();
     }
@@ -66,6 +72,7 @@ public partial class ProductsController : ControllerBase
         }
 
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("ChangeProduct");
         return productView;
     }
 
@@ -81,6 +88,7 @@ public partial class ProductsController : ControllerBase
         
         product.Rates.Add(rate);
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("ChangeProduct");
         return Ok();
     }
 
@@ -94,6 +102,7 @@ public partial class ProductsController : ControllerBase
             return BadRequest();
 
         await _productService.UpdateProduct(productId, dtoModel, User);
+        await _hubContext.Clients.All.SendAsync("ChangeProduct");
 
         return Ok();
     }
@@ -103,6 +112,7 @@ public partial class ProductsController : ControllerBase
     public async Task<IActionResult> DeleteProduct(Guid productId)
     {
         await _productService.DeleteProductById(productId);
+        await _hubContext.Clients.All.SendAsync("ChangeProduct");
 
         return Ok();
     }
@@ -111,6 +121,7 @@ public partial class ProductsController : ControllerBase
     public async Task<IActionResult> AddProductImage(Guid productId, [FromForm] CreateOrUpdateProductImageDto imageDto)
     {
         var result = await _productService.AddOrUpdateProductImageAsync(productId, imageDto);
+        await _hubContext.Clients.All.SendAsync("ChangeProduct");
 
         return Ok(result);
     }

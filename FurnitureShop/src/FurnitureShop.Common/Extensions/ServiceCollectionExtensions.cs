@@ -1,4 +1,4 @@
-﻿using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -60,16 +60,28 @@ public static class ServiceCollectionExtensions
         {
             options.AddDefaultPolicy(cors =>
             {
-                cors.WithOrigins("http://localhost:65283", // Merchant.Api
-                                "https://localhost:8521", 
-                                "http://localhost:9842", 
-                                "http://localhost:34445", // File.Api
-                                "https://localhost:7019",
-                                "http://localhost:5285",
-                                "https://localhost:44398",
-                                "https://localhost:5001",
-                                "https://localhost:5011",
-                                "https://localhost:44398")
+                cors.WithOrigins("https://localhost:1001",   // Marketplace API HTTPS
+                                "https://localhost:2001",   // Marketplace Blazor HTTPS
+                                "http://localhost:1002",    // Marketplace API HTTP
+                                "http://localhost:2002",    // Marketplace Blazor HTTP
+                                "https://localhost:1003",   // Admin API HTTPS
+                                "https://localhost:2003",   // Admin Blazor HTTPS
+                                "http://localhost:1004",    // Admin API HTTP
+                                "http://localhost:2004",    // Admin Blazor HTTP
+                                "https://localhost:1005",   // Client API HTTPS
+                                "https://localhost:2005",   // Client Blazor HTTPS
+                                "http://localhost:1006",    // Client API HTTP
+                                "http://localhost:2006",    // Client Blazor HTTP
+                                "https://localhost:1007",   // Files API HTTPS
+                                "https://localhost:2007",   // Files Blazor HTTPS
+                                "http://localhost:1008",    // Files API HTTP
+                                "http://localhost:2008",    // Files Blazor HTTP
+                                "https://localhost:1009",   // Merchant API HTTPS
+                                "https://localhost:2009",   // Merchant Blazor HTTPS
+                                "http://localhost:1010",    // Merchant API HTTP
+                                "http://localhost:2010",    // Merchant Blazor HTTP
+                                "https://localhost:7777",    // Email Sender Api HTTPS
+                                "http://localhost:7778")    // Email Sender Api HTTP
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

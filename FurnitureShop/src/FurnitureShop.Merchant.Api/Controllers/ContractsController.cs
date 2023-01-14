@@ -26,9 +26,10 @@ public class ContractsController : ControllerBase
     [HttpPost]
     [ValidateModel]
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateContract([FromBody] Guid orderId)
+    public async Task<IActionResult> CreateContract(Guid orderId)
     {
         var contract = await _contractService.AddContractAsync(orderId);
+        
         return Ok(contract);
     }
 

@@ -1,4 +1,4 @@
-﻿@page "/category"
+﻿@page "/category/{categoryId}"
 @inject HttpClient Http
 
 <PageTitle>Category</PageTitle>
@@ -67,6 +67,9 @@
 </style>
 
 @code {
+    [Parameter]
+    public int categoryId { get; set; }
+
     private CategoryView[]? categories;
 
     protected override async Task OnInitializedAsync()

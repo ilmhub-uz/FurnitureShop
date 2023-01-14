@@ -26,20 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Content Include="..\FurnitureShop.Common\CommonSettings.json" Link="CommonSettings.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="..\FurnitureShop.Common\FurnitureShop.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

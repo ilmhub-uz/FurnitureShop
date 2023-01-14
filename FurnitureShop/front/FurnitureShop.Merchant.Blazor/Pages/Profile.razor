@@ -1,23 +1,125 @@
-﻿@page "/profile"
-<PageTitle>Profile</PageTitle>
+@page "/profile"
+@inject HttpClient Http
+@using FurnitureShop.Merchant.Blazor.ViewModel;
+@using Newtonsoft.Json;
+@using System.Text;
+@using System.Net.Http.Headers;
+@using System.Net;
+<h3 style="text-align:center">Profile</h3>
+@{
+    string url = $"https://localhost:7019/api/Files/users/avatar?userId={user!.Id}";
+    string defUrl = "images/Furniture3.png";
+}
 
-@using FurnitureShop.Admin.Blazor.Dtos
-@using FurnitureShop.Admin.Blazor.ViewModel
-@using Newtonsoft.Json
+@*<MudPaper Class="pa-16 ma-2" Width="400"  Elevation="3">
+    <MudCardMedia Image=@defUrl Class="align-content:center" Style="width:200px"/>
+    <MudCardContent>
+        <MudText Typo="Typo.body1">@user.UserName</MudText>
+        <MudText Typo="Typo.body2">@user.Email</MudText>
+        <MudText Typo="Typo.body1"><b>FirstName: </b>@user.FirstName</MudText>
+        <MudText Typo="Typo.body1"><b>LastName: </b>@user.LastName</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" DisableElevation="true">Edit</MudButton>
+    </MudCardActions>
+</MudPaper>*@
 
-<h1>User-Name: @user?.UserName</h1>
-<h1>Email: @user?.Email</h1>
-<h1>First-Name: @user?.FirstName</h1>
-<h1>Last-Name: @user?.LastName</h1>
+    <section style="background-color: #eee;">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
 
-
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px;">
+            <h5 class="my-3">@user.FirstName @user.LastName</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">UserName</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">@user.UserName</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">@user.Email</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">FirstName</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">@user.FirstName</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">LastName</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">@user.LastName</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Role</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">@user.Status</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 @code {
-    UserView user = new UserView();
 
+    UserView? user = new UserView();
+    HttpStatusCode? responseCode;
     protected override async Task OnInitializedAsync()
     {
+        //var client = new HttpClient();
+        //client.BaseAddress = new Uri("https://localhost:7148");
+        //var message = new HttpRequestMessage(HttpMethod.Post, "/api/Account/sign-in");
+        //message.Content = JsonContent.Create(new TempData("Ashot","qwerty123"));
+        //message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        //var response = await client.SendAsync(message);
+        //responseCode = response.StatusCode;
+
+        // user = await Http.GetFromJsonAsync<UserView?>("https://localhost:7148/api/Profile");
+        // var getMessage = new HttpRequestMessage(HttpMethod.Get, "/api/Profile");
+        // getMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        // var profileJson = await (await Http.SendAsync(getMessage)).Content.ReadAsStringAsync();
+        // user = JsonConvert.DeserializeObject<UserView>(profileJson);
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7113");
+        client.BaseAddress = new Uri("https://localhost:1009");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
@@ -25,4 +127,6 @@
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
         user = JsonConvert.DeserializeObject<UserView>(profileJson);
     }
+
+    public record TempData(string userName, string password);
 }

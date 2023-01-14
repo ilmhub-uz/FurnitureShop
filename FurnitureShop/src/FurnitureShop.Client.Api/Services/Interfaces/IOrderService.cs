@@ -8,6 +8,6 @@ namespace FurnitureShop.Client.Api.Services.Interfaces;
 public interface IOrderService
 {
     Task<OrderView> CreateOrder(ClaimsPrincipal claims,CreateOrderDto createOrderDto);
-    Task<List<OrderView>> GetOrders();
-    Task<OrderView> UpdateOrder(UpdateOrderDto updateOrderDto, Guid orderId);
+    Task<List<OrderView>> GetOrders(OrderFilterDto orderFilter , ClaimsPrincipal User);
+    Task<OrderView> DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId);
 }

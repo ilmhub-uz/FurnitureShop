@@ -1,28 +1,33 @@
 ﻿using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Merchant.Api.Dtos;
+using FurnitureShop.Merchant.Api.Hubs;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-//[Authorize]
+[Authorize]
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationService _organizationService;
+    private IHubContext<OrganizationHub> _hubContext;
     private readonly IValidator<CreateOrganizationDto> _createOrganizationValitor;
     private readonly IValidator<UpdateOrganizationDto> _updateOrganizationValidator;
 
     public OrganizationsController(IOrganizationService organizationService,
+        IHubContext<OrganizationHub> hubContext,
         IValidator<CreateOrganizationDto> createOrganizationValitor,
         IValidator<UpdateOrganizationDto> updateOrganizationValidator)
     {
         _organizationService = organizationService;
+        _hubContext = hubContext;
         _createOrganizationValitor = createOrganizationValitor;
         _updateOrganizationValidator = updateOrganizationValidator;
     }
@@ -47,6 +52,7 @@ public class OrganizationsController : ControllerBase
             return BadRequest();
 
         await _organizationService.AddOrganization(User, createOrganizationDto);
+        await _hubContext.Clients.All.SendAsync("ChangeOrganization");
         return Ok();
     }
 
@@ -60,6 +66,7 @@ public class OrganizationsController : ControllerBase
             return BadRequest();
 
         await _organizationService.UpdateOrganization(organizationId, updateOrganizationDto);
+        await _hubContext.Clients.All.SendAsync("ChangeOrganization");
         return Ok();
     }
 
@@ -68,6 +75,7 @@ public class OrganizationsController : ControllerBase
     public async Task<IActionResult> DeleteOrganization(Guid organizationId)
     {
         await _organizationService.DeleteOrganization(organizationId);
+        await _hubContext.Clients.All.SendAsync("ChangeOrganization");
         return Ok();    
     }
 

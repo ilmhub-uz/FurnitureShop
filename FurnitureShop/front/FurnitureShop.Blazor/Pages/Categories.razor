@@ -1,5 +1,7 @@
 ﻿@page "/categories"
+@using FurnitureShop.Blazor.Services
 @inject HttpClient Http
+@inject CategoryService CategoryService
 
 <PageTitle>Categories</PageTitle>
 
@@ -64,10 +66,7 @@
 </style>
 
 @code {
-    private CategoryView[]? categories;
+    private List<CategoryView>? categories;
 
-    protected override async Task OnInitializedAsync()
-    {
-        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235/api/Categories");
-    }
+    protected override async Task OnInitializedAsync() => categories = await CategoryService.GetCategoriesAsync();
 }

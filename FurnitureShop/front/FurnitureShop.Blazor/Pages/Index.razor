@@ -1,11 +1,41 @@
 ﻿@page "/"
 @using FurnitureShop.Blazor.Pages.ViewModel
-@inject HttpClient Http
+@using FurnitureShop.Blazor.Services
+@inject CategoryService CategoryService
+@inject ProductService ProductService
 
 <PageTitle>Index</PageTitle>
 
 <div class="form-floating">
-    <input type="search" class="form-control" placeholder="Search" />
+    <MudGrid>
+        <MudItem xs="10">
+            <div class="form-control">
+                <input type="search" placeholder="Search" />
+            </div>
+        </MudItem>
+        <MudItem xs="1">
+            <a href="" class="favorite iconHover">
+                <div style="display: flex; justify-content: center">
+                    <a href="" class="iconHover">
+                        <MudIcon Icon="@Icons.Material.Filled.FavoriteBorder" />
+                    </a>
+                </div>
+                <p style="text-align: center">Favorite</p>
+            </a>
+        </MudItem>
+        <MudItem xs="1">
+            <a href="" class="cart iconHover">
+                <div style="display: flex; justify-content: center">
+                    <a href="" class="iconHover">
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" />
+                    </a>
+                </div>
+                <p style="text-align: center">Cart</p>
+            </a>
+        </MudItem>
+    </MudGrid>
+    
+
 </div>
 <MudCarousel Class="mud-width-full" Style="height:700px;" ShowArrows="@arrows" ShowBullets="@bullets"
     EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
@@ -317,8 +347,8 @@
                                 alt="chairs" />
                         </div>
                         <p>
-                            @if(category?.Children is not null){
-                            @foreach (var childCategory in category?.Children)
+            @if(category?.Children is not null){
+            @foreach (var childCategory in category?.Children)
             {
                 <div class="col-4">
                     <div class="popular-category">
@@ -348,13 +378,13 @@
     private bool enableSwipeGesture = true;
     private bool autocycle = true;
     private Transition transition = Transition.Slide;
-    private CategoryView[]? categories;
-    private ProductView[]? products;
+    private List<CategoryView>? categories;
+    private List<ProductView>? products;
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<ProductView[]?>("https://localhost:7235/api/products");
-        categories = await Http.GetFromJsonAsync<CategoryView[]?>("https://localhost:7235/api/Categories");
+        products = await ProductService.GetProductsAsync();
+        categories = await CategoryService.GetCategoriesAsync();
     }
 }
 
@@ -426,12 +456,16 @@
 
     .form-floating {
         margin-bottom: 10px;
+        display: flex;
+        justify-content: start;
     }
 
     .form-control {
         border-radius: 10px;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        width: 70%;
         padding: 10px 10px;
     }
+    .iconHover:hover {
+        color: #594ae2ff;
+    } 
 </style>

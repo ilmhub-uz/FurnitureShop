@@ -3,8 +3,6 @@ using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
-using FurnitureShop.Merchant.Api.Services;
-using FurnitureShop.Merchant.Api.Validators;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

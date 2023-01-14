@@ -1,8 +1,10 @@
 ﻿using FurnitureShop.Files.Api.Dtos;
+using JFA.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
 namespace FurnitureShop.Files.Api.Services;
 
+[Scoped]
 public class FileHelper : IFileHelper
 {
     public async Task<List<string>> SaveFileAsync([NotNull] List<IFormFile> files, string filesType, string filesFolder)

@@ -1,0 +1,63 @@
+﻿@page "/favourite"
+@using FurnitureShop.Client.Blazor.ViewModel;
+@using Newtonsoft.Json
+@inject HttpClient client
+
+<PageTitle>My cart</PageTitle>
+
+<div class="container">
+    <div class="row">
+        @foreach (var element in Elements ?? new List<FavouriteProductView>())
+        {
+            <div class="col-md-3">
+                <div class="card my_card">
+                    <div class="myCard_image">
+                        <img class="card_image" src="https://images.samsung.com/is/image/samsung/assets/id/2208/pfs/02-03-B4-kv-Durability-pc-570x304.jpg?$FB_TYPE_J_S_JPG$" alt="Organization Image">
+                    </div>
+                    
+                    <div class="myCard_body">
+                        <b class="myCard_name">@element.Product.Name</b>
+                        <p class="myCard_owner">Lorem</p>
+                        <span class="myCard_Span">Price : @element.Product.Price $ </span> 
+                    </div>
+
+                    <hr>
+
+                    <div class="myCard_footer">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteProductById(@element.Product.Id))" Color="Color.Error">Delete</MudButton>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    List<FavouriteProductView> Elements = new List<FavouriteProductView>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Favourite");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        Elements = JsonConvert.DeserializeObject<List<FavouriteProductView>>(profileJson);
+    }
+
+    public async void DeleteProductById(Guid productId)
+    {
+        try
+        {
+            var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Favourite/{productId}");
+            message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+            await client.SendAsync(message);
+        }
+        catch (Exception e)
+        {
+            
+            Console.WriteLine(e.Message + "exceptionsssss");
+        }
+        
+    }
+}

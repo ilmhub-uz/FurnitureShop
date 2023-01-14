@@ -6,7 +6,7 @@ public class CreateOrganizationDtoValidator : AbstractValidator<CreateOrganizati
 {
     public CreateOrganizationDtoValidator()
     {
-        RuleFor(organizationDto => organizationDto.Name).Length(1, 20)
-            .When(organization => organization.Name != null);
+        RuleFor(organizationDto => organizationDto.Name).Length(1, 30).NotNull().NotEmpty().Matches("^[a-zA-Z']*$")
+            .WithMessage("Organization name must contain only alphabetical characters.");
     }
 }

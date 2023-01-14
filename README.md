@@ -9,8 +9,6 @@ maindan branch ochib -> entity qoshiladi -> migration -> repository interface ->
 | :---         |     :---:      |
 | 1 | Og'abek Xolmirzayev |
 | 2 | Abdurauf |
-| 3 | Otabek |
-| 4 | Munisa |
 
 ***
 

@@ -1,25 +1,42 @@
-﻿<link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
+﻿@using FurnitureShop.Blazor.Services
+@inject CategoryService CategoryService
 
+<link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
+
+<!--------------------------------------------Catalog---------------------------------------------------->
 <MudNavMenu>
-    <MudNavGroup Title="Sofas" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="sofas" Match="NavLinkMatch.All">Frameless sofas</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Armchairs" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="armchairs" Match="NavLinkMatch.Prefix">Armchairs</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Beds" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="beds" Match="NavLinkMatch.Prefix">Beds</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Mattresses" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="categories" Match="NavLinkMatch.Prefix">Mattresses</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Chairs" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="category" Match="NavLinkMatch.Prefix">Сhairs</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Tables" Icon="@Icons.Filled.Chair" Class="NavCat">
-        <MudNavLink Href="organizations" Match="NavLinkMatch.Prefix">Tables</MudNavLink>
-    </MudNavGroup>
+    @if (_categories is not null)
+    {
+        
+        @foreach (var category in _categories)
+        {
+            if(category.Children is not null)
+            {
+                <a href="/products">
+                    <MudNavGroup Title="@category.Name" Class="NavCat" Expanded="false">
+                        @foreach (var _subCategory in category.Children)
+                        {
+                            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix">@_subCategory.Name</MudNavLink>
+                        }
+                    </MudNavGroup>
+                </a>
+                
+            }
+            else
+            {
+                <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@category.Name</MudNavLink>
+            }
+        }
+        
+    }
+    <!------------------------------------------------------------------------------------------------->
 </MudNavMenu>
+
+@code{
+    private List<CategoryView>? _categories;
+
+    protected override async Task OnInitializedAsync() => _categories = await CategoryService.GetCategoriesAsync();
+}
 
 <style>
     .NavCat .mud-nav-link-text {
