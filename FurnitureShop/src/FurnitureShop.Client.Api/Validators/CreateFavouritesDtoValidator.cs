@@ -9,6 +9,7 @@ public class CreateFavouritesDtoValidator : AbstractValidator<CreateFavouriteDto
     {
         RuleFor(favouriteDto => favouriteDto.ProductId).NotEmpty()
             .WithMessage("Product id can not be empty")
+            .NotEqual(default(Guid))
             .NotNull().
             WithMessage("Product id can not be null");
     }
