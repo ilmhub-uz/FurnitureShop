@@ -11,7 +11,6 @@ namespace FurnitureShop.Client.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class ProfileController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;

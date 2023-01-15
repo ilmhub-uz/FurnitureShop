@@ -12,7 +12,6 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
 [ValidateModel]
 public class ProfileController : ControllerBase
 {
