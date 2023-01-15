@@ -24,7 +24,6 @@ public class OrganizationService : IOrganizationService
         _unitOfWork = unitOfWork;
     }
 
-
     public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter, ClaimsPrincipal principal)
     {
         var userId = Guid.Parse(principal.GetUserId());
@@ -88,7 +87,6 @@ public class OrganizationService : IOrganizationService
 
         return organization!.Adapt<OrganizationView>();
     }
-
 
     public async Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto)
     {
