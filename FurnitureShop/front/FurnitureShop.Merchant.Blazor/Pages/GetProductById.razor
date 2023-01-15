@@ -1,10 +1,11 @@
 ﻿@page "/{OrganizationId}/Products/{ProductId}"
 @using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @using MudBlazor
 @inject NavigationManager NavManager
 @using Newtonsoft.Json
 @inject HttpClient client
-
+@*
 <h3>Product</h3>
 @if (product is null)
 {
@@ -41,8 +42,6 @@ else
             <br>
             <br>
         </div>
-}
-
 
 <MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Update Product</MudButton>
 <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
@@ -96,8 +95,6 @@ else
         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Update</MudButton>
     </EditForm>
 </MudDrawer>
-
-
 @code {
     string? error;
     [Parameter]
@@ -186,7 +183,6 @@ else
             NavManager.NavigateTo($"/{OrganizationId}");
         }
     }
-}
 
 
 

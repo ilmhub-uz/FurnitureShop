@@ -115,8 +115,14 @@ public class UnitOfWork : IUnitOfWork
     }
 
     private IProductCommentRepository? _productCommentRepository;
-    public IProductCommentRepository ProductComments =>
-        _productCommentRepository ??= new ProductCommentRepository(_context);
+    public IProductCommentRepository ProductComments 
+    {
+        get
+        {
+            if (_productCommentRepository is null) _productCommentRepository = new ProductCommentRepository(_context);
+            return _productCommentRepository;
+        }
+    }
 
     public int Save() => _context.SaveChanges();
 

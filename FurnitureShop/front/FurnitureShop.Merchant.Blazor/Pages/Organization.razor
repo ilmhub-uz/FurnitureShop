@@ -1,11 +1,62 @@
-﻿@*@page "/organization/{OrganizationId}"
+﻿@page "/organization/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json
+@inject HttpClient client
+<PageTitle>Organization</PageTitle>
 
-
-
-
+<div class="d-flex">
+    <div class="w-50 pr-3">
+        <MudImage Src="https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" Alt="Organization Image" Elevation="25" class="rounded-lg ma-4 w-100" />
+    </div>
+    <div class="w-50 p-3">
+        <h3 class="mt-1"> @organization.Name </h3>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+        </p>
+        @foreach (var user in organization.Users)
+        {
+            if(user.Role == 0)
+            {
+                <p>Owner: </p>
+            }
+        }
+    </div>
+</div>
 
 @code {
+    OrganizationView organization = new OrganizationView();
+    UserView owner = new UserView();
+
     [Parameter]
-    public string OrganizationId { get; set; }
+    public string organizationId { get; set; }
+
+    private HubConnection? _hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations/{organizationId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var organizationJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        organization = JsonConvert.DeserializeObject<OrganizationView>(organizationJson);
+
+        
+    }
+
+    private async Task GetOwner()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Employee/allStaff/");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var userJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        owner = JsonConvert.DeserializeObject<UserView>(userJson);
+    }
 }
-*@

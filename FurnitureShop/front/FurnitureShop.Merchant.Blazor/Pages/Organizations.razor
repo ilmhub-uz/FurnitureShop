@@ -1,41 +1,40 @@
 ﻿@page "/organizations"
 @using FurnitureShop.Merchant.Blazor.Dtos;
 @inject HttpClient client
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @using Microsoft.AspNetCore.SignalR.Client
 @using Newtonsoft.Json
 @using System.Web;
 @using RestSharp;
 @using RestSharp.Authenticators;
+@inject HttpClient Http
 
 <PageTitle>Organizations</PageTitle>
 
-<_AddOrganization/>
 
-@if(Elements.Count < 1)
+@if(Elements.Count <= 0)
 {
-    <div class="nullContent">
-        <img src="/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid notImage" alt="Image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png">
-        <h3 class="fw-bold py-3 mb-2" style="margin-left:10px">There is no any organizations</h3>
-    </div>
-}
-else{
-    <div class="container">
-        <br>
-        <br>
-        <br>
-        <div class="row">
-            @foreach (var element in Elements)
-            {
-                <div class="col-md-3">
-                    <div class="card my_card">
-                        <div class="myCard_image">
-                            <img class="card_image" src="https://images.samsung.com/is/image/samsung/assets/id/2208/pfs/02-03-B4-kv-Durability-pc-570x304.jpg?$FB_TYPE_J_S_JPG$" alt="Organization Image">
+    <div class="row">
+        <h4 class="fw-bold py-3 mb-2">Categories</h4>
+        <div class="col-lg-8 col-12 mb-4">
+            <div class="card h-100">
+                <div class="row h-100">
+                    <div class="col-sm-12">
+                        <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-3">
+                            <img src="/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid" alt="Image" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png" width="120">
+                            <h3 class="fw-bold py-3 mb-2" style="margin-left:10px">There is no any organizations</h3>
                         </div>
-                    
-                        <div class="myCard_body">
-                            <b class="myCard_name">@element.Name</b>
-                            <p class="myCard_owner">By Abdulaziz Abduqaxxarov</p>
-                            <span class="myCard_Span">256 prj.</span> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-12 mb-4">
+            <div class="card h-100">
+                <div class="row h-100">
+                    <div class="col-sm-12">
+                        <div class="card-body text-sm-center text-center">
+                            <_AddOrganization />
+                        <p class="mb-0">You can create new organization</p>
                         </div>
 
                         <hr>
@@ -47,65 +46,118 @@ else{
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         </div>
     </div>
 }
+else{
+<h3 class="card-title mb-0">Organizations</h3>
+<MudTable Class="mt-3 p-3" @ref="_table" T="OrganizationView" Items="@Elements" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                                OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick" Filter="new Func<OrganizationView,bool>(FilterFunc1)">
+    <ToolBarContent>
+                <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
+                    <MudSpacer/>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.Name</MudTd>
+            <MudTd DataLabel="Sign">@StatusBadge( int.Parse(context.Status.ToString()))</MudTd>
+        <MudTd DataLabel="Actions">
+            <div class="d-inline-block">
+                <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id.ToString()))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
+                <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end m-0">
+                    <li>
+                        <a href="javascript:;" class="dropdown-item">Details</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="dropdown-item">Archive</a>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                    <li>
+                        <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id.ToString()))" class="leverow-ifs-btn">Delete</MudButton>
+                    </li>
+                </ul>
+            </div>
+        </MudTd>
+            <MudTd DataLabel="Btn">
+                <button class="btn btn-success">
+                    <a class="def_a" href="/organization/@context.Id">
+                        View more
+                    </a>
+                </button>
+            </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{1, 100}" />
+    </PagerContent>
+    <FooterContent>
+        <MudTd colspan="5">Select All</MudTd>
+    </FooterContent>
+</MudTable>
 
+<_AddOrganization/>
+}
 
-@*@code{
+ <template id="notify-delete">
+    <swal-title>
+        Successfully deleted!
+    </swal-title>
+    <swal-icon type="success"></swal-icon>
+    <swal-param name="allowEscapeKey" value="false" />
+</template>
+
+@code{
+    private bool FilterFunc1(OrganizationView element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(OrganizationView element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (searchString == element.Id.ToString())
+            return true;
+        return false;
+    }
+    public MarkupString StatusBadge(int type)
+    {
+        if (type == 3) return (MarkupString)$"<span class='badge bg-label-danger'>Deleted</span>";
+        if (type == 0) return (MarkupString)$"<span class='badge bg-label-success'>Active</span>";
+
+        return (MarkupString)$"<span class='badge bg-label-secondary'>InActive</span>";
+    }
+    public async void DeleteOrganizationById(string organizationId)
+    {
+        await Http.DeleteAsync($"https://localhost:1009/api/organizations/{organizationId}");
+    }
+    private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
     private List<OrganizationView> Elements = new List<OrganizationView>();
-    private HubConnection? _hubConnection;
+    private bool _selectOnRowClick = true;
+    private string _selectedItemText = "No row clicked";
+    private string searchString1 = "";
+    private MudTable<OrganizationView> _table;
 
     protected override async Task OnInitializedAsync()
     {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:1009/hub")
-            .Build();
-
-        _hubConnection.On<List<OrganizationView>>(nameof(GetAllOrganizations), GetAllOrganizations);
-        await _hubConnection.StartAsync();
-        await _hubConnection.InvokeAsync("GetAllOrganizations");
-    }
-
-    private async Task GetAllOrganizations(List<OrganizationView> organizations)
-    {
-        Elements = organizations;
-        StateHasChanged();
-    }
-}*@
-
-@code {
-    private List<OrganizationView>? Elements = new List<OrganizationView>();
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-
-        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
-
-        var hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:1009/organizationhub")
-            .Build();
-
-        hubConnection.On(nameof(ChangeOrganization),ChangeOrganization);
-
-        await hubConnection.StartAsync();
-    }
-
-    private async Task ChangeOrganization()
-    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
         Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
-        StateHasChanged();
     }
+
+    void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
     }
 }

@@ -46,7 +46,7 @@
     border-radius: 5px;
     position:absolute;
     right:50px;
-    top:100px;
+    top:90px;
 }
 
 .drawButton:hover {
@@ -94,4 +94,12 @@
 {
     width: 500px;
     margin-bottom: 20px;
+}
+.def_a
+{
+    text-decoration:none;
+    color:#fff;
+}
+.def_a:hover{
+    color:#fff;
 }

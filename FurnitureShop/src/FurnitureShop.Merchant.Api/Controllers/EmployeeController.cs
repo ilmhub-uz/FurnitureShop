@@ -45,20 +45,20 @@ public class EmployeeController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("managers")]
+    [HttpGet("managers/{organizationId:guid}")]
     public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId) 
         => await _employeeService.GetManagers(organizationId);
 
-    [HttpGet("sellers")]
+    [HttpGet("sellers/{organizationId:guid}")]
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
         => await _employeeService.GetSellers(organizationId);
 
-    [HttpGet("allStaff")]
+    [HttpGet("allStaff/{organizationId:guid}")]
     public async Task<List<GetEmployeesView>> GetStaff(Guid organizationId)
         => await _employeeService.GetStaff(organizationId);
 
-    [HttpDelete]
-    public async Task RemoveEmployee(RemoveEmployeeDto dto)
+    [HttpDelete("{organizationId:guid}")]
+    public async Task RemoveEmployee([FromBody] RemoveEmployeeDto dto)
     {
         var validationResult = _removeEmployeeValidator.Validate(dto);
         if (!validationResult.IsValid)

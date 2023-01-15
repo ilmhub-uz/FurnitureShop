@@ -1,11 +1,12 @@
 ﻿@page "/{OrganizationId}"
 @using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @using Microsoft.AspNetCore.SignalR.Client
 @using MudBlazor
 @inject NavigationManager NavManager
 @using Newtonsoft.Json
 @inject HttpClient client
-
+@*
 <h3>Organization</h3>
 @if (organization is null)
 {
@@ -35,10 +36,11 @@ else
                         <hr>
                     @*@if (organization.Role is ERole.Owner)
                         {*@
-                        <div class="myCard_footer">
+                        @*<div class="myCard_footer">
                             <button @onclick="DeleteOrganization" type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">Delete</button>
-                        </div>
+                        </div>*@
                        @* }*@
+                  @*  </div>
                     </div>
                 </div>
             
@@ -47,10 +49,10 @@ else
         <br>
         <br>
     </div>
-    </div>
-}
+    </div>*@
+@*}**@
 
-
+@*
 <h3>Poducts</h3>
 @if (products.Count() < 1)
 {
@@ -90,9 +92,9 @@ else
             }
         </div>
     </div>
-}
+}*@
 
-
+@*
 <MudButton Class="drawButton" Variant="Variant.Filled" OnClick="@(() => OpenDrawer(Anchor.End))">Update Organization</MudButton>
 <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
     <EditForm Class="myDrawer" Model="@organization" OnValidSubmit="OnValidSubmit">
@@ -146,8 +148,8 @@ else
 
         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
     </EditForm>
-</MudDrawer>
-
+</MudDrawer>*@
+@*
 
 @code {
     [Parameter]
@@ -274,7 +276,7 @@ else
         products = JsonConvert.DeserializeObject<List<ProductView>>(profileJson2);
         StateHasChanged();
     }  
-}
+}*@
 
 
 

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\FurnitureShop.Common\FurnitureShop.Common.csproj" />
     <ProjectReference Include="..\FurnitureShop.Data\FurnitureShop.Data.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Product\" />
+  </ItemGroup>
 </Project>

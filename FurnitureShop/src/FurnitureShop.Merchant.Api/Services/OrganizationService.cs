@@ -63,8 +63,22 @@ public class OrganizationService : IOrganizationService
         }
 
         var organizations = await existingOrganizations.ToPagedListAsync(filter);
+        var resultOrganization = new List<OrganizationView>();
 
-        return organizations.Adapt<List<OrganizationView>>();
+        foreach (var organization in organizations)
+        {
+            resultOrganization.Add(new OrganizationView()
+            {
+                Id = organization.Id,
+                Name = organization.Name,
+                ImageUrl = organization.ImageUrl,
+                Status = organization.Status,
+                Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
+                Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList()
+            });
+        }
+
+        return resultOrganization;
     }
 
     [IdValidation]
