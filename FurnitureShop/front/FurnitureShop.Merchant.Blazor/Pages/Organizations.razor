@@ -15,7 +15,7 @@
 @if(Elements.Count <= 0)
 {
     <div class="row">
-        <h4 class="fw-bold py-3 mb-2">Categories</h4>
+        <h4 class="fw-bold py-3 mb-2">Organizations</h4>
         <div class="col-lg-8 col-12 mb-4">
             <div class="card h-100">
                 <div class="row h-100">
@@ -33,16 +33,8 @@
                 <div class="row h-100">
                     <div class="col-sm-12">
                         <div class="card-body text-sm-center text-center">
-                            <_AddOrganization />
+                        <button type="submit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddCategory" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Organization</button>
                         <p class="mb-0">You can create new organization</p>
-                        </div>
-
-                        <hr>
-
-                        <div class="myCard_footer">
-                            <a href="/@element.Id">
-                                  <button  type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">View More</button>
-                            </a>
                         </div>
                     </div>
                 </div>
