@@ -81,20 +81,21 @@ public class OrderService : IOrderService
 
         if (order is null) return new OrderView();
 
-        var organizationView = new OrganizationView()
-        {
-            Id = order.Organization.Id,
-            Name = order.Organization.Name,
-            Status = order.Organization.Status,
-        };
+        //var organizationView = new OrganizationView()
+        //{
+        //    Id = order.Organization.Id,
+        //    Name = order.Organization.Name,
+        //    Status = order.Organization.Status,
+        //};
 
         var orderView = new OrderView()
         {
             Id = order.Id,
             CreatedAt = order.CreatedAt,
             Status = order.Status,
-            Organization = organizationView,
-            User = order.User.Adapt<UserView>(),
+            OrganizationName = order.Organization.Name,
+            UserName = order.User.UserName,
+            UserMail = order.User.Email,
             OrderProducts = order.Adapt<List<OrderProductView>>(),
         };
 
@@ -129,7 +130,28 @@ public class OrderService : IOrderService
             orders = _unitOfWork.Orders.GetAll().Where(or => or.OrganizationId == orderFilter.OrganizationId);
         }
         var orderlist = await orders.ToPagedListAsync(orderFilter);
-        return orderlist.Adapt<List<OrderView>>();
+
+
+        var listOrderView = new List<OrderView>();
+
+        foreach(var order in orderlist)
+        {
+            var orderView = new OrderView()
+            {
+                Id = order.Id,
+                OrganizationName = order.Organization.Name,
+                UserName = order.User.UserName,
+                UserMail = order.User.Email,
+                Status = order.Status,
+                CreatedAt = order.CreatedAt,
+                LastUpdatedAt = order.LastUpdatedAt,
+                OrderProducts = order.OrderProducts.Adapt<ICollection<OrderProductView>>()
+            };
+
+            listOrderView.Add(orderView);
+        }
+
+        return listOrderView;
     }
 
     public async Task DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
