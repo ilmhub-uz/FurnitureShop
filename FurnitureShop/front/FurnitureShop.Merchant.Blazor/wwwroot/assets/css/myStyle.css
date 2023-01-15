@@ -103,3 +103,11 @@
 .def_a:hover{
     color:#fff;
 }
+.notBtn
+{
+    padding: 8px 15px;
+    background-color: #6366f1;
+    color: #fff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
