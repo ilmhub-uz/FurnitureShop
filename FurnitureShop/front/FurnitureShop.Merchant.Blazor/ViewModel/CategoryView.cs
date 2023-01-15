@@ -1,4 +1,4 @@
-﻿namespace FurnitureShop.Merchant.Blazor.Dtos;
+﻿namespace FurnitureShop.Merchant.Blazor.ViewModel;
 
 public class CategoryView
 {

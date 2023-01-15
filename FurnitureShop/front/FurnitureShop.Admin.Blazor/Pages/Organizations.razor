@@ -124,7 +124,7 @@ else
     }
     public async void DeleteOrganizationById(string organizationId)
     {
-        await Http.DeleteAsync($"https://localhost:7237/api/organizations/{organizationId}");
+        await Http.DeleteAsync($"https://localhost:1009/api/Organizations/{organizationId}");
     }
     private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
     private List<OrganizationView> Elements = new List<OrganizationView>();

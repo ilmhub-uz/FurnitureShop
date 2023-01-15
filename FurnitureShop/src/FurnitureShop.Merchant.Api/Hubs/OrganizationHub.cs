@@ -4,4 +4,5 @@ namespace FurnitureShop.Merchant.Api.Hubs;
 
 public class OrganizationHub : Hub
 {
+    
 }

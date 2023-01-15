@@ -1,5 +1,5 @@
 ﻿@page "/users"
-@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @inject HttpClient Http;
  
 @if(_users.Count <= 0)
@@ -23,7 +23,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _users = await Http.GetFromJsonAsync<List<UserView>>("https://localhost:7237/api/Users");
+        _users = await Http.GetFromJsonAsync<List<UserView>>("https://localhost:1009/api/Users");
     }
   
 }

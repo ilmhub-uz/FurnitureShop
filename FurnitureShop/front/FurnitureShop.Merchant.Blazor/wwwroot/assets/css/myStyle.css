@@ -95,3 +95,11 @@
     width: 500px;
     margin-bottom: 20px;
 }
+.def_a
+{
+    text-decoration:none;
+    color:#fff;
+}
+.def_a:hover{
+    color:#fff;
+}

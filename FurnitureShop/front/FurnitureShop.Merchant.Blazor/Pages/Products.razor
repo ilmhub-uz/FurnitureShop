@@ -1,5 +1,6 @@
 @page "/products"
 @using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @inject HttpClient Http
 @inject IDialogService DialogService
 
@@ -14,8 +15,8 @@
                 <MudText Typo="Typo.h5"> Name : @product.Name</MudText>
                 <MudText Typo="Typo.h5">Count : @product.Count  </MudText>
                 <MudText Typo="Typo.h5">Description : @product.Description  </MudText>
-                <MudText Typo="Typo.h5">OnSale : @product.OnSale  </MudText>
-                <MudText Typo="Typo.h5">OnTrend : @product.OnTrend  </MudText>
+                @*<MudText Typo="Typo.h5">OnSale : @product.OnSale  </MudText>
+                <MudText Typo="Typo.h5">OnTrend : @product.OnTrend  </MudText>*@
                 <MudText Typo="Typo.h5">Price :  $@product.Price  </MudText>
                 <MudText Typo="Typo.h5"> </MudText>
             </MudCardContent>
