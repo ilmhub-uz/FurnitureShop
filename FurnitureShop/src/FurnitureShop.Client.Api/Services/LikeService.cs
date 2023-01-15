@@ -1,46 +1,54 @@
-﻿using FurnitureShop.Client.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
 using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace FurnitureShop.Client.Api.Services
 {
-        public class LikeService : ILikeService
+    public class LikeService : ILikeService
+    {
+        private readonly AppDbContext _context;
+        private readonly IValidator<CreateLikeDto> createlikedtovalidator;
+        public LikeService(AppDbContext appDbContext, IValidator<CreateLikeDto> createlikedtovalidator)
         {
-            private readonly AppDbContext _context;
+            _context = appDbContext;
+            this.createlikedtovalidator = createlikedtovalidator;
+        }
 
-            public LikeService(AppDbContext appDbContext)
+        public async Task AddToLike(ClaimsPrincipal claims, Guid productId, CreateLikeDto dtoModel)
+        {
+            var result = createlikedtovalidator.Validate(dtoModel);
+            if (!result.IsValid)
             {
-                _context = appDbContext;
+                throw new Exception(result.Errors.First().ErrorMessage);
             }
+            var like = dtoModel.Adapt<LikeProduct>();
+            var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            public async Task AddToLike(ClaimsPrincipal claims, Guid productId, CreateLikeDto dtoModel)
-            {
-                var like = dtoModel.Adapt<LikeProduct>();
-                var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            like.UserId = userId;
+            like.ProductId = productId;
 
-                like.UserId = userId;
-                like.ProductId = productId;
-
-                await _context.LikeProducts.AddAsync(like);
-                _context.SaveChanges();
-            }
+            await _context.LikeProducts.AddAsync(like);
+            _context.SaveChanges();
+        }
 
 
 
-            public async Task<LikeView> GetLikeByIdAsync(Guid likeId)
-            {
-                var existingLike = await _context.LikeProducts.FirstOrDefaultAsync(l => l.ProductId == likeId);
-                if (existingLike is null)
-                    throw new NotFoundException<LikeProduct>();
+        public async Task<LikeView> GetLikeByIdAsync(Guid likeId)
+        {
+            var existingLike = await _context.LikeProducts.FirstOrDefaultAsync(l => l.ProductId == likeId);
+            if (existingLike is null)
+                throw new NotFoundException<LikeProduct>();
 
-                return existingLike.Adapt<LikeView>();
-            }
+            return existingLike.Adapt<LikeView>();
+        }
 
         public async Task RemoveLike(Guid likeId)
         {
