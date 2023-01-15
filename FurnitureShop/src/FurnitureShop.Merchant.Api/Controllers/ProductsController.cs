@@ -16,7 +16,6 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-//[Authorize]
 public partial class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;

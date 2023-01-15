@@ -14,7 +14,6 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-[Authorize]
 public class EmployeeController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;

@@ -11,7 +11,6 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class ContractsController : ControllerBase
 {
     private readonly IContractService _contractService;
