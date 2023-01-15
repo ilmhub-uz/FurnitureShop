@@ -53,7 +53,7 @@ public class ContractsController : ControllerBase
 
     [HttpDelete("{contractId:guid}")]
     [IdValidation]
-    public async Task<IActionResult>DeleteProduct(Guid contractId)
+    public async Task<IActionResult>DeleteContract(Guid contractId)
     {
         await _contractService.DeleteContractAsync(contractId);
 
