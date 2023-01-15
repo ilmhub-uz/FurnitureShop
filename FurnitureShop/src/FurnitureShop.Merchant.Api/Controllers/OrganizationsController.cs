@@ -13,7 +13,6 @@ namespace FurnitureShop.Merchant.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [ValidateModel]
-[Authorize]
 public class OrganizationsController : ControllerBase
 {
     private readonly IOrganizationService _organizationService;

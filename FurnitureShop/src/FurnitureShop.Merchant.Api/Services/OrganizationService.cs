@@ -89,7 +89,6 @@ public class OrganizationService : IOrganizationService
         return organization!.Adapt<OrganizationView>();
     }
 
-    [Authorize]
     public async Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto)
     {
         var organization = createOrganizationDto.Adapt<Organization>();
