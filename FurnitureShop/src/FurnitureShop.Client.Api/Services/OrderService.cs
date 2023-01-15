@@ -132,7 +132,7 @@ public class OrderService : IOrderService
         return orderlist.Adapt<List<OrderView>>();
     }
 
-    public async Task<OrderView> DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
+    public async Task DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
     {
         var existingOrder = await _unitOfWork.Orders.GetAll().FirstOrDefaultAsync(o => o.Id == orderId);
         if (existingOrder is null) throw new NotFoundException<Order>();
@@ -144,8 +144,6 @@ public class OrderService : IOrderService
         else if(updateOrderDto.Status == EOrderStatus.Canceled)
         {
              await _unitOfWork.Orders.Remove(existingOrder);
-        }
-
-        return existingOrder.Adapt<OrderView>();
+        } 
     }
 }
