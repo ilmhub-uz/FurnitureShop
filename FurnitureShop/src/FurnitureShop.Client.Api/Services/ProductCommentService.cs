@@ -4,12 +4,14 @@ using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace FurnitureShop.Client.Api.Services;
 
+[Scoped]
 public class ProductCommentService : IProductCommentService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -40,11 +42,7 @@ public class ProductCommentService : IProductCommentService
 
     private ProductCommentView ConvertToProductCommentView(ProductComment productComment)
     {
-        var productCommentView = new ProductCommentView
-        {
-            ProductId = productComment.ProductId,
-            Comment = productComment.Comment
-        };
+        var productCommentView = productComment.Adapt<ProductCommentView>();
 
         if (productComment.Children is null)
             return productCommentView;
@@ -58,7 +56,7 @@ public class ProductCommentService : IProductCommentService
         return productCommentView;
     }
 
-    public async Task AddProductCommentAsync(ClaimsPrincipal claims, Guid productId, CreateProductCommentDto commentDto)
+    public async Task<ProductCommentView> AddProductCommentAsync(ClaimsPrincipal claims, Guid productId, CreateProductCommentDto commentDto)
     {
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
@@ -68,10 +66,13 @@ public class ProductCommentService : IProductCommentService
             ParentId = commentDto.ParentId,
             UserId = userId,
             ProductId = productId,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow,
         };
 
-        await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+        var product = await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+
+
+        return product.Adapt<ProductCommentView>();
     }
 
     public async Task<ProductCommentView> UpdateProductComment(Guid productId, Guid commentId, UpdateProductCommentDto updateDto)
@@ -89,6 +90,7 @@ public class ProductCommentService : IProductCommentService
         await _unitOfWork.ProductComments.Update(existingProductComment);
         return existingProductComment.Adapt<ProductCommentView>();
     }
+
     public async Task DeleteProductComment(Guid productId, Guid commentId)
     {
         var product = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
