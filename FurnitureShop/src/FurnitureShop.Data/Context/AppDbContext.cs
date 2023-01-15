@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Data.Context;
 
-public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
+public partial class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
 {
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<OrganizationUser>? OrganizationUsers { get; set; }
@@ -22,16 +22,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppUserRole, Guid>
     public DbSet<CartProduct>? CartProducts { get; set; }
     public DbSet<Message> Messages { get; set; }
 
-
-
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-        builder.Entity<OrganizationUser>().HasKey(user => new { user.UserId, user.OrganizationId });
-        builder.Entity<LikeProduct>().HasKey(likeproduct => new { likeproduct.UserId, likeproduct.ProductId });
-    }
 
     public override int SaveChanges()
     {
