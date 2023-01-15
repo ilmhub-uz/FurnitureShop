@@ -2,11 +2,11 @@
 using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Hubs;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +38,7 @@ public partial class ProductsController : ControllerBase
         _createProductValidator = createProductValidator;
     }
 
+    [Authorize(EPermission.CanCreateProduct)]
     [HttpPost]
     public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
     {
@@ -52,10 +53,12 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanReadProduct)]
     [HttpGet]
     public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery]ProductSortingFilter sortingFilter)
     => await _productService.GetProducts(sortingFilter, User);
 
+    [Authorize(EPermission.CanReadProduct)]
     [HttpGet("{productId:guid}")]
     [IdValidation]
     public async Task<ActionResult<ProductView>> GetProductById(Guid productId)
@@ -75,6 +78,7 @@ public partial class ProductsController : ControllerBase
         return productView;
     }
 
+    [Authorize(EPermission.CanCreateProduct)]
     [HttpPost]
     [Route($"RateProduct")]
     [IdValidation]
@@ -91,6 +95,7 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanUpdateProduct)]
     [HttpPut("{productId:guid}")]
     [IdValidation]
     public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] UpdateProductDto dtoModel)
@@ -106,6 +111,7 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanDeleteProduct)]
     [HttpDelete("{productId:guid}")]
     [IdValidation]
     public async Task<IActionResult> DeleteProduct(Guid productId)
@@ -116,6 +122,7 @@ public partial class ProductsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanUpdateProduct)]
     [HttpPut("{productId}/images")]
     public async Task<IActionResult> AddProductImage(Guid productId, [FromForm] CreateOrUpdateProductImageDto imageDto)
     {

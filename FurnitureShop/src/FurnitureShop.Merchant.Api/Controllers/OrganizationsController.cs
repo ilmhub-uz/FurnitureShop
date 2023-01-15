@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Hubs;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -31,6 +31,8 @@ public class OrganizationsController : ControllerBase
         _updateOrganizationValidator = updateOrganizationValidator;
     }
 
+
+    [Authorize(EPermission.CanReadOrganization)]
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OrganizationView>>> GetOrganizations([FromQuery]OrganizationSortingFilter filter) 
@@ -42,6 +44,7 @@ public class OrganizationsController : ControllerBase
     public async Task<ActionResult<OrganizationView>> GetOrganizationById(Guid organizationId) =>
         await _organizationService.GetOrganizationByIdAsync(organizationId);
 
+    [Authorize(EPermission.CanCreateOrganization)]
     [HttpPost]
     public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
     {
@@ -55,6 +58,7 @@ public class OrganizationsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanUpdateOrganization)]
     [HttpPut("{organizationId:guid}")]
     [IdValidation]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
@@ -69,6 +73,7 @@ public class OrganizationsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanDeleteOrganization)]
     [HttpDelete("{organizationId:guid}")]
     [IdValidation]
     public async Task<IActionResult> DeleteOrganization(Guid organizationId)
@@ -78,6 +83,7 @@ public class OrganizationsController : ControllerBase
         return Ok();    
     }
 
+    [Authorize(EPermission.CanReadOrganization)]
     [HttpGet("{organizationName}")]
     public async Task<ActionResult<OrganizationView>> GetOrganizationByName(string organizationName) =>
         await _organizationService.GetOrganizationByNameAsync(organizationName);

@@ -4,7 +4,9 @@ using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Models;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +25,7 @@ public class CartsController : ControllerBase
         _createUserValidator = createUserValidator;
     }
 
+    [Authorize(EPermission.CanReadCart)]
     [ProducesResponseType(typeof(List<CartProductView>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpGet]
@@ -31,6 +34,7 @@ public class CartsController : ControllerBase
         return Ok(await _cartService.GetUserCart(paginationParams, User));
     }
 
+    [Authorize(EPermission.CanCreateCart)]
     [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpPost]
@@ -45,6 +49,7 @@ public class CartsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanDeleteFromCart)]
     [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpDelete("{productId}")]
@@ -54,6 +59,7 @@ public class CartsController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanDeleteFromCart)]
     [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpDelete]
