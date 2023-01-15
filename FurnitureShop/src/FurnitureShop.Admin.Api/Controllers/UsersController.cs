@@ -24,6 +24,7 @@ namespace FurnitureShop.Admin.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(EPermission.CanCreateUser)]
         public async Task<IActionResult> CreateUser([FromQuery] RegisterUserDto registerUser)
         {
             var user = registerUser.Adapt<AppUser>();
@@ -34,15 +35,18 @@ namespace FurnitureShop.Admin.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<UserView>), StatusCodes.Status200OK)]
+        [Authorize(EPermission.CanReadUser)]
         public async Task<IActionResult> GetUsers([FromQuery] UserFilterDto userFilterDto)
         => Ok(await userService.GetUsers(userFilterDto));
 
         [HttpGet("{userId:guid}")]
         [ProducesResponseType(typeof(UserView), StatusCodes.Status200OK)]
+        [Authorize(EPermission.CanReadUser)]
         public async Task<IActionResult> GetUserById([FromRoute] Guid userId)
         => Ok(await userService.GetUserById(userId));
         
         [HttpPut("{userId:Guid}")]
+        [Authorize(EPermission.CanUpdateUser)]
         public async Task<IActionResult> UpdateUser([FromRoute] Guid userId,[FromBody] UpdateUserDto updateUserDto)
         {
             await userService.UpdateUser(userId, updateUserDto);
@@ -50,6 +54,7 @@ namespace FurnitureShop.Admin.Api.Controllers
         }
 
         [HttpDelete("{userId:guid}")]
+        [Authorize(EPermission.CanDeleteUser)]
         public async Task<IActionResult> DeleteUser([FromRoute]Guid userId)
         {
             await userService.DeleteUser(userId);

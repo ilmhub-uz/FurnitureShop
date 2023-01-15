@@ -51,6 +51,11 @@ public static class ServiceCollectionExtensions
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Task.CompletedTask;
             };
+            options.Events.OnRedirectToAccessDenied = context =>
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return Task.CompletedTask;
+            };
         });
     }
 
