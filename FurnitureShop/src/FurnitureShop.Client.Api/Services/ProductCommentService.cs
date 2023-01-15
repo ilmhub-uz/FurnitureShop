@@ -4,12 +4,14 @@ using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace FurnitureShop.Client.Api.Services;
 
+[Scoped]
 public class ProductCommentService : IProductCommentService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -40,11 +42,7 @@ public class ProductCommentService : IProductCommentService
 
     private ProductCommentView ConvertToProductCommentView(ProductComment productComment)
     {
-        var productCommentView = new ProductCommentView
-        {
-            ProductId = productComment.ProductId,
-            Comment = productComment.Comment
-        };
+        var productCommentView = productComment.Adapt<ProductCommentView>();
 
         if (productComment.Children is null)
             return productCommentView;
@@ -68,10 +66,12 @@ public class ProductCommentService : IProductCommentService
             ParentId = commentDto.ParentId,
             UserId = userId,
             ProductId = productId,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow,
         };
 
         var product = await _unitOfWork.ProductComments.AddAsync(existingProductComment);
+
+
         return product.Adapt<ProductCommentView>();
     }
 
