@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FurnitureShop.Data.Entities;
 
 public class Product
 {
     public Guid Id { get; set; }
+    public Guid AuthorId { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public bool? WithInstallation { get; set; }

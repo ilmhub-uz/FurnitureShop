@@ -25,7 +25,7 @@ public class FilesController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(FilesView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> AddFiles([FromBody] AddFiles dto)
+    public async Task<IActionResult> AddFiles([FromForm] AddFiles dto)
     {
         var saveFile = await _fileService.AddFilesAsync(dto);
         if (saveFile is null)

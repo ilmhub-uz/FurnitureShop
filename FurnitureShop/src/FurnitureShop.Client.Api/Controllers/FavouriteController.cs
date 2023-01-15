@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Models;
@@ -11,11 +12,12 @@ namespace FurnitureShop.Client.Api.Controllers;
 public class FavouriteController : ControllerBase
 {
     private readonly IFavouriteService _favouriteService;
+    private readonly IValidator<CreateFavouriteDto> createfavouritedtovalidator;
 
-
-    public FavouriteController(IFavouriteService favouriteService)
+    public FavouriteController(IFavouriteService favouriteService, IValidator<CreateFavouriteDto> createfavouritedtovalidator)
     {
         _favouriteService = favouriteService;
+        this.createfavouritedtovalidator = createfavouritedtovalidator;
     }
 
     [ProducesResponseType(typeof(List<FavouriteProductView>), StatusCodes.Status200OK)]
@@ -28,6 +30,12 @@ public class FavouriteController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddToFavourite(CreateFavouriteDto dtoModel)
     {
+        var result = createfavouritedtovalidator.Validate(dtoModel);
+        if (!result.IsValid)
+        {
+            return BadRequest(result.Errors);
+        }
+
         await _favouriteService.AddToFavourite(User, dtoModel);
         return Ok();
     }

@@ -12,6 +12,7 @@ using System.Security.Claims;
 using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
 namespace FurnitureShop.Client.Api.Services;
 
@@ -19,10 +20,11 @@ namespace FurnitureShop.Client.Api.Services;
 public class OrderService : IOrderService
 {
     private readonly UnitOfWork _unitOfWork;
-
-    public OrderService(UnitOfWork unitOfWork)
+    private readonly IValidator<CreateOrderDto> _createorderdtovalidator;
+    public OrderService(UnitOfWork unitOfWork, IValidator<CreateOrderDto> createorderdtovalidator)
     {
         _unitOfWork = unitOfWork;
+        _createorderdtovalidator = createorderdtovalidator;
     }
 
     public UnitOfWork Get_unitOfWork()
@@ -32,11 +34,14 @@ public class OrderService : IOrderService
 
     public async Task<OrderView> CreateOrder(ClaimsPrincipal claims, CreateOrderDto createOrderDto)
     {
+        var result = _createorderdtovalidator.Validate(createOrderDto);
+        if(!result.IsValid)
+        {
+            throw new BadRequestException(result.Errors.First().ErrorMessage);
+        }
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-        if (createOrderDto is null)
-            throw new BadRequestException("createOrderDto is not null");
-
+        if (userId ==  null) throw new Exception("UserId is Not Found Ro'yxatdan o'ting"); 
+       
         //korsatilgan productlar bir hil organizationga tegishliligini tekshirish
         //qaysidir productdan organizationid sini olish
         //orderni saqlash
@@ -60,7 +65,6 @@ public class OrderService : IOrderService
             Organization = product1.Organization,
             Status = EOrderStatus.Created,
             CreatedAt = DateTime.UtcNow,
-            // OrderProducts = ;
         };
 
         var createorder = await _unitOfWork.Orders.AddAsync(newOrder);

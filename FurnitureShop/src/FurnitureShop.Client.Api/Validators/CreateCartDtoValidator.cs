@@ -7,10 +7,11 @@ public class CreateCartDtoValidator : AbstractValidator<CreateCartProductDto>
 {
     public CreateCartDtoValidator()
     {
-        RuleFor(createCartDto => createCartDto.ProductId).NotEmpty();
+        RuleFor(createCartDto => createCartDto.ProductId).NotNull()
+            .NotEqual(default(Guid));
 
         RuleFor(createCartDto => createCartDto.Count).NotEmpty()
-            .When(c => c.Count > 0)
+            .NotEqual(default(uint)).When(c => c.Count > 0)
             .WithMessage("The number entered must be greater than 0");
 
         RuleFor(createCartDto => createCartDto.Properties).NotEmpty();

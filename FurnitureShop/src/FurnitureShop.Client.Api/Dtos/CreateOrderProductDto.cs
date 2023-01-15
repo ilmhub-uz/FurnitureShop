@@ -1,4 +1,6 @@
-﻿namespace FurnitureShop.Client.Api.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FurnitureShop.Client.Api.Dtos;
 
 public class CreateOrderProductDto
 {
