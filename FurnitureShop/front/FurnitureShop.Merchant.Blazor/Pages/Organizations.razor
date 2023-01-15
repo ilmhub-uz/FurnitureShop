@@ -1,6 +1,7 @@
 ﻿@page "/organizations"
 @using FurnitureShop.Merchant.Blazor.Dtos;
-@inject HttpClient Http
+@inject HttpClient client
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @using Microsoft.AspNetCore.SignalR.Client
 @using Newtonsoft.Json
 @using System.Web;
@@ -11,11 +12,10 @@
 <PageTitle>Organizations</PageTitle>
 
 
-
 @if(Elements.Count <= 0)
 {
     <div class="row">
-        <h4 class="fw-bold py-3 mb-2">Organizations List</h4>
+        <h4 class="fw-bold py-3 mb-2">Categories</h4>
         <div class="col-lg-8 col-12 mb-4">
             <div class="card h-100">
                 <div class="row h-100">
@@ -35,6 +35,19 @@
                         <div class="card-body text-sm-center text-center">
                             <_AddOrganization />
                         <p class="mb-0">You can create new organization</p>
+                    
+                        <div class="myCard_body">
+                            <b class="myCard_name">@element.Name</b>
+                            <p class="myCard_owner">By Abdulaziz Abduqaxxarov</p>
+                            <span class="myCard_Span">256 prj.</span> 
+                        </div>
+
+                        <hr>
+
+                        <div class="myCard_footer">
+                            <a href="/@element.Id">
+                                  <button  type="submit" class="btn btn-success mb-3 text-nowrap add-new-role">View More</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -49,11 +62,6 @@ else{
     <ToolBarContent>
                 <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0 leverow-ifs"></MudTextField>
                     <MudSpacer/>
-                    <div class="dt-action-buttons text-end pt-3 pt-md-0 mr-5">
-                        <div class="dt-buttons">    
-                            @* <button class="dt-button create-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Create new organization</span></span></button>                         *@
-                        </div>
-                    </div>
     </ToolBarContent>
     <HeaderContent>
         <MudTh>Name</MudTh>
@@ -62,10 +70,10 @@ else{
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Nr">@context.Name</MudTd>
-        <MudTd DataLabel="Sign">@StatusBadge(context.Status)</MudTd>
+            <MudTd DataLabel="Sign">@StatusBadge( int.Parse(context.Status.ToString()))</MudTd>
         <MudTd DataLabel="Actions">
             <div class="d-inline-block">
-                <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
+                <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id.ToString()))" class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></MudButton>
                 <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <i class="bx bx-dots-vertical-rounded"></i>
                 </a>
@@ -78,10 +86,17 @@ else{
                     </li>
                     <div class="dropdown-divider"></div>
                     <li>
-                        <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id))" class="leverow-ifs-btn">Delete</MudButton>
+                        <MudButton data-swal-template="#notify-delete" OnClick="@(() => DeleteOrganizationById(context.Id.ToString()))" class="leverow-ifs-btn">Delete</MudButton>
                     </li>
                 </ul>
             </div>
+        </MudTd>
+            <MudTd DataLabel="Btn">
+                <button class="btn btn-success">
+                    <a class="def_a" href="/organization/@context.Id">
+                        View more
+                    </a>
+                </button>
             </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -112,7 +127,7 @@ else{
             return true;
         if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (searchString == element.Id)
+        if (searchString == element.Id.ToString())
             return true;
         return false;
     }
@@ -136,7 +151,6 @@ else{
 
     protected override async Task OnInitializedAsync()
     {
-        @* Elements = await Http.GetFromJsonAsync<List<OrganizationView>>("https://localhost:1009/api/organizations"); *@
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:1009");
 
@@ -146,72 +160,9 @@ else{
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
         Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
     }
-    @* private async Task ChangeOrganization()
-    {
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
-        StateHasChanged();
-    } *@
 
     void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
     {
         _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
     }
 }
-
-@*@code{
-    private List<OrganizationView> Elements = new List<OrganizationView>();
-    private HubConnection? _hubConnection;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:1009/hub")
-            .Build();
-
-        _hubConnection.On<List<OrganizationView>>(nameof(GetAllOrganizations), GetAllOrganizations);
-        await _hubConnection.StartAsync();
-        await _hubConnection.InvokeAsync("GetAllOrganizations");
-    }
-
-    private async Task GetAllOrganizations(List<OrganizationView> organizations)
-    {
-        Elements = organizations;
-        StateHasChanged();
-    }
-}*@
-@* 
-@code {
-    private List<OrganizationView>? Elements = new List<OrganizationView>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-
-        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
-
-        var hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:1009/organizationhub")
-            .Build();
-
-        hubConnection.On(nameof(ChangeOrganization),ChangeOrganization);
-
-        await hubConnection.StartAsync();
-    }
-
-    private async Task ChangeOrganization()
-    {
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
-        StateHasChanged();
-    }
-} *@

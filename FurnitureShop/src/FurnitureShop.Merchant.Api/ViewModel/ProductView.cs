@@ -17,5 +17,5 @@ public class ProductView
     public int Views { get; set; }
     public int Rate { get; set; }
     public virtual CategoryView? Category { get; set; }
-    public virtual OrganizationView? Organization { get; set; }
+    public virtual Guid? OrganizationId { get; set; }
 }
