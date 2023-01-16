@@ -27,11 +27,7 @@ public class OrderService : IOrderService
         _createorderdtovalidator = createorderdtovalidator;
     }
 
-    public UnitOfWork Get_unitOfWork()
-    {
-        return _unitOfWork;
-    }
-
+ 
     public async Task<OrderView> CreateOrder(ClaimsPrincipal claims, CreateOrderDto createOrderDto)
     {
         var result = _createorderdtovalidator.Validate(createOrderDto);
