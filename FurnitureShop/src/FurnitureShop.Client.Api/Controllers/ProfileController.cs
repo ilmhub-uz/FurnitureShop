@@ -1,8 +1,8 @@
 ﻿using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.ViewModel;
+using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +25,7 @@ public class ProfileController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(UserView), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
+    [Authorize(EPermission.CanReadProfile)]
     public async Task<IActionResult> UserProfile()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -33,6 +34,7 @@ public class ProfileController : ControllerBase
 
 
     [HttpPut]
+    [Authorize(EPermission.CanUpdateProfile)]
     public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserDto)
     {
         var user = await _userManager.GetUserAsync(User);

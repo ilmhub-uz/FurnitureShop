@@ -34,6 +34,7 @@ public class AccountController : ControllerBase
         _signInManager = signInManager;
     }
 
+    [Authorize(EPermission.CanUpdateProfile)]
     [HttpPut("avatar/filePath")]
     public async Task<IActionResult> UpdateUserProfile([FromBody] UserAvatar avatar)
     {
