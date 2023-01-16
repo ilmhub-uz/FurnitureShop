@@ -1,5 +1,4 @@
-﻿//using FurnitureShop.Data.Entities;
-namespace FurnitureShop.Client.Blazor.ViewModel;
+﻿namespace FurnitureShop.Client.Blazor.ViewModel;
 
 public class OrderView
 {
