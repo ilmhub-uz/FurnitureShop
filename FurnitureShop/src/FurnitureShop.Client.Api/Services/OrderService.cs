@@ -39,9 +39,15 @@ public class OrderService : IOrderService
         {
             throw new BadRequestException(result.Errors.First().ErrorMessage);
         }
-        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier).Value);
-        if (userId ==  null) throw new Exception("UserId is Not Found Ro'yxatdan o'ting"); 
-       
+        Guid userId;
+        try
+        {
+            userId = Guid.Parse(claims.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"User not registred  Error message : {e.Message}");
+        }
         //korsatilgan productlar bir hil organizationga tegishliligini tekshirish
         //qaysidir productdan organizationid sini olish
         //orderni saqlash
@@ -108,10 +114,17 @@ public class OrderService : IOrderService
 
     public async Task<List<OrderView>> GetOrders(OrderFilterDto orderFilter, ClaimsPrincipal User)
     {
-        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        // null bo'lsa sign upga otish kerak
+        Guid userId;
+        try
+        {
+            userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+        catch(Exception e)
+        {
+            throw new Exception($"User not registred  Error message : {e.Message}");  
+        }
+        
         var orders = _unitOfWork.Orders.GetAll().Where(order => order.UserId == userId);
-
         orders = orderFilter.OrderStatus switch
         {
             EOrderStatus.Created => _unitOfWork.Orders.GetAll().Where(or => or.Status == EOrderStatus.Created),
@@ -129,15 +142,14 @@ public class OrderService : IOrderService
         {
             orders = _unitOfWork.Orders.GetAll().Where(or => or.OrderProducts.Any(p => p.ProductId == orderFilter.ProductId));
         }
+        
         if (orderFilter.OrganizationId is not null)
         {
             orders = _unitOfWork.Orders.GetAll().Where(or => or.OrganizationId == orderFilter.OrganizationId);
         }
+        
         var orderlist = await orders.ToPagedListAsync(orderFilter);
-
-
         var listOrderView = new List<OrderView>();
-
         foreach(var order in orderlist)
         {
             var orderView = new OrderView()
