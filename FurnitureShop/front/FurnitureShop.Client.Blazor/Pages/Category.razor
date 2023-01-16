@@ -16,9 +16,10 @@
     <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
 @foreach (var product in productViews ?? new List<ProductView>())
 {
+            var url = $"/ProductDetails/{product.Id}";
             <div class="col hp">
                 <div class="card h-100 shadow-sm">
-                    <a href="#">
+                    <a href=@url>
                         <img src="https://m.media-amazon.com/images/I/81gK08T6tYL._AC_SL1500_.jpg" class="card-img-top" alt="product.title" />
                     </a>
 
@@ -63,12 +64,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>($"https://localhost:0005/api/Products?CategoryId={categoryId}");
+        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>($"https://localhost:1005/api/Products?CategoryId={categoryId}");
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>($"https://localhost:0005/api/Products?CategoryId={categoryId}");
+        productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>($"https://localhost:1005/api/Products?CategoryId={categoryId}");
     }
     public async void AddToCartProduct(Guid productId)
     {
