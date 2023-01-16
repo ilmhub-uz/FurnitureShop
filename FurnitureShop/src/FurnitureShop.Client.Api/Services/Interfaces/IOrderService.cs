@@ -9,5 +9,5 @@ public interface IOrderService
 {
     Task<OrderView> CreateOrder(ClaimsPrincipal claims,CreateOrderDto createOrderDto);
     Task<List<OrderView>> GetOrders(OrderFilterDto orderFilter , ClaimsPrincipal User);
-    Task DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId);
+    Task DeleteOrder( Guid orderId);
 }
