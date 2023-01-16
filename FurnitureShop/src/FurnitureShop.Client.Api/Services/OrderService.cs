@@ -27,11 +27,7 @@ public class OrderService : IOrderService
         _createorderdtovalidator = createorderdtovalidator;
     }
 
-    public UnitOfWork Get_unitOfWork()
-    {
-        return _unitOfWork;
-    }
-
+ 
     public async Task<OrderView> CreateOrder(ClaimsPrincipal claims, CreateOrderDto createOrderDto)
     {
         var result = _createorderdtovalidator.Validate(createOrderDto);
@@ -48,9 +44,7 @@ public class OrderService : IOrderService
         {
             throw new Exception($"User not registred  Error message : {e.Message}");
         }
-        //korsatilgan productlar bir hil organizationga tegishliligini tekshirish
-        //qaysidir productdan organizationid sini olish
-        //orderni saqlash
+       
         var product1 = _unitOfWork.Products.GetById(createOrderDto.Products[0].ProductId);
         if (product1 is null) throw new Exception("Siz product tanlamagansiz");
 
@@ -61,7 +55,6 @@ public class OrderService : IOrderService
 
             if (product is null) throw new Exception("Siz mavjud bo'lmagan productni tanladingiz");
             if (orgId != product.OrganizationId) throw new Exception("Siz tanlagan mahsulot bir xil organizationda bo'lishi kerak");
-            // orgId = product.OrganizationId;
         }
 
         var newOrder = new Order()
@@ -87,16 +80,8 @@ public class OrderService : IOrderService
 
         createorder.OrderProducts = orderProduct;
        var order = await _unitOfWork.Orders.Update(createorder);
-        //var order = _unitOfWork.Orders.GetById(createorder.Id);
 
         if (order is null) return new OrderView();
-
-        //var organizationView = new OrganizationView()
-        //{
-        //    Id = order.Organization.Id,
-        //    Name = order.Organization.Name,
-        //    Status = order.Organization.Status,
-        //};
 
         var orderView = new OrderView()
         {
@@ -170,7 +155,7 @@ public class OrderService : IOrderService
         return listOrderView;
     }
 
-    public async Task DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
+    public async Task DeleteOrder( Guid orderId)
     {
         var existingOrder = await _unitOfWork.Orders.GetAll().FirstOrDefaultAsync(o => o.Id == orderId);
         if (existingOrder is null) throw new NotFoundException<Order>();
@@ -179,7 +164,7 @@ public class OrderService : IOrderService
         {
             throw new Exception("Order uje accept qilingan, statusini o'zgartirolmaysiz");
         }
-        else if(updateOrderDto.Status == EOrderStatus.Canceled)
+        else 
         {
              await _unitOfWork.Orders.Remove(existingOrder);
         } 
