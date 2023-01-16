@@ -26,9 +26,9 @@ public class OrdersController : ControllerBase
         await _orderService.GetOrders(filter, User);
     
     [HttpDelete("{orderId}/cancel")]
-    public async Task<ActionResult> DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
+    public async Task<ActionResult> DeleteOrder(Guid orderId)
     {
-        await _orderService.DeleteOrder(updateOrderDto, orderId);
+        await _orderService.DeleteOrder( orderId);
        
         return Ok("order deleted");
     }
