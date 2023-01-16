@@ -1,5 +1,6 @@
-namespace FurnitureShop.Admin.Blazor.Dtos;
+﻿
 
+namespace FurnitureShop.Admin.Blazor.ViewModel;
 
 public class ProductView
 {

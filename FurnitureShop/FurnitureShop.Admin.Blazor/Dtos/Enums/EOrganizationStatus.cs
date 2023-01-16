@@ -1,4 +1,4 @@
-﻿namespace FurnitureShop.Admin.Blazor.Dtos;
+﻿namespace FurnitureShop.Admin.Blazor.Dtos.Enums;
 
 public enum EOrganizationStatus
 {
