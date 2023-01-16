@@ -6,7 +6,6 @@ public class OrderView
 {
     public Guid Id { get; set; }
 
-    
     public string? OrganizationName { get; set; }
 
     public string? UserName { get; set; }
