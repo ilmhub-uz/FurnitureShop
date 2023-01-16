@@ -1,11 +1,9 @@
-﻿using System.Security.Claims;
-using FluentValidation;
+﻿using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +21,8 @@ public class EmployeeController : ControllerBase
 
 
     public EmployeeController(IEmployeeService employeeService,
-        UserManager<AppUser> userManager, 
-        IValidator<AddEmployeeDto> validator, 
+        UserManager<AppUser> userManager,
+        IValidator<AddEmployeeDto> validator,
         IValidator<RemoveEmployeeDto> removeEmployeeValidator)
     {
         _employeeService = employeeService;
@@ -33,6 +31,7 @@ public class EmployeeController : ControllerBase
         _removeEmployeeValidator = removeEmployeeValidator;
     }
 
+    [Authorize(EPermission.CanCreateEmployee)]
     [HttpPost]
     public IActionResult AddEmployee([FromBody] AddEmployeeDto dto)
     {
@@ -44,18 +43,22 @@ public class EmployeeController : ControllerBase
         return Ok();
     }
 
+    [Authorize(EPermission.CanReadEmployee)]
     [HttpGet("managers/{organizationId:guid}")]
-    public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId) 
+    public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId)
         => await _employeeService.GetManagers(organizationId);
 
+    [Authorize(EPermission.CanReadEmployee)]
     [HttpGet("sellers/{organizationId:guid}")]
     public async Task<List<GetEmployeesView>> GetSellers(Guid organizationId)
         => await _employeeService.GetSellers(organizationId);
 
+    [Authorize(EPermission.CanReadEmployee)]
     [HttpGet("allStaff/{organizationId:guid}")]
     public async Task<List<GetEmployeesView>> GetStaff(Guid organizationId)
         => await _employeeService.GetStaff(organizationId);
 
+    [Authorize(EPermission.CanDeleteEmployee)]
     [HttpDelete("{organizationId:guid}")]
     public async Task RemoveEmployee([FromBody] RemoveEmployeeDto dto)
     {

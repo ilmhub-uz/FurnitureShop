@@ -10,7 +10,6 @@ using FurnitureShop.Merchant.Api.Dtos.Enums;
 using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Merchant.Api.Services;

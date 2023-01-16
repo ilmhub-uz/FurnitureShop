@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
@@ -22,6 +22,7 @@ public class ContractsController : ControllerBase
         _createContractValidator = createContractValidator;
     }
 
+    [Authorize(EPermission.CanCreateContract)]
     [HttpPost]
     [ValidateModel]
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
@@ -32,6 +33,7 @@ public class ContractsController : ControllerBase
         return Ok(contract);
     }
 
+    [Authorize(EPermission.CanReadContract)]
     [HttpGet]
     [ProducesResponseType(typeof(List<ContractView>),StatusCodes.Status200OK)]
     public async Task<IActionResult> GetContracts(Guid organizationId)
@@ -41,6 +43,7 @@ public class ContractsController : ControllerBase
         return Ok(contracts);
     }
 
+    [Authorize(EPermission.CanReadContract)]
     [HttpGet("{contractId:guid}")]
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
     [IdValidation]
@@ -51,6 +54,7 @@ public class ContractsController : ControllerBase
         return Ok(category);
     }
 
+    [Authorize(EPermission.CanDeleteContract)]
     [HttpDelete("{contractId:guid}")]
     [IdValidation]
     public async Task<IActionResult>DeleteContract(Guid contractId)
