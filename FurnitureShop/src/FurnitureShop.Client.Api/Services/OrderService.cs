@@ -159,7 +159,7 @@ public class OrderService : IOrderService
         return listOrderView;
     }
 
-    public async Task DeleteOrder(UpdateOrderDto updateOrderDto, Guid orderId)
+    public async Task DeleteOrder( Guid orderId)
     {
         var existingOrder = await _unitOfWork.Orders.GetAll().FirstOrDefaultAsync(o => o.Id == orderId);
         if (existingOrder is null) throw new NotFoundException<Order>();
@@ -168,7 +168,7 @@ public class OrderService : IOrderService
         {
             throw new Exception("Order uje accept qilingan, statusini o'zgartirolmaysiz");
         }
-        else if(updateOrderDto.Status == EOrderStatus.Canceled)
+        else 
         {
              await _unitOfWork.Orders.Remove(existingOrder);
         } 
