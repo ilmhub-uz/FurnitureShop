@@ -6,7 +6,7 @@ namespace FurnitureShop.Merchant.Api.Dtos;
 public class ProductSortingFilter : PaginationParams
 {
     public bool? OnlyMyProducts { get; set; }
-    [Required]
+    // [Required]
     public Guid OrganizationId { get; set; }
     public decimal? Price { get; set; }
     public ESortingParameters? SortingParams { get; set; }

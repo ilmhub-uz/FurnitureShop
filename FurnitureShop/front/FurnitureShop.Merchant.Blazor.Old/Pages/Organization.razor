@@ -44,8 +44,6 @@
 
         var organizationJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
         organization = JsonConvert.DeserializeObject<OrganizationView>(organizationJson);
-
-        
     }
 
     private async Task GetOwner()

@@ -44,8 +44,8 @@ public partial class ProductsController : ControllerBase
     {
         var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
 
-        if (!validateResult.IsValid)
-            return BadRequest();
+        // if (!validateResult.IsValid)
+        //     return BadRequest();
 
         await _productService.AddProduct(dtoModel, User);
         await _hubContext.Clients.All.SendAsync("ChangeProduct");
