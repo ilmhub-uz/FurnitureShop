@@ -73,7 +73,8 @@ public class OrganizationService : IOrganizationService
                 ImageUrl = organization.ImageUrl,
                 Status = organization.Status,
                 Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
-                Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList()
+                Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+                Owner = _unitOfWork.AppUsers.GetById(organization.Users.FirstOrDefault(u => u.Role == 0).UserId).Adapt<UserView>()
             });
         }
 
