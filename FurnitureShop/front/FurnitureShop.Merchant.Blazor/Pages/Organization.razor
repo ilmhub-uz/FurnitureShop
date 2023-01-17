@@ -1,4 +1,5 @@
 ﻿@page "/organization/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
 <PageTitle>Organization</PageTitle>
@@ -31,6 +32,9 @@
     <HeaderContent>
         <MudTh>Name</MudTh>
         <MudTh>Status</MudTh>
+        <MudTh>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OpenDrawer(Anchor.End))">Add product</MudButton>
+        </MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
@@ -49,17 +53,40 @@
     </FooterContent>
 </MudTable>
 
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <h4> Create Porduct </h4>
+        <DataAnnotationsValidator />
+        <MudTextField Label="Name" HelperText="Max. 8 characters"
+                      @bind-Value="model.Name" For="@(() => model.Name)" />
+        <MudTextField Label="Description" HelperText="Max. 8 characters"
+                      @bind-Value="model.Description" For="@(() => model.Description)" />
+        <MudTextField Label="Brend" HelperText="Max. 8 characters"
+                      @bind-Value="model.Brend" For="@(() => model.Brend)" />
+        <MudTextField Label="Material" HelperText="Max. 8 characters"
+                      @bind-Value="model.Material" For="@(() => model.Material)" />
+        <MudTextField Label="Price" HelperText="Max. 8 characters"
+                      @bind-Value="model.Price" For="@(() => model.Price)" />
+        <MudTextField Label="Count" HelperText="Max. 8 characters"
+                      @bind-Value="model.Count" For="@(() => model.Count)" />
+        <MudTextField Label="Category" HelperText="Max. 8 characters"
+                      @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+        <br />
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+    </EditForm>
+</MudDrawer>
+
 @code{
     private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
     private static IEnumerable<ProductView> _products = new List<ProductView>();
     private bool _selectOnRowClick = true;
-    private MudTable<ProductView> _table;
+    private MudTable<ProductView>? _table;
     private string _selectedItemText = "No row clicked";
 
 
     // Organization Api
     [Parameter]
-    public string organizationId { get; set; }
+    public string? organizationId { get; set; }
 
     OrganizationView organization = new OrganizationView();
 
@@ -94,5 +121,32 @@
     void OnRowClick(TableRowClickEventArgs<ProductView> args)
     {
         _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
+}
+
+@code {
+    bool open;
+    Anchor anchor;
+
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+
+    CreateProductDto? model = new CreateProductDto();
+    //AddFiles OrganizationImage = new AddFiles();
+
+    string? error = null;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Products");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
     }
 }
