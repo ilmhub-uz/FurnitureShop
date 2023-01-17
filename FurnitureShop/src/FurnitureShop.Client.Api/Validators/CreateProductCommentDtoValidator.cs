@@ -7,7 +7,7 @@ namespace FurnitureShop.Client.Api.Validators
     {
        public CreateProductCommentDtoValidator() 
        {
-            RuleFor(data => data.Comment).NotNull().NotEmpty();
+            RuleFor(data => data.Comment).NotNull().WithMessage("comment kiritilishi kerak").NotEmpty();
        }
     }
 }
