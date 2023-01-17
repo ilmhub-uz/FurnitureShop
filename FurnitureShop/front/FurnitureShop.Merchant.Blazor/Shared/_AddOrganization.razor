@@ -1,0 +1,48 @@
+﻿@using FurnitureShop.Merchant.Blazor.Dtos
+
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OpenDrawer(Anchor.End))">Add New Organization</MudButton>
+
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <h4> Create Organization </h4>
+        <DataAnnotationsValidator />
+        <MudTextField Label="Name" HelperText="Max. 8 characters"
+                      @bind-Value="model.Name" For="@(() => model.Name)" />
+        <br />
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+    </EditForm>
+</MudDrawer>
+
+@code {
+    bool open;
+    Anchor anchor;
+
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+}
+
+@code {
+    CreateOrganizationDto? model = new CreateOrganizationDto();
+    AddFiles OrganizationImage = new AddFiles();
+    IBrowserFile file2;
+    string? error = null;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Organizations");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+        var status = responseMessage.StatusCode;
+        if (status == System.Net.HttpStatusCode.NotFound || status == System.Net.HttpStatusCode.BadRequest)
+            error = "10000400";
+    }
+}
+

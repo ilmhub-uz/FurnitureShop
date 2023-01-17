@@ -3,16 +3,40 @@
 @using Newtonsoft.Json
 <PageTitle>Organizations</PageTitle>
 
+<_AddOrganization />
 
-@foreach (var item in Elements)
+<MudTable Class="p-2" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Status">@context.Status</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+    <FooterContent>
+        <MudTd colspan="5">Select All</MudTd>
+    </FooterContent>
+</MudTable>
+
+
+@foreach (var item in _organizations)
 {
     <p>@item.Name</p> <br />
 }
 
 
 @code {
+    private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
+    private static IEnumerable<OrganizationView> _organizations = new List<OrganizationView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<OrganizationView> _table;
+    private string _selectedItemText = "No row clicked";
 
-    private List<OrganizationView> Elements = new List<OrganizationView>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,7 +47,11 @@
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
+        _organizations = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
     }
 
+    void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Status})";
+    }
 }
