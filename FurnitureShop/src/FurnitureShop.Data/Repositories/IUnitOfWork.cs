@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
+﻿using FurnitureShop.Data.Entities;
+using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 
 namespace FurnitureShop.Data.Repositories;
 
@@ -15,5 +16,6 @@ public interface IUnitOfWork
     IAppUserRepository AppUsers { get ;}
     IContractRepository Contracts { get; }
     IProductCommentRepository ProductComments { get; }
+    IGenericRepository<AppUserRole> Roles { get; }
     int Save();
 }

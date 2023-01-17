@@ -1,4 +1,5 @@
 using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 using JFA.DependencyInjection;
 
@@ -121,6 +122,17 @@ public class UnitOfWork : IUnitOfWork
         {
             if (_productCommentRepository is null) _productCommentRepository = new ProductCommentRepository(_context);
             return _productCommentRepository;
+        }
+    }
+
+    private IGenericRepository<AppUserRole> _rolesRepository;
+    public IGenericRepository<AppUserRole> Roles
+    {
+        get
+        {
+            if(_rolesRepository is null)
+                _rolesRepository = new GenericRepository<AppUserRole>(_context);
+            return _rolesRepository;
         }
     }
 
