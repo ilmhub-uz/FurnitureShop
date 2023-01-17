@@ -24,7 +24,7 @@ public class AccountsController : ControllerBase
         return Ok();
     }
 
-    [HttpGet]
+    [HttpGet("logout")]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
