@@ -1,0 +1,98 @@
+﻿@page "/organization/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+<PageTitle>Organization</PageTitle>
+
+<div class="container">
+    <div class="row d-flex">
+        <div class="col-md-6">
+            <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+        </div>
+
+        <div class="col-md-6 py-3">
+            <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@organization.Name</h1>
+            <p style="color: #666; margin-bottom: 10px;">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+             
+            <p style="color:#555; margin-bottom:10px;">
+                Owner: <span style="color: #444; font-weight:bold; font-size: 15px;">Abdulaziz</span>
+            </p>
+
+            <p> 
+                Product count: @organization.Products.Count 
+            </p>
+        </div>
+    </div>
+</div>
+
+<MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Status">@context.Status</MudTd>
+        <MudTh DataLabel="Button">
+            <a href="/organization/@context.Id">
+                <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+            </a>
+        </MudTh>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+    <FooterContent>
+        <MudTd colspan="5">Select All</MudTd>
+    </FooterContent>
+</MudTable>
+
+@code{
+    private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
+    private static IEnumerable<ProductView> _products = new List<ProductView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<ProductView> _table;
+    private string _selectedItemText = "No row clicked";
+
+
+    // Organization Api
+    [Parameter]
+    public string organizationId { get; set; }
+
+    OrganizationView organization = new OrganizationView();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations/{organizationId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var organizationJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        organization = JsonConvert.DeserializeObject<OrganizationView>(organizationJson);
+
+        await GetProductAsync();
+    }
+    // Product api
+    private async Task GetProductAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Products?OrganizationId={organizationId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var productJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        _products = JsonConvert.DeserializeObject<IEnumerable<ProductView>>(productJson);
+
+
+    }
+
+    void OnRowClick(TableRowClickEventArgs<ProductView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
+}

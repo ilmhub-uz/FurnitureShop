@@ -5,7 +5,8 @@
 
 <_AddOrganization />
 
-<MudTable Class="p-2" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+<br /><br />
+<MudTable Style="padding: 10px;" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
     <HeaderContent>
         <MudTh>Name</MudTh>
@@ -14,6 +15,11 @@
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd DataLabel="Status">@context.Status</MudTd>
+        <MudTh DataLabel="Button">
+            <a href="/organization/@context.Id">
+                <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+            </a>
+        </MudTh>
     </RowTemplate>
     <PagerContent>
         <MudTablePager PageSizeOptions="new int[]{50, 100}" />
@@ -22,13 +28,6 @@
         <MudTd colspan="5">Select All</MudTd>
     </FooterContent>
 </MudTable>
-
-
-@foreach (var item in _organizations)
-{
-    <p>@item.Name</p> <br />
-}
-
 
 @code {
     private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
@@ -52,6 +51,6 @@
 
     void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
     {
-        _selectedItemText = $"{args.Item.Name} ({args.Item.Status})";
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
     }
 }
