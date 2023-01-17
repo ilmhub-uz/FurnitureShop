@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
@@ -14,10 +15,12 @@ namespace FurnitureShop.Client.Api.Controllers;
 public class ProfileController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
+    private readonly IValidator<UpdateUserDto> _updateuservalidator;
 
-
-    public ProfileController(UserManager<AppUser> userManager)
+    public ProfileController(UserManager<AppUser> userManager ,
+     IValidator<UpdateUserDto> updateuservalidator)
     {
+        _updateuservalidator = updateuservalidator;
         _userManager = userManager;
     }
 
@@ -37,6 +40,11 @@ public class ProfileController : ControllerBase
     [Authorize(EPermission.CanUpdateProfile)]
     public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserDto)
     {
+        var result = _updateuservalidator.Validate(updateUserDto);
+        if(!result.IsValid)
+        {
+            throw new BadHttpRequestException(result.Errors.First().ErrorMessage);
+        }
         var user = await _userManager.GetUserAsync(User);
 
         if (_userManager.Users.Any(u => u.UserName == updateUserDto.UserName))

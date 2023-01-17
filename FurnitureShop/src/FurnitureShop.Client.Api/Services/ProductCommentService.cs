@@ -1,4 +1,5 @@
-﻿using FurnitureShop.Client.Api.Dtos;
+﻿using FluentValidation;
+using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
@@ -15,9 +16,14 @@ namespace FurnitureShop.Client.Api.Services;
 public class ProductCommentService : IProductCommentService
 {
     private readonly IUnitOfWork _unitOfWork;
-
-    public ProductCommentService(IUnitOfWork unitOfWork)
+    private readonly IValidator<CreateProductCommentDto> createproductcommentdto;
+    private readonly IValidator<UpdateProductCommentDto> updateproductcommentdto;
+    public ProductCommentService(IUnitOfWork unitOfWork , 
+        IValidator<CreateProductCommentDto> createproductcommentdto,
+        IValidator<UpdateProductCommentDto> updateproductcommentdto)
     {
+        this.createproductcommentdto = createproductcommentdto;
+        this.updateproductcommentdto = updateproductcommentdto;
         _unitOfWork = unitOfWork;
     }
 
@@ -58,6 +64,11 @@ public class ProductCommentService : IProductCommentService
 
     public async Task<ProductCommentView> AddProductCommentAsync(ClaimsPrincipal claims, Guid productId, CreateProductCommentDto commentDto)
     {
+        var result = createproductcommentdto.Validate(commentDto);
+        if(!result.IsValid)
+        {
+            throw new BadRequestException(result.Errors.First().ErrorMessage);
+        }
         var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         var existingProductComment = new ProductComment
@@ -77,6 +88,11 @@ public class ProductCommentService : IProductCommentService
 
     public async Task<ProductCommentView> UpdateProductComment(Guid productId, Guid commentId, UpdateProductCommentDto updateDto)
     {
+        var result = updateproductcommentdto.Validate(updateDto);
+        if (!result.IsValid)
+        {
+            throw new BadRequestException(result.Errors.First().ErrorMessage);
+        }
         var product = await _unitOfWork.Products.GetAll().FirstOrDefaultAsync(p => p.Id == productId);
 
         if (product is null) throw new NotFoundException<Product>();
