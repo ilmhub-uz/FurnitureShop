@@ -1,0 +1,29 @@
+﻿@page "/organizations"
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+<PageTitle>Organizations</PageTitle>
+
+
+@foreach (var item in Elements)
+{
+    <p>@item.Name</p> <br />
+}
+
+
+@code {
+
+    private List<OrganizationView> Elements = new List<OrganizationView>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        Elements = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
+    }
+
+}
