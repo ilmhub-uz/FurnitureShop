@@ -27,6 +27,9 @@ public enum EPermission
     CanDeleteProduct,
     CanReadProfile, 
     CanUpdateProfile, 
-
+    CanCreateRole,
+    CanReadRole,
+    CanUpdateRole,
+    CanDeleteRole,
     // add more permissions as needed
 }
