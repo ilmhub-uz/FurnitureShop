@@ -6,6 +6,7 @@ using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Admin.Api.Services;
@@ -20,8 +21,18 @@ public class CategoriesService : ICategoriesService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<CategoryView>> GetCategoriesAsync(PaginationParams paginationParams)
+    public async Task<List<CategoryView>> GetCategoriesAsync(CategoryFilter paginationParams)
     {
+        if (paginationParams.CategoryId is not null)
+        {
+            var retrievedCategory = _unitOfWork.Categories.GetAll().Where(c => c.Id == paginationParams.CategoryId).ToList();
+
+            if (retrievedCategory is null)
+                throw new NotFoundException<Category>();
+
+            return retrievedCategory.Adapt<List<CategoryView>>();
+        }
+
         var categories = await _unitOfWork.Categories.GetAll().Where(c => c.ParentId == null).ToPagedListAsync(paginationParams);
 
         var categoriesViewList = new List<CategoryView>();
