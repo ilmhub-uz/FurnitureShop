@@ -34,6 +34,7 @@ public class ProfilesController : ControllerBase
         if (user is null) return BadRequest();
         user.Email = updateProfile.Email;
         user.FirstName = updateProfile.FirstName;
+        user.LastName = updateProfile.LastName;
         user.UserName = updateProfile.UserName;
         await _userManager.UpdateAsync(user);
         return Ok();
