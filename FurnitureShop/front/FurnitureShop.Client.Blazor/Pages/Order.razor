@@ -70,6 +70,9 @@
             var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Orders/{orderId}/cancel");
             message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
             await Http.SendAsync(message);
+
+            _orders.Remove(_orders.Where(o => o.Id == orderId).First());
+            StateHasChanged();
         }
         catch (Exception e)
         {
