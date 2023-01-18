@@ -4,59 +4,93 @@
 @using Newtonsoft.Json
 <PageTitle>Organization</PageTitle>
 
-<div class="container">
-    <div class="row d-flex">
-        <div class="col-md-6">
-            <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
-        </div>
+@if(organization.Id is null)
+{
+    <div>
+        Error 400. You have some error.
+    </div>
+}else{
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-md-6">
+                <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+            </div>
 
-        <div class="col-md-6 py-3">
-            <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@organization.Name</h1>
-            <p style="color: #666; margin-bottom: 10px;">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
+            <div class="col-md-6 py-3">
+                <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@organization.Name</h1>
+                <p style="color: #666; margin-bottom: 10px;">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
              
-            <p style="color:#555; margin-bottom:10px;">
-                Owner: <span style="color: #444; font-weight:bold; font-size: 15px;">
-                    @organization.OwnerName
-                </span>
-            </p>
+                <p style="color:#555; margin-bottom:10px;">
+                    Owner: <span style="color: #444; font-weight:bold; font-size: 15px;">
+                        @organization.OwnerName
+                    </span>
+                </p>
 
-            <p> 
-                Product count: @organization.Products.Count 
-            </p>
+                <p> 
+                    Product count: @organization.Products.Count 
+                </p>
+            </div>
         </div>
     </div>
-</div>
+}
 
-<MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+@if(_products.Count() < 1)
+{
+    <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Status</MudTh>
-        <MudTh>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OpenDrawer(Anchor.End))">Add product</MudButton>
-        </MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Status">@context.Status</MudTd>
-        <MudTh DataLabel="Button">
-            <a href="/organization/@context.Id">
-                <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
-            </a>
-        </MudTh>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-    </PagerContent>
-    <FooterContent>
-        <MudTd colspan="5">Select All</MudTd>
-    </FooterContent>
-</MudTable>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OpenDrawer(Anchor.End))">Add product</MudButton>
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTh DataLabel="Button">
+                <a href="/organization/@context.Id">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                </a>
+            </MudTh>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+}else{
+    <h1>You have not any products</h1>
+}
 
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <h4> Create Porduct </h4>
+        <DataAnnotationsValidator />
+        <MudTextField Label="Name" HelperText="Max. 8 characters"
+                      @bind-Value="model.Name" For="@(() => model.Name)" />
+        <MudTextField Label="Description" HelperText="Max. 8 characters"
+                      @bind-Value="model.Description" For="@(() => model.Description)" />
+        <MudTextField Label="Brend" HelperText="Max. 8 characters"
+                      @bind-Value="model.Brend" For="@(() => model.Brend)" />
+        <MudTextField Label="Material" HelperText="Max. 8 characters"
+                      @bind-Value="model.Material" For="@(() => model.Material)" />
+        <MudTextField Label="Price" HelperText="Max. 8 characters"
+                      @bind-Value="model.Price" For="@(() => model.Price)" />
+        <MudTextField Label="Count" HelperText="Max. 8 characters"
+                      @bind-Value="model.Count" For="@(() => model.Count)" />
+        <MudTextField Label="Category" HelperText="Max. 8 characters"
+                      @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+        <br />
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+    </EditForm>
+</MudDrawer>
 
-@code{
+@code {
     bool open;
     Anchor anchor;
 
@@ -65,6 +99,25 @@
         open = true;
         this.anchor = anchor;
     }
+
+    CreateProductDto? model = new CreateProductDto();
+    //AddFiles OrganizationImage = new AddFiles();
+
+    string? error = null;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Products");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+    }
+}
+
+@code{
 
     private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
     private static IEnumerable<ProductView> _products = new List<ProductView>();
@@ -75,7 +128,7 @@
 
     // Organization Api
     [Parameter]
-    public string? organizationId { get; set; } = "null";
+    public string? organizationId { get; set; }
 
     OrganizationView organization = new OrganizationView();
 
@@ -103,8 +156,6 @@
 
         var productJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
         _products = JsonConvert.DeserializeObject<IEnumerable<ProductView>>(productJson);
-
-
     }
 
     void OnRowClick(TableRowClickEventArgs<ProductView> args)
