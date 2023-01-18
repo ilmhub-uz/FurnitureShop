@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using FurnitureShop.Client.Api.Dtos
 @using FurnitureShop.Client.Blazor.ViewModel
 @inject HttpClient Http
 
@@ -63,14 +64,13 @@
                                         <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                                             <div class="d-flex flex-row align-items-center mb-1">
                                                 <h4 class="mb-1 me-1">@product.Price</h4>
-                                                <span class="text-danger"><s>$20.99</s></span>
                                             </div>
                                             <h6 class="text-success">Free shipping</h6>
                                             <div class="d-flex flex-column mt-4">
                                                 <a href=@url class="btn btn-primary btn-sm" type="button">Details</a>
-                                                <a class="btn btn-outline-primary btn-sm mt-2" type="button">
+                                            <button @onclick="(()=>{AddToCartProduct(product.Id);})" class="btn btn-outline-primary btn-sm mt-2" type="button">
                                                     Add to wishlist
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -104,5 +104,30 @@
     {
         productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("/api/Products");
         organizationViews = await Http.GetFromJsonAsync<IEnumerable<OrganizationView>>("api/Organizations");
+    }
+        public async void AddToCartProduct(Guid productId)
+    {
+        try
+        {
+            var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Carts");
+
+            var model = new CreateCartProductDto()
+                {
+                    Count = 1,
+                    ProductId = productId,
+                    Properties = "nmadr"
+
+                };
+
+            message.Content = JsonContent.Create(model);
+            message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+            await Http.SendAsync(message);
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine(e.Message + "exceptionsssss");
+        }
+
     }
 }
