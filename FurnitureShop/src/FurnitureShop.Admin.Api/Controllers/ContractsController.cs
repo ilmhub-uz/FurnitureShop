@@ -1,46 +1,36 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.Services;
-using FurnitureShop.Data.Entities;
-using FurnitureShop.Data.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FurnitureShop.Admin.Api.Controllers
+namespace FurnitureShop.Admin.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ContractsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ContractsController : ControllerBase
+    private readonly IContractService _contractService;
+    
+    public ContractsController(IContractService contractService)
     {
-        
-        private IContractService _contractService;
-        private readonly IUnitOfWork _unitOfWork;
-        
-        public ContractsController(IUnitOfWork unitOfWork , IContractService contractService)
-        {
-            _unitOfWork = unitOfWork;
-            _contractService = contractService;
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateContract([FromQuery]Guid contractId, [FromBody]UpdateContractDto updateContractDto )
-        {
-            await _contractService.UpdateContract(contractId , updateContractDto);
-            return Ok();
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteContract([FromQuery]Guid contractId)
-        {
-            await _contractService.DeleteContract(contractId);
-            return Ok();
-        }
-
-        [HttpGet]
-        [ProducesResponseType(typeof(List<ContractFilterDto>), statusCode:StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetContracts([FromQuery]ContractFilterDto contractFilter)
-        {
-         return Ok(await _contractService.GetContracts(contractFilter));
-        }
+        _contractService = contractService;
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateContract([FromQuery]Guid contractId, [FromBody]UpdateContractDto updateContractDto )
+    {
+        await _contractService.UpdateContract(contractId , updateContractDto);
+        return Ok();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteContract([FromQuery]Guid contractId)
+    {
+        await _contractService.DeleteContract(contractId);
+        return Ok();
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(List<ContractFilterDto>), statusCode: StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetContracts([FromQuery] ContractFilterDto contractFilter) => Ok(await _contractService.GetContracts(contractFilter));
 }
 

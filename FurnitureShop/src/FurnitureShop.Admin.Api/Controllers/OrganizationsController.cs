@@ -1,13 +1,12 @@
 ﻿using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
 using FurnitureShop.Admin.Api.Services;
-using FurnitureShop.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 
 namespace FurnitureShop.Admin.Api.Controllers;
 
-[Route("api/organizations")]
+[Route("api/[controller]")]
 [ApiController]
 public class OrganizationsController : ControllerBase
 {
@@ -21,19 +20,7 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganizations([FromQuery]OrganizationFilterDto filter)
-    {
-        var organization = await _service.GetOrganizationsAsync(filter);
-        return Ok(organization);
-    }
-    
-    [HttpGet("getbyId")]
-    [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetOrganization([FromQuery]Guid organizationId)
-    {
-        var organization = await _service.GetOrganizationByIdAsync(organizationId);
-        return Ok(organization);
-    }
+    public async Task<IActionResult> GetOrganizations([FromQuery] OrganizationFilterDto filter) => Ok(await _service.GetOrganizationsAsync(filter));
 
     [HttpPut]
     public async Task<IActionResult> UpdateOrganization([FromQuery]Guid organizationId,
@@ -46,6 +33,7 @@ public class OrganizationsController : ControllerBase
         await _service.UpdateOrganization(organizationId, updateOrganizationDto);
         return Ok();
     }
+
     [HttpDelete]
     public async Task<IActionResult> DeleteOrganization([FromQuery]Guid organizationId)
     {

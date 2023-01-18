@@ -22,6 +22,8 @@ public class OrdersService : IOrdersService
     {
         var orders = _unitOfWork.Orders.GetAll();
 
+        if (filter.OrderId is not null)
+            orders = orders.Where(o => o.Id == filter.OrderId);
         if (filter.OrganizationId is not null)
             orders = orders.Where(o => o.OrganizationId == filter.OrganizationId);
         if (filter.UserId is not null)
