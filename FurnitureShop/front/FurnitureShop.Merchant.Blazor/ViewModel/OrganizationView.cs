@@ -8,4 +8,5 @@ public class OrganizationView
     public EOrganizationStatus Status { get; set; }
     public List<ProductView>? Products { get; set; }
     public List<OrganizationUserView>? Users { get; set; }
+    public string OwnerName { get; set; }
 }
