@@ -1,0 +1,52 @@
+﻿@page "/messages"
+@using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Components
+@using FurnitureShop.Client.Blazor.ViewModel
+@inject HttpClient Http
+
+@foreach (var message in _messages)
+{
+    <p>@message.Item1:@message.Item2</p>
+    <br>
+}
+
+<MudTextField @bind-Value="Username" Label="Username" Variant="Variant.Outlined"></MudTextField>
+<MudTextField @bind-Value="Message" Label="Message" Variant="Variant.Outlined"></MudTextField>
+<MudButton OnClick="SendMessageToServer">Send message</MudButton>
+
+@code {
+    private string? Username { get; set; }
+    private string? Message { get; set; }
+
+    private readonly List<Tuple<string, string>> _messages = new List<Tuple<string, string>>();
+    private HubConnection? _hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:1005/messages")
+            .Build();
+
+        _hubConnection.On<string, string>(nameof(GetMessage), GetMessage);
+
+        await _hubConnection.StartAsync();
+    }
+
+    private void GetMessage(string username, string message)
+    {
+        _messages.Add(new Tuple<string, string>(username, message));
+        StateHasChanged();
+    }
+
+    private async Task SendMessageToServer()
+    {
+        if (_hubConnection?.State == HubConnectionState.Connected)
+        {
+            await _hubConnection.InvokeAsync("SendMessage", Username, Message);
+        }
+    }
+
+}
+
+
