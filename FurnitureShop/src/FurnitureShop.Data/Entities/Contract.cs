@@ -1,6 +1,4 @@
-﻿using System.Data;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureShop.Data.Entities;
@@ -23,7 +21,7 @@ public class Contract
     public decimal TotalPrice { get; set; }
     public DateTime FinishDate { get; set; }
     public Guid OrderId { get; set; }
-    
+
     [ForeignKey(nameof(OrderId))]
     public virtual Order? Order { get; set; }
 }
