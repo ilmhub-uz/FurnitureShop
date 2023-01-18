@@ -1,6 +1,8 @@
 ﻿@page "/organizations"
+@using FurnitureShop.Merchant.Blazor.Services;
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
+@inject OrganizationService organizationService
 <PageTitle>Organizations</PageTitle>
 
 <_AddOrganization />
@@ -31,7 +33,7 @@
 
 @code {
     private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
-    private static IEnumerable<OrganizationView> _organizations = new List<OrganizationView>();
+    private static IEnumerable<OrganizationView>? _organizations = new List<OrganizationView>();
     private bool _selectOnRowClick = true;
     private MudTable<OrganizationView> _table;
     private string _selectedItemText = "No row clicked";
@@ -39,14 +41,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
-
-        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        _organizations = JsonConvert.DeserializeObject<List<OrganizationView>>(profileJson);
+        var result =await organizationService.GetOrganizationsAsync();
+        if (result.IsSuccess)
+            _organizations = result.Data;
     }
 
     void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
