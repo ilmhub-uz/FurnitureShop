@@ -1,0 +1,52 @@
+﻿@page "/categories"
+@using FurnitureShop.Dashboard.Blazor.ViewModel
+@inject HttpClient Http 
+
+
+
+
+<PageTitle>Categories</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+@if (categoires == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="categoires" Hover="true" SortLabel="Sort By" Elevation="0">
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Category">@context.Name</MudTd>
+            <MudTd DataLabel="Sub categories">@context.Children?.Count</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+
+@code {
+    private List<CategoryView>? categoires;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categoires = await Http.GetFromJsonAsync<List<CategoryView>>("/api/Products");
+
+        //var connection = new HubConnectionBuilder()
+        //    .WithUrl("http://localhost:3001/products-hub")
+        //    .Build();
+
+        //connection.On<Product>("ProductAdded", product =>
+        //{
+        //    products?.Add(product);
+        //    StateHasChanged();
+        //});
+
+        //await connection.StartAsync();
+    }
+
+
+}
