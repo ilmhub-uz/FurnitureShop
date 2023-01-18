@@ -1,11 +1,10 @@
-﻿namespace FurnitureShop.Admin.Api.Dtos.Enums
+﻿namespace FurnitureShop.Admin.Blazor.Dtos.Enums;
+
+public enum EProductSorting
 {
-    public enum EProductSorting
-    {
-        Name,
-        Price,
-        Views,
-        Brend,
-        Material
-    }
+    Name,
+    Price,
+    Views,
+    Brend,
+    Material
 }

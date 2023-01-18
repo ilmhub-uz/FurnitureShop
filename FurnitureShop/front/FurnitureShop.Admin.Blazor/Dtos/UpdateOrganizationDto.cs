@@ -1,6 +1,7 @@
-﻿using FurnitureShop.Data.Entities;
+﻿using FurnitureShop.Admin.Blazor.Dtos.Enums;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+namespace FurnitureShop.Admin.Blazor.Dtos;
+
 
 public class UpdateOrganizationDto
 {

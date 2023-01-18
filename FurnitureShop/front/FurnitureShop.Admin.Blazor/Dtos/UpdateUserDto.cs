@@ -1,7 +1,9 @@
-using FurnitureShop.Data.Entities;
+using FurnitureShop.Admin.Blazor.Dtos.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+namespace FurnitureShop.Admin.Blazor.Dtos;
+
+
 
 public class UpdateUserDto
 {

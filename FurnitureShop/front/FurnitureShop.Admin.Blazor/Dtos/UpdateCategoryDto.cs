@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+
+namespace FurnitureShop.Admin.Blazor.Dtos;
 
 public class UpdateCategoryDto
 {

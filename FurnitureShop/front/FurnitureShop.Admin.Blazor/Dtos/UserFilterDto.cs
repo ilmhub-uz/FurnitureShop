@@ -1,7 +1,8 @@
-﻿using FurnitureShop.Common.Models;
-using FurnitureShop.Data.Entities;
+﻿using FurnitureShop.Admin.Blazor.Dtos.Enums;
+using FurnitureShop.Admin.Blazor.Models;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+
+namespace FurnitureShop.Admin.Blazor.Dtos;
 
 public class UserFilterDto : PaginationParams
 {

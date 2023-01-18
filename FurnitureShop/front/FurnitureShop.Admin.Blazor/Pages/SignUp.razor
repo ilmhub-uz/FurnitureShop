@@ -1,8 +1,16 @@
 ﻿@using System.ComponentModel.DataAnnotations
+@using FurnitureShop.Admin.Blazor.Dtos
+@using FurnitureShop.Common.Helpers;
+@using System.Net
 @page "/signup"
-
+@inject NavigationManager navManager;
 <h3>SignUp</h3>
 
+@if(!response?.IsSuccessStatusCode != null)
+{
+    <b>Xatolik</b>
+    <p>@response!.StatusCode.ToString()</p>
+}
 <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
 <DataAnnotationsValidator/>
 <MudGrid>
@@ -10,13 +18,15 @@
         <MudCard>
             <MudCardContent>
                 <MudTextField Label="First name" HelperText="Max. 8 characters"
-                              @bind-Value="model.Username" For="@(() => model.Username)"/>
+                                @bind-Value="model.FirstName" For="@(() => model.FirstName)"/>
+                <MudTextField Label="Last name" HelperText="Max. 8 characters"
+                                @bind-Value="model.LastName" For="@(() => model.LastName)"/>
+                <MudTextField Label="User name" HelperText="Max. 8 characters"
+                                @bind-Value="model.UserName" For="@(() => model.UserName)"/>
                 <MudTextField Label="Email" Class="mt-3"
-                              @bind-Value="model.Email" For="@(() => model.Email)"/>
+                                @bind-Value="model.Email" For="@(() => model.Email)"/>
                 <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
-                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
-                              @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>
+                                @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
             </MudCardContent>
             <MudCardActions>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
@@ -25,19 +35,40 @@
     </MudItem>
     <MudItem xs="12">
         <MudText Typo="Typo.body2" Align="Align.Center">
-            Fill out the form correctly to see the success message.
         </MudText>
     </MudItem>
 </MudGrid>
 </EditForm>
 
 @code {
+    RegisterUserDto model = new RegisterUserDto();
+
+    HttpResponseMessage? response = null;
+
+    //protected void Redirect(string route = "/dashboard")
+    //{
+    //    NavigateTo(route);
+    //}
 
 
-    private void OnValidSubmit(EditContext context)
+    private async Task OnValidSubmit(EditContext context)
     {
-        success = true;
-        StateHasChanged();
+
+        RequestHelper request = new RequestHelper();
+
+        using var responseMessage = await request.SendRequestAsync<RegisterUserDto>(HttpMethod.Post,"https://localhost:1003","/api/accounts/signup",model);
+
+        if (responseMessage is null)
+            response = null;
+
+        if(responseMessage!.IsSuccessStatusCode)
+        {
+            navManager.NavigateTo("/signin");
+        }
+        else
+        {
+            response = responseMessage;
+        }
     }
 
 

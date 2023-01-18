@@ -1,6 +1,8 @@
-﻿using FurnitureShop.Common.Models;
+﻿using FurnitureShop.Admin.Blazor.Models;
 
-namespace FurnitureShop.Admin.Api.Dtos;
+namespace FurnitureShop.Admin.Blazor.Dtos;
+
+
 
 public class OrganizationFilterDto : PaginationParams
 {
