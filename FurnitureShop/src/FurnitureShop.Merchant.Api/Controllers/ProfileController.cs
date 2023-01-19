@@ -1,7 +1,6 @@
 ﻿using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
-using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Mapster;
 using Microsoft.AspNetCore.Identity;

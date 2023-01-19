@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using FluentValidation;
+﻿using FluentValidation;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Data.Context;
 using FurnitureShop.Data.Entities;
@@ -42,7 +41,7 @@ public partial class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
     {
-        var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
+        //var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
 
         // if (!validateResult.IsValid)
         //     return BadRequest();
@@ -100,10 +99,10 @@ public partial class ProductsController : ControllerBase
     [IdValidation]
     public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] UpdateProductDto dtoModel)
     {
-        var validateResult = _updateProductValidator.Validate(dtoModel);
+        //var validateResult = _updateProductValidator.Validate(dtoModel);
 
-        if (!validateResult.IsValid)
-            return BadRequest();
+        //if (!validateResult.IsValid)
+        //    return BadRequest();
 
         await _productService.UpdateProduct(productId, dtoModel, User);
         await _hubContext.Clients.All.SendAsync("ChangeProduct");
