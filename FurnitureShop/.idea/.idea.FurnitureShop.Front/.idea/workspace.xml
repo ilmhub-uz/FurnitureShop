@@ -4,23 +4,28 @@
     <projectFile profileName="Mudblazor.Template">front/FurnitureShop.Admin.Blazor/FurnitureShop.Admin.Blazor.csproj</projectFile>
     <projectFile profileName="Mudblazor.Template">front/FurnitureShop.Blazor/FurnitureShop.Blazor.csproj</projectFile>
     <projectFile profileName="Mudblazor.Template">front/FurnitureShop.Client.Blazor/FurnitureShop.Client.Blazor.csproj</projectFile>
+    <projectFile profileName="Mudblazor.Template">front/FurnitureShop.Dashboard.Blazor/FurnitureShop.Dashboard.Blazor.csproj</projectFile>
     <projectFile profileName="Mudblazor.Template">front/FurnitureShop.Merchant.Blazor/FurnitureShop.Merchant.Blazor.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="863863af-c421-4c24-87ee-9376d8c91923" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Index.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Index.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Product.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Product.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Products.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Products.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.Admin.Api/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.Admin.Api/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.Api/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.Api/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.Client.Api/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.Client.Api/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.Files.Api/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.Files.Api/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.Merchant.Api/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.Merchant.Api/Properties/launchSettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Contracts.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Orders.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Organizations.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1c23f6bac78744fb96302021de95c73935480/b1/8ddb5488/ComponentBase.cs" root0="SKIP_HIGHLIGHTING" />
@@ -28,26 +33,28 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectId" id="2KH1zLR2ciTRsBYTdgfq83HKyvI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;/Users/dostonbekubaydullayev/Library/Application Support/JetBrains/Rider2022.3/resharper-host/DecompilerCache&quot;,
-      &quot;/Users/dostonbekubaydullayev/Library/Application Support/JetBrains/Rider2022.3/resharper-host/SourcesCache&quot;,
-      &quot;/Users/dostonbekubaydullayev/.local/share/Symbols/src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/Users/dostonbekubaydullayev/Library/Application Support/JetBrains/Rider2022.3/resharper-host/DecompilerCache",
+      "/Users/dostonbekubaydullayev/Library/Application Support/JetBrains/Rider2022.3/resharper-host/SourcesCache",
+      "/Users/dostonbekubaydullayev/.local/share/Symbols/src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.FurnitureShop.Client.Blazor: Mudblazor.Template">
     <configuration name="FurnitureShop.Admin.Blazor: Mudblazor.Template" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/front/FurnitureShop.Admin.Blazor/FurnitureShop.Admin.Blazor.csproj" />
@@ -123,13 +130,26 @@
       <workItem from="1673770472414" duration="795000" />
       <workItem from="1673776460546" duration="1565000" />
       <workItem from="1673778912397" duration="501000" />
+      <workItem from="1674142074725" duration="2997000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

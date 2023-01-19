@@ -1,0 +1,18 @@
+Index: front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>@page \"/editprofile\"\n@using FurnitureShop.Dashboard.Blazor.Dtos\n\n@inject HttpClient client\n\n\n\n<h3>EditProfile</h3>\n\n\n<br>\n\n<MudTextField @bind-Value=\"updateProfileDto.UserName\" Label=\"Username\" Variant=\"Variant.Outlined\"></MudTextField>\n<MudTextField @bind-Value=\"updateProfileDto.FirstName\" Label=\"Firstname\" Variant=\"Variant.Outlined\"></MudTextField>\n<MudTextField @bind-Value=\"updateProfileDto.LastName\" Label=\"Lastname\" Variant=\"Variant.Outlined\"></MudTextField>\n<MudTextField @bind-Value=\"updateProfileDto.Las\" Label=\"Lastname\" Variant=\"Variant.Outlined\"></MudTextField>\n<MudTextField @bind-Value=\"updateProfileDto.Email\" Label=\"Email\" Variant=\"Variant.Outlined\"></MudTextField>\n\n<br>\n\n<MudButton Variant=\"Variant.Filled\" Color=\"Color.Primary\" OnClick=\"@(async()=> await PutProfile())\">Add</MudButton>\n\n\n\n\n\n@code {\n    UpdateProfileDto updateProfileDto = new UpdateProfileDto();\n\n\n    private async Task PutProfile()\n    {\n        var message = new HttpRequestMessage(HttpMethod.Put, \"/api/profiles\");\n        message.Content = JsonContent.Create(updateProfileDto);\n        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);\n\n        var responseMessage = await client.SendAsync(message);\n    }\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor b/front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor
+--- a/front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor	
++++ b/front/FurnitureShop.Dashboard.Blazor/Pages/EditProfile.razor	
+@@ -13,7 +13,6 @@
+ <MudTextField @bind-Value="updateProfileDto.UserName" Label="Username" Variant="Variant.Outlined"></MudTextField>
+ <MudTextField @bind-Value="updateProfileDto.FirstName" Label="Firstname" Variant="Variant.Outlined"></MudTextField>
+ <MudTextField @bind-Value="updateProfileDto.LastName" Label="Lastname" Variant="Variant.Outlined"></MudTextField>
+-<MudTextField @bind-Value="updateProfileDto.Las" Label="Lastname" Variant="Variant.Outlined"></MudTextField>
+ <MudTextField @bind-Value="updateProfileDto.Email" Label="Email" Variant="Variant.Outlined"></MudTextField>
+ 
+ <br>

@@ -1,0 +1,54 @@
+@page "/contracts"
+@using FurnitureShop.Dashboard.Blazor.ViewModel
+@inject HttpClient client
+
+<PageTitle>Organizations</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+@if (_contractViews == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="_contractViews" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Product Id</MudTh>
+            <MudTh>User Id</MudTh>
+            <MudTh>Product Count</MudTh>
+            <MudTh>Total Price</MudTh>
+            <MudTh>Edit</MudTh>
+            <MudTh>Delete</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Product Id">@context.ProductId</MudTd>
+            <MudTd DataLabel="User Id">@context.UserId</MudTd>
+            <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
+            <MudTd DataLabel="Price">@context.TotalPrice</MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async () => await DeleteContract(@context.Id))" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary">Edit</MudButton></MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteContract(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 50, 100 }"/>
+        </PagerContent>
+    </MudTable>
+}
+@code {
+    private List<ContractView>? _contractViews;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _contractViews = await client.GetFromJsonAsync<List<ContractView>>("/api/Products");
+    }
+
+    private async Task DeleteContract(Guid contractId)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Contracts?contract={contractId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+    }
+}
