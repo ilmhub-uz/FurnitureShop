@@ -10,6 +10,11 @@ public partial class AppDbContext
         base.OnModelCreating(builder);
         builder.Entity<OrganizationUser>().HasKey(user => new { user.UserId, user.OrganizationId });
         builder.Entity<LikeProduct>().HasKey(likeproduct => new { likeproduct.UserId, likeproduct.ProductId });
+        builder.Entity<Category>()
+            .HasOne(c => c.Parent)
+            .WithMany(c => c.Children)
+            .HasForeignKey(c => c.ParentId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         SeedAdminRole(builder);
     }
