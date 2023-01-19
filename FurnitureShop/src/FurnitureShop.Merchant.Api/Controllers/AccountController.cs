@@ -50,9 +50,9 @@ public class AccountController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> SignUp([FromBody] RegisterUserDto dtoModel)
     {
-        var validate = _validationRegister.Validate(dtoModel);
-        if (!validate.IsValid)
-            return BadRequest("Dto is not valid");
+        // var validate = _validationRegister.Validate(dtoModel);
+        // if (!validate.IsValid)
+        //     return BadRequest("Dto is not valid");
 
         if(_userManager.Users.Any(u => u.UserName == dtoModel.UserName))
             return BadRequest("This username already exists");

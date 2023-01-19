@@ -35,9 +35,9 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public IActionResult AddEmployee([FromBody] AddEmployeeDto dto)
     {
-        var validationResult = validator.Validate(dto);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        // var validationResult = validator.Validate(dto);
+        // if (!validationResult.IsValid)
+        //     throw new ValidationException(validationResult.Errors);
 
         _employeeService.AddEmployee(User, dto);
         return Ok();
@@ -62,9 +62,9 @@ public class EmployeeController : ControllerBase
     [HttpDelete("{organizationId:guid}")]
     public async Task RemoveEmployee([FromBody] RemoveEmployeeDto dto)
     {
-        var validationResult = _removeEmployeeValidator.Validate(dto);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        // var validationResult = _removeEmployeeValidator.Validate(dto);
+        // if (!validationResult.IsValid)
+        //     throw new ValidationException(validationResult.Errors);
 
         await _employeeService.RemoveEmployee(dto);
     }
