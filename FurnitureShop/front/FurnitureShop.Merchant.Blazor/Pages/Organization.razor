@@ -24,7 +24,7 @@
              
                 <p style="color:#555; margin-bottom:10px;">
                     Owner: <span style="color: #444; font-weight:bold; font-size: 15px;">
-                        @organization.OwnerName
+                        @organization.Owner.FirstName
                     </span>
                 </p>
 
@@ -36,7 +36,7 @@
     </div>
 }
 
-@if(_products.Count() < 1)
+@if(_products.Count() > 0)
 {
     <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
@@ -67,28 +67,26 @@
     <h1>You have not any products</h1>
 }
 
-<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
-    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
-        <h4> Create Porduct </h4>
-        <DataAnnotationsValidator />
-        <MudTextField Label="Name" HelperText="Max. 8 characters"
-                      @bind-Value="model.Name" For="@(() => model.Name)" />
-        <MudTextField Label="Description" HelperText="Max. 8 characters"
-                      @bind-Value="model.Description" For="@(() => model.Description)" />
-        <MudTextField Label="Brend" HelperText="Max. 8 characters"
-                      @bind-Value="model.Brend" For="@(() => model.Brend)" />
-        <MudTextField Label="Material" HelperText="Max. 8 characters"
-                      @bind-Value="model.Material" For="@(() => model.Material)" />
-        <MudTextField Label="Price" HelperText="Max. 8 characters"
-                      @bind-Value="model.Price" For="@(() => model.Price)" />
-        <MudTextField Label="Count" HelperText="Max. 8 characters"
-                      @bind-Value="model.Count" For="@(() => model.Count)" />
-        <MudTextField Label="Category" HelperText="Max. 8 characters"
-                      @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
-        <br />
-        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
-    </EditForm>
-</MudDrawer>
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <h4> Create Porduct </h4>
+    <DataAnnotationsValidator />
+    <MudTextField Label="Name" HelperText="Max. 8 characters"
+                    @bind-Value="model.Name" For="@(() => model.Name)" />
+    <MudTextField Label="Description" HelperText="Max. 8 characters"
+                    @bind-Value="model.Description" For="@(() => model.Description)" />
+    <MudTextField Label="Brend" HelperText="Max. 8 characters"
+                    @bind-Value="model.Brend" For="@(() => model.Brend)" />
+    <MudTextField Label="Material" HelperText="Max. 8 characters"
+                    @bind-Value="model.Material" For="@(() => model.Material)" />
+    <MudTextField Label="Price" HelperText="Max. 8 characters"
+                    @bind-Value="model.Price" For="@(() => model.Price)" />
+    <MudTextField Label="Count" HelperText="Max. 8 characters"
+                    @bind-Value="model.Count" For="@(() => model.Count)" />
+    <MudTextField Label="Category" HelperText="Max. 8 characters"
+                    @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+    <br />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+</EditForm>
 
 @code {
     bool open;
