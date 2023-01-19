@@ -4,15 +4,17 @@
 @using Newtonsoft.Json
 @inject OrganizationService organizationService
 <PageTitle>Organizations</PageTitle>
-
-<_AddOrganization />
-
-<br /><br />
+<h1>All Your Organizations</h1>
 <MudTable Style="padding: 10px;" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
     <HeaderContent>
         <MudTh>Name</MudTh>
         <MudTh>Status</MudTh>
+        <MudTh>
+            <a href="/add-organization">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">Add organization</MudButton>
+            </a>
+        </MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
