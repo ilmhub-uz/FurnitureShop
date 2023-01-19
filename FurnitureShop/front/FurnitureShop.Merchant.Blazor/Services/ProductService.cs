@@ -9,12 +9,9 @@ namespace FurnitureShop.Merchant.Blazor.Services;
 
 public class ProductService : HttpClientBase
 {
-    public ProductService(HttpClient httpClient) : base(httpClient)
-    {
+    public ProductService(HttpClient httpClient) : base(httpClient) { }
 
-    }
-
-    public async Task<Result<IEnumerable<ProductView>?>> GetProductsAsync()
+    public async Task<Result<List<ProductView>?>> GetProductsAsync()
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Products");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
@@ -24,7 +21,25 @@ public class ProductService : HttpClientBase
 
         if (response.IsSuccessStatusCode)
         {
-            var products = JsonConvert.DeserializeObject<IEnumerable<ProductView>>(productsJson);
+            var products = JsonConvert.DeserializeObject<List<ProductView>>(productsJson);
+
+            return new(true) { Data = products };
+        }
+
+        return new(false) { ErrorMessage = productsJson };
+    }
+
+    public async Task<Result<List<ProductView>?>> GetProductsAsync(string organizationId)
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/Products?OrganizationId={organizationId}");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await httpClient.SendAsync(httpRequest);
+        var productsJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var products = JsonConvert.DeserializeObject<List<ProductView>>(productsJson);
 
             return new(true) { Data = products };
         }
@@ -76,5 +91,4 @@ public class ProductService : HttpClientBase
 
         return new(false) { ErrorMessage = deleteProductJson };
     }
-
 }
