@@ -16,6 +16,19 @@ services:
       - dev
     restart: unless-stopped
 
+  furnitureshop_api:
+    image: furnitureshop_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitreshop_api
+    ports: 
+      - "8030:80"
+    build:
+      context: src\FurnitureShop.Api
+      dockerfile: Dockerfile
+    networks:
+      - dev
+
   furnitureshop_merchant_api:
     image: furnitureshop_merchant_api
     depends_on:
@@ -26,10 +39,56 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # environment:
-      # - ConnectionString=host=dockerapi_db;port=5432;database=dockerdb;username=postgres;password=postgres;
     networks:
       - dev
+
+  furnitureshop_clinet_api:
+    image: furnitureshop_client_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitureshop_client_api
+    ports: 
+      - "8032:80"
+    build:
+       context: src\FurnitureShop.Client.Api
+       dockerfile: Dockerfile
+    networks:
+      - dev
+
+  furnitureshop_admin_api:
+    image: furnitureshop_admin_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitureshop_admin_api
+    ports:
+      - "8032:80"
+    build:
+      context: src\FurnitureShop.Admin.Api
+    networks:
+      - dev
+
+  furnitureshop_emailsender_api:
+    image: furnitureshop_emailsender_api
+    container_name: furnitureshop_emailsender_api
+    ports:
+      - "8033:80"
+    build: 
+      context: src\FurnitureShop.EmailSender.API
+    networks:
+      - dev
+
+    furnitureshop_files_api:
+      image: furnitureshop_files_api
+      container_name: furnitureshop_files_api
+      ports:
+        - "8034:80"
+      build:
+        context: src/FurnitureShop.Files.Api
+      networks: 
+        - dev
+
+
+    
 
   furniture_db:
     image: postgres:latest
