@@ -4,6 +4,7 @@
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
 @inject OrganizationService organizationService
+@inject ProductService productServcie
 <PageTitle>Organization</PageTitle>
 
 @if(organization.Id is null)
@@ -98,14 +99,11 @@
     // Product api
     private async Task GetProductAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
-
-        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Products?OrganizationId={organizationId}");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var productJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        _products = JsonConvert.DeserializeObject<List<ProductView>>(productJson);
+        var result = await productServcie.GetProductsAsync(organizationId);
+        if(result.IsSuccess)
+        {
+            _products = result.Data;
+        }
     }
 
     void OnRowClick(TableRowClickEventArgs<ProductView> args)

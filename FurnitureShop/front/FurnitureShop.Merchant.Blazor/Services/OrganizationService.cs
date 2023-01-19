@@ -10,10 +10,7 @@ namespace FurnitureShop.Merchant.Blazor.Services;
 
 public class OrganizationService : HttpClientBase
 {
-    public OrganizationService(HttpClient httpClient) : base(httpClient)
-    {
-
-    }
+    public OrganizationService(HttpClient httpClient) : base(httpClient) { }
 
     public async Task<Result<IEnumerable<OrganizationView>?>> GetOrganizationsAsync()
     {
@@ -58,7 +55,6 @@ public class OrganizationService : HttpClientBase
         var response = await httpClient.SendAsync(httpRequest);
         
         var createOrganziationJson = await response.Content.ReadAsStringAsync();
-
         if (response.IsSuccessStatusCode)
             return new(true);
 
@@ -77,5 +73,4 @@ public class OrganizationService : HttpClientBase
 
         return new(false) { ErrorMessage = deleteOrganziationJson };
     }
-
 }

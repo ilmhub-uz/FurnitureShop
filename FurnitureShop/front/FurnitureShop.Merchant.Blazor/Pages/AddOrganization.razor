@@ -1,20 +1,24 @@
 ﻿@page "/add-organization"
 @using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
 @inject NavigationManager NavManager
+@inject OrganizationService organizationService
 <PageTitle>Add Organization</PageTitle>
 
 <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
     <h2> Create Organization </h2>
     <DataAnnotationsValidator />
-    <MudTextField Label="Name"
-                  @bind-Value="model.Name" For="@(() => model.Name)" />
+    <MudTextField Label="Name" @bind-Value="model.Name" For="@(() => model.Name)" />
     <br />
     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
 </EditForm>
 
+<h1>@errorMessage</h1>
+
 @code {
     CreateOrganizationDto? model = new CreateOrganizationDto();
     AddFiles OrganizationImage = new AddFiles();
+    string errorMessage = null;
 
     protected void Redirect(string route)
     {
@@ -23,15 +27,11 @@
 
     private async Task OnValidSubmit(EditContext context)
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
+        var result = await organizationService.CreateOrganizationAsync(model);
 
-        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Organizations");
-        message.Content = JsonContent.Create(model);
-
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-        var responseMessage = await client.SendAsync(message);
-        if (responseMessage.IsSuccessStatusCode)
+        if (result.IsSuccess)
             Redirect("/organizations");
+        else
+            errorMessage = result.ErrorMessage;
     }
 }
