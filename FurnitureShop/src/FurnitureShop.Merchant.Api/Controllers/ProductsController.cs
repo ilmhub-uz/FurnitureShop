@@ -42,7 +42,7 @@ public partial class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostProduct([FromBody]CreateProductDto dtoModel)
     {
-        // var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
+        var validateResult = await _createProductValidator.ValidateAsync(dtoModel);
 
         // if (!validateResult.IsValid)
         //     return BadRequest();
@@ -86,8 +86,8 @@ public partial class ProductsController : ControllerBase
     {
         var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
         
-        // if (product!.Rates is null) 
-        //     product.Rates = new List<uint>();
+        if (product!.Rates is null) 
+            product.Rates = new List<uint>();
         
         product.Rates.Add(rate);
         await _context.SaveChangesAsync();
@@ -102,8 +102,8 @@ public partial class ProductsController : ControllerBase
     {
         var validateResult = _updateProductValidator.Validate(dtoModel);
 
-        // if (!validateResult.IsValid)
-        //     return BadRequest();
+        if (!validateResult.IsValid)
+            return BadRequest();
 
         await _productService.UpdateProduct(productId, dtoModel, User);
         await _hubContext.Clients.All.SendAsync("ChangeProduct");

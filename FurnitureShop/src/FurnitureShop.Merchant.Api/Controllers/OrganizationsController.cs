@@ -48,10 +48,10 @@ public class OrganizationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
     {
-        // var validateResult = _createOrganizationValitor.Validate(createOrganizationDto);
-        //
-        // if (!validateResult.IsValid)
-        //     return BadRequest();
+        var validateResult = _createOrganizationValitor.Validate(createOrganizationDto);
+
+        if (!validateResult.IsValid)
+            return BadRequest();
 
         await _organizationService.AddOrganization(User, createOrganizationDto);
         await _hubContext.Clients.All.SendAsync("ChangeOrganization");
@@ -63,10 +63,10 @@ public class OrganizationsController : ControllerBase
     [IdValidation]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
     {
-        // var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);
-        //
-        // if (!validateResult.IsValid)
-        //     return BadRequest();
+        var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);
+
+        if (!validateResult.IsValid)
+            return BadRequest();
 
         await _organizationService.UpdateOrganization(organizationId, updateOrganizationDto);
         await _hubContext.Clients.All.SendAsync("ChangeOrganization");
