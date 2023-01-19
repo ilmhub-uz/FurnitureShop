@@ -3,11 +3,12 @@ using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Client.Api.Services;
-
+[Scoped]
 public class ContractService : IContractService
 {
     private readonly IUnitOfWork _unitOfWork;
