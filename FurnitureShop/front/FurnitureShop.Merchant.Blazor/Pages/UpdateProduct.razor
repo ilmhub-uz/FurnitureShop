@@ -1,0 +1,66 @@
+﻿@page "/update-product/{productId}/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@inject NavigationManager NavManager
+@inject ProductService prodcutService
+
+<PageTitle>Update Product</PageTitle>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" HelperText="Max. 8 characters" @bind-Value="model.Name" For="@(() => model.Name)" />
+                    <MudTextField Label="Description" HelperText="Max. 8 characters" @bind-Value="model.Description" For="@(() => model.Description)" />
+                    <MudTextField Label="Brend" HelperText="Max. 8 characters" @bind-Value="model.Brend" For="@(() => model.Brend)" />
+                    <MudTextField Label="Material" HelperText="Max. 8 characters" @bind-Value="model.Material" For="@(() => model.Material)" />
+                    <MudTextField Label="Price" HelperText="Max. 8 characters" @bind-Value="model.Price" For="@(() => model.Price)" />
+                    <MudTextField Label="Count" HelperText="Max. 8 characters" @bind-Value="model.Count" For="@(() => model.Count)" />
+                    <MudTextField Label="Category" HelperText="Max. 8 characters" @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+<h1>@errorMessage</h1>
+
+@code {
+    [Parameter]
+    public string? productId { get; set; }
+
+    [Parameter]
+    public string? organizationId { get; set; }
+
+    string errorMessage = null;
+
+    UpdateProductDto? model = new UpdateProductDto();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/product/{@productId}");
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        model.WithInstallation = true;
+        model.IsAvailable = true;
+        model.OrganizationId = new Guid(organizationId);
+
+        var result = await prodcutService.UpdateProductAsync(model, productId);
+
+        if (result.IsSuccess)
+        {
+            Redirect();
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage;
+        }
+    }
+}
