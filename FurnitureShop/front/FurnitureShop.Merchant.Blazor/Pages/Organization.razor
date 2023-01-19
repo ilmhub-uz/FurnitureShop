@@ -1,7 +1,9 @@
 ﻿@page "/organization/{organizationId}"
 @using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
+@inject OrganizationService organizationService
 <PageTitle>Organization</PageTitle>
 
 @if(organization.Id is null)
@@ -44,14 +46,16 @@
             <MudTh>Name</MudTh>
             <MudTh>Status</MudTh>
             <MudTh>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OpenDrawer(Anchor.End))">Add product</MudButton>
+                <a href="/add-product/@organizationId">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
+                </a>
             </MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Status">@context.Status</MudTd>
             <MudTh DataLabel="Button">
-                <a href="/organization/@context.Id">
+                <a href="/product/@context.Id">
                     <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
                 </a>
             </MudTh>
@@ -67,58 +71,10 @@
     <h1>You have not any products</h1>
 }
 
-<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
-    <h4> Create Porduct </h4>
-    <DataAnnotationsValidator />
-    <MudTextField Label="Name" HelperText="Max. 8 characters"
-                    @bind-Value="model.Name" For="@(() => model.Name)" />
-    <MudTextField Label="Description" HelperText="Max. 8 characters"
-                    @bind-Value="model.Description" For="@(() => model.Description)" />
-    <MudTextField Label="Brend" HelperText="Max. 8 characters"
-                    @bind-Value="model.Brend" For="@(() => model.Brend)" />
-    <MudTextField Label="Material" HelperText="Max. 8 characters"
-                    @bind-Value="model.Material" For="@(() => model.Material)" />
-    <MudTextField Label="Price" HelperText="Max. 8 characters"
-                    @bind-Value="model.Price" For="@(() => model.Price)" />
-    <MudTextField Label="Count" HelperText="Max. 8 characters"
-                    @bind-Value="model.Count" For="@(() => model.Count)" />
-    <MudTextField Label="Category" HelperText="Max. 8 characters"
-                    @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
-    <br />
-    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
-</EditForm>
-
-@code {
-    bool open;
-    Anchor anchor;
-
-    void OpenDrawer(Anchor anchor)
-    {
-        open = true;
-        this.anchor = anchor;
-    }
-
-    CreateProductDto? model = new CreateProductDto();
-    //AddFiles OrganizationImage = new AddFiles();
-
-    string? error = null;
-
-    private async Task OnValidSubmit(EditContext context)
-    {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
-        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Products");
-        message.Content = JsonContent.Create(model);
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var responseMessage = await client.SendAsync(message);
-    }
-}
-
 @code{
 
     private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
-    private static IEnumerable<ProductView> _products = new List<ProductView>();
+    private static List<ProductView> _products = new List<ProductView>();
     private bool _selectOnRowClick = true;
     private MudTable<ProductView>? _table;
     private string _selectedItemText = "No row clicked";
@@ -132,16 +88,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
-
-        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations/{organizationId}");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var organizationJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        organization = JsonConvert.DeserializeObject<OrganizationView>(organizationJson);
-
-        await GetProductAsync();
+        var result = await organizationService.GetOrganizationByIdAsync(organizationId);
+        if(result.IsSuccess)
+        {
+            organization = result.Data;
+            await GetProductAsync();
+        }
     }
     // Product api
     private async Task GetProductAsync()
@@ -153,7 +105,7 @@
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var productJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        _products = JsonConvert.DeserializeObject<IEnumerable<ProductView>>(productJson);
+        _products = JsonConvert.DeserializeObject<List<ProductView>>(productJson);
     }
 
     void OnRowClick(TableRowClickEventArgs<ProductView> args)

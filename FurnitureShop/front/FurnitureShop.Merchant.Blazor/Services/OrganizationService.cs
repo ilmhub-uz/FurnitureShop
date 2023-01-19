@@ -19,6 +19,7 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
         var response = await httpClient.SendAsync(httpRequest);
         var organizationsJson = await response.Content.ReadAsStringAsync();
 
@@ -35,6 +36,7 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations/{id}");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
         var response = await httpClient.SendAsync(httpRequest);
         var organziationJson = await response.Content.ReadAsStringAsync();
 
@@ -51,8 +53,10 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/Organizations");
         httpRequest.Content = JsonContent.Create(createOrganizationDto);
+        
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
         var response = await httpClient.SendAsync(httpRequest);
+        
         var createOrganziationJson = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
@@ -64,6 +68,7 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"/api/Organizations/{id}");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
         var response = await httpClient.SendAsync(httpRequest);
         var deleteOrganziationJson = await response.Content.ReadAsStringAsync();
 

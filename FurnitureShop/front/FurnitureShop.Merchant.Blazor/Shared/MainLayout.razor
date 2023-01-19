@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Net
+@inherits LayoutComponentBase
+@inject NavigationManager NavManager
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -30,5 +32,19 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+}
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/Profile");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var responseMessage = await client.SendAsync(message);
+
+        if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            NavManager.NavigateTo("/signin");
     }
 }
