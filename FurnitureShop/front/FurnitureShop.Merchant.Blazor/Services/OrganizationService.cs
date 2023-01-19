@@ -10,15 +10,13 @@ namespace FurnitureShop.Merchant.Blazor.Services;
 
 public class OrganizationService : HttpClientBase
 {
-    public OrganizationService(HttpClient httpClient) : base(httpClient)
-    {
-
-    }
+    public OrganizationService(HttpClient httpClient) : base(httpClient) { }
 
     public async Task<Result<IEnumerable<OrganizationView>?>> GetOrganizationsAsync()
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Organizations");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
         var response = await httpClient.SendAsync(httpRequest);
         var organizationsJson = await response.Content.ReadAsStringAsync();
 
@@ -35,6 +33,7 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/Organizations/{id}");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
         var response = await httpClient.SendAsync(httpRequest);
         var organziationJson = await response.Content.ReadAsStringAsync();
 
@@ -51,10 +50,11 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/Organizations");
         httpRequest.Content = JsonContent.Create(createOrganizationDto);
+        
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
         var response = await httpClient.SendAsync(httpRequest);
+        
         var createOrganziationJson = await response.Content.ReadAsStringAsync();
-
         if (response.IsSuccessStatusCode)
             return new(true);
 
@@ -64,6 +64,7 @@ public class OrganizationService : HttpClientBase
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"/api/Organizations/{id}");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
         var response = await httpClient.SendAsync(httpRequest);
         var deleteOrganziationJson = await response.Content.ReadAsStringAsync();
 
@@ -72,5 +73,4 @@ public class OrganizationService : HttpClientBase
 
         return new(false) { ErrorMessage = deleteOrganziationJson };
     }
-
 }
