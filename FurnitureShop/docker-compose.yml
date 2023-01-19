@@ -1,20 +1,19 @@
 version: '3.7'
 
 services:
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-       - pgadmin:/var/lib/pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
+
+  furnitureshop_api:
+    image: furnitureshop_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitreshop_api
+    ports: 
+      - "8030:80"
+    build:
+      context: src/FurnitureShop.Api
+      dockerfile: Dockerfile
     networks:
       - dev
-    restart: unless-stopped
 
   furnitureshop_merchant_api:
     image: furnitureshop_merchant_api
@@ -24,11 +23,57 @@ services:
     ports:
       - "8031:80"
     build:
-      context: .
+      context: src/FurnitureShop.Merchant.Api
       dockerfile: Dockerfile
-    # environment:
-      # - ConnectionString=host=dockerapi_db;port=5432;database=dockerdb;username=postgres;password=postgres;
     networks:
+      - dev
+
+  furnitureshop_clinet_api:
+    image: furnitureshop_client_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitureshop_client_api
+    ports: 
+      - "8032:80"
+    build:
+       context: src/FurnitureShop.Client.Api
+       dockerfile: Dockerfile
+    networks:
+      - dev
+
+  furnitureshop_admin_api:
+    image: furnitureshop_admin_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitureshop_admin_api
+    ports:
+      - "8032:80"
+    build:
+      context: src/FurnitureShop.Admin.Api
+      dockerfile: Dockerfile
+    networks:
+      - dev
+
+  furnitureshop_emailsender_api:
+    image: furnitureshop_emailsender_api
+    container_name: furnitureshop_emailsender_api
+    ports:
+      - "8033:80"
+    build: 
+      context: src/FurnitureShop.EmailSender.API
+      dockerfile: Dockerfile
+    networks:
+      - dev
+
+  furnitureshop_files_api:
+    image: furnitureshop_files_api
+    container_name: furnitureshop_files_api
+    ports:
+      - "8034:80"
+    build:
+      context: src/FurnitureShop.Files.Api
+      dockerfile: Dockerfile
+    networks: 
       - dev
 
   furniture_db:
