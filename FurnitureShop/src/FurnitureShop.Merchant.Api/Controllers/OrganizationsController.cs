@@ -48,10 +48,10 @@ public class OrganizationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
     {
-        var validateResult = _createOrganizationValitor.Validate(createOrganizationDto);
+        //var validateResult = _createOrganizationValitor.Validate(createOrganizationDto);
 
-        if (!validateResult.IsValid)
-            return BadRequest();
+        //if (!validateResult.IsValid)
+        //    return BadRequest();
 
         await _organizationService.AddOrganization(User, createOrganizationDto);
         await _hubContext.Clients.All.SendAsync("ChangeOrganization");
