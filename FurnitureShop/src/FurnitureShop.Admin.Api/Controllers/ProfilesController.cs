@@ -1,6 +1,5 @@
 using FurnitureShop.Admin.Api.Dtos;
 using FurnitureShop.Admin.Api.ViewModel;
-using FurnitureShop.Common.Extensions;
 using FurnitureShop.Data.Entities;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
@@ -9,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Admin.Api.Controllers;
 
-[Route("api/profiles")]
 [ApiController]
+[Route("api/[controller]")]
 public class ProfilesController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager ;
+    private readonly UserManager<AppUser> _userManager;
 
     public ProfilesController(UserManager<AppUser> userManager)
     {
@@ -35,6 +34,7 @@ public class ProfilesController : ControllerBase
         if (user is null) return BadRequest();
         user.Email = updateProfile.Email;
         user.FirstName = updateProfile.FirstName;
+        user.LastName = updateProfile.LastName;
         user.UserName = updateProfile.UserName;
         await _userManager.UpdateAsync(user);
         return Ok();

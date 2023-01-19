@@ -73,7 +73,8 @@ public class OrganizationService : IOrganizationService
                 ImageUrl = organization.ImageUrl,
                 Status = organization.Status,
                 Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
-                Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList()
+                Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+                Owner = organization.Users.FirstOrDefault(u => u.Role == 0).User.Adapt<UserView>()
             });
         }
 
@@ -85,7 +86,16 @@ public class OrganizationService : IOrganizationService
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
 
-        return organization!.Adapt<OrganizationView>();
+        return new OrganizationView()
+        {
+            Id = organization.Id,
+            Name = organization.Name,
+            ImageUrl = organization.ImageUrl,
+            Status = organization.Status,
+            Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
+            Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+            Owner = organization.Users.FirstOrDefault(u => u.Role == 0).User.Adapt<UserView>()
+        };
     }
 
     public async Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto)
@@ -127,6 +137,15 @@ public class OrganizationService : IOrganizationService
         if(organization is null)
             throw new NotFoundException<Organization>();
 
-        return organization.Adapt<OrganizationView>();
+        return new OrganizationView()
+        {
+            Id = organization.Id,
+            Name = organization.Name,
+            ImageUrl = organization.ImageUrl,
+            Status = organization.Status,
+            Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
+            Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+            Owner = organization.Users.FirstOrDefault(u => u.Role == 0).User.Adapt<UserView>()
+        };
     }
 }

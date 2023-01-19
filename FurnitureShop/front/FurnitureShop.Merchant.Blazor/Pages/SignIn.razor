@@ -1,0 +1,42 @@
+﻿@page "/signin"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@inject NavigationManager NavManager
+<PageTitle>Sign in</PageTitle>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <h2> Log in </h2>
+    <DataAnnotationsValidator />
+    <MudTextField Label="UserName"
+                  @bind-Value="model.UserName" For="@(() => model.UserName)" />
+    <MudTextField Label="Password"
+                  @bind-Value="model.Password" For="@(() => model.Password)" />
+    <br />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+</EditForm>
+<a href="/signup">create accaunt</a>
+
+
+@code {
+
+    LoginUserDto model = new LoginUserDto();
+
+    protected void Redirect(string route = "/")
+    {
+        NavManager.NavigateTo(route);
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:1009");
+        
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/signin");
+        message.Content = JsonContent.Create(model);
+        
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var responseMessage = await client.SendAsync(message);
+
+        if (responseMessage.IsSuccessStatusCode)
+            Redirect();
+    }
+}

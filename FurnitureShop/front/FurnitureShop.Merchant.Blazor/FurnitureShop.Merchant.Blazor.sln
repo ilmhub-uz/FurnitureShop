@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureShop.Merchant.Blazor", "FurnitureShop.Merchant.Blazor.csproj", "{9EC2C6AF-4E8E-4F6F-8B76-36E7A0C632E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FurnitureShop.Merchant.Blazor", "FurnitureShop.Merchant.Blazor.csproj", "{53DFE736-BF90-475C-9D1F-8B3D5E51253C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9EC2C6AF-4E8E-4F6F-8B76-36E7A0C632E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EC2C6AF-4E8E-4F6F-8B76-36E7A0C632E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EC2C6AF-4E8E-4F6F-8B76-36E7A0C632E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EC2C6AF-4E8E-4F6F-8B76-36E7A0C632E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53DFE736-BF90-475C-9D1F-8B3D5E51253C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53DFE736-BF90-475C-9D1F-8B3D5E51253C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53DFE736-BF90-475C-9D1F-8B3D5E51253C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53DFE736-BF90-475C-9D1F-8B3D5E51253C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1289D348-B414-456B-A6C4-3756C5DCEA0B}
+		SolutionGuid = {9E21B5F8-FB15-49F4-A851-7FA16902FF38}
 	EndGlobalSection
 EndGlobal

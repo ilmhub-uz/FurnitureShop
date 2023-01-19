@@ -24,6 +24,8 @@ public class ProductsService : IProductsService
     {
         var existingProducts = _unitOfWork.Products.GetAll();
 
+        if(filter.ProductId is not null)
+            existingProducts = existingProducts.Where(p => p.Id == filter.ProductId);
         if (filter.OrganizationId is not null)
             existingProducts = existingProducts.Where(o => o.OrganizationId == filter.OrganizationId);
         if (filter.CategoryId is not null)

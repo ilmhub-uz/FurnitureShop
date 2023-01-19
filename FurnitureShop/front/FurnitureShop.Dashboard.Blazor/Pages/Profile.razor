@@ -1,0 +1,30 @@
+﻿@page "/profile"
+@using FurnitureShop.Dashboard.Blazor.ViewModel
+@using Newtonsoft.Json
+
+@inject HttpClient client
+
+<h3>Profile</h3>
+
+
+
+<p1>First name: @user.FirstName</p1><br />
+<p1>Last Name:  @user.LastName</p1><br />
+<p1>Username: @user.UserName</p1><br />
+<p1>Gmail: @user.Email</p1><br />
+
+
+
+
+@code {
+    private UserView user = new UserView();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var message = new HttpRequestMessage(HttpMethod.Get, "/api/profiles");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
+        user = JsonConvert.DeserializeObject<UserView>(profileJson);
+    }
+}
