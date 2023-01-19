@@ -6,6 +6,7 @@ using FurnitureShop.Merchant.Blazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddScoped<OrganizationService>();
+builder.Services.AddScoped<ProductService>();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
