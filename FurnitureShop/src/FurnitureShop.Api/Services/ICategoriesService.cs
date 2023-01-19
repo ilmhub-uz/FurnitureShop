@@ -5,6 +5,6 @@ namespace FurnitureShop.Api.Services;
 
 public interface ICategoriesService
 {
-    Task<List<CategoryView>> GetCategoriesAsync(PaginationParams paginationParams);
+    Task<List<CategoryView>> GetCategoriesAsync();
     CategoryView GetCategoryById(int categoryId);
 }
