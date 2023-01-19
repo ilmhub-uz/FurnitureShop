@@ -4,89 +4,63 @@
 @inject ProductService ProductService
 
 <MudGrid>
-<MudItem xs="4">
-    <div class="images">
-        <div class="product-image">
-            <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                      Alt="" Class="image" />
-        </div>
-        <div class="stars">
-            @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
-            <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-            <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-            <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-            <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-            <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-        </div>
-        <div class="product-name">
-
-            <h3>
-
-                Table Galleon leather
-            </h3>
-            <p>
-
-                Description
-            </p>
-        </div>
-        <div class="product-price">
-            <h4 class="price">
-
-                500$
-            </h4>
-        </div>
-        <p>
-            Views:
-            999+
-        </p>
-    </div>
-</MudItem>
-@if (products is null)
+    @if (products is null)
     {
-        <MudText Align="Align.Center"><b>Null <i>Products</i></b></MudText>
-    }
-else
-{
-    foreach (var product in products)
-    {
-        <MudItem xs="4">
-            <div class="images">
-                <div class="product-image">
-                    <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                              Alt="" Class="image"/>
-                </div>
-                <div class="stars">
-                    @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
-                    <MudIcon Icon="@Icons.Filled.Star"/> @*To'liq yuldiz*@
-                    <MudIcon Icon="@Icons.Filled.Star"/> @*To'liq yuldiz*@
-                    <MudIcon Icon="@Icons.Filled.Star"/> @*To'liq yuldiz*@
-                    <MudIcon Icon="@Icons.Filled.StarBorder"/> @*Bo'sh yulduz*@
-                    <MudIcon Icon="@Icons.Filled.StarBorder"/> @*Bo'sh yulduz*@
-                </div>
-                <div class="product-name">
-
-                    <h3>
-                        @product.Name
-                    </h3>
+        @for (var i = 0; i < 10; i++)
+        {
+            <MudItem xs="12" sm="3">
+                <div class="images">
+                    <div class="product-image">
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                  Alt="" Class="image" />
+                    </div>
+                    <div class="d-flex flex-column align-center">
+                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
+                    </div>
+                    <div class="product-name">
+                        <h3>Table Galleon leather</h3>
+                        <p>Description</p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">500$</h4>
+                    </div>
                     <p>
-                        @product.Description
+                        Views: 999+
                     </p>
                 </div>
-                <div class="product-price">
-                    <h4 class="price">
-                        @product.Price
-                    </h4>
-                </div>
-                <p>
-                    @product.Views
-                </p>
-            </div>
-        </MudItem>
-
+            </MudItem>
+        }
+        
     }
-}
+    else
+    {
+        foreach (var product in products)
+        {
+            <MudItem xs="12" sm="3">
+                <div class="images">
+                    <div class="product-image">
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                  Alt="" Class="image" />
+                    </div>
+                    <div class="d-flex flex-column align-center">
+                        <MudRating ReadOnly="true" SelectedValue="@product.Rate" style="color: yellow !important;"/>
+                    </div>
+                    <div class="product-name">
+                        <h3>@product.Name</h3>
+                        <p>@product.Description</p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">@product.Price $</h4>
+                    </div>
+                    <p>
+                        Views: @product.Views
+                    </p>
+                </div>
+            </MudItem>
+        }
+    }
 </MudGrid>
-
+@*
 @if (products is not null)
 {
     @foreach (var product in products)
@@ -105,9 +79,11 @@ else
         </MudCard>
     }
 }
+*@
 
 @code {
     private List<ProductView>? products;
+    
     protected override async Task OnInitializedAsync() => products = await ProductService.GetProductsAsync();
 }
 
