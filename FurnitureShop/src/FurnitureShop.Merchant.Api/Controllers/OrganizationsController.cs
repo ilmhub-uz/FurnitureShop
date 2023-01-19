@@ -60,13 +60,13 @@ public class OrganizationsController : ControllerBase
 
     [Authorize(EPermission.CanUpdateOrganization)]
     [HttpPut("{organizationId:guid}")]
-    [IdValidation]
+    //[IdValidation]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
     {
-        var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);
+        //var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);
 
-        if (!validateResult.IsValid)
-            return BadRequest();
+        //if (!validateResult.IsValid)
+        //    return BadRequest();
 
         await _organizationService.UpdateOrganization(organizationId, updateOrganizationDto);
         await _hubContext.Clients.All.SendAsync("ChangeOrganization");

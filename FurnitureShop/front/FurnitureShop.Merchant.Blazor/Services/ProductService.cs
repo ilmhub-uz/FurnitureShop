@@ -78,6 +78,21 @@ public class ProductService : HttpClientBase
 
         return new(false) { ErrorMessage = createProductJson };
     }
+    public async Task<Result> UpdateProductAsync(UpdateProductDto updateProductDto, string productId)
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Put, $"/api/Products/{productId}");
+        httpRequest.Content = JsonContent.Create(updateProductDto);
+
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var response = await httpClient.SendAsync(httpRequest);
+
+        var updateProductJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+            return new(true);
+
+        return new(false) { ErrorMessage = updateProductJson };
+    }
     public async Task<Result> DeleteProductAsync(string id)
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"/api/Products/{id}");

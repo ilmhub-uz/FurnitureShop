@@ -60,6 +60,20 @@ public class OrganizationService : HttpClientBase
 
         return new(false) { ErrorMessage = createOrganziationJson };
     }
+    public async Task<Result> UpdateOrganizationAsync(UpdateOrganizationDto updateOrganizationDto, string organizationId)
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Put, $"/api/Organizations/{organizationId}");
+        httpRequest.Content = JsonContent.Create(updateOrganizationDto);
+
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var response = await httpClient.SendAsync(httpRequest);
+
+        var updateOrganziationJson = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+            return new(true);
+
+        return new(false) { ErrorMessage = updateOrganziationJson };
+    }
     public async Task<Result> DeleteOrganizationAsync(string id)
     {
         var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"/api/Organizations/{id}");
