@@ -48,9 +48,11 @@
         </div>
     </div>
 }
-
 @if(_products.Count() > 0)
 {
+    <div class="container text-center">
+        <h1 class="text-center">Products</h1>
+    </div>
     <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
         <HeaderContent>
@@ -80,6 +82,10 @@
     </MudTable>
 }else{
     <h1>You have not any products</h1>
+    
+    <a href="/add-product/@organizationId">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
+    </a>
 }
 
 @code{
