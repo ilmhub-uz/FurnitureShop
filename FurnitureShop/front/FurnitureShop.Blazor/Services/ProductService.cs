@@ -13,18 +13,25 @@ namespace FurnitureShop.Blazor.Services
 
         public async Task<List<ProductView>?> GetProductsAsync()
         {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/products");
-
-            httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-            var response = await httpClient.SendAsync(httpRequest);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var productsJson = await response.Content.ReadAsStringAsync();
-                var products = JsonConvert.DeserializeObject<List<ProductView>>(productsJson);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/products");
 
-                return products;
+                httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+                var response = await httpClient.SendAsync(httpRequest);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var productsJson = await response.Content.ReadAsStringAsync();
+                    var products = JsonConvert.DeserializeObject<List<ProductView>>(productsJson);
+
+                    return products;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
             return null;
@@ -32,18 +39,25 @@ namespace FurnitureShop.Blazor.Services
 
         public async Task<ProductView?> GetProductByIdAsync(Guid id)
         {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"api/products/{id}");
-
-            httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-            var response = await httpClient.SendAsync(httpRequest);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var productJson = await response.Content.ReadAsStringAsync();
-                var product = JsonConvert.DeserializeObject<ProductView>(productJson);
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"api/products/{id}");
 
-                return product;
+                httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+                var response = await httpClient.SendAsync(httpRequest);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var productJson = await response.Content.ReadAsStringAsync();
+                    var product = JsonConvert.DeserializeObject<ProductView>(productJson);
+
+                    return product;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
             return null;
