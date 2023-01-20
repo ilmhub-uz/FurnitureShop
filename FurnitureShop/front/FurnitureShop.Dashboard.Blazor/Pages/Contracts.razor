@@ -19,7 +19,6 @@ else
             <MudTh>User Id</MudTh>
             <MudTh>Product Count</MudTh>
             <MudTh>Total Price</MudTh>
-            <MudTh>Edit</MudTh>
             <MudTh>Delete</MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -28,7 +27,6 @@ else
             <MudTd DataLabel="User Id">@context.UserId</MudTd>
             <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
             <MudTd DataLabel="Price">@context.TotalPrice</MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async () => await DeleteContract(@context.Id))" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary">Edit</MudButton></MudTd>
             <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteContract(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
         </RowTemplate>
         <PagerContent>

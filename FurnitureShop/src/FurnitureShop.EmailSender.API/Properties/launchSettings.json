@@ -3,10 +3,10 @@
     "FurnitureShop.EmailSender.API": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:61315;http://localhost:61316",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:61315;http://localhost:61316"
+      }
     }
   }
 }

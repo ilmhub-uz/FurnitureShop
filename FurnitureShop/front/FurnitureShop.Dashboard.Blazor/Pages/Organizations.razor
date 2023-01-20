@@ -17,14 +17,12 @@ else
             <MudTh>Id</MudTh>
             <MudTh>Name</MudTh>
             <MudTh>Status</MudTh>
-            <MudTh>Edit</MudTh>
             <MudTh>Delete</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Id">@context.Id</MudTd>
             <MudTd DataLabel="Organization">@context.Name</MudTd>
             <MudTd DataLabel="Status">@context.Status</MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async () => await DeleteOrganization(@context.Id))" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary">Edit</MudButton></MudTd>
             <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteOrganization(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
         </RowTemplate>
         <PagerContent>
