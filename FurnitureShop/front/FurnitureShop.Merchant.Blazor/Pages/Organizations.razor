@@ -5,33 +5,42 @@
 @inject OrganizationService organizationService
 <PageTitle>Organizations</PageTitle>
 <h1>All Your Organizations</h1>
-<MudTable Style="padding: 10px;" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+@if(_organizations.Count() > 0)
+{
+    <MudTable Style="padding: 10px;" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Status</MudTh>
-        <MudTh>
-            <a href="/add-organization">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">Add organization</MudButton>
-            </a>
-        </MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Status">@context.Status</MudTd>
-        <MudTh DataLabel="Button">
-            <a href="/organization/@context.Id">
-                <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
-            </a>
-        </MudTh>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-    </PagerContent>
-    <FooterContent>
-        <MudTd colspan="5">Select All</MudTd>
-    </FooterContent>
-</MudTable>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>
+                <a href="/add-organization">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add organization</MudButton>
+                </a>
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTh DataLabel="Button">
+                <a href="/organization/@context.Id">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                </a>
+            </MudTh>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+}else{
+    <h1>You have not any Organizations</h1>
+    <a href="/add-organization">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Add organization</MudButton>
+    </a>
+}
+
 
 @code {
     private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
