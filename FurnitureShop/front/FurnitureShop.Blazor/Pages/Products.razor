@@ -16,8 +16,11 @@
                                       Alt="" Class="image"/>
                         </a>
                     </div>
-                    <div class="d-flex flex-column align-center">
-                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
+                    <div class="align-center">
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning"/>
+                        }
                     </div>
                     <a href="/product">
                         <div>
@@ -47,7 +50,24 @@
                         </a>
                     </div>
                     <div class="d-flex flex-column align-center">
-                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            if(i <= product.Rate)
+                            {
+                                <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning"/>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Filled.StarBorder" Color="Color.Warning"/>
+                            }
+                        }
+                    </div>
+                    <div class="product-name">
+                        <h3>@product.Name</h3>
+                        <p>@product.Description</p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">@product.Price $</h4>
                     </div>
                     <a href="/product">
                         <div>

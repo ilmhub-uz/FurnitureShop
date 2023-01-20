@@ -1,4 +1,4 @@
-﻿@page "/product"
+﻿@page "/product/{productId}"
 @using FurnitureShop.Blazor.Pages.ViewModel
 @using FurnitureShop.Blazor.Services
 @inject ProductService ProductService
@@ -64,40 +64,22 @@
     
     void IncrementCount()
     {
-        currentCount++;
+        if(product is not null && currentCount < product.Count)
+            currentCount++;
     }
     void DecrementCount()
     {
         if(currentCount > 0)
             currentCount--;
     }
-    
-    
-}
-
-@if (products is null)
-{
-    <MudText Align="Align.Center"><b>Null <i>Products</i></b></MudText>
-}
-else
-{
-    foreach (var product in products)
-    {
-        <div class="product" style="display: flex">
-            <div class="imgDiv">
-                <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                          Alt="" Class="image"/>
-            </div>
-            <div class="properties">
-        
-            </div>
-        </div>
-    }
 }
 
 @code {
-    private List<ProductView>? products;
-    protected override async Task OnInitializedAsync() => products = await ProductService.GetProductsAsync();
+    [Parameter]
+    private string productId { get; set; }
+    
+    private ProductView? product;
+    protected override async Task OnInitializedAsync() => product = await ProductService.GetProductByIdAsync(Guid.Parse(productId));
 }
 
 <style>

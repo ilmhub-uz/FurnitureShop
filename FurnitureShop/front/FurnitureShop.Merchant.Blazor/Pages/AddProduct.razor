@@ -1,53 +1,69 @@
 ﻿@page "/add-product/{organizationId}"
 @using FurnitureShop.Merchant.Blazor.Dtos
 @using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject HttpClient httpClient
+@inject OrganizationService organizationService
 @inject NavigationManager NavManager
 @inject ProductService productService
+
 <PageTitle>Add Product</PageTitle>
 
-<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@model">
+    <h2> Create Product </h2>
     <DataAnnotationsValidator />
-    <MudGrid>
-        <MudItem xs="12" sm="7">
-            <MudCard>
-                <MudCardContent>
-                    <MudTextField Label="Name" HelperText="Max. 8 characters" @bind-Value="model.Name" For="@(() => model.Name)" />
-                    <MudTextField Label="Description" HelperText="Max. 8 characters" @bind-Value="model.Description" For="@(() => model.Description)" />
-                    <MudTextField Label="Brend" HelperText="Max. 8 characters" @bind-Value="model.Brend" For="@(() => model.Brend)" />
-                    <MudTextField Label="Material" HelperText="Max. 8 characters" @bind-Value="model.Material" For="@(() => model.Material)" />
-                    <MudTextField Label="Price" HelperText="Max. 8 characters" @bind-Value="model.Price" For="@(() => model.Price)" />
-                    <MudTextField Label="Count" HelperText="Max. 8 characters" @bind-Value="model.Count" For="@(() => model.Count)" />
-                    <MudTextField Label="Category" HelperText="Max. 8 characters" @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
+        <MudTextField Label="Name" @bind-Value="model.Name" For="@(() => model.Name)" />
+        <MudTextField Label="Description" @bind-Value="model.Description" For="@(() => model.Description)" />
+        <MudTextField Label="Brend" @bind-Value="model.Brend" For="@(() => model.Brend)" />
+        <MudTextField Label="Material" @bind-Value="model.Material" For="@(() => model.Material)" />
+        <MudTextField Label="Price" @bind-Value="model.Price" For="@(() => model.Price)" />
+        <MudTextField Label="Count" @bind-Value="model.Count" For="@(() => model.Count)" />
+        <MudTextField Label="Category" @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+    <br />
+    <MudButton @onclick="(async () => await OnValidSubmit())" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
 </EditForm>
 
 @code {
+    bool _isExpanded = true;
+    CreateProductDto? model = new CreateProductDto();
     bool success;
+    AddFiles OrganizationImage = new AddFiles();
+    string errorMessage = null;
+    
+    List<CategoryView?> _categories = new List<CategoryView?>();
+
     [Parameter]
     public string? organizationId { get; set; }
 
-    CreateProductDto? model = new CreateProductDto();
-
-    protected void Redirect(string route)
+    protected void Redirect()
     {
-        NavManager.NavigateTo(route);
+        NavManager.NavigateTo($"/organization/{organizationId}");
     }
 
-    private async Task OnValidSubmit(EditContext context)
+    protected override async Task OnInitializedAsync()
     {
+
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Categories");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
+        var response = await httpClient.SendAsync(httpRequest);
+        var categoriesJson = await response.Content.ReadAsStringAsync();
+
+        _categories = JsonConvert.DeserializeObject<List<CategoryView>>(categoriesJson);
+    }
+
+    private async Task OnValidSubmit()
+    {
+        model.WithInstallation = true;
+        model.IsAvailable = true;
         model.OrganizationId = new Guid(organizationId);
         var result = await productService.CreateProductAsync(model);
         if(result.IsSuccess)
         {
             success = true;
             StateHasChanged();
-            Redirect("/organizations");
+            Redirect();
         }
     }
 }

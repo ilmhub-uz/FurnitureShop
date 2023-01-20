@@ -20,11 +20,11 @@ public class CategoriesService : ICategoriesService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<CategoryView>> GetCategoriesAsync(PaginationParams paginationParams)
+    public async Task<List<CategoryView>> GetCategoriesAsync()
     {
         var categories = await _unitOfWork.Categories.GetAll()
             .Where(c => c.ParentId == null)
-            .ToPagedListAsync(paginationParams);
+            .ToListAsync();
 
         var categoriesViewList = new List<CategoryView>();
 

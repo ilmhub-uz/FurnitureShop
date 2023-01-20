@@ -86,6 +86,10 @@ public static class ServiceCollectionExtensions
                                 "http://localhost:1010",    // Merchant API HTTP
                                 "http://localhost:2010",    // Merchant Blazor HTTP
                                 "https://localhost:7777",    // Email Sender Api HTTPS
+                                "http://localhost:2001",    // Email Sender Api HTTPS
+                                "http://localhost:2003",    // Email Sender Api HTTPS
+                                "http://localhost:2005",    // Email Sender Api HTTPS
+                                "http://localhost:2009",    // Email Sender Api HTTPS
                                 "http://localhost:7778")    // Email Sender Api HTTP
                     .AllowAnyHeader()
                     .AllowAnyMethod()
