@@ -3,7 +3,6 @@
 @using FurnitureShop.Merchant.Blazor.Services
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
-@inject EmployeeService employeeService
 @inject OrganizationService organizationService
 @inject ProductService productServcie
 @inject NavigationManager NavManager
@@ -106,8 +105,15 @@
     <MudTabPanel Text="Tab Three">
         <MudText>Content Three</MudText>
     </MudTabPanel>
-    <MudTabPanel Text="Tab Disabled" Disabled="true">
-        <MudText>Content Disabled</MudText>
+    <MudTabPanel Text="Contract" Disabled="true">
+        @if (_products.Count() > 0)
+        {
+
+        }
+        else
+        {
+            <h1>You have not any products</h1>
+        }
     </MudTabPanel>
 </MudTabs>
 

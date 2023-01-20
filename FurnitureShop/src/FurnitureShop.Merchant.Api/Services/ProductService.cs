@@ -69,10 +69,10 @@ public class ProductService : IProductService
             var userId = Guid.Parse(principal.GetUserId());
             existingProducts = existingProducts.Where(p => p.OrganizationId == sortingFilter.OrganizationId && p.AuthorId == userId);
         }
-        else
-        {
-            existingProducts = existingProducts.Where(p => p.OrganizationId == sortingFilter.OrganizationId);
-        }
+        // else
+        // {
+        //     existingProducts = existingProducts.Where(p => p.OrganizationId == sortingFilter.OrganizationId);
+        // }
 
         if (sortingFilter.Brend is not null)
             existingProducts = existingProducts.Where(p => p.Brend == sortingFilter.Brend);

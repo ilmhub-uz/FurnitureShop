@@ -37,13 +37,13 @@
                     View: @_product.Views
                 </p>
 
-                <duv style="margin-top: 10px;" class="d-flex">
-                    <a style="margin-right:30px;" href="/update-product/@productId/@_product.OrganizationId">
-                        <MudButton Variant="Variant.Filled" Color="Color.Warning">Update</MudButton>
-                    </a>
+            </div>
+            <div style="margin-top: 10px;" class="d-flex">
+                <a style="margin-right:30px;" href="/update-product/@productId/@_product.OrganizationId">
+                    <MudButton Variant="Variant.Filled" Color="Color.Warning">Update</MudButton>
+                </a>
 
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@DeleteProduct">Delete</MudButton>
-                </duv>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@DeleteProduct">Delete</MudButton>
             </div>
         </div>
     </div>
