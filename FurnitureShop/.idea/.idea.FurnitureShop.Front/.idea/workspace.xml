@@ -10,6 +10,16 @@
   <component name="ChangeListManager">
     <list default="true" id="863863af-c421-4c24-87ee-9376d8c91923" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Category.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Category.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Index.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Index.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Products.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Products.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Shared/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Shared/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Contracts.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Contracts.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Orders.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Orders.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Organizations.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Dashboard.Blazor/Pages/Organizations.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.Api/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.Api/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FurnitureShop.EmailSender.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/FurnitureShop.EmailSender.API/Properties/launchSettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,6 +138,7 @@
       <workItem from="1673778912397" duration="501000" />
       <workItem from="1674142074725" duration="2997000" />
       <workItem from="1674145964663" duration="616000" />
+      <workItem from="1674221214572" duration="6006000" />
     </task>
     <servers />
   </component>
