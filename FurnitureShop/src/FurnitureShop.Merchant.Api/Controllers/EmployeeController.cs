@@ -33,13 +33,13 @@ public class EmployeeController : ControllerBase
 
     [Authorize(EPermission.CanCreateEmployee)]
     [HttpPost]
-    public IActionResult AddEmployee([FromBody] AddEmployeeDto dto)
+    public async Task<IActionResult> AddEmployee([FromBody] AddEmployeeDto dto)
     {
         //var validationResult = validator.Validate(dto);
         //if (!validationResult.IsValid)
         //    throw new ValidationException(validationResult.Errors);
 
-        _employeeService.AddEmployee(User, dto);
+        await _employeeService.AddEmployee(User, dto);
         return Ok();
     }
 
