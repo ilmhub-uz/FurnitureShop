@@ -12,51 +12,37 @@ namespace FurnitureShop.Blazor.Services
 
         public async Task<List<CategoryView>?> GetCategoriesAsync()
         {
-            try
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/categories");
+
+            httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+            var response = await httpClient.SendAsync(httpRequest);
+
+            if (response.IsSuccessStatusCode)
             {
-                var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/categories");
+                var categoriesJson = await response.Content.ReadAsStringAsync();
+                var categories = JsonConvert.DeserializeObject<List<CategoryView>>(categoriesJson);
 
-                httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-                var response = await httpClient.SendAsync(httpRequest);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var categoriesJson = await response.Content.ReadAsStringAsync();
-                    var categories = JsonConvert.DeserializeObject<List<CategoryView>>(categoriesJson);
-
-                    return categories;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                return categories;
             }
 
             return null;
         }
-        
+
         public async Task<CategoryView?> GetCategoryByIdAsync(int categoryId)
         {
-            try
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"api/categories/{categoryId}");
+
+            httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+            var response = await httpClient.SendAsync(httpRequest);
+
+            if (response.IsSuccessStatusCode)
             {
-                var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"$api/categories/{categoryId}");
+                var categoryJson = await response.Content.ReadAsStringAsync();
+                var category = JsonConvert.DeserializeObject<CategoryView>(categoryJson);
 
-                httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-                var response = await httpClient.SendAsync(httpRequest);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var categoryJson = await response.Content.ReadAsStringAsync();
-                    var category = JsonConvert.DeserializeObject<CategoryView>(categoryJson);
-
-                    return category;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                return category;
             }
 
             return null;

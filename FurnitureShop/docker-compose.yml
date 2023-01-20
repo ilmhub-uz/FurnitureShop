@@ -8,10 +8,10 @@ services:
       - "furniture_db"
     container_name: furnitreshop_api
     ports: 
-      - "8030:80"
+      - "1001:80"
     build:
-      context: src/FurnitureShop.Api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileApi
     networks:
       - dev
 
@@ -21,23 +21,23 @@ services:
       - "furniture_db"
     container_name: furnitureshop_merchant_api
     ports:
-      - "8031:80"
+      - "1009:80"
     build:
-      context: src/FurnitureShop.Merchant.Api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileMerchant
     networks:
       - dev
 
-  furnitureshop_clinet_api:
+  furnitureshop_client_api:
     image: furnitureshop_client_api
     depends_on:
       - "furniture_db"
     container_name: furnitureshop_client_api
     ports: 
-      - "8032:80"
+      - "1005:80"
     build:
-       context: src/FurnitureShop.Client.Api
-       dockerfile: Dockerfile
+       context: .
+       dockerfile: DockerfileClient
     networks:
       - dev
 
@@ -49,19 +49,8 @@ services:
     ports:
       - "8032:80"
     build:
-      context: src/FurnitureShop.Admin.Api
-      dockerfile: Dockerfile
-    networks:
-      - dev
-
-  furnitureshop_emailsender_api:
-    image: furnitureshop_emailsender_api
-    container_name: furnitureshop_emailsender_api
-    ports:
-      - "8033:80"
-    build: 
-      context: src/FurnitureShop.EmailSender.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileAdmin
     networks:
       - dev
 
@@ -71,8 +60,8 @@ services:
     ports:
       - "8034:80"
     build:
-      context: src/FurnitureShop.Files.Api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileFiles
     networks: 
       - dev
 

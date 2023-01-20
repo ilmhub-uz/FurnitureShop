@@ -8,11 +8,13 @@
     {
         @for (var i = 0; i < 10; i++)
         {
-            <MudItem xs="12" sm="3">
+            <MudItem xs="12" sm="3" md="4">
                 <div class="images">
                     <div class="product-image">
-                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                                  Alt="" Class="image" />
+                        <a href="/product">
+                            <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                      Alt="" Class="image"/>
+                        </a>
                     </div>
                     <div class="align-center">
                         @for (var i = 1; i <= 5; i++)
@@ -20,16 +22,16 @@
                             <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning"/>
                         }
                     </div>
-                    <div class="product-name">
-                        <h3>Table Galleon leather</h3>
-                        <p>Description</p>
-                    </div>
-                    <div class="product-price">
-                        <h4 class="price">500$</h4>
-                    </div>
-                    <p>
-                        Views: 999+
-                    </p>
+                    <a href="/product">
+                        <div>
+                            <div class="product-name">
+                                <h3>Table Galleon leather</h3>
+                                <p>Description</p>
+                            </div>
+                            <div class="product-price"><h4 class="price">500$</h4></div>
+                            <p>Views: 999+</p>
+                        </div>
+                    </a>
                 </div>
             </MudItem>
         }
@@ -39,11 +41,13 @@
     {
         foreach (var product in products)
         {
-            <MudItem xs="12" sm="3">
+            <MudItem xs="12" sm="3" md="4">
                 <div class="images">
                     <div class="product-image">
-                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                                  Alt="" Class="image" />
+                        <a href="/product">
+                            <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                      Alt="" Class="image"/>
+                        </a>
                     </div>
                     <div class="d-flex flex-column align-center">
                         @for (var i = 1; i <= 5; i++)
@@ -65,9 +69,16 @@
                     <div class="product-price">
                         <h4 class="price">@product.Price $</h4>
                     </div>
-                    <p>
-                        Views: @product.Views
-                    </p>
+                    <a href="/product">
+                        <div>
+                            <div class="product-name">
+                                <h3>Table Galleon leather</h3>
+                                <p>Description</p>
+                            </div>
+                            <div class="product-price"><h4 class="price">500$</h4></div>
+                            <p>Views: 999+</p>
+                        </div>
+                    </a>
                 </div>
             </MudItem>
         }

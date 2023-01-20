@@ -11,7 +11,7 @@
 <div class="container d-flex" style="padding: 0 50px;">
     <div style="border-radius:10px; width:300px; height:300px; background-color: #999; margin-right:10px;">
         <img style="margin-top:25px; margin-left:17px; background-position:center; padding:20px; width:250px; height;200px; border-radius:50%; background-size:cover;" src="https://mudblazor.com/images/sweden.jpg" />
-        <h3 style="margin-left:20px; color:#fff; font-size:20px;">@user.FirstName @user.LastName</h3>
+        <h3 style="text-align:center; margin-left:20px; color:#fff; font-size:20px;">@user.FirstName @user.LastName</h3>
     </div>
     <div style="padding:20px; border-radius:10px; width:700px; height:300px; background-color: #999;">
         <div class="d-flex">
@@ -66,12 +66,12 @@
         </div>
         
         <div class="d-flex" style="margin-left:20px;">
-            <a style="margin-right:30px;" href="/update-profile/@user.Id">
+            <a style="margin-right:30px;" href="/update-profile">
                 <MudButton Variant="Variant.Filled" Color="Color.Warning">Update</MudButton>
             </a>
 
             <a style="margin-right:30px;" href="">
-                <MudButton Variant="Variant.Filled" Color="Color.Error">Log out</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@LogOut">Log out</MudButton>
             </a>
         </div>
     </div>
@@ -97,9 +97,9 @@
         user = JsonConvert.DeserializeObject<UserView>(profileJson);
     }
 
-    @* public async Task LogOut()
+    public async Task LogOut()
     {
-        var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"/api/Products/{id}");
+        var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/logout");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var response = await httpClient.SendAsync(httpRequest);
@@ -107,5 +107,5 @@
 
         if (response.IsSuccessStatusCode)
             Redirect();
-    } *@
+    }
 }

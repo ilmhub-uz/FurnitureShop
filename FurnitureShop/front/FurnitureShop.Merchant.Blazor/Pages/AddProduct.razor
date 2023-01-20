@@ -7,7 +7,9 @@
 @inject OrganizationService organizationService
 @inject NavigationManager NavManager
 @inject ProductService productService
+
 <PageTitle>Add Product</PageTitle>
+
 <EditForm Model="@model">
     <h2> Create Product </h2>
     <DataAnnotationsValidator />
@@ -21,15 +23,7 @@
     <br />
     <MudButton @onclick="(async () => await OnValidSubmit())" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
 </EditForm>
-@if(_categories.Count() > 0)
-{
-    <MudSelect T="CategoryView?" Label="Price (Datatype: double?)" Clearable="true" Required="true">
-    @foreach (CategoryView? category in _categories)
-    {
-        <MudSelectItem Value="@category.Name" />
-    }
-    </MudSelect>
-}
+
 @code {
     bool _isExpanded = true;
     CreateProductDto? model = new CreateProductDto();
