@@ -35,5 +35,31 @@ namespace FurnitureShop.Blazor.Services
 
             return null;
         }
+        
+        public async Task<CategoryView?> GetCategoryByIdAsync(int categoryId)
+        {
+            try
+            {
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"$api/categories/{categoryId}");
+
+                httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+                var response = await httpClient.SendAsync(httpRequest);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var categoryJson = await response.Content.ReadAsStringAsync();
+                    var category = JsonConvert.DeserializeObject<CategoryView>(categoryJson);
+
+                    return category;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return null;
+        }
     }
 }
