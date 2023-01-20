@@ -32,7 +32,7 @@ public class OrganizationsController : ControllerBase
     }
 
 
-    [Authorize(EPermission.CanReadOrganization)]
+    //[Authorize(EPermission.CanReadOrganization)]
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<OrganizationView>>> GetOrganizations([FromQuery]OrganizationSortingFilter filter) 
@@ -44,7 +44,7 @@ public class OrganizationsController : ControllerBase
     public async Task<ActionResult<OrganizationView>> GetOrganizationById(Guid organizationId) =>
         await _organizationService.GetOrganizationByIdAsync(organizationId);
 
-    [Authorize(EPermission.CanCreateOrganization)]
+    //[Authorize(EPermission.CanCreateOrganization)]
     [HttpPost]
     public async Task<IActionResult> CreateOrganization([FromBody] CreateOrganizationDto createOrganizationDto)
     {
@@ -58,7 +58,7 @@ public class OrganizationsController : ControllerBase
         return Ok();
     }
 
-    [Authorize(EPermission.CanUpdateOrganization)]
+    //[Authorize(EPermission.CanUpdateOrganization)]
     [HttpPut("{organizationId:guid}")]
     //[IdValidation]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
@@ -73,7 +73,7 @@ public class OrganizationsController : ControllerBase
         return Ok();
     }
 
-    [Authorize(EPermission.CanDeleteOrganization)]
+    //[Authorize(EPermission.CanDeleteOrganization)]
     [HttpDelete("{organizationId:guid}")]
     [IdValidation]
     public async Task<IActionResult> DeleteOrganization(Guid organizationId)
@@ -83,7 +83,7 @@ public class OrganizationsController : ControllerBase
         return Ok();    
     }
 
-    [Authorize(EPermission.CanReadOrganization)]
+   // [Authorize(EPermission.CanReadOrganization)]
     [HttpGet("{organizationName}")]
     public async Task<ActionResult<OrganizationView>> GetOrganizationByName(string organizationName) =>
         await _organizationService.GetOrganizationByNameAsync(organizationName);
