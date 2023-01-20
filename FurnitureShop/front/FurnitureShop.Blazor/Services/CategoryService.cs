@@ -40,7 +40,7 @@ namespace FurnitureShop.Blazor.Services
         {
             try
             {
-                var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"$api/categories/{categoryId}");
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"api/categories/{categoryId}");
 
                 httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 

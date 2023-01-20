@@ -12,12 +12,11 @@
     <projectFile profileName="Mudblazor.Template">front/FurnitureShop.Merchant.Blazor/FurnitureShop.Merchant.Blazor.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="863863af-c421-4c24-87ee-9376d8c91923" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_01_23__20_24__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_01_23__20_24__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_01_23__20_24__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_01_23__20_24__Changes_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_01_23__20_26__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_19_01_23__20_26__Changes_.xml" afterDir="false" />
+    <list default="true" id="863863af-c421-4c24-87ee-9376d8c91923" name="Changes" comment="implemented GetCategoryById in marketplace blazor service">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Checkout_at_1_20_2023_6_59_PM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Update_at_1_20_2023_6_37_PM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/shelf/Uncommitted_changes_before_Update_at_1_20_2023_6_59_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FurnitureShop.Front/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Category.razor" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Pages/Category.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Services/CategoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/front/FurnitureShop.Blazor/Services/CategoryService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,11 +27,14 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="Ogabek/marketplace-blazor-service" />
       </map>
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/FurnitureShop/FurnitureShop/front/FurnitureShop.Blazor/Pages/Category.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/FurnitureShop/FurnitureShop/front/FurnitureShop.Blazor/Pages/Category.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/FurnitureShop/FurnitureShop/front/FurnitureShop.Blazor/Services/CategoryService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/FurnitureShop/FurnitureShop/front/FurnitureShop.Blazor/Services/CategoryService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/FurnitureShop/FurnitureShop/front/FurnitureShop.Blazor/Services/CategoryService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/FurnitureShop/FurnitureShop/front/FurnitureShop.Blazor/Services/CategoryService.cs" root0="SKIP_HIGHLIGHTING" />
