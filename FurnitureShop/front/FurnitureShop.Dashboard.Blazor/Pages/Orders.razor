@@ -1,0 +1,58 @@
+@page "/orders"
+@using FurnitureShop.Dashboard.Blazor.ViewModel
+@inject HttpClient client
+
+<PageTitle>Orders</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+@if (_orderViews == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="_orderViews" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Organization Name</MudTh>
+            <MudTh>User Name</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Create Date</MudTh>
+            <MudTh>Last Date</MudTh>
+            <MudTh>Sub Count</MudTh>
+            <MudTh>Edit</MudTh>
+            <MudTh>Delete</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Organization Id">@context.OrganizationId</MudTd>
+            <MudTd DataLabel="User Id">@context.UserId</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTd DataLabel="Create Data">@context.CreatedAt</MudTd>
+            <MudTd DataLabel="Last Data">@context.LastUpdatedAt</MudTd>
+            <MudTd DataLabel="Sub Count">@context.OrderProducts.Count</MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async () => await DeleteOrganization(@context.Id))" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary">Edit</MudButton></MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteOrganization(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 50, 100 }"/>
+        </PagerContent>
+    </MudTable>
+}
+@code {
+    private List<OrderView>? _orderViews;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _orderViews = await client.GetFromJsonAsync<List<OrderView>>("/api/Products");
+    }
+
+    private async Task DeleteOrganization(Guid orderId)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Orders?order={orderId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+    }
+}

@@ -60,7 +60,7 @@ public class OrganizationsController : ControllerBase
 
     [Authorize(EPermission.CanUpdateOrganization)]
     [HttpPut("{organizationId:guid}")]
-    [IdValidation]
+    //[IdValidation]
     public async Task<IActionResult> UpdateOrganization(Guid organizationId, [FromBody] UpdateOrganizationDto updateOrganizationDto)
     {
         //var validateResult = _updateOrganizationValidator.Validate(updateOrganizationDto);

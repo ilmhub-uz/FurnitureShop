@@ -1,4 +1,4 @@
-@page "/OrganizationEmployees"
+@page "/OrganizationEmployees/{organizationId}/{employeeType}"
 @using Newtonsoft.Json
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @inject HttpClient httpClient;
@@ -26,34 +26,29 @@
 
 @code {
     [Parameter]
-    public string? organizationId { get; set; }
+    public string organizationId { get; set; }
     [Parameter]
     public string employeeType { get; set; }
-
+    
     public string json { get; set; }
     public List<UserView> employees { get; set; }
-
+    
     protected override async Task OnInitializedAsync()
     {
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:1009");
         var message = new HttpRequestMessage();
-
-        switch (employeeType)
-        {
-            case "owner":
-                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
-                break;
-            case "managers":
-                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/managers/{organizationId}");
-                break;
-            case "sellers":
-                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/sellers/{organizationId}");
-                break;
-            default:
-                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
-                break;
-        }
+        
+        if(employeeType == "owner")
+            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
+        
+        if(employeeType == "managers")
+            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/managers/{organizationId}");
+        
+        if(employeeType == "sellers")
+            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/sellers/{organizationId}");
+        else
+            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
 
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 

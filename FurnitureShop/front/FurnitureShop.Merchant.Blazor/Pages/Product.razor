@@ -1,66 +1,79 @@
 ﻿@page "/product/{productId}"
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
+@using FurnitureShop.Merchant.Blazor.Services
+@inject ProductService productServcie
+@inject NavigationManager NavManager
 <PageTitle>Product</PageTitle>
 
-if()
-    <div class="container">
-        <div class="row d-flex">
-            <div class="col-md-6">
-                <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
-            </div>
+<div class="container">
+    <div class="row d-flex">
+        <div class="col-md-6">
+            <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+        </div>
 
-            <div class="col-md-6 py-3">
-                <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@_product.Name</h1>
-                <p style="color: #666; margin-bottom: 10px;">
-                    @_product.Description
+        <div class="col-md-6 py-3">
+            <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@_product.Name</h1>
+            <p style="color: #666; margin-bottom: 10px;">
+                @_product.Description
+            </p>
+
+            <p>
+                Brend: @_product.Brend
+            </p>
+            <br />
+            <div class="d-flex">
+                <p style="color:#555; margin-bottom:10px; margin-right:30px;">
+                    Price: <span style="color: #444; font-weight:bold; font-size: 15px;">
+                        @_product.Price$
+                    </span>
                 </p>
 
-                <p>
-                    Brend: @_product.Brend
+                <p style="margin-right:30px;">
+                    Count: @_product.Count
                 </p>
-                <br />
-                <div class="d-flex">
-                    <p style="color:#555; margin-bottom:10px; margin-right:30px;">
-                        Price: <span style="color: #444; font-weight:bold; font-size: 15px;">
-                            @_product.Price
-                        </span>
-                    </p>
-
-                    <p>
-                        Count: @_product.Count
-                    </p>
-                </div>
-
-                <p>
+          
+                <p style="margin-right:40px;">
                     View: @_product.Views
                 </p>
+
+                <duv style="margin-top: 10px;" class="d-flex">
+                    <a style="margin-right:30px;" href="/update-product/@productId/@_product.OrganizationId">
+                        <MudButton Variant="Variant.Filled" Color="Color.Warning">Update</MudButton>
+                    </a>
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@DeleteProduct">Delete</MudButton>
+                </duv>
             </div>
         </div>
     </div>
-
-@*foreach (var property in _product.Properties)
-{
-    <p>@property.Key: @property.Value</p>
-    <br />
-}
-*@
+</div>
 
 @code {
     [Parameter]
     public string? productId { get; set; }
 
-    ProductView _product = new ProductView(); 
+    ProductView _product = new ProductView();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/organization/{_product.OrganizationId}");
+    }
+    
 
     protected override async Task OnInitializedAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:1009");
+        var result = await productServcie.GetProductByIdAsync(productId);
+        if(result.IsSuccess)
+        {
+            _product = result.Data;
+        }
+    }
 
-        var message = new HttpRequestMessage(HttpMethod.Get, $"/api/Products/{productId}");
-        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-
-        var productJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
-        _product = JsonConvert.DeserializeObject<ProductView>(productJson);
+    private async Task DeleteProduct()
+    {
+        var result = await productServcie.DeleteProductAsync(productId);
+        if (result.IsSuccess)
+            Redirect();
     }
 }

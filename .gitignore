@@ -351,3 +351,10 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /FurnitureShop/src/FurnitureShop.Common/CommonSettings.json
+/FurnitureShop/src/FurnitureShop.Admin/Properties/launchSettings.json
+/FurnitureShop/src/FurnitureShop.Api/Properties/launchSettings.json
+/FurnitureShop/src/FurnitureShop.Client.Api/Properties/launchSettings.json
+/FurnitureShop/src/FurnitureShop.Client.Api/Properties/launchSettings.json
+/FurnitureShop/src/FurnitureShop.Files.Api/Properties/launchSettings.json
+/FurnitureShop/src/FurnitureShop.Merchant.Api/Properties/launchSettings.json
+/FurnitureShop/front/FurnitureShop.Dashboard.Blazor/Program.cs
