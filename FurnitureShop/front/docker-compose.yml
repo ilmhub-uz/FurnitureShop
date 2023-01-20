@@ -1,39 +1,11 @@
 version: '3.7'
 
 services:
-
-  furnitureshop_blazor:
-    image: furnitureshop_blazor
-    container_name: furnitureshop_blazor
+  furnitureshop_merchant:
+    image: furnitureshop_merchant
+    container_name: furnitureshop_merchant
     ports:
-      - "2001:80"
-    build:
-      context: FurnitureShop.Blazor
-      dockerfile: Dockerfile
-
-  furnitureshop_client_blazor:
-    image: furnitureshop_client_blazor
-    container_name: furnitureshop_client_blazor
-    ports:
-      - "2005:80"
-    build:
-      context: FurnitureShop.Client.Blazor
-      dockerfile: Dockerfile
-
-  furnitureshop_dashboard_blazor:
-    image: furnitureshop_dashboard_blazor
-    container_name: furnitureshop_dashboard_blazor
-    ports:
-      - "2003:80"
-    build:
-      context: FurnitureShop.Dashboard.Blazor
-      dockerfile: Dockerfile
-
-  furnitureshop_merchant_blazor:
-    image: furnitureshop_merchant_blazor
-    container_name: furnitureshop_merchant_blazor
-    ports:
-      - "2009:80"
+      - "8021:80"
     build:
       context: FurnitureShop.Merchant.Blazor
       dockerfile: Dockerfile

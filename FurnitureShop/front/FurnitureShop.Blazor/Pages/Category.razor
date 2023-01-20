@@ -1,6 +1,5 @@
 ﻿@page "/category/{categoryId}"
-@using FurnitureShop.Blazor.Services
-@inject CategoryService CategoryService
+@inject HttpClient Http
 
 <PageTitle>Category</PageTitle>
 
@@ -26,11 +25,11 @@
             <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
         </div>
 
-        @if(category.Children is not null){
-            foreach (var categoryChildren in category.Children)
+        @if(categories is not null){
+            foreach (var category in categories)
             {
                 <div class="category">
-                    <h3 class="text-center">@categoryChildren.Name</h3>
+                    <h3 class="text-center">@category.Children</h3>
                     <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
                 </div>
             }
@@ -71,10 +70,10 @@
     [Parameter]
     public int categoryId { get; set; }
 
-    private CategoryView? category;
+    private CategoryView[]? categories;
 
     protected override async Task OnInitializedAsync()
     {
-        category = await CategoryService.GetCategoryByIdAsync(categoryId);
+        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235/api/Categories/{categoryId}/children");
     }
 }

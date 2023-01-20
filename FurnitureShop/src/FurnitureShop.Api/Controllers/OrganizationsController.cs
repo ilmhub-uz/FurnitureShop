@@ -20,8 +20,8 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<OrganizationView>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations() =>
-        await _organizationService.GetOrganizationsAsync();
+    public async Task<ActionResult<List<OrganizationView>>> GetOrganizations([FromQuery] PaginationParams paginationParams) =>
+        await _organizationService.GetOrganizationsAsync(paginationParams);
 
     [HttpGet("{organizationId:guid}")]
     [ProducesResponseType(typeof(OrganizationView), StatusCodes.Status200OK)]

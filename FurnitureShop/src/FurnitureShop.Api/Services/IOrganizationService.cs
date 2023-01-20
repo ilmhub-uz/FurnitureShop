@@ -5,6 +5,6 @@ namespace FurnitureShop.Api.Services;
 
 public interface IOrganizationService
 {
-    Task<List<OrganizationView>> GetOrganizationsAsync();
+    Task<List<OrganizationView>> GetOrganizationsAsync(PaginationParams paginationParams);
     Task<OrganizationView> GetOrganizationByIdAsync(Guid organizationId);
 }

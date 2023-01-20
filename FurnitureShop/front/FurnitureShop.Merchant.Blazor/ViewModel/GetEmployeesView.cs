@@ -1,5 +1,5 @@
 ﻿namespace FurnitureShop.Merchant.Blazor.ViewModel;
-public class GetEmployeeView
+public class GetEmployeesView
 {
     public string UserId { get; set; }
     public string? FirstName { get; set; }

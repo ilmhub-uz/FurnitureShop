@@ -20,9 +20,9 @@ public class OrganizationService : IOrganizationService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<OrganizationView>> GetOrganizationsAsync()
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(PaginationParams paginationParams)
     {
-        var organizations = await _unitOfWork.Organizations.GetAll().ToListAsync();
+        var organizations = await _unitOfWork.Organizations.GetAll().ToPagedListAsync(paginationParams);
 
         return organizations.ToList().Adapt<List<OrganizationView>>();
     }

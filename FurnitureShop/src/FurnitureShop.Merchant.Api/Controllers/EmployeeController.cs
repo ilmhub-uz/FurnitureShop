@@ -59,7 +59,7 @@ public class EmployeeController : ControllerBase
         => await _employeeService.GetStaff(organizationId);
 
     [Authorize(EPermission.CanDeleteEmployee)]
-    [HttpDelete]
+    [HttpDelete("{organizationId:guid}")]
     public async Task RemoveEmployee([FromBody] RemoveEmployeeDto dto)
     {
         //var validationResult = _removeEmployeeValidator.Validate(dto);
