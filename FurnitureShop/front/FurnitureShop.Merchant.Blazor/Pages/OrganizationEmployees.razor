@@ -28,7 +28,7 @@
 
 @code {
     [Parameter]
-    public string organizationId { get; set; }
+    public string? organizationId { get; set; }
     [Parameter]
     public string employeeType { get; set; }
 
@@ -56,18 +56,6 @@
                 message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
                 break;
         }
-
-        //if(employeeType == "owner")
-        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
-        
-        //else if(employeeType == "managers")
-        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/managers/{organizationId}");
-        
-        //else if(employeeType == "sellers")
-        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/sellers/{organizationId}");
-        
-        //else
-        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
 
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
