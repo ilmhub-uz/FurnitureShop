@@ -26,9 +26,9 @@ public class ProfileController : ControllerBase
 
 
     [HttpGet]
-    [ProducesResponseType(typeof(UserView), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
-    [Authorize(EPermission.CanReadProfile)]
+    //[ProducesResponseType(typeof(UserView), StatusCodes.Status200OK)]
+    //[ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
+   // [Authorize(EPermission.CanReadProfile)]
     public async Task<IActionResult> UserProfile()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -37,7 +37,7 @@ public class ProfileController : ControllerBase
 
 
     [HttpPut]
-    [Authorize(EPermission.CanUpdateProfile)]
+    //[Authorize(EPermission.CanUpdateProfile)]
     public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateUserDto updateUserDto)
     {
         var result = _updateuservalidator.Validate(updateUserDto);
