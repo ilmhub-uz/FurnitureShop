@@ -38,7 +38,7 @@
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:1009");
         var message = new HttpRequestMessage();
-        
+    
         if(employeeType == "owner")
             message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
         
