@@ -7,12 +7,22 @@
 
 <h4>@organizationId</h4>
 
-@foreach(var employee in employees)
-{
-    <p>@employee.FirstName"</p> 
-    <p>@employee.Email</p>
-    <p>@employee.Id</p>
-}
+<MudTable Items="@employees.Take(4)" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>UserName</MudTh>
+        <MudTh>FirstName</MudTh>
+        <MudTh>LastName</MudTh>
+        <MudTh>Email</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="UserName">@context.UserName</MudTd>
+        <MudTd DataLabel="FirstName">@context.FirstName</MudTd>
+        <MudTd DataLabel="LastName">@context.LastName</MudTd>
+        <MudTd DataLabel="Email">@context.Email</MudTd>
+    </RowTemplate>
+</MudTable>
 
 @code {
     [Parameter]
