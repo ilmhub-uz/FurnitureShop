@@ -1,4 +1,4 @@
-@page "/OrganizationEmployees/{organizationId}/{employeeType}"
+@page "/OrganizationEmployees"
 @using Newtonsoft.Json
 @using FurnitureShop.Merchant.Blazor.ViewModel
 @inject HttpClient httpClient;
@@ -7,38 +7,67 @@
 
 <h4>@organizationId</h4>
 
-@foreach(var employee in employees)
-    {
-        <p>@employee.FirstName"</p> 
-        <p>@employee.Email</p>
-        <p>@employee.Id</p>
-    }
+<MudTable Items="@employees.Take(4)" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>UserName</MudTh>
+        <MudTh>FirstName</MudTh>
+        <MudTh>LastName</MudTh>
+        <MudTh>Email</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="UserName">@context.UserName</MudTd>
+        <MudTd DataLabel="FirstName">@context.FirstName</MudTd>
+        <MudTd DataLabel="LastName">@context.LastName</MudTd>
+        <MudTd DataLabel="Email">@context.Email</MudTd>
+    </RowTemplate>
+</MudTable>
+
+
 
 @code {
     [Parameter]
     public string organizationId { get; set; }
     [Parameter]
     public string employeeType { get; set; }
-    
+
     public string json { get; set; }
     public List<UserView> employees { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:1009");
         var message = new HttpRequestMessage();
+
+        switch (employeeType)
+        {
+            case "owner":
+                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
+                break;
+            case "managers":
+                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/managers/{organizationId}");
+                break;
+            case "sellers":
+                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/sellers/{organizationId}");
+                break;
+            default:
+                message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
+                break;
+        }
+
+        //if(employeeType == "owner")
+        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
         
-        if(employeeType == "owner")
-            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/owner/{organizationId}");
+        //else if(employeeType == "managers")
+        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/managers/{organizationId}");
         
-        if(employeeType == "managers")
-            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/managers/{organizationId}");
+        //else if(employeeType == "sellers")
+        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/sellers/{organizationId}");
         
-        if(employeeType == "sellers")
-            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/sellers/{organizationId}");
-        else
-            message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
+        //else
+        //    message = new HttpRequestMessage(HttpMethod.Get, $"/api/employee/allstaff/{organizationId}");
 
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
