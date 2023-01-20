@@ -61,9 +61,10 @@ public class OrderService : IOrderService
         {
             UserId = userId,
             OrganizationId = orgId,
-            Organization = product1.Organization,
+            //Organization = product1.Organization,
             Status = EOrderStatus.Created,
             CreatedAt = DateTime.UtcNow,
+            LastUpdatedAt = DateTime.UtcNow,
         };
 
         var createorder = await _unitOfWork.Orders.AddAsync(newOrder);
@@ -82,15 +83,19 @@ public class OrderService : IOrderService
        var order = await _unitOfWork.Orders.Update(createorder);
 
         if (order is null) return new OrderView();
-
+        var organization = _unitOfWork.Organizations.GetById(orgId);
+        if (organization is null)
+            throw new BadHttpRequestException("Org is null");
+        var userName = claims.FindFirstValue(ClaimTypes.Name);
+        var userEmail = claims.FindFirstValue(ClaimTypes.Email);
         var orderView = new OrderView()
         {
             Id = order.Id,
             CreatedAt = order.CreatedAt,
             Status = order.Status,
-            OrganizationName = order.Organization.Name,
-            UserName = order.User.UserName,
-            UserMail = order.User.Email,
+            OrganizationName = organization.Name,
+            UserName = userName,
+            UserMail = userEmail,
             OrderProducts = order.Adapt<List<OrderProductView>>(),
         };
 

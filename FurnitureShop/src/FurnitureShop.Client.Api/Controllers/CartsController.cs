@@ -25,7 +25,7 @@ public class CartsController : ControllerBase
         _createUserValidator = createUserValidator;
     }
 
-    [Authorize(EPermission.CanReadCart)]
+    //[Authorize(EPermission.CanReadCart)]
     [ProducesResponseType(typeof(List<CartProductView>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpGet]
@@ -34,7 +34,7 @@ public class CartsController : ControllerBase
         return Ok(await _cartService.GetUserCart(paginationParams, User));
     }
 
-    [Authorize(EPermission.CanCreateCart)]
+    //Authorize(EPermission.CanCreateCart)]
     [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpPost]
@@ -49,7 +49,7 @@ public class CartsController : ControllerBase
         return Ok();
     }
 
-    [Authorize(EPermission.CanDeleteFromCart)]
+    //[Authorize(EPermission.CanDeleteFromCart)]
     [ProducesResponseType(typeof(NotFoundResult), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpDelete("{productId}")]
@@ -59,7 +59,7 @@ public class CartsController : ControllerBase
         return Ok();
     }
 
-    [Authorize(EPermission.CanDeleteFromCart)]
+    //[Authorize(EPermission.CanDeleteFromCart)]
     [ProducesResponseType(typeof(OkResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     [HttpDelete]

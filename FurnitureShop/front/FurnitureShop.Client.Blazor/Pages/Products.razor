@@ -10,87 +10,120 @@
     }
 </head>
 
-<body>
-    <div class="row mt-1" style="display: flex; flex-wrap:wrap; justify-content: flex-start">
+<div class="container-fluid bg-trasparent my-4 p-3" style="position: relative">
+    <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
         @foreach (var product in productViews ?? new List<ProductView>())
         {
             var url = $"/ProductDetails/{product.Id}";
-            @*<a href="/ProductDetails/@product.Id">
-                <MudPaper Class="pa-16 ma-2" Elevation="3">
-                    <div class="col-md-3 mb-2">
-                        <div class="card">
-                            <MudText Typo="Typo.body1"><b>Name: </b>@product.Name</MudText>
-                            <MudText Typo="Typo.body1"><b>Price: </b>@product.Price</MudText>
-                            <img class="img-thumbnail" style="border-bottom:2px solid black; margin-bottom:2px" src="images/Furniture3.png" height="200" width="250">
-                            <MudText Typo="Typo.body1">@product.Description</MudText>
-                        </div>
-                    </div>
-                </MudPaper>
-            </a>*@
+            <div class="col hp">
+                <div class="card h-100 shadow-sm">
+                    <a  href=@url>
+                        <img src="https://m.media-amazon.com/images/I/81gK08T6tYL._AC_SL1500_.jpg" class="card-img-top" alt="product.title" />
+                    </a>
 
-            @*<section style="background-color: #eee;">*@
-                <div class="container py-5">
-                    <div class="row justify-content-center mb-3">
-                        <div class="col-md-12 col-xl-10">
-                            <div class="card shadow-0 border rounded-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                                            <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(4).webp"
-                                                 class="w-100" />
-                                                <a href="#!">
-                                                    <div class="hover-overlay">
-                                                        <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-6 col-xl-6">
-                                            <h5>@product.Name</h5>
-                                            <div class="d-flex flex-row">
-                                                <div class="text-danger mb-1 me-2">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <span>@product.Count</span>
-                                            </div>
-                                            <p class="text-truncate mb-4 mb-md-0">
-                                                @product.Description
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
-                                            <div class="d-flex flex-row align-items-center mb-1">
-                                                <h4 class="mb-1 me-1">@product.Price</h4>
-                                            </div>
-                                            <h6 class="text-success">Free shipping</h6>
-                                            <div class="d-flex flex-column mt-4">
-                                                <a href=@url class="btn btn-primary btn-sm" type="button">Details</a>
-                                            <button @onclick="(()=>{AddToCartProduct(product.Id);})" class="btn btn-outline-primary btn-sm mt-2" type="button">
-                                                    Add to wishlist
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="label-top shadow-sm">
+                        <p>@product.Name</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="clearfix mb-3">
+                            <span class="float-start badge rounded-pill bg-success">@product.Price</span>
+
+                            <span class="float-end"><a href="#" class="small text-muted text-uppercase aff-link">reviews</a></span>
+                        </div>
+                        <h5 class="card-title">
+                            @product.Description
+                        </h5>
+
+                        <div class="d-grid gap-2 my-4">
+
+                            <MudButton @onclick="()=>Plusclick(product.Id)" Variant="Variant.Filled" Color="Color.Primary">
+                                @if (_cartProducts.Any(t => t.Id == product.Id))
+                                {
+                                    <MudButton width="10px" @onclick="()=>Minusclick(product.Id)">-</MudButton>
+                                    <MudText>@_cartProducts.First(cp => cp.Id == product.Id).Count</MudText>
+                                    <MudButton width="10px" @onclick="()=>Plusclick(product.Id)">+</MudButton>
+                                }
+                                else
+                                {
+                                    <MudText>Add To Cart</MudText>
+                                }
+                            </MudButton>
+
+                        </div>
+                        <div class="clearfix mb-1">
+
+                            <span class="float-start"><a href="#"><i class="fas fa-question-circle"></i></a></span>
+
+                            <span class="float-end">
+                            </span>
                         </div>
                     </div>
                 </div>
-          @*  </section>*@
+            </div>
         }
-    </div>
-    <hr class="mb-3" />
+            </div>
+</div>
+    @code{
+    private List<CartProducts> _cartProducts = new List<CartProducts>();
 
-    <h3 class="mb-5">Products</h3>
-
-    @foreach (var organization in organizationViews)
+    public class CartProducts
     {
-        <td> <img src="@organization.ImageURL" height="150" width="200">@organization.Name</td>
+        public Guid Id { get; set; }
+        public int Count { get; set; }
+        public  CartProducts(Guid id, int count)
+        {
+            Id = id;
+            Count = count;
+        }
     }
-</body>
+    List<CartProductView> Elements = new List<CartProductView>();
+
+    public async void Plusclick(Guid productId)
+    {
+        if (_cartProducts.Any(t => t.Id == productId))
+        {
+            var cp = _cartProducts.First(cp => cp.Id == productId);
+            cp.Count++;
+        }
+        else
+            _cartProducts.Add(new(productId, 1));
+
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Carts");
+
+        var model = new CreateCartProductDto()
+            {
+                Count = 1,
+                ProductId = productId,
+                Properties = "nmadr"
+
+            };
+
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        await Http.SendAsync(message);
+    }
+    public async void Minusclick(Guid productId)
+    {
+        if (_cartProducts.Any(t => t.Id == productId))
+        {
+            var cp = _cartProducts.First(cp => cp.Id == productId);
+
+            cp.Count--;
+
+            if (cp.Count == 0)
+                _cartProducts.Remove(cp);
+        }
+
+
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Carts/{productId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        await Http.SendAsync(message);
+
+
+        Elements.Remove(Elements.Where(c => c.Product.Id == productId).First());
+        StateHasChanged();
+    }
+    }
 
 
 
@@ -105,29 +138,193 @@
         productViews = await Http.GetFromJsonAsync<IEnumerable<ProductView>>("/api/Products");
         organizationViews = await Http.GetFromJsonAsync<IEnumerable<OrganizationView>>("api/Organizations");
     }
-        public async void AddToCartProduct(Guid productId)
-    {
-        try
-        {
-            var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Carts");
+     
+} 
 
-            var model = new CreateCartProductDto()
-                {
-                    Count = 1,
-                    ProductId = productId,
-                    Properties = "nmadr"
-
-                };
-
-            message.Content = JsonContent.Create(model);
-            message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-            await Http.SendAsync(message);
-        }
-        catch (Exception e)
-        {
-
-            Console.WriteLine(e.Message + "exceptionsssss");
-        }
-
+<style>
+    .container-fluid {
+        max-width: 1400px;
     }
-}
+
+    .card {
+        background: #fff;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05);
+        transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
+        border: 0;
+        border-radius: 1rem;
+    }
+
+    .card-img,
+    .card-img-top {
+        border-top-left-radius: calc(1rem - 1px);
+        border-top-right-radius: calc(1rem - 1px);
+    }
+
+
+    .card h5 {
+        overflow: hidden;
+        height: 55px;
+        font-weight: 300;
+        font-size: 1rem;
+    }
+
+        .card h5 a {
+            color: black;
+            text-decoration: none;
+        }
+
+    .card-img-top {
+        width: 100%;
+        min-height: 250px;
+        max-height: 250px;
+        object-fit: contain;
+        padding: 30px;
+    }
+
+    .card h2 {
+        font-size: 1rem;
+    }
+
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+    }
+
+    /* Centered text */
+    .label-top {
+        position: absolute;
+        color: #fff;
+        background-color: purple;
+        top: 8px;
+        right: 8px;
+        padding: 5px 10px 5px 10px;
+        font-size: .7rem;
+        font-weight: 600;
+        border-radius: 3px;
+        text-transform: uppercase;
+    }
+
+        .label-top p {
+            font-size: 15px;
+        }
+
+    .top-right {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: 900;
+        background: #8bc34a;
+        line-height: 90px;
+        text-align: center;
+        color: white;
+    }
+
+        .top-right span {
+            display: inline-block;
+            vertical-align: middle;
+            /* line-height: normal; */
+            /* padding: 0 25px; */
+        }
+
+    .aff-link {
+        /* text-decoration: overline; */
+        font-weight: 500;
+    }
+
+    .over-bg {
+        background: rgba(53, 53, 53, 0.85);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(0.0px);
+        -webkit-backdrop-filter: blur(0.0px);
+        border-radius: 10px;
+    }
+
+    .bold-btn {
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 5px 50px 5px 50px;
+    }
+
+    .box .btn {
+        font-size: 1.5rem;
+    }
+
+    @@media (max-width: 1025px) {
+        .btn {
+            padding: 5px 40px 5px 40px;
+        }
+    }
+
+    @@media (max-width: 250px) {
+        .btn {
+            padding: 5px 30px 5px 30px;
+        }
+    }
+
+    /* START BUTTON */
+    .btn-warning {
+        fill: #ffffff;
+        border: none;
+        text-decoration: none;
+        outline: 0;
+        /* box-shadow: -1px 6px 19px rgba(247, 129, 10, 0.25); */
+        border-radius: 100px;
+    }
+
+        .btn-warning:hover {
+            /* box-shadow: -1px 6px 13px rgba(255, 150, 43, 0.35); */
+        }
+
+        .btn-check:focus + .btn-warning, .btn-warning:focus {
+            /* box-shadow: -1px 6px 13px rgba(255, 150, 43, 0.35); */
+        }
+
+        .btn-warning:active:focus {
+        }
+
+        .btn-warning:active {
+            /* box-shadow: -1px 6px 13px rgba(255, 150, 43, 0.35); */
+        }
+
+    /* END BUTTON */
+
+    .bg-success {
+        font-size: 1rem;
+    }
+
+    .bg-danger {
+        font-size: 1rem;
+    }
+
+
+    .price-hp {
+        font-size: 1rem;
+        font-weight: 600;
+        color: darkgray;
+    }
+
+    .amz-hp {
+        font-size: .7rem;
+        font-weight: 600;
+        color: darkgray;
+    }
+
+    .fa-question-circle:before {
+        /* content: "\f059"; */
+        color: darkgray;
+    }
+
+    .fa-heart:before {
+        color: crimson;
+    }
+
+    .fa-chevron-circle-right:before {
+        color: darkgray;
+    }
+</style>

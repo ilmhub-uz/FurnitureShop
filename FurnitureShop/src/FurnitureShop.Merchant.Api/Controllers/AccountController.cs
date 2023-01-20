@@ -80,4 +80,11 @@ public class AccountController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return Ok();
+    }
 }
