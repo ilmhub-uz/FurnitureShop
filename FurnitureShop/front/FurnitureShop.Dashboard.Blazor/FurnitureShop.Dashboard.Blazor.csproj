@@ -12,10 +12,5 @@
 		<PackageReference Include="MudBlazor" Version="6.0.13" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\FurnitureShop.Common\FurnitureShop.Common.csproj" />
-	</ItemGroup>
-	
 	
 </Project>
