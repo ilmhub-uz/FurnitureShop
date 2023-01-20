@@ -6,6 +6,7 @@
 @inject OrganizationService organizationService
 @inject ProductService productServcie
 @inject NavigationManager NavManager
+@inject HttpClient httpClient
 <PageTitle>Organization</PageTitle>
 
 @if(organization.Id is null)
@@ -48,45 +49,58 @@
         </div>
     </div>
 }
-@if(_products.Count() > 0)
-{
-    <div class="container text-center">
-        <h1 class="text-center">Products</h1>
-    </div>
-    <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
-          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
-        <HeaderContent>
-            <MudTh>Name</MudTh>
-            <MudTh>Status</MudTh>
-            <MudTh>
-                <a href="/add-product/@organizationId">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
-                </a>
-            </MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Status">@context.Status</MudTd>
-            <MudTh DataLabel="Button">
-                <a href="/product/@context.Id">
-                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
-                </a>
-            </MudTh>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-        </PagerContent>
-        <FooterContent>
-            <MudTd colspan="5">Select All</MudTd>
-        </FooterContent>
-    </MudTable>
-}else{
-    <h1>You have not any products</h1>
-    
-    <a href="/add-product/@organizationId">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
-    </a>
-}
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Products">
+        @if(_products.Count() > 0)
+        {
+            <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                      OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>
+                        <a href="/add-product/@organizationId">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
+                        </a>
+                    </MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Status">@context.Status</MudTd>
+                    <MudTh DataLabel="Button">
+                        <a href="/product/@context.Id">
+                            <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                        </a>
+                    </MudTh>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+                </PagerContent>
+                <FooterContent>
+                    <MudTd colspan="5">Select All</MudTd>
+                </FooterContent>
+            </MudTable>
+        }else{
+            <h1>You have not any products</h1>
+        }
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Two">
+        <MudText>Content Two</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Three">
+        <MudText>Content Three</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Contract" Disabled="true">
+        @if (_products.Count() > 0)
+        {
+
+        }
+        else
+        {
+            <h1>You have not any products</h1>
+        }
+    </MudTabPanel>
+</MudTabs>
 
 @code{
 
@@ -97,11 +111,13 @@
     private string _selectedItemText = "No row clicked";
 
 
+
     // Organization Api
     [Parameter]
     public string? organizationId { get; set; }
 
     OrganizationView organization = new OrganizationView();
+    List<ContractView> contracts = new List<ContractView>();
 
     protected void Redirect(string route)
     {
@@ -115,6 +131,17 @@
         {
             organization = result.Data;
             await GetProductAsync();
+        }
+
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Contracts");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await httpClient.SendAsync(httpRequest);
+        var organizationsJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            contracts = JsonConvert.DeserializeObject<List<ContractView>>(organizationsJson);
         }
     }
 
