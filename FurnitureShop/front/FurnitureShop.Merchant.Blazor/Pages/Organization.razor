@@ -48,39 +48,52 @@
         </div>
     </div>
 }
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Products">
+        @if(_products.Count() > 0)
+        {
+            <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                      OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>
+                        <a href="/add-product/@organizationId">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
+                        </a>
+                    </MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Status">@context.Status</MudTd>
+                    <MudTh DataLabel="Button">
+                        <a href="/product/@context.Id">
+                            <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                        </a>
+                    </MudTh>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+                </PagerContent>
+                <FooterContent>
+                    <MudTd colspan="5">Select All</MudTd>
+                </FooterContent>
+            </MudTable>
+        }else{
+            <h1>You have not any products</h1>
+        }
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Two">
+        <MudText>Content Two</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Three">
+        <MudText>Content Three</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Disabled" Disabled="true">
+        <MudText>Content Disabled</MudText>
+    </MudTabPanel>
+</MudTabs>
 
-@if(_products.Count() > 0)
-{
-    <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
-          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
-        <HeaderContent>
-            <MudTh>Name</MudTh>
-            <MudTh>Status</MudTh>
-            <MudTh>
-                <a href="/add-product/@organizationId">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
-                </a>
-            </MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Status">@context.Status</MudTd>
-            <MudTh DataLabel="Button">
-                <a href="/product/@context.Id">
-                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
-                </a>
-            </MudTh>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-        </PagerContent>
-        <FooterContent>
-            <MudTd colspan="5">Select All</MudTd>
-        </FooterContent>
-    </MudTable>
-}else{
-    <h1>You have not any products</h1>
-}
 
 @code{
 
