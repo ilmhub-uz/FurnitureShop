@@ -144,6 +144,18 @@
             organization = result.Data;
             await GetProductAsync();
         }
+
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Contracts");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await httpClient.SendAsync(httpRequest);
+        var organizationsJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            contracts = JsonConvert.DeserializeObject<List<ContractView>>(organizationsJson);
+        }
+        
         employees = await employeeService.GetEmployees(organizationId);
     }
 

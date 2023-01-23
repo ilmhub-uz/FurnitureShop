@@ -1,0 +1,49 @@
+﻿@page "/contract/{orderId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject NavigationManager NavManager
+@inject HttpClient httpClient
+<PageTitle>Contract</PageTitle>
+
+<div class="container">
+    <div class="row d-flex">
+        <div class="col-md-6">
+            <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+        </div>
+
+        <div class="col-md-6 py-3">
+            <h1 style="font-size:30px; color: #555; margin-bottom:10px;">Total price: @_contract.TotalPrice</h1>
+            <p style="color: #666; margin-bottom: 10px;">
+                Products count: @_contract.ProductCount
+            </p>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? orderId { get; set; }
+
+    ContractView _contract = new ContractView();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/contract/{orderId}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/Contracts/{orderId}");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await httpClient.SendAsync(httpRequest);
+        var orderJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            _contract = JsonConvert.DeserializeObject<ContractView>(orderJson);
+        }
+    }
+}

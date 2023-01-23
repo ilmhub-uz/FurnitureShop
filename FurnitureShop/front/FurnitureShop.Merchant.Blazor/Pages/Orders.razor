@@ -5,19 +5,19 @@
 @inject NavigationManager NavManager
 @inject HttpClient httpClient
 
-@if (contracts.Count > 0)
+@if (orders.Count > 0)
 {
-    <MudTable Style="padding: 10px;" @ref="_table" T="ContractView" Items="@contracts" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+    <MudTable Style="padding: 10px;" @ref="_table" T="OrderView" Items="@orders" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
         <HeaderContent>
             <MudTh>Name</MudTh>
             <MudTh>Status</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
-            <MudTd DataLabel="Total Price">@context.TotalPrice</MudTd>
+            <MudTd DataLabel="Product count">@context.UserName</MudTd>
+            <MudTd DataLabel="Total Price">@context.Status</MudTd>
             <MudTh DataLabel="Button">
-                <a href="/order/@context.OrderId">
+                <a href="/order/@context.Id">
                     <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
                 </a>
             </MudTh>
@@ -39,13 +39,13 @@ else
 
 @code {
 
-    private HashSet<ContractView> selectedItems = new HashSet<ContractView>();
+    private HashSet<OrderView> selectedItems = new HashSet<OrderView>();
     private bool _selectOnRowClick = true;
-    private MudTable<ContractView>? _table;
+    private MudTable<OrderView>? _table;
     private string _selectedItemText = "No row clicked";
 
 
-    List<ContractView> contracts = new List<ContractView>();
+    List<OrderView> orders = new List<OrderView>();
 
     protected void Redirect(string route)
     {
@@ -62,12 +62,12 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            contracts = JsonConvert.DeserializeObject<List<ContractView>>(organizationsJson);
+            orders = JsonConvert.DeserializeObject<List<OrderView>>(organizationsJson);
         }
     }
 
-    void OnRowClick(TableRowClickEventArgs<ContractView> args)
+    void OnRowClick(TableRowClickEventArgs<OrderView> args)
     {
-        _selectedItemText = $"{args.Item.OrderId}";
+        _selectedItemText = $"{args.Item.Id}";
     }
 }

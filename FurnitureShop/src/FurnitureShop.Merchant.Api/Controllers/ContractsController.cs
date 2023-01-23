@@ -25,30 +25,30 @@ public class ContractsController : ControllerBase
     [Authorize(EPermission.CanReadContract)]
     [HttpGet]
     [ProducesResponseType(typeof(List<ContractView>),StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetContracts(Guid organizationId)
+    public async Task<IActionResult> GetContracts()
     {
-        var contracts = await _contractService.GetContractsAsync(organizationId);
+        var contracts = await _contractService.GetContractsAsync();
 
         return Ok(contracts);
     }
 
     [Authorize(EPermission.CanReadContract)]
-    [HttpGet("{contractId:guid}")]
+    [HttpGet("{orderId:guid}")]
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
     [IdValidation]
-    public async Task<IActionResult>GetContractById(Guid contractId)
+    public async Task<IActionResult>GetContractById(Guid orderId)
     {
-        var category = await _contractService.GetContractByIdAsync(contractId);
+        var contract = await _contractService.GetContractByIdAsync(orderId);
 
-        return Ok(category);
+        return Ok(contract);
     }
 
     [Authorize(EPermission.CanDeleteContract)]
-    [HttpDelete("{contractId:guid}")]
+    [HttpDelete("{orderId:guid}")]
     [IdValidation]
-    public async Task<IActionResult>DeleteContract(Guid contractId)
+    public async Task<IActionResult>DeleteContract(Guid orderId)
     {
-        await _contractService.DeleteContractAsync(contractId);
+        await _contractService.DeleteContractAsync(orderId);
 
         return Ok();
     }
