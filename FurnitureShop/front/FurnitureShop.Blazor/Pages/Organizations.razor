@@ -93,6 +93,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        organizationsView = await Http.GetFromJsonAsync<OrganizationView[]>("https://localhost:7235/api/Organizations");
+        organizationsView = await Http.GetFromJsonAsync<OrganizationView[]>("https://localhost:1001/api/Organizations");
     }
 }
