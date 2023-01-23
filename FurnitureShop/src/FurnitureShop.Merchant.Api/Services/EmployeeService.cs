@@ -69,11 +69,11 @@ public class EmployeeService : IEmployeeService
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        var manager = organization.Users!.FirstOrDefault(u => u.UserId == dto.EmployeeId);
-        if (manager is null)
+        var employee = organization.Users!.FirstOrDefault(u => u.UserId == dto.EmployeeId);
+        if (employee is null)
             throw new NotFoundException<OrganizationUser>();
 
-        organization.Users!.Remove(manager);
+        organization.Users!.Remove(employee);
         _unitOfWork.Save();
     }
 
