@@ -39,15 +39,17 @@ public class ContractService : IContractService
         if (order is null)
             throw new BadRequestException("can't fount order by id");
 
-        // Muhammaddiyor aka Shu joyga Hisoblash logikasini yozasiz!!!
+        decimal totalPrice = 0;
+        foreach (var orderProduct in order.OrderProducts!)
+            totalPrice += orderProduct.Count * orderProduct.Product!.Price;
 
         var contract = new Contract()
         {
             UserId = order.UserId,
             Status = EContractStatus.Created,
             CreatedAt = DateTime.UtcNow,
-            ProductCount = 0,
-            TotalPrice = 0,
+            ProductCount = (uint)order.OrderProducts.Count(),
+            TotalPrice = totalPrice,
             OrderId = order.Id
         };
 
