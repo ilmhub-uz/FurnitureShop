@@ -4,7 +4,7 @@ COPY ["front/FurnitureShop.Blazor/FurnitureShop.Blazor.csproj", "FurnitureShop.B
 COPY ["front/FurnitureShop.Common/FurnitureShop.Common.csproj", "FurnitureShop.Common/"]
 RUN dotnet restore "FurnitureShop.Blazor/FurnitureShop.Blazor.csproj"
 COPY . .
-WORKDIR "/front/front/FurnitureShop.Blazor"
+WORKDIR "/src/front/FurnitureShop.Blazor"
 RUN dotnet build "FurnitureShop.csproj" -c Release -o /app/build
 
 FROM build AS publish
