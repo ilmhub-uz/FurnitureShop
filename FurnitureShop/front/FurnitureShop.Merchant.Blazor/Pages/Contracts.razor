@@ -1,33 +1,39 @@
-﻿@using FurnitureShop.Merchant.Blazor.ViewModel
+﻿@page "/contracts"
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
 @inject NavigationManager NavManager
 @inject HttpClient httpClient
 
-<MudTable Style="padding: 10px;" @ref="_table" T="ContractView" Items="@contracts" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+@if (contracts.Count > 0)
+{
+        <MudTable Style="padding: 10px;" @ref="_table" T="ContractView" Items="@contracts" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
           OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Status</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
-        <MudTd DataLabel="Total Price">@context.TotalPrice</MudTd>
-        <MudTh DataLabel="Button">
-            <a href="/contract/@context.OrderId">
-                <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
-            </a>
-        </MudTh>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-    </PagerContent>
-    <FooterContent>
-        <MudTd colspan="5">Select All</MudTd>
-    </FooterContent>
-</MudTable>
-        }else{
-<h1>You have not any products</h1>
-        }
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
+            <MudTd DataLabel="Total Price">@context.TotalPrice</MudTd>
+            <MudTh DataLabel="Button">
+                <a href="/contract/@context.OrderId">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                </a>
+            </MudTh>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+}
+else{
+    <h1>You have not any Contracts</h1>
+}
+
+
 
 @code {
 
