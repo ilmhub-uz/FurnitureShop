@@ -15,10 +15,11 @@ else
     <MudTable Items="_contractViews" Hover="true" SortLabel="Sort By" Elevation="0">
         <HeaderContent>
             <MudTh>Id</MudTh>
-            <MudTh>Product Id</MudTh>
-            <MudTh>User Id</MudTh>
-            <MudTh>Product Count</MudTh>
-            <MudTh>Total Price</MudTh>
+            <MudTh>Order id</MudTh>
+            <MudTh>User id</MudTh>
+            <MudTh>Product count</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Total price</MudTh>
             <MudTh>Delete</MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -27,7 +28,7 @@ else
             <MudTd DataLabel="User Id">@context.UserId</MudTd>
             <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
             <MudTd DataLabel="Price">@context.TotalPrice</MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteContract(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
+            <MudTd><MudButton Variant="Variant.Filled"  @onclick="@(async () => await DeleteContract(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[] { 50, 100 }"/>
@@ -39,12 +40,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _contractViews = await client.GetFromJsonAsync<List<ContractView>>("/api/Products");
+        _contractViews = await client.GetFromJsonAsync<List<ContractView>>("/api/Contracts");
     }
 
     private async Task DeleteContract(Guid contractId)
     {
-        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Contracts?contract={contractId}");
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Contracts?contractId={contractId}");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var responseMessage = await client.SendAsync(message);

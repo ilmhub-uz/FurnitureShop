@@ -6,7 +6,7 @@
 @inject OrganizationService organizationService
 @inject ProductService productServcie
 @inject NavigationManager NavManager
-@inject HttpClient httpClient
+
 <PageTitle>Organization</PageTitle>
 
 @if(organization.Id is null)
@@ -85,7 +85,22 @@
         }
     </MudTabPanel>
     <MudTabPanel Text="Tab Two">
-        <MudText>Content Two</MudText>
+        <MudTable Items="@employees.Take(4)" Hover="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                @*<MudTh>UserName</MudTh>*@
+                <MudTh>FirstName</MudTh>
+                <MudTh>LastName</MudTh>
+                <MudTh>Email</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Id">@context.Id</MudTd>
+                @*<MudTd DataLabel="UserName">@context.UserName</MudTd>*@
+                <MudTd DataLabel="FirstName">@context.FirstName</MudTd>
+                <MudTd DataLabel="LastName">@context.LastName</MudTd>
+                <MudTd DataLabel="Email">@context.Email</MudTd>
+            </RowTemplate>
+        </MudTable>
     </MudTabPanel>
     <MudTabPanel Text="Tab Three">
         <MudText>Content Three</MudText>
@@ -103,21 +118,18 @@
 </MudTabs>
 
 @code{
-
-    private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
+    private HashSet<ProductView>? selectedItems = new HashSet<ProductView>();
     private static List<ProductView> _products = new List<ProductView>();
     private bool _selectOnRowClick = true;
     private MudTable<ProductView>? _table;
     private string _selectedItemText = "No row clicked";
 
-
-
-    // Organization Api
+    // Organization Api 
     [Parameter]
     public string? organizationId { get; set; }
 
-    OrganizationView organization = new OrganizationView();
-    List<ContractView> contracts = new List<ContractView>();
+    OrganizationView? organization = new OrganizationView();
+    public List<UserView> employees;
 
     protected void Redirect(string route)
     {
@@ -145,7 +157,6 @@
         }
         
         employees = await employeeService.GetEmployees(organizationId);
-=
     }
 
     private async Task DeleteOrganization()

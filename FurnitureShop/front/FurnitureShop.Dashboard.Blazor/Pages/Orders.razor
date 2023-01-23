@@ -15,12 +15,12 @@ else
     <MudTable Items="_orderViews" Hover="true" SortLabel="Sort By" Elevation="0">
         <HeaderContent>
             <MudTh>Id</MudTh>
-            <MudTh>Organization Name</MudTh>
-            <MudTh>User Name</MudTh>
+            <MudTh>Organization </MudTh>
+            <MudTh>User name</MudTh>
             <MudTh>Status</MudTh>
             <MudTh>Create Date</MudTh>
             <MudTh>Last Date</MudTh>
-            <MudTh>Sub Count</MudTh>
+            <MudTh>Total products</MudTh>
             <MudTh>Delete</MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -31,7 +31,7 @@ else
             <MudTd DataLabel="Create Data">@context.CreatedAt</MudTd>
             <MudTd DataLabel="Last Data">@context.LastUpdatedAt</MudTd>
             <MudTd DataLabel="Sub Count">@context.OrderProducts.Count</MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteOrganization(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async () => await DeleteOrders(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[] { 50, 100 }"/>
@@ -43,10 +43,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _orderViews = await client.GetFromJsonAsync<List<OrderView>>("/api/Products");
+        _orderViews = await client.GetFromJsonAsync<List<OrderView>>("/api/Orders");
     }
 
-    private async Task DeleteOrganization(Guid orderId)
+    private async Task DeleteOrders(Guid orderId)
     {
         var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Orders?order={orderId}");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
