@@ -1,4 +1,6 @@
-﻿@using FurnitureShop.Merchant.Blazor.ViewModel
+﻿@page "/orders"
+
+@using FurnitureShop.Merchant.Blazor.ViewModel
 @using Newtonsoft.Json
 @inject NavigationManager NavManager
 @inject HttpClient httpClient
@@ -15,7 +17,7 @@
             <MudTd DataLabel="Product count">@context.ProductCount</MudTd>
             <MudTd DataLabel="Total Price">@context.TotalPrice</MudTd>
             <MudTh DataLabel="Button">
-                <a href="/contract/@context.OrderId">
+                <a href="/order/@context.OrderId">
                     <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
                 </a>
             </MudTh>
@@ -52,7 +54,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Contracts");
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Orders");
         httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var response = await httpClient.SendAsync(httpRequest);
