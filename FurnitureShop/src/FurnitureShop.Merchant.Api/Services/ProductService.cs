@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using FurnitureShop.Common.Exceptions;
 using FurnitureShop.Common.Extensions;
-using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
