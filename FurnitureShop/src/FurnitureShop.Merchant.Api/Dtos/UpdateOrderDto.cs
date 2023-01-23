@@ -7,5 +7,4 @@ public class UpdateOrderDto
 {
     [Required]
     public EOrderStatus Status { get; set; }
-    public DateTime? LastUpdatedAt { get; set; }
 }

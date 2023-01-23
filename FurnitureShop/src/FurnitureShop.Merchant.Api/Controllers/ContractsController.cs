@@ -22,17 +22,6 @@ public class ContractsController : ControllerBase
         _createContractValidator = createContractValidator;
     }
 
-    [Authorize(EPermission.CanCreateContract)]
-    [HttpPost]
-    [ValidateModel]
-    [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateContract(Guid orderId)
-    {
-        var contract = await _contractService.AddContractAsync(orderId);
-        
-        return Ok(contract);
-    }
-
     [Authorize(EPermission.CanReadContract)]
     [HttpGet]
     [ProducesResponseType(typeof(List<ContractView>),StatusCodes.Status200OK)]

@@ -18,10 +18,12 @@ namespace FurnitureShop.Merchant.Api.Services;
 public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IContractService _contractService;
 
-    public OrderService(IUnitOfWork unitOfWork)
+    public OrderService(IUnitOfWork unitOfWork, IContractService contractService)
     {
         _unitOfWork = unitOfWork;
+        _contractService = contractService;
     }
 
     public async Task<List<OrderView>> GetOrdersAsync()
@@ -50,7 +52,12 @@ public class OrderService : IOrderService
         order.LastUpdatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Orders.Update(order);
-        
+
+        if(order.Status == EOrderStatus.Accepted)
+        {
+            await _contractService.AddContractAsync(orderId);
+        }
+
         return order.Adapt<OrderView>();
     }
 }
