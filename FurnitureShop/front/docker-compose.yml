@@ -9,3 +9,27 @@ services:
     build:
       context: FurnitureShop.Merchant.Blazor
       dockerfile: Dockerfile
+  furnitureshop_client:
+    image: furnitureshop_client
+    container_name: furnitureshop_client
+    ports:
+      - "8035:80"
+    build: 
+      context: FurnitureShop.Client.Blazor
+      dockerfile: Dockerfile
+  furnitureshop_admin:
+    image: furnituresho_admin
+    container_name: furnitureshop_admin
+    ports:
+      - "8036:80"
+    build: 
+      context: FurnitureShop.Dashboard.Blazor
+      dockerfile: Dockerfile
+  furnitreshop:
+    image: furnitureshop
+    container_name: furnitureshop
+    ports:
+      - "8037:80"
+    build: 
+      context: FurnitureShop.Blazor
+      dockerfile: Dockerfile
