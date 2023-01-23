@@ -1,0 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using FurnitureShop.Data.Entities;
+
+namespace FurnitureShop.Merchant.Api.Dtos;
+
+public class UpdateOrderDto
+{
+    [Required]
+    public EOrderStatus Status { get; set; }
+    public DateTime? LastUpdatedAt { get; set; }
+}
