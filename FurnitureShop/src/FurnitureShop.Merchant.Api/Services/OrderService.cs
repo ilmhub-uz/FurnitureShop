@@ -55,7 +55,7 @@ public class OrderService : IOrderService
 
         if(order.Status == EOrderStatus.Accepted)
         {
-            await _contractService.AddContractAsync(orderId);
+            await _contractService.AddContractAsync(orderId,updateDto.FinishDate);
         }
 
         return order.Adapt<OrderView>();

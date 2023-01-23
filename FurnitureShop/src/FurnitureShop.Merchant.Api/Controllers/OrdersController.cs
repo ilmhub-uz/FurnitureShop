@@ -39,7 +39,7 @@ public class OrdersController : ControllerBase
 
     [HttpPut("{orderId:guid}")]
     [ProducesResponseType(typeof(OrderView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateOrder(Guid orderId, UpdateOrderDto updateOrderDto)
+    public async Task<IActionResult> UpdateOrder(Guid orderId, [FromBody] UpdateOrderDto updateOrderDto)
     {
         var updatedOrder = await _orderService.UpdateOrderAsync(orderId, updateOrderDto);
         if(updatedOrder is null)

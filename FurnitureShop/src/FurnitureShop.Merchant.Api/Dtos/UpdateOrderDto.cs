@@ -7,4 +7,6 @@ public class UpdateOrderDto
 {
     [Required]
     public EOrderStatus Status { get; set; }
+    [Required]
+    public DateTime FinishDate {get; set;}
 }

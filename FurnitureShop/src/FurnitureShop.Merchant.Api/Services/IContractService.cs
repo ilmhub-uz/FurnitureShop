@@ -6,6 +6,6 @@ public interface IContractService
 {
     Task<List<ContractView>> GetContractsAsync();
     Task<ContractView> GetContractByIdAsync(Guid orderId);
-    Task<ContractView> AddContractAsync(Guid orderId);
+    Task<ContractView> AddContractAsync(Guid orderId,DateTime finishDate);
     Task DeleteContractAsync(Guid orderId);
 }
