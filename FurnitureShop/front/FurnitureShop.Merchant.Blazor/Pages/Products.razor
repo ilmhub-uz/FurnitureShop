@@ -1,5 +1,61 @@
-﻿<h3>Products</h3>
+﻿@page "/products"
+@using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject HttpClient httpClient
+@inject ProductService productService
+<PageTitle>All Products</PageTitle>
+<h1>All Products</h1>
+@if (_prodcuts.Count() > 0)
+{
+    <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_prodcuts" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTh DataLabel="Button">
+                <a href="/organization/@context.Id">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                </a>
+            </MudTh>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+}
+else
+{
+    <h1>You have not any Products</h1>
+}
+
 
 @code {
+    private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
+    private static List<ProductView>? _prodcuts = new List<ProductView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<ProductView> _table;
+    private string _selectedItemText = "No row clicked";
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await productService.GetProductsAsync();
+        if (result.IsSuccess)
+        {
+            _prodcuts = result.Data;
+        }
+    }
+
+    void OnRowClick(TableRowClickEventArgs<ProductView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
 }
