@@ -28,7 +28,7 @@ public class OrderService : IOrderService
 
     public async Task<List<OrderView>> GetOrdersAsync()
     {
-        var orders = _unitOfWork.Orders.GetAll().ToList();
+        var orders = _unitOfWork.Orders.GetAll().Where(x=>x.Status == EOrderStatus.Created).ToList();
         return orders.Select(o => o.Adapt<OrderView>()).ToList();
     }
 
