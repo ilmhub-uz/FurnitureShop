@@ -1,0 +1,122 @@
+﻿@page "/order/{orderId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject NavigationManager NavManager
+@inject HttpClient httpClient
+@inject ProductService productServcie
+<PageTitle>Product</PageTitle>
+
+<div class="container">
+    <div class="row d-flex">
+        <div class="col-md-6">
+            <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+        </div>
+
+        <div class="col-md-6 py-3">
+            <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@_order.Status</h1>
+            <p style="color: #666; margin-bottom: 10px;">
+                Haridor: @_order.UserName
+            </p>
+
+            <p>
+                Email: @_order.UserMail
+            </p>
+            <br />
+            <div class="d-flex">
+                <p style="margin-right:30px;">
+                    Zakaz berilgan vaqt: @_order.CreatedAt
+                </p>
+
+                <p style="margin-right:40px;">
+                    Qabul qilingan vaqt: @_order.LastUpdatedAt
+                </p>
+
+                <MudButton @onclick="(async () => await AcceptedOrder())" Variant="Variant.Filled" Color="Color.Success">Accepted Order</MudButton>
+            </div>
+        </div>
+    </div>
+</div>
+
+<MudTable Style="padding: 10px;" @ref="_table" T="OrderProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Product.Name</MudTd>
+        <MudTd DataLabel="Status">@context.Product.Price</MudTd>
+        <MudTh DataLabel="Button">
+            <a href="/product/@context.Product.Id">
+                <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+            </a>
+        </MudTh>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+    <FooterContent>
+        <MudTd colspan="5">Select All</MudTd>
+    </FooterContent>
+</MudTable>
+
+@code {
+    private HashSet<OrderProductView> selectedItems = new HashSet<OrderProductView>();
+    private static List<OrderProductView> _products = new List<OrderProductView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<OrderProductView>? _table;
+    private string _selectedItemText = "No row clicked";
+
+
+    [Parameter]
+    public string? orderId { get; set; }
+
+    OrderView _order = new OrderView();
+
+    UpdateOrderDto _updateOrder = new UpdateOrderDto();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/contract/{orderId}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/Orders/{orderId}");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await httpClient.SendAsync(httpRequest);
+        var orderJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            _order = JsonConvert.DeserializeObject<OrderView>(orderJson);
+            _products = _order.OrderProducts.ToList();
+        }
+    }
+
+    void OnRowClick(TableRowClickEventArgs<OrderProductView> args)
+    {
+        _selectedItemText = $"null";
+    }
+
+    private async Task AcceptedOrder()
+    {
+        _updateOrder.Status = EOrderStatus.Accepted;
+
+        var httpRequest = new HttpRequestMessage(HttpMethod.Put, $"/api/Orders/{orderId}");
+        httpRequest.Content = JsonContent.Create(_updateOrder);
+
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var response = await httpClient.SendAsync(httpRequest);
+
+        var updateOrderJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            Redirect();
+        }
+    }
+}
