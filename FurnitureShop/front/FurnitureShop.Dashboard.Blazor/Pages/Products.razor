@@ -1,34 +1,36 @@
-﻿@page "/categories"
+﻿@page "/products"
 @using FurnitureShop.Dashboard.Blazor.ViewModel
 @inject HttpClient client 
-@inject NavigationManager navManager;
 
-<PageTitle>Categories</PageTitle>
+<PageTitle>Products</PageTitle>
+
+
+<h3>Products</h3>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
 <MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
-@if (categories == null)
+@if (products == null)
 {
     <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
 else
 {
-    <MudTable Items="categories" Hover="true" SortLabel="Sort By" Elevation="0">
+    <MudTable Items="products" Hover="true" SortLabel="Sort By" Elevation="0">
         <HeaderContent>
             <MudTh>Id</MudTh>
             <MudTh>Title</MudTh>
-            <MudTh>Sub categories</MudTh>
-            <MudTh>Edit</MudTh>
-            <MudTh>Add</MudTh>
-            <MudTh>Delete</MudTh>
+            <MudTh>Brend</MudTh>
+            <MudTh>Organization</MudTh>
+            <MudTh>Category</MudTh>
+            <MudTh>Action status</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Id">@context.Id</MudTd>
             <MudTd DataLabel="Category">@context.Name</MudTd>
-            <MudTd DataLabel="Sub categories">@context.Children?.Count</MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" Href="editcategory" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary">Edit</MudButton></MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" Href="addcategory" StartIcon="@Icons.Material.Filled.Add" Color="Color.Tertiary">Add subcategory</MudButton></MudTd>
-            <MudTd><MudButton Variant="Variant.Filled" Href="categories" OnClick="@(async()=> await DeleteCategory(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
+            <MudTd DataLabel="Category">@context.Brend</MudTd>
+            <MudTd DataLabel="Category">@context.Organization.Name</MudTd>
+            <MudTd DataLabel="Category">@context.Category.Name</MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async()=> await DeleteProduct(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
         </RowTemplate>
         
         <PagerContent>
@@ -38,13 +40,15 @@ else
 }
 
 
+
+
 @code {
-    private List<CategoryView>? categories;
+    List<ProductView> products = new List<ProductView>();
 
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await client.GetFromJsonAsync<List<CategoryView>>("/api/Categories");
+        products = await client.GetFromJsonAsync<List<ProductView>>("/api/Products");
 
         //var connection = new HubConnectionBuilder()
         //    .WithUrl("http://localhost:3001/products-hub")
@@ -59,15 +63,12 @@ else
         //await connection.StartAsync();
     }
 
-    private async Task DeleteCategory(int categoryId)
+
+    private async Task DeleteProduct(Guid productId)
     {
-        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Categories?categoryId={categoryId}");
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Products?productId={productId}");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var responseMessage = await client.SendAsync(message);
     }
-
-
-
-
 }
