@@ -1,20 +1,19 @@
 version: '3.7'
 
 services:
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-       - pgadmin:/var/lib/pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
+
+  furnitureshop_api:
+    image: furnitureshop_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitreshop_api
+    ports: 
+      - "1001:80"
+    build:
+      context: .
+      dockerfile: DockerfileApi
     networks:
       - dev
-    restart: unless-stopped
 
   furnitureshop_merchant_api:
     image: furnitureshop_merchant_api
@@ -22,13 +21,48 @@ services:
       - "furniture_db"
     container_name: furnitureshop_merchant_api
     ports:
-      - "8031:80"
+      - "1009:80"
     build:
       context: .
-      dockerfile: Dockerfile
-    # environment:
-      # - ConnectionString=host=dockerapi_db;port=5432;database=dockerdb;username=postgres;password=postgres;
+      dockerfile: DockerfileMerchant
     networks:
+      - dev
+
+  furnitureshop_client_api:
+    image: furnitureshop_client_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitureshop_client_api
+    ports: 
+      - "1005:80"
+    build:
+       context: .
+       dockerfile: DockerfileClient
+    networks:
+      - dev
+
+  furnitureshop_admin_api:
+    image: furnitureshop_admin_api
+    depends_on:
+      - "furniture_db"
+    container_name: furnitureshop_admin_api
+    ports:
+      - "8032:80"
+    build:
+      context: .
+      dockerfile: DockerfileAdmin
+    networks:
+      - dev
+
+  furnitureshop_files_api:
+    image: furnitureshop_files_api
+    container_name: furnitureshop_files_api
+    ports:
+      - "8034:80"
+    build:
+      context: .
+      dockerfile: DockerfileFiles
+    networks: 
       - dev
 
   furniture_db:

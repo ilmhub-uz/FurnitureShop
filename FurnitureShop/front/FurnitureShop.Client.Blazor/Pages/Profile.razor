@@ -90,7 +90,7 @@
         // var profileJson = await (await Http.SendAsync(getMessage)).Content.ReadAsStringAsync();
         // user = JsonConvert.DeserializeObject<UserView>(profileJson);
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7148");
+        client.BaseAddress = new Uri("https://localhost:1005");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);

@@ -1,0 +1,44 @@
+﻿@page "/update-profile"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@inject NavigationManager NavManager
+@inject HttpClient httpClient
+<PageTitle>Update profile</PageTitle>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <h2> Update Profile </h2>
+    <DataAnnotationsValidator />
+        <MudTextField Label="FirstName" @bind-Value="model.FirstName" For="@(() => model.FirstName)" />
+        <MudTextField Label="LastName" @bind-Value="model.LastName" For="@(() => model.LastName)" />
+        <br />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+</EditForm>
+
+@code {
+    [Parameter]
+    public string? userId { get; set; }
+
+    string errorMessage = null;
+
+    EditProfileDto? model = new EditProfileDto();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/profile");
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Put, $"/api/Profile");
+        httpRequest.Content = JsonContent.Create(model);
+
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var response = await httpClient.SendAsync(httpRequest);
+
+        var createProductJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            Redirect();
+        }
+    }
+}
