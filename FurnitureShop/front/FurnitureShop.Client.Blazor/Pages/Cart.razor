@@ -2,6 +2,7 @@
 @using FurnitureShop.Client.Blazor.ViewModel;
 @using Newtonsoft.Json
 @inject HttpClient client
+@inject ISnackbar Snackbar
 
 <PageTitle>My cart</PageTitle>
 
@@ -30,7 +31,7 @@
 
                         <div class="d-grid gap-2 my-4">
                             <button @onclick="(()=>{DeleteProductById(element.Product.Id);})" class="btn btn-danger bold-btn">Remove</button>
-                            <MudButton Href="/contract" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send"
+                            <MudButton @onclick="(()=>{AddOrderProductById(element.Product.Id);})" Href="/contract" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send"
                                    Color="Color.Success">Buy</MudButton>
                         </div>
                         <div class="clearfix mb-1">
@@ -44,7 +45,24 @@
         }
     </div>
 </div>
+@code {
+    public async void AddOrderProductById(Guid productId)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Orders");
 
+        var model = new CreateOrderProductDto()
+            {
+                Count = 1,
+                ProductId = productId,
+                Properties = "nmadr"
+            };
+
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        await client.SendAsync(message);
+        Snackbar.Add("The reactor type is RBMK-1000", Severity.Normal)
+    }
+}
 
 
 
@@ -79,6 +97,9 @@
         }
 
     }
+}
+@code {
+
 }
 
 <style>

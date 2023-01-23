@@ -4,6 +4,7 @@
 @using FurnitureShop.Client.Blazor.ViewModel
 @using Newtonsoft.Json
 @inject HttpClient Http;
+@inject ISnackbar Snackbar
 
 <PageTitle>Categories</PageTitle>
 
@@ -15,8 +16,8 @@
 
 <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative">
     <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
-@foreach (var product in productViews ?? new List<ProductView>())
-{
+        @foreach (var product in productViews ?? new List<ProductView>())
+        {
             <div class="col hp">
                 <div class="card h-100 shadow-sm">
                     <a href="#">
@@ -32,14 +33,15 @@
 
                             <span class="float-end"><a href="#" class="small text-muted text-uppercase aff-link">reviews</a></span>
                         </div>
-                        <h5 class="card-title">@product.Description
+                        <h5 class="card-title">
+                            @product.Description
                         </h5>
 
                         <div class="d-grid gap-2 my-4">
 
                             <MudButton @onclick="()=>Plusclick(product.Id)" Variant="Variant.Filled" Color="Color.Primary">
                                 @if (_cartProducts.Any(t => t.Id == product.Id))
-                                { 
+                                {
                                     <MudButton width="10px" @onclick="()=>Minusclick(product.Id)">-</MudButton>
                                     <MudText>@_cartProducts.First(cp => cp.Id == product.Id).Count</MudText>
                                     <MudButton width="10px" @onclick="()=>Plusclick(product.Id)">+</MudButton>
@@ -49,6 +51,8 @@
                                     <MudText>Add To Cart</MudText>
                                 }
                             </MudButton>
+                            <MudButton @onclick="(()=>{AddOrderProductById(element.Product.Id);})" Href="/contract" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send"
+                                   Color="Color.Success">Buy</MudButton>
 
                         </div>
                         <div class="clearfix mb-1">
@@ -63,10 +67,28 @@
                     </div>
                 </div>
             </div>
-}
+        }
     </div>
 </div>
-@code{
+@code {
+    public async void AddOrderProductById(Guid productId)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Orders");
+
+        var model = new CreateOrderProductDto()
+            {
+                Count = 1,
+                ProductId = productId,
+                Properties = "nmadr"
+            };
+
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        await client.SendAsync(message);
+        Snackbar.Add("The reactor type is RBMK-1000", Severity.Normal)
+    }
+}
+@code {
     List<CartProductView> Elements = new List<CartProductView>();
 
     public async void Plusclick(Guid productId)
@@ -77,7 +99,7 @@
             cp.Count++;
         }
         else
-        _cartProducts.Add(new(productId, 1));
+            _cartProducts.Add(new(productId, 1));
 
         var message = new HttpRequestMessage(HttpMethod.Post, $"/api/Carts");
 
@@ -97,7 +119,7 @@
     {
         if (_cartProducts.Any(t => t.Id == productId))
         {
-            var cp  = _cartProducts.First(cp => cp.Id == productId);
+            var cp = _cartProducts.First(cp => cp.Id == productId);
 
             cp.Count--;
 
@@ -105,14 +127,14 @@
                 _cartProducts.Remove(cp);
         }
 
-        
-            var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Carts/{productId}");
-            message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-            await Http.SendAsync(message);
+
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Carts/{productId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        await Http.SendAsync(message);
 
 
-            Elements.Remove(Elements.Where(c => c.Product.Id == productId).First());
-            StateHasChanged();
+        Elements.Remove(Elements.Where(c => c.Product.Id == productId).First());
+        StateHasChanged();
     }
 }
 
@@ -128,7 +150,7 @@
     {
         public Guid Id { get; set; }
         public int Count { get; set; }
-        public  CartProducts(Guid id, int count)
+        public CartProducts(Guid id, int count)
         {
             Id = id;
             Count = count;
