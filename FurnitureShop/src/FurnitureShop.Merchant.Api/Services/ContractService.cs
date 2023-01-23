@@ -20,7 +20,7 @@ public class ContractService : IContractService
 
     public async Task<List<ContractView>> GetContractsAsync()
     {
-        var contracts = _unitOfWork.Contracts.GetAll();
+        var contracts = _unitOfWork.Contracts.GetAll().Where(x=> x.Status == EContractStatus.Created);
         return contracts.Select(contract => contract.Adapt<ContractView>()).ToList();
     }
 
@@ -33,7 +33,7 @@ public class ContractService : IContractService
         return contract.Adapt<ContractView>();
     }
 
-    public async Task<ContractView> AddContractAsync(Guid orderId,DateTime finishDate)
+    public async Task<ContractView> AddContractAsync(Guid orderId, DateTime finishDate)
     {
         var order = _unitOfWork.Orders.GetById(orderId);
         if (order is null)
