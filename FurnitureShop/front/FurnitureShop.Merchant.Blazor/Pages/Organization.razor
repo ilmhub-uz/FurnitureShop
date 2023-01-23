@@ -1,68 +1,171 @@
-﻿@page "/organizations/{Id}"
-@using FurnitureShop.Admin.Blazor.ViewModel
-@inject HttpClient http;
+﻿@page "/organization/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject OrganizationService organizationService
+@inject ProductService productServcie
+@inject NavigationManager NavManager
 
-@if (organization is not null)
+<PageTitle>Organization</PageTitle>
+
+@if(organization.Id is null)
 {
-    var organizationLinkToUpdate = $"/update-organizations/{Id}";
-    <div class="productMainContainer">
-        <div id="container">
-            <div class="product-details">
-
-                <h1>@organization.Name</h1>
-                <span class="hint-star star">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                </span>
-                <p class="information">
-                    "@organization.. Feel comfort with this product."
-                </p><br>
-
-                <div>
-                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete"
-                           Color="Color.Error" OnClick="DeleteOrganization">Delete</MudButton>
-                    <MudLink Href="@organizationLinkToUpdate" Underline="Underline.None">
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Update" Color="Color.Warning">Update</MudButton>
-                    </MudLink>
-                </div>
-
+    <div>
+        Error 400. You have some error.
+    </div>
+}else{
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-md-6">
+                <MudImage Src="https://mudblazor.com/images/sweden.jpg" Width="332" Height="250" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
             </div>
 
-            <div class="product-image">
+            <div class="col-md-6 py-3">
+                <h1 style="font-size:30px; color: #555; margin-bottom:10px;">@organization.Name</h1>
+                <p style="color: #666; margin-bottom: 10px;">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
 
-                <img src="@organization.ImageUrl" alt="Omar Dsoky">
+                <div class="d-flex">
+                    <p style="color:#555; margin-bottom:10px; margin-right:30px;">
+                        Owner: <span style="color: #444; font-weight:bold; font-size: 15px;">
+                            @organization.Owner.FirstName
+                        </span>
+                    </p>
 
+                    <p>
+                        Product count: @organization.Products.Count
+                    </p>
+                </div>
+                <duv class="d-flex">
+                    <a style="margin-right:30px;" href="/update-organization/@organizationId">
+                        <MudButton Variant="Variant.Filled" Color="Color.Warning">Update</MudButton>
+                    </a>
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@DeleteOrganization">Delete</MudButton>
+                </duv>
             </div>
         </div>
     </div>
 }
-else
-{
-    <h3> Model is null</h3>
-}
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Products">
+        @if(_products.Count() > 0)
+        {
+            <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_products" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+                      OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>
+                        <a href="/add-product/@organizationId">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary">Add product</MudButton>
+                        </a>
+                    </MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Status">@context.Status</MudTd>
+                    <MudTh DataLabel="Button">
+                        <a href="/product/@context.Id">
+                            <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                        </a>
+                    </MudTh>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+                </PagerContent>
+                <FooterContent>
+                    <MudTd colspan="5">Select All</MudTd>
+                </FooterContent>
+            </MudTable>
+        }else{
+            <h1>You have not any products</h1>
+        }
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Two">
+        <MudTable Items="@employees.Take(4)" Hover="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>Id</MudTh>
+                @*<MudTh>UserName</MudTh>*@
+                <MudTh>FirstName</MudTh>
+                <MudTh>LastName</MudTh>
+                <MudTh>Email</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Id">@context.Id</MudTd>
+                @*<MudTd DataLabel="UserName">@context.UserName</MudTd>*@
+                <MudTd DataLabel="FirstName">@context.FirstName</MudTd>
+                <MudTd DataLabel="LastName">@context.LastName</MudTd>
+                <MudTd DataLabel="Email">@context.Email</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudTabPanel>
+    <MudTabPanel Text="Tab Three">
+        <MudText>Content Three</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Contract" Disabled="true">
+        @if (_products.Count() > 0)
+        {
 
-@code {
-    private OrganizationView? organization;
+        }
+        else
+        {
+            <h1>You have not any products</h1>
+        }
+    </MudTabPanel>
+</MudTabs>
+
+@code{
+    private HashSet<ProductView>? selectedItems = new HashSet<ProductView>();
+    private static List<ProductView> _products = new List<ProductView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<ProductView>? _table;
+    private string _selectedItemText = "No row clicked";
+
+    // Organization Api 
+    [Parameter]
+    public string? organizationId { get; set; }
+
+    OrganizationView? organization = new OrganizationView();
+    public List<UserView> employees;
+
+    protected void Redirect(string route)
+    {
+        NavManager.NavigateTo(route);
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        organization = await GetOrganizationAsync(Id);
+        var result = await organizationService.GetOrganizationByIdAsync(organizationId);
+        if(result.IsSuccess)
+        {
+            organization = result.Data;
+            await GetProductAsync();
+        }
+        
+        //employees = await employeeService.GetEmployees(organizationId);
     }
 
-    public async Task<OrganizationView?> GetOrganizationAsync(string organizationId)
+    private async Task DeleteOrganization()
     {
-        return await http.GetFromJsonAsync<OrganizationView>($"https://localhost:7113/api/Organizations/{organizationId}");
+        var result = await organizationService.DeleteOrganizationAsync(organizationId);
+        if (result.IsSuccess)
+            Redirect("/organizations");
     }
-
-    public async Task DeleteOrganization()
+    // Product api
+    private async Task GetProductAsync()
     {
-        await http.DeleteAsync($"https://localhost:7113/api/Organizations/{Id}");
+        var result = await productServcie.GetProductsAsync(organizationId);
+        if(result.IsSuccess)
+        {
+            _products = result.Data;
+        }
     }
 
-
-    [Parameter]
-    public string Id { get; set; }
+    void OnRowClick(TableRowClickEventArgs<ProductView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
 }

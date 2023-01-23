@@ -1,11 +1,41 @@
 ﻿@page "/"
 @using FurnitureShop.Blazor.Pages.ViewModel
-@inject HttpClient Http
+@using FurnitureShop.Blazor.Services
+@inject CategoryService CategoryService
+@inject ProductService ProductService
 
 <PageTitle>Index</PageTitle>
 
 <div class="form-floating">
-    <input type="search" class="form-control" placeholder="Search" />
+    <MudGrid>
+        <MudItem xs="10">
+            <div class="form-control">
+                <input type="search" placeholder="Search" />
+            </div>
+        </MudItem>
+        <MudItem xs="1">
+            <a href="" class="favorite iconHover">
+                <div style="display: flex; justify-content: center">
+                    <a href="" class="iconHover">
+                        <MudIcon Icon="@Icons.Material.Filled.FavoriteBorder" />
+                    </a>
+                </div>
+                <p style="text-align: center">Favorite</p>
+            </a>
+        </MudItem>
+        <MudItem xs="1">
+            <a href="" class="cart iconHover">
+                <div style="display: flex; justify-content: center">
+                    <a href="" class="iconHover">
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" />
+                    </a>
+                </div>
+                <p style="text-align: center">Cart</p>
+            </a>
+        </MudItem>
+    </MudGrid>
+    
+
 </div>
 <MudCarousel Class="mud-width-full" Style="height:700px;" ShowArrows="@arrows" ShowBullets="@bullets"
     EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
@@ -39,18 +69,15 @@
             <div class="product" style="display: flex; justify-content: space-around">
                 <div class="images">
                     <div class="product-image">
-                        <MudImage
-                            Src="https://mebel.shop/upload/resize_cache/iblock/9c7/600_600_140cd750bba9870f18aada2478b24840a/vzrw0wa45oiv7xge4gw21mkz61hx5ocs.jpg"
-                            Alt="" Class="image" />
+                        <a href="/product">
+                            <MudImage
+                                Src="https://mebel.shop/upload/resize_cache/iblock/9c7/600_600_140cd750bba9870f18aada2478b24840a/vzrw0wa45oiv7xge4gw21mkz61hx5ocs.jpg"
+                                Alt="" Class="image"/>
+                        </a>
                     </div>
-                    <div class="stars">
-                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-                    </div>
+                    <div class="d-flex flex-column">
+                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
+                        </div>
                     <div class="product-name">
 
                         <h3>
@@ -68,21 +95,18 @@
                     <p>
                         Views: 999+
                     </p>
+                    <MudButton Href="/product" Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 10px">View</MudButton>
                 </div>
                 <div class="images">
                     <div class="product-image">
-                        <MudImage
-                            Src="https://mebel.shop/upload/resize_cache/iblock/df7/600_600_140cd750bba9870f18aada2478b24840a/r2id4ylipx9twnl05040z6p3gt2mmqfb.jpg"
-                            Alt="" Class="image" />
+                        <a href="/product">
+                            <MudImage
+                                Src="https://mebel.shop/upload/resize_cache/iblock/df7/600_600_140cd750bba9870f18aada2478b24840a/r2id4ylipx9twnl05040z6p3gt2mmqfb.jpg"
+                                Alt="" Class="image"/>
+                        </a>
                     </div>
-                    <div class="stars">
-                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-                    </div>
+                    <div class="d-flex flex-column">
+                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/></div>
                     <div class="product-name">
 
                         <h3>
@@ -101,20 +125,18 @@
                     <p>
                         Views: 999+
                     </p>
+                    <MudButton Href="/product" Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 10px">View</MudButton>
                 </div>
                 <div class="images">
                     <div class="product-image">
-                        <MudImage
-                            Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                            Alt="" Class="image" />
+                        <a href="/product">
+                            <MudImage
+                                Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                Alt="" Class="image"/>
+                        </a>
                     </div>
-                    <div class="stars">
-                        @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-                        <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                    <div class="d-flex flex-column">
+                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
                     </div>
                     <div class="product-name">
 
@@ -137,6 +159,7 @@
                         Views:
                         999+
                     </p>
+                    <MudButton Href="/product" Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 10px">View</MudButton>
                 </div>
                 
                 @if(products is null)
@@ -149,16 +172,13 @@
                     {
                         <div class="images">
                             <div class="product-image">
-                                <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
-                                  Alt="" Class="image" />
+                                <a href="/product">
+                                    <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                                                                                                  Alt="" Class="image"/>
+                                </a>
                             </div>
-                            <div class="stars">
-                                @*Logika bo'lishi kerak-rate nechta bo'lsa shuncha start yonishi kerak*@
-                                <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                                <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                                <MudIcon Icon="@Icons.Filled.Star" /> @*To'liq yuldiz*@
-                                <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
-                                <MudIcon Icon="@Icons.Filled.StarBorder" /> @*Bo'sh yulduz*@
+                            <div class="d-flex flex-column">
+                                <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
                             </div>
                             <div class="product-name">
 
@@ -177,6 +197,7 @@
                             <p>
                                 @product.Views
                             </p>
+                            <MudButton Href="/product" Variant="Variant.Filled" Color="Color.Primary" Style="margin-top: 10px">View</MudButton>
                         </div>
                     }
                 }
@@ -317,8 +338,8 @@
                                 alt="chairs" />
                         </div>
                         <p>
-                            @if(category?.Children is not null){
-                            @foreach (var childCategory in category?.Children)
+            @if(category?.Children is not null){
+            @foreach (var childCategory in category?.Children)
             {
                 <div class="col-4">
                     <div class="popular-category">
@@ -348,13 +369,13 @@
     private bool enableSwipeGesture = true;
     private bool autocycle = true;
     private Transition transition = Transition.Slide;
-    private CategoryView[]? categories;
-    private ProductView[]? products;
+    private List<CategoryView>? categories;
+    private List<ProductView>? products;
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<ProductView[]?>("https://localhost:7235/api/products");
-        categories = await Http.GetFromJsonAsync<CategoryView[]?>("https://localhost:7235/api/Categories");
+        products = await ProductService.GetProductsAsync();
+        categories = await CategoryService.GetCategoriesAsync();
     }
 }
 
@@ -426,12 +447,16 @@
 
     .form-floating {
         margin-bottom: 10px;
+        display: flex;
+        justify-content: start;
     }
 
     .form-control {
         border-radius: 10px;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        width: 70%;
         padding: 10px 10px;
     }
+    .iconHover:hover {
+        color: #594ae2ff;
+    } 
 </style>

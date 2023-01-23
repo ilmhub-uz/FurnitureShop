@@ -1,0 +1,57 @@
+﻿@page "/editprofile"
+@using FurnitureShop.Dashboard.Blazor.Dtos
+
+@inject HttpClient client
+
+
+
+<h3>EditProfile</h3>
+
+
+<br>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField @bind-Value="model.UserName" Label="Username" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="model.FirstName" Label="Firstname" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="model.LastName" Label="Lastname" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="model.Email" Label="Email" Variant="Variant.Outlined"></MudTextField>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" OnClick="@(async()=> await OnValidSubmit())" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Submit</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.body2" Align="Align.Center">
+        </MudText>
+    </MudItem>
+</MudGrid>
+</EditForm>
+
+<br>
+
+
+
+
+
+
+@code {
+    UpdateProfileDto model = new UpdateProfileDto();
+
+
+    private async Task OnValidSubmit()
+    {
+        var message = new HttpRequestMessage(HttpMethod.Put, "/api/profiles");
+        message.Content = JsonContent.Create(model);
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+    }
+
+
+}

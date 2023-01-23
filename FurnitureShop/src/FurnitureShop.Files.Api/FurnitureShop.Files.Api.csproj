@@ -11,8 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Content Include="..\FurnitureShop.Common\CommonSettings.json" Link="CommonSettings.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="..\FurnitureShop.Common\FurnitureShop.Common.csproj" />
     <ProjectReference Include="..\FurnitureShop.Data\FurnitureShop.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Product\" />
+  </ItemGroup>
 </Project>

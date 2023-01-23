@@ -1,38 +1,64 @@
 ﻿@page "/organizations"
-@using FurnitureShop.Admin.Blazor.ViewModel
-@inject HttpClient http;
-
-
-<PageTitle>Organization</PageTitle>
-
-
-@if (organizations is not null)
+@using FurnitureShop.Merchant.Blazor.Services;
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject OrganizationService organizationService
+<PageTitle>Organizations</PageTitle>
+<h1>All Your Organizations</h1>
+@if(_organizations.Count() > 0)
 {
-    foreach (var organization in organizations)
-    {
-        var organizationLink = $"/organizations/{organization.Id}";
-
-        <MudGrid Justify="Justify.SpaceAround">
-            <MudCard Height="300px" Width="250px" Class="mt-5 ml-10 mr-10"> 
-                <MudLink Href="@organizationLink">
-                    <h4>@organization.Name</h4>
-                </MudLink>
-                <img src="@organization.ImageUrl" style="width:250px; height:250px;">
-            </MudCard>
-        </MudGrid>
-    }
-}
-else
-{
-    <p> Model is null</p>
+    <MudTable Style="padding: 10px;" @ref="_table" T="OrganizationView" Items="@_organizations" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>
+                <a href="/add-organization">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add organization</MudButton>
+                </a>
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTh DataLabel="Button">
+                <a href="/organization/@context.Id">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                </a>
+            </MudTh>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
+}else{
+    <h1>You have not any Organizations</h1>
+    <a href="/add-organization">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Add organization</MudButton>
+    </a>
 }
 
 
 @code {
-    private List<OrganizationView>? organizations;
+    private HashSet<OrganizationView> selectedItems = new HashSet<OrganizationView>();
+    private static IEnumerable<OrganizationView>? _organizations = new List<OrganizationView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<OrganizationView> _table;
+    private string _selectedItemText = "No row clicked";
+
 
     protected override async Task OnInitializedAsync()
     {
-        organizations = await http.GetFromJsonAsync<List<OrganizationView>>("https://localhost:7113/api/Organizations");
+        var result = await organizationService.GetOrganizationsAsync();
+        if (result.IsSuccess)
+            _organizations = result.Data;
+    }
+
+    void OnRowClick(TableRowClickEventArgs<OrganizationView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
     }
 }

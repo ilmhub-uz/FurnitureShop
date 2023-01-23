@@ -1,40 +1,61 @@
 ﻿@page "/products"
-@using FurnitureShop.Admin.Blazor.ViewModel
-@inject HttpClient http;
-<PageTitle>Product</PageTitle>
-
-@if (products is not null)
+@using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject HttpClient httpClient
+@inject ProductService productService
+<PageTitle>All Products</PageTitle>
+<h1>All Products</h1>
+@if (_prodcuts.Count() > 0)
 {
-    foreach (var product in products)
-    {
-        var productLink = $"/products/{product.Id}";
-
-        <MudGrid   Justify="Justify.SpaceAround">
-            <MudCard Height="310px" Width="240px" Class="mt-5 ml-10 mr-10">
-                <MudImage Fluid="true" Src="https://i.pcmag.com/imagery/articles/03I4dUwc3pIRf5ylbLdQ3Mv-19..v1610462221.jpg"
-                  Class="rounded-lg mb-2" Height="150" />
-                <MudLink Href="@productLink">
-                    <h5>@product.Name</h5>
-                </MudLink>
-                <h5>Organization: @product.Organization.Name</h5>
-                <h5>Price: @product.Price$</h5>
-                <h6>Count: @product.Count</h6>
-                <h6>Views: @product.Views</h6>
-                <MudRating SelectedValue="4" />
-            </MudCard>
-        </MudGrid>
-    }
+    <MudTable Style="padding: 10px;" @ref="_table" T="ProductView" Items="@_prodcuts" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTh DataLabel="Button">
+                <a href="/organization/@context.Id">
+                    <MudButton Variant="Variant.Filled" Color="Color.Success">View more</MudButton>
+                </a>
+            </MudTh>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+        <FooterContent>
+            <MudTd colspan="5">Select All</MudTd>
+        </FooterContent>
+    </MudTable>
 }
 else
 {
-    <h3>Loading...</h3>
+    <h1>You have not any Products</h1>
 }
 
+
 @code {
-    private List<ProductView>? products;
+    private HashSet<ProductView> selectedItems = new HashSet<ProductView>();
+    private static List<ProductView>? _prodcuts = new List<ProductView>();
+    private bool _selectOnRowClick = true;
+    private MudTable<ProductView> _table;
+    private string _selectedItemText = "No row clicked";
+
 
     protected override async Task OnInitializedAsync()
     {
-        products = await http.GetFromJsonAsync<List<ProductView>>("https://localhost:7113/api/Products");
+        var result = await productService.GetProductsAsync();
+        if (result.IsSuccess)
+        {
+            _prodcuts = result.Data;
+        }
+    }
+
+    void OnRowClick(TableRowClickEventArgs<ProductView> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
     }
 }

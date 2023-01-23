@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FurnitureShop.Client.Api.Dtos;
+﻿namespace FurnitureShop.Client.Api.Dtos;
 
 public class CreateCartProductDto
 {

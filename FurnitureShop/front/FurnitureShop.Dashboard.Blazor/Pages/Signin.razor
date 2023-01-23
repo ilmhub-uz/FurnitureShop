@@ -1,0 +1,66 @@
+﻿@page "/signin"
+@using FurnitureShop.Common.Helpers
+@using FurnitureShop.Dashboard.Blazor.Dtos
+@inject RequestHelper requestHelper;
+@inject NavigationManager navManager;
+
+
+
+<h3>SignIn</h3>
+
+@if(!response?.IsSuccessStatusCode != null)
+{
+    <b>Xatolik</b>
+    <p>@response!.StatusCode.ToString()</p>
+}
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="User name" HelperText="Max. 8 characters"
+                                @bind-Value="model.UserName" For="@(() => model.UserName)"/>
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Href="profile" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.body2" Align="Align.Center">
+        </MudText>
+    </MudItem>
+</MudGrid>
+</EditForm>
+
+
+
+
+
+@code {
+    LoginUserDto model = new LoginUserDto();
+    HttpResponseMessage? response = null;
+
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        RequestHelper request = new RequestHelper();
+
+        using var responseMessage = await request.SendRequestAsync<LoginUserDto>(HttpMethod.Post,"https://localhost:1003","/api/accounts/signin", model);
+
+        if (responseMessage is null)
+            response = null;
+
+        if(responseMessage!.IsSuccessStatusCode)
+        {
+            navManager.NavigateTo("/profile");
+        }
+        else
+        {
+            response = responseMessage;
+        }
+    }
+}

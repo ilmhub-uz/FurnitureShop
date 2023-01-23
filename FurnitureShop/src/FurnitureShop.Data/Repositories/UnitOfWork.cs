@@ -1,5 +1,5 @@
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using FurnitureShop.Data.Context;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories.ConcreteTypeRepositories;
 using JFA.DependencyInjection;
 
@@ -10,7 +10,12 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
 
-    private ICategoryRepository _categoryRepository;
+    public UnitOfWork(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    private ICategoryRepository? _categoryRepository;
     public ICategoryRepository Categories
     {
         get
@@ -20,7 +25,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IProductRepository _productRepository;
+    private IProductRepository? _productRepository;
     public IProductRepository Products
     {
         get
@@ -30,7 +35,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IOrganizationRepository _organizationRepository;
+    private IOrganizationRepository? _organizationRepository;
     public IOrganizationRepository Organizations
     {
         get
@@ -40,7 +45,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IOrderRepository _orderRepository;
+    private IOrderRepository? _orderRepository;
     public IOrderRepository Orders
     {
         get
@@ -50,7 +55,7 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private ICartRepository _cartRepository;
+    private ICartRepository? _cartRepository;
     public ICartRepository Carts
     {
         get
@@ -60,47 +65,47 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    private IFavoriteRepository _favoriteRepository;
+    private IFavoriteRepository? _favoriteRepository;
     public IFavoriteRepository Favorites
     {
         get
         {
-            if(_favoriteRepository is null ) _favoriteRepository = new FavoriteRepository(_context);
-            return _favoriteRepository;    
+            if (_favoriteRepository is null) _favoriteRepository = new FavoriteRepository(_context);
+            return _favoriteRepository;
         }
     }
 
-    public IAppUserRepository _appUserRepository;
+    private IAppUserRepository? _appUserRepository;
     public IAppUserRepository AppUsers
     {
         get
         {
-            if(_appUserRepository is null ) _appUserRepository = new AppUserRepository(_context);
-            return _appUserRepository ;
+            if (_appUserRepository is null) _appUserRepository = new AppUserRepository(_context);
+            return _appUserRepository;
         }
     }
 
-    private IContractRepository _contractRepository;
-    public IContractRepository Contracts 
+    private IContractRepository? _contractRepository;
+    public IContractRepository Contracts
     {
         get
         {
-            if( _contractRepository is null ) _contractRepository = new ContractRepository(_context);
+            if (_contractRepository is null) _contractRepository = new ContractRepository(_context);
             return _contractRepository;
         }
     }
 
-    private ICartProductRepository _cartProductRepository;
+    private ICartProductRepository? _cartProductRepository;
     public ICartProductRepository CartProduct
     {
         get
         {
-            if(_cartProductRepository is null) _cartProductRepository = new CartProductRepository(_context);
+            if (_cartProductRepository is null) _cartProductRepository = new CartProductRepository(_context);
             return _cartProductRepository;
         }
     }
 
-    private IFavouriteProductRepository _favouriteProductRepository;
+    private IFavouriteProductRepository? _favouriteProductRepository;
     public IFavouriteProductRepository FavoritesProduct
     {
         get
@@ -110,9 +115,25 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public UnitOfWork(AppDbContext context)
+    private IProductCommentRepository? _productCommentRepository;
+    public IProductCommentRepository ProductComments 
     {
-        _context = context;
+        get
+        {
+            if (_productCommentRepository is null) _productCommentRepository = new ProductCommentRepository(_context);
+            return _productCommentRepository;
+        }
+    }
+
+    private IGenericRepository<AppUserRole> _rolesRepository;
+    public IGenericRepository<AppUserRole> Roles
+    {
+        get
+        {
+            if(_rolesRepository is null)
+                _rolesRepository = new GenericRepository<AppUserRole>(_context);
+            return _rolesRepository;
+        }
     }
 
     public int Save() => _context.SaveChanges();

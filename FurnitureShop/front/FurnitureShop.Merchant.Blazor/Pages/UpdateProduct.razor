@@ -1,29 +1,66 @@
-﻿@page "/update-products/{Id}"
-@inject HttpClient _http;
-@using FurnitureShop.Admin.Blazor.Dtos
+﻿@page "/update-product/{productId}/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@inject NavigationManager NavManager
+@inject ProductService prodcutService
 
-<MudGrid Justify="Justify.Center">
-    <MudCard Height="450px" Width="480px" Class="mt-5 ml-10 mr-10">
-        <h2>Update Product Form</h2>
-        <MudTextField @bind-Value="dtoModel.Name" Label="Name" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="dtoModel.Description" Label="Desciption" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="dtoModel.Price" Label="Price" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="dtoModel.Count" Label="Count" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="dtoModel.CategoryId" Label="Category id" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="dtoModel.OrganizationId" Label="Organization id" Variant="Variant.Text" Required></MudTextField>
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Filled.Done"
-                   Color="Color.Primary" OnClick="OnInitializedAsync" Class="ma-5">Submit</MudButton>
-    </MudCard>
-</MudGrid>
+<PageTitle>Update Product</PageTitle>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" HelperText="Max. 8 characters" @bind-Value="model.Name" For="@(() => model.Name)" />
+                    <MudTextField Label="Description" HelperText="Max. 8 characters" @bind-Value="model.Description" For="@(() => model.Description)" />
+                    <MudTextField Label="Brend" HelperText="Max. 8 characters" @bind-Value="model.Brend" For="@(() => model.Brend)" />
+                    <MudTextField Label="Material" HelperText="Max. 8 characters" @bind-Value="model.Material" For="@(() => model.Material)" />
+                    <MudTextField Label="Price" HelperText="Max. 8 characters" @bind-Value="model.Price" For="@(() => model.Price)" />
+                    <MudTextField Label="Count" HelperText="Max. 8 characters" @bind-Value="model.Count" For="@(() => model.Count)" />
+                    <MudTextField Label="Category" HelperText="Max. 8 characters" @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+<h1>@errorMessage</h1>
 
 @code {
-    private UpdateProductDto dtoModel = new UpdateProductDto();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await _http.PutAsJsonAsync($"https://localhost:7113/api/Products/{Id}", dtoModel);
-    }
+    [Parameter]
+    public string? productId { get; set; }
 
     [Parameter]
-    public string? Id { get; set; }
+    public string? organizationId { get; set; }
+
+    string errorMessage = null;
+
+    UpdateProductDto? model = new UpdateProductDto();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/product/{@productId}");
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        model.WithInstallation = true;
+        model.IsAvailable = true;
+        model.OrganizationId = new Guid(organizationId);
+
+        var result = await prodcutService.UpdateProductAsync(model, productId);
+
+        if (result.IsSuccess)
+        {
+            Redirect();
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage;
+        }
+    }
 }

@@ -1,23 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FurnitureShop.Data.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace FurnitureShop.Client.Api.Dtos;
 
 public class RegisterUserDto
 {
-
     public string? UserName { get; set; }
-
-
     public string? FirstName { get; set; }
-
     public string? LastName { get; set; }
-
-
     public string? Password { get; set; }
-
-
     public string? Email { get; set; }
-
-    public IFormFile? Avatar { get; set; }
-
 }

@@ -1,13 +1,21 @@
+using System.Reflection;
+using FluentValidation;
 using FurnitureShop.Common.Extensions;
-using FurnitureShop.Files.Api.Services;
 using JFA.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServicesFromAttribute();
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
+builder.Services.AddCorsPolicy();
+builder.SerilogConfig();
+builder.Services.AddServicesFromAttribute();
+builder.Services.AddIdentityManagers();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
 
@@ -19,7 +27,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
+app.UseCors();
 app.MapControllers();
 
 app.Run();

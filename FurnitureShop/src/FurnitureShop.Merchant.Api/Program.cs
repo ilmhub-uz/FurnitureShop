@@ -1,20 +1,16 @@
 using FluentValidation;
-using FurnitureShop.Common.Email_Sender.Dtos;
-using FurnitureShop.Common.Email_Sender.Services;
 using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Middleware;
+using FurnitureShop.Merchant.Api.Hubs;
 using JFA.DependencyInjection;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-var emailConfig = builder.Configuration
-    .GetSection("EmailConfiguration")
-    .Get<EmailConfiguration>();
 
 //builder.Services.AddSingleton(emailConfig);
-
+builder.WebHost.GlobalAppSettings();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAppDbContext(builder.Configuration);
@@ -23,7 +19,7 @@ builder.SerilogConfig();
 builder.Services.AddServicesFromAttribute();
 builder.Services.AddIdentityManagers();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
-
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -39,5 +35,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//https://localhost:1009/organizationhub
+app.MapHub<OrganizationHub>("/organizationhub");
+//https://localhost:1009/producthub
+app.MapHub<ProductHub>("/producthub");
+//https://localhost:1009/producthub
+app.MapHub<Hubs>("/hub");
 
 app.Run();

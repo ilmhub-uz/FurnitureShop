@@ -1,17 +1,16 @@
 ﻿using FluentValidation;
 using FurnitureShop.Common.Filters;
+using FurnitureShop.Data.Entities;
 using FurnitureShop.Merchant.Api.Dtos;
 using FurnitureShop.Merchant.Api.Services;
 using FurnitureShop.Merchant.Api.ViewModel;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.Merchant.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class ContractsController : ControllerBase
 {
     private readonly IContractService _contractService;
@@ -23,39 +22,33 @@ public class ContractsController : ControllerBase
         _createContractValidator = createContractValidator;
     }
 
-    [HttpPost]
-    [ValidateModel]
-    [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateContract([FromBody] Guid orderId)
-    {
-        var contract = await _contractService.AddContractAsync(orderId);
-        return Ok(contract);
-    }
-
+    [Authorize(EPermission.CanReadContract)]
     [HttpGet]
     [ProducesResponseType(typeof(List<ContractView>),StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetContracts(Guid organizationId)
+    public async Task<IActionResult> GetContracts()
     {
-        var contracts = await _contractService.GetContractsAsync(organizationId);
+        var contracts = await _contractService.GetContractsAsync();
 
         return Ok(contracts);
     }
 
-    [HttpGet("{contractId:guid}")]
+    [Authorize(EPermission.CanReadContract)]
+    [HttpGet("{orderId:guid}")]
     [ProducesResponseType(typeof(ContractView), StatusCodes.Status200OK)]
     [IdValidation]
-    public async Task<IActionResult>GetContractById(Guid contractId)
+    public async Task<IActionResult>GetContractById(Guid orderId)
     {
-        var category = await _contractService.GetContractByIdAsync(contractId);
+        var contract = await _contractService.GetContractByIdAsync(orderId);
 
-        return Ok(category);
+        return Ok(contract);
     }
 
-    [HttpDelete("{contractId:guid}")]
+    [Authorize(EPermission.CanDeleteContract)]
+    [HttpDelete("{orderId:guid}")]
     [IdValidation]
-    public async Task<IActionResult>DeleteProduct(Guid contractId)
+    public async Task<IActionResult>DeleteContract(Guid orderId)
     {
-        await _contractService.DeleteContractAsync(contractId);
+        await _contractService.DeleteContractAsync(orderId);
 
         return Ok();
     }

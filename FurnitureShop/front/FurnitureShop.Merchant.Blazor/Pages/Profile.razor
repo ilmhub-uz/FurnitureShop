@@ -1,28 +1,111 @@
 ﻿@page "/profile"
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using System.Net
+@using Newtonsoft.Json
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
 <PageTitle>Profile</PageTitle>
 
-@using FurnitureShop.Admin.Blazor.Dtos
-@using FurnitureShop.Admin.Blazor.ViewModel
-@using Newtonsoft.Json
+<h1 style="text-align:center; margin-bottom:20px; color:#999;">Profile</h1>
 
-<h1>User-Name: @user?.UserName</h1>
-<h1>Email: @user?.Email</h1>
-<h1>First-Name: @user?.FirstName</h1>
-<h1>Last-Name: @user?.LastName</h1>
+<div class="container d-flex" style="padding: 0 50px;">
+    <div style="border-radius:10px; width:300px; height:300px; background-color: #999; margin-right:10px;">
+        <img style="margin-top:25px; margin-left:17px; background-position:center; padding:20px; width:250px; height:200px; border-radius:50%; background-size:cover;" src="https://mudblazor.com/images/sweden.jpg" />
+        <h3 style="text-align:center; margin-left:20px; color:#fff; font-size:20px;">@user.FirstName @user.LastName</h3>
+    </div>
+    <div style="padding:20px; border-radius:10px; width:700px; height:300px; background-color: #999;">
+        <div class="d-flex">
+            <div style="margin-right:100px;">
+                <h3 style="margin-left:20px; color:#fff; font-size:20px;">UserName</h3>
+                @if (user.UserName is null)
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">You Have not UserName</p>
+                }
+                else
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">@user.UserName</p>
+                }
+            </div>
+            <div>
+                <h3 style="margin-left:20px; color:#fff; font-size:20px;">Email</h3>
+                @if (user.Email is null)
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">You Have not Email</p>
+                }else
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">@user.Email</p>
+                }
+            </div>
+        </div>
+        
+        <div class="d-flex" style="margin-bottom:20px;">
+            <div style="margin-right:100px;">
+                <h3 style="margin-left:20px; color:#fff; font-size:20px;">FirstName</h3>
+                @if (user.FirstName is null)
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">You Have not FirstName</p>
+                }
+                else
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">@user.FirstName</p>
+                }
+            
+            </div>
+            <hr />
+            <div>
+                <h3 style="margin-left:20px; color:#fff; font-size:20px;">LastName</h3>
+                @if (user.LastName is null)
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">You Have not LastName</p>
+                }
+                else
+                {
+                    <p style="margin:5px 0 5px 20px; color:#f9f9f9;">@user.LastName</p>
+                }
+            </div>
+        </div>
+        
+        <div class="d-flex" style="margin-left:20px;">
+            <a style="margin-right:30px;" href="/update-profile">
+                <MudButton Variant="Variant.Filled" Color="Color.Warning">Update</MudButton>
+            </a>
 
+            <a style="margin-right:30px;" href="">
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@LogOut">Log out</MudButton>
+            </a>
+        </div>
+    </div>
+</div>
 
 @code {
-    UserView user = new UserView();
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/signin");
+    }
 
+    UserView? user = new UserView();
+    HttpStatusCode? responseCode;
     protected override async Task OnInitializedAsync()
     {
         var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7113");
+        client.BaseAddress = new Uri("https://localhost:1009");
 
         var message = new HttpRequestMessage(HttpMethod.Get, "/api/profile");
         message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
 
         var profileJson = await (await client.SendAsync(message)).Content.ReadAsStringAsync();
         user = JsonConvert.DeserializeObject<UserView>(profileJson);
+    }
+
+    public async Task LogOut()
+    {
+        var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/Account/logout");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var response = await httpClient.SendAsync(httpRequest);
+        var deleteProductJson = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+            Redirect();
     }
 }

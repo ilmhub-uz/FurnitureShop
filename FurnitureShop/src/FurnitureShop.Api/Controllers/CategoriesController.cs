@@ -16,11 +16,11 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(List<CategoryView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCategories([FromQuery] PaginationParams paginationParams) =>
-        Ok(await _categoriesService.GetCategoriesAsync(paginationParams));
+    public async Task<IActionResult> GetCategories() =>
+        Ok(await _categoriesService.GetCategoriesAsync());
 
-    [HttpGet("{categoryId:int}/children")]
-    [ProducesResponseType(typeof(List<CategoryView>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCategoryChildren(int categoryId) =>
-        Ok(await _categoriesService.GetCategoryChildrenAsync(categoryId));
+    [HttpGet("{categoryId:int}")]
+    [ProducesResponseType(typeof(CategoryView), StatusCodes.Status200OK)]
+    public IActionResult GetCategoryById(int categoryId) =>
+        Ok(_categoriesService.GetCategoryById(categoryId));
 }

@@ -18,7 +18,7 @@ namespace FurnitureShop.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -118,6 +118,23 @@ namespace FurnitureShop.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("530c4139-ef46-483c-bcd8-d57cb206429b"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "db637b7b-9240-407c-9ec2-f50a9f16fbce",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMINISTRATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIttxX+m+Wo2/3xXoighdkCHDkC4Er4H8tpl3INVWrTY1kyjvgjmr7+pg22b/a57GQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "39fba202-23d1-43cf-9a0e-4117ac645fec",
+                            Status = 0,
+                            TwoFactorEnabled = false,
+                            UserName = "administrator"
+                        });
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.AppUserRole", b =>
@@ -142,6 +159,10 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("normalized_name");
 
+                    b.Property<int[]>("Permissions")
+                        .HasColumnType("integer[]")
+                        .HasColumnName("permissions");
+
                     b.HasKey("Id")
                         .HasName("pk_asp_net_roles");
 
@@ -150,6 +171,16 @@ namespace FurnitureShop.Data.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3917758a-29cd-4f19-acf9-1115116ae21e"),
+                            ConcurrencyStamp = "eaa0097a-7f7e-4c49-865b-a6d880feb3ea",
+                            Name = "administrator",
+                            NormalizedName = "ADMINISTRATOR",
+                            Permissions = new[] { 1, 2, 3, 4 }
+                        });
                 });
 
             modelBuilder.Entity("FurnitureShop.Data.Entities.Cart", b =>
@@ -537,6 +568,10 @@ namespace FurnitureShop.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("author_id");
+
                     b.Property<string>("Brend")
                         .HasColumnType("text")
                         .HasColumnName("brend");
@@ -755,6 +790,13 @@ namespace FurnitureShop.Data.Migrations
                         .HasDatabaseName("ix_asp_net_user_roles_role_id");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("530c4139-ef46-483c-bcd8-d57cb206429b"),
+                            RoleId = new Guid("3917758a-29cd-4f19-acf9-1115116ae21e")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -824,6 +866,7 @@ namespace FurnitureShop.Data.Migrations
                     b.HasOne("FurnitureShop.Data.Entities.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_categories_categories_parent_id");
 
                     b.Navigation("CategoryImage");

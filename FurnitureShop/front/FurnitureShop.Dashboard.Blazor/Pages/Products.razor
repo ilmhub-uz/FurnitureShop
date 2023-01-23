@@ -1,0 +1,74 @@
+﻿@page "/products"
+@using FurnitureShop.Dashboard.Blazor.ViewModel
+@inject HttpClient client 
+
+<PageTitle>Products</PageTitle>
+
+
+<h3>Products</h3>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+@if (products == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="products" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Title</MudTh>
+            <MudTh>Brend</MudTh>
+            <MudTh>Organization</MudTh>
+            <MudTh>Category</MudTh>
+            <MudTh>Action status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Category">@context.Name</MudTd>
+            <MudTd DataLabel="Category">@context.Brend</MudTd>
+            <MudTd DataLabel="Category">@context.Organization.Name</MudTd>
+            <MudTd DataLabel="Category">@context.Category.Name</MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async()=> await DeleteProduct(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton></MudTd>
+        </RowTemplate>
+        
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+
+
+
+@code {
+    List<ProductView> products = new List<ProductView>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await client.GetFromJsonAsync<List<ProductView>>("/api/Products");
+
+        //var connection = new HubConnectionBuilder()
+        //    .WithUrl("http://localhost:3001/products-hub")
+        //    .Build();
+
+        //connection.On<Product>("ProductAdded", product =>
+        //{
+        //    products?.Add(product);
+        //    StateHasChanged();
+        //});
+
+        //await connection.StartAsync();
+    }
+
+
+    private async Task DeleteProduct(Guid productId)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Products?productId={productId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+    }
+}

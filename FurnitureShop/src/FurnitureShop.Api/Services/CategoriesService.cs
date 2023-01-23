@@ -5,6 +5,7 @@ using FurnitureShop.Common.Models;
 using FurnitureShop.Data.Entities;
 using FurnitureShop.Data.Repositories;
 using JFA.DependencyInjection;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Api.Services;
@@ -19,11 +20,11 @@ public class CategoriesService : ICategoriesService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<CategoryView>> GetCategoriesAsync(PaginationParams paginationParams)
+    public async Task<List<CategoryView>> GetCategoriesAsync()
     {
         var categories = await _unitOfWork.Categories.GetAll()
             .Where(c => c.ParentId == null)
-            .ToPagedListAsync(paginationParams);
+            .ToListAsync();
 
         var categoriesViewList = new List<CategoryView>();
 
@@ -58,19 +59,15 @@ public class CategoriesService : ICategoriesService
         return categoryView;
     }
 
-    public async Task<List<CategoryView>> GetCategoryChildrenAsync(int categoryId)
+    public CategoryView GetCategoryById(int categoryId)
     {
-        if (_unitOfWork.Categories.GetById(categoryId) == null)
+        var category = _unitOfWork.Categories.GetById(categoryId);
+
+        if (category is null)
             throw new NotFoundException<Category>();
 
-        var categoryChildren = 
-            await _unitOfWork.Categories.GetAll()
-                .Where(category=>category.ParentId == categoryId)
-                .ToListAsync();
+        var categoryView = ConvertToCategoryView(category);
 
-        var categoryChildrenViews = 
-            categoryChildren.Select(ConvertToCategoryView).ToList();
-
-        return categoryChildrenViews;
+        return categoryView;
     }
 }

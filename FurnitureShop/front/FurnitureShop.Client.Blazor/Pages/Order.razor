@@ -1,22 +1,82 @@
 ﻿@page "/order"
 @using FurnitureShop.Client.Blazor.Shared
 @using FurnitureShop.Client.Blazor.ViewModel;
+@using Newtonsoft.Json;
 @inject HttpClient Http
 
 <PageTitle>Order</PageTitle>
-
 <MudText Typo="Typo.h3" GutterBottom="true">Order</MudText>
 
-@* Order da sotib olingan productlar va ularni propertiylari yani (productni nomi va rasmi, descriptioni, 
-    u haqida malumoti yani propertiylari bo`ladi va narxi) bo`ladi va yoni da cart bo`ladi :
-    cartda - productni nomi, narxi, nechta sotib olinayotgani, rasmi bo`ladi,
-    qo`shib o`chiradigan buttonlari bo`ladi va hammasini bittadi olib tashiydigan trash-button bo`ladi *@
+<div class="container">
+    <div class="row">
+        @foreach (var order in _orders ?? new List<OrderView>())
+        {
+            <div class="col-md-3">
+                <div class="card my_card">
+                    <div class="myCard_image">
+                        <img class="card_image"
+                        src="https://images.samsung.com/is/image/samsung/assets/id/2208/pfs/02-03-B4-kv-Durability-pc-570x304.jpg?$FB_TYPE_J_S_JPG$"
+                        alt="Organization Image">
+                    </div>
+                    <br>
+                    <div class="myCard_body">
+                        <b class="myCard_name">OrganizationName: @order.OrganizationName</b><br><br>
+                        <b class="myCard_name">UserName: @order.UserName</b><br><br>
+                        <b class="myCard_name">UserMail: @order.UserMail</b> <br><br>
+
+                        @foreach (var product in @order.OrderProducts)
+                        {
+                            <b class="myCard_name">product name: @product.Product.Name</b> <br><br>
+                            <b class="myCard_name">Count @product.Count</b> <br><br> 
+                            <b class="myCard_name">product price: @product.Product.Price</b> <br><br>
+                        }
+                    </div>
+                    <hr>
+                    <div class="myCard_footer">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete"OnClick="@(() => DeleteProductById(@order.Id))" Color="Color.Error">Delete</MudButton>
+                        <MudButton Href="/contract" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Send"
+                        Color="Color.Success">Buy</MudButton>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<br><br><br><br><br>
 
 
 @code {
-    private OrderProductView[]? orderProducts;
+    List<OrderView>? _orders = new List<OrderView>();
+
     protected override async Task OnInitializedAsync()
     {
-        orderProducts = await Http.GetFromJsonAsync<OrderProductView[]>("https://localhost:7235/api/Orders");        
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "api/Orders");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        var response = await Http.SendAsync(httpRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var orders = await response.Content.ReadAsStringAsync();
+
+            _orders = JsonConvert.DeserializeObject<List<OrderView>>(orders);
+        }
+    }
+
+    public async void DeleteProductById(Guid orderId)
+    {
+        try
+        {
+            var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Orders/{orderId}/cancel");
+            message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+            await Http.SendAsync(message);
+
+            _orders.Remove(_orders.Where(o => o.Id == orderId).First());
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message + "delete qibo'madi");
+        }
     }
 }

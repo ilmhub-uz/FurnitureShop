@@ -4,8 +4,8 @@ using FurnitureShop.Merchant.Api.ViewModel;
 namespace FurnitureShop.Merchant.Api.Services;
 public interface IContractService
 {
-    Task<List<ContractView>> GetContractsAsync(Guid organizationId);
-    Task<ContractView> GetContractByIdAsync(Guid contractId);
-    Task<ContractView> AddContractAsync(Guid orderId);
-    Task DeleteContractAsync(Guid contractId);
+    Task<List<ContractView>> GetContractsAsync();
+    Task<ContractView> GetContractByIdAsync(Guid orderId);
+    Task<ContractView> AddContractAsync(Guid orderId,DateTime finishDate);
+    Task DeleteContractAsync(Guid orderId);
 }

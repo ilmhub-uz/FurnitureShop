@@ -1,0 +1,44 @@
+﻿@page "/update-organization/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@inject NavigationManager NavManager
+@inject OrganizationService organizationService
+
+<PageTitle>Update Organization</PageTitle>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <h2> Update Organization </h2>
+    <DataAnnotationsValidator />
+    <MudTextField Label="Name" @bind-Value="model.Name" For="@(() => model.Name)" />
+    <br />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Update</MudButton>
+</EditForm>
+
+<h1>@errorMessage</h1>
+
+@code {
+    [Parameter]
+    public string? organizationId { get; set; }
+    string errorMessage = null;
+
+    UpdateOrganizationDto? model = new UpdateOrganizationDto();
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/organization/{@organizationId}");
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        var result = await organizationService.UpdateOrganizationAsync(model, organizationId);
+
+        if (result.IsSuccess)
+        {
+            Redirect();
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage;
+        }
+    }
+}

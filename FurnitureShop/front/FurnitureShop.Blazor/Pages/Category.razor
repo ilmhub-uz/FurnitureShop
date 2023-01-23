@@ -1,76 +1,144 @@
 ﻿@page "/category"
 @inject HttpClient Http
+@using FurnitureShop.Blazor.Services
+@inject CategoryService CategoryService
+@inject ProductService ProductService
+@using FurnitureShop.Blazor.Pages.ViewModel
 
 <PageTitle>Category</PageTitle>
 
-<div class="container">
-    <MudText Typo="Typo.h3" Class="text-center">Sub Categories</MudText>
-    <div class="categories">
-        <div class="category"> 
-            <h3 class="text-center">
-                Laptops
-            </h3>
-            <img src="https://cdn.macbro.uz/macbro/38f5c97f-48a9-4582-b508-df528b6faf4d" alt="mac" />
-        </div>
-        <div class="category">
-            <h3 class="text-center">Screen</h3>
-            <img src="https://olcha.uz/image/150x150/category/b9ndmxu7R1o0rNIfa66oTO5C8yGLz0rqSKPVIgsNOXf11pmxhJkp7zTOCZet.png" alt="screen" />
-        </div>
-        <div class="category">
-            <h3 class="text-center">Computer devices</h3>
-            <img src="https://olcha.uz/image/150x150/category/Iq6S7Cpq55aiyWLPqwZlQ2xUfoflhJEdZMA6134N6LNtL6vm1T5Gx0HK7zHD.png" alt="comp" />
-        </div>
-        <div class="category">
-            <h3 class="text-center">Office equipment</h3>
-            <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
-        </div>
-
-        @if(categories is not null){
-            foreach (var category in categories)
+<MudNavMenu>
+    @if (_categories is not null)
+    {
+        
+        @foreach (var category in _categories)
+        {
+            if(category.Children is not null)
             {
-                <div class="category">
-                    <h3 class="text-center">@category.Children</h3>
-                    <img src="https://olcha.uz/image/150x150/category/rtlaqqb3RCtkWwTGNzGuP7XYTQKXEwlhYcOXjQnb2rv0l1pkM2KaJO6hYDrx.png" alt="office" />
-                </div>
+                @foreach (var _subCategory in category.Children)
+                {
+                    <MudGrid>
+                        <MudItem xs="12" sm="3" md="2"><div class="subCat"><MudNavLink Href="/products" Match="NavLinkMatch.Prefix">
+                            <div class="d-flex">
+                                <div class="home-img">
+                                    <img src="https://mebel.shop/upload/iblock/b8a/lfr6ljaax0je7n306vtzr206uobtr1rg.png"alt="beds"/>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <p class="subName">@_subCategory.Name</p>
+                                    <p class="countM">@_subCategory.Children</p>
+                                </div>
+                            </div>
+                            
+                        </MudNavLink></div></MudItem>
+                    </MudGrid>
+                }
+            }
+            else
+            {
+                <MudNavLink Href="/" Match="NavLinkMatch.Prefix">@category.Name</MudNavLink>
             }
         }
         
-    </div>
-</div>
-
-<style>
-    .text-center {
-        text-align: center;
-        padding: 18px 0px;
     }
+    <!------------------------------------------------------------------------------------------------->
+</MudNavMenu>
 
-    .container {
-        padding: 10px 0px;
+<MudGrid>
+    @if (products is null)
+    {
+        @for (var i = 0; i < 10; i++)
+        {
+            <MudItem xs="12" sm="3" md="4">
+                <div class="images">
+                    <div class="product-image">
+                        <a href="/product">
+                           <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                                             Alt="" Class="image"/> 
+                        </a>
+                        
+                    </div>
+                    <div class="d-flex flex-column align-center">
+                        <MudRating ReadOnly="true" SelectedValue="4" style="color: yellow !important;"/>
+                    </div>
+                    <a href="/product">
+                        <div>
+                            <div class="product-name">
+                                <h3>Table Galleon leather</h3>
+                                <p>Description</p>
+                            </div>
+                            <div class="product-price"><h4 class="price">500$</h4></div>
+                            <p>Views: 999+</p>
+                        </div>
+                    </a>
+                </div>
+            </MudItem>
+        }
     }
-
-    .categories {
-        display: flex;
-        justify-content: space-between;
+    else
+    {
+        foreach (var product in products)
+        {
+            <MudItem xs="12" sm="3" md="4">
+                <div class="images">
+                    <div class="product-image">
+                        
+                        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                  Alt="" Class="image"/>
+                    </div>
+                    <div class="d-flex flex-column align-center">
+                        <MudRating ReadOnly="true" SelectedValue="@product.Rate" style="color: yellow !important;"/>
+                    </div>
+                    <div class="product-name">
+                        <h3>@product.Name</h3>
+                        <p>@product.Description</p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">@product.Price $</h4>
+                    </div>
+                    <p>
+                        Views: @product.Views
+                    </p>
+                </div>
+            </MudItem>
+        }
     }
-
-    .category {
-        padding: 10px;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        border-radius: 18px;
-        width: 280px;
-    }
-
-    img {
-        width: 100%;
-        padding: 10px 0px 0px 0px;
-    }
-</style>
+</MudGrid>
 
 @code {
-    private CategoryView[]? categories;
+
+    private List<CategoryView>? _categories;
+    private List<ProductView>? products;
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235/api/Categories/{categoryId}/children");
+        _categories = await CategoryService.GetCategoriesAsync();
+        products = await ProductService.GetProductsAsync();
     }
 }
+<style>
+    .image {
+        width: 100%;
+    }
+    .product-image {
+        padding: 45px 1px;
+    }
+    .images {
+        padding: 25px;
+        border: 1px solid rgb(241, 241, 241);
+    }
+    .subName {
+        color: black;
+    }
+    .subCat {
+        background: #fff;
+        border-radius: 2px;
+        display: inline-block;
+        position: relative;
+        color: black;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    }
+    .subCat:hover {
+      box-shadow: 0 1px 1px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+    }
+</style>

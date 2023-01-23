@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FurnitureShop.Common.Exceptions;
+using FurnitureShop.Common.Extensions;
 using FurnitureShop.Common.Filters;
 using FurnitureShop.Common.Helpers;
 using FurnitureShop.Data.Entities;
@@ -9,7 +10,6 @@ using FurnitureShop.Merchant.Api.Dtos.Enums;
 using FurnitureShop.Merchant.Api.ViewModel;
 using JFA.DependencyInjection;
 using Mapster;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Merchant.Api.Services;
@@ -24,9 +24,10 @@ public class OrganizationService : IOrganizationService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter)
+    public async Task<List<OrganizationView>> GetOrganizationsAsync(OrganizationSortingFilter filter, ClaimsPrincipal principal)
     {
-        var existingOrganizations = _unitOfWork.Organizations.GetAll();
+        var userId = Guid.Parse(principal.GetUserId());
+        var existingOrganizations = _unitOfWork.Organizations.GetAll().Where(o => o.Users.Any(u => u.UserId ==userId));
 
         if(filter.OrganizationId is not null)
             existingOrganizations = existingOrganizations.Where(organization => organization.Id == filter.OrganizationId);
@@ -61,8 +62,23 @@ public class OrganizationService : IOrganizationService
         }
 
         var organizations = await existingOrganizations.ToPagedListAsync(filter);
+        var resultOrganization = new List<OrganizationView>();
 
-        return organizations.Adapt<List<OrganizationView>>();
+        foreach (var organization in organizations)
+        {
+            resultOrganization.Add(new OrganizationView()
+            {
+                Id = organization.Id,
+                Name = organization.Name,
+                ImageUrl = organization.ImageUrl,
+                Status = organization.Status,
+                Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
+                Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+                Owner = organization.Users.FirstOrDefault(u => u.Role == 0).User.Adapt<UserView>()
+            });
+        }
+
+        return resultOrganization;
     }
 
     [IdValidation]
@@ -70,10 +86,18 @@ public class OrganizationService : IOrganizationService
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
 
-        return organization!.Adapt<OrganizationView>();
+        return new OrganizationView()
+        {
+            Id = organization.Id,
+            Name = organization.Name,
+            ImageUrl = organization.ImageUrl,
+            Status = organization.Status,
+            Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
+            Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+            Owner = organization.Users.FirstOrDefault(u => u.Role == 0).User.Adapt<UserView>()
+        };
     }
 
-    [Authorize]
     public async Task AddOrganization(ClaimsPrincipal claims, CreateOrganizationDto createOrganizationDto)
     {
         var organization = createOrganizationDto.Adapt<Organization>();
@@ -113,6 +137,15 @@ public class OrganizationService : IOrganizationService
         if(organization is null)
             throw new NotFoundException<Organization>();
 
-        return organization.Adapt<OrganizationView>();
+        return new OrganizationView()
+        {
+            Id = organization.Id,
+            Name = organization.Name,
+            ImageUrl = organization.ImageUrl,
+            Status = organization.Status,
+            Users = organization.Users.Select(u => u.Adapt<OrganizationUserView>()).ToList(),
+            Products = organization.Products.Select(p => p.Adapt<ProductView>()).ToList(),
+            Owner = organization.Users.FirstOrDefault(u => u.Role == 0).User.Adapt<UserView>()
+        };
     }
 }

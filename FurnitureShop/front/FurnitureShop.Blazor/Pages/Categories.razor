@@ -1,5 +1,7 @@
 ﻿@page "/categories"
+@using FurnitureShop.Blazor.Services
 @inject HttpClient Http
+@inject CategoryService CategoryService
 
 <PageTitle>Categories</PageTitle>
 
@@ -18,7 +20,7 @@
             </h3>
             <img src="https://cdn.macbro.uz/macbro/74f8a955-bba9-400c-92b2-4b30d01761e0" alt="phone"/>
         </div>
-
+@* commit *@
         @if(categories is not null)
         {
             foreach (var category in categories)
@@ -64,10 +66,7 @@
 </style>
 
 @code {
-    private CategoryView[]? categories;
+    private List<CategoryView>? categories;
 
-    protected override async Task OnInitializedAsync()
-    {
-        categories = await Http.GetFromJsonAsync<CategoryView[]>("https://localhost:7235/api/Categories");
-    }
+    protected override async Task OnInitializedAsync() => categories = await CategoryService.GetCategoriesAsync();
 }

@@ -1,0 +1,115 @@
+﻿@page "/product/{productId}"
+@using FurnitureShop.Blazor.Pages.ViewModel
+@using FurnitureShop.Blazor.Services
+@inject ProductService ProductService
+
+<h3>Product</h3>
+
+<div class="product" style="display: flex">
+    <div class="imgDiv">
+        <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                  Alt="" Class="image"/>
+    </div>
+    <div class="properties">
+        <p>Price : 500$</p>
+        <div class="description">
+            <p>Color - red</p>
+            <p>Material - MDF</p>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 200px">
+                <div class="count">
+                    <div><button class="leftBut" onclick="@DecrementCount">-</button></div>
+                    <div class="pCount">
+                        <p>@currentCount</p></div>
+                    <div><button class="rightBut" onclick="@IncrementCount">+</button></div>
+                </div>
+                <div class="cartBut"><MudButton Color="Color.Primary" Href="/product" Variant="Variant.Filled">In Cart</MudButton></div>
+            </div>
+            <MudButton Color="Color.Inherit" Href="/product" Variant="Variant.Filled">Buy in 1 click</MudButton>
+        </div>
+    </div>
+</div>
+<div class="descriptions">
+    <div>
+        <h3>Описание</h3>
+            <p>Столешница выполнена из закаленного стекла толщиной 4 мм, покрыто стойкими керамическими красками.
+                Каркас колонны выполнен из металлического профиля, облицовка и основание МДФ, покрыты пленкой ПВХ.</p>
+    </div>
+    <div>
+        <h3>Характеристики</h3>
+        <div style="display: flex; justify-content: space-between">
+            <p>Артикул</p>
+            <p>ЕВРО 29</p>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <p>Ширина, см</p>
+            <p>74</p>
+        </div>
+    </div>
+    <div>
+        <h3>Comment</h3>
+        <p>Помогите другим пользователям с выбором - будьте первым, кто поделится своим мнением об этом товаре</p>
+    </div>
+    <div>
+        <h3>Оплата</h3>
+        <MudButton Color="Color.Primary" Href="/product" Variant="Variant.Filled">By Card</MudButton>
+        <MudButton Color="Color.Secondary" Href="/product" Variant="Variant.Filled">By Onlayn</MudButton>
+        <MudButton Color="Color.Transparent" Href="/product" Variant="Variant.Filled">By Coin</MudButton>
+    </div>
+</div>
+
+
+
+@functions {
+    int currentCount = 0;
+    
+    void IncrementCount()
+    {
+        if(product is not null && currentCount < product.Count)
+            currentCount++;
+    }
+    void DecrementCount()
+    {
+        if(currentCount > 0)
+            currentCount--;
+    }
+}
+
+@code {
+    [Parameter]
+    private string productId { get; set; }
+    
+    private ProductView? product;
+    protected override async Task OnInitializedAsync() => product = await ProductService.GetProductByIdAsync(Guid.Parse(productId));
+}
+
+<style>
+    .imgDiv{
+        padding: 145px 1px;
+    }
+    .count {
+        display: flex;
+        border-radius: 30px;
+        padding: 10px;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #e1e1e1;
+    }
+    .pCount{
+        text-align: center;
+        width: 30px;
+        font-size: 18px;
+    }
+    .mud-button-label {
+        color: black;
+    }
+    .leftBut {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+    .rightBut {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+</style>

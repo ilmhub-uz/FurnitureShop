@@ -1,12 +1,93 @@
 ﻿@page "/products"
 @using FurnitureShop.Blazor.Pages.ViewModel
-@inject HttpClient Http
+@using FurnitureShop.Blazor.Services
+@inject ProductService ProductService
 
-<h3>Products</h3>
-
-@if (productViews is not null)
+<MudGrid>
+    @if (products is null)
+    {
+        @for (var i = 0; i < 10; i++)
+        {
+            <MudItem xs="12" sm="3" md="4">
+                <div class="images">
+                    <div class="product-image">
+                        <a href="/product">
+                            <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                      Alt="" Class="image"/>
+                        </a>
+                    </div>
+                    <div class="align-center">
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning"/>
+                        }
+                    </div>
+                    <a href="/product">
+                        <div>
+                            <div class="product-name">
+                                <h3>Table Galleon leather</h3>
+                                <p>Description</p>
+                            </div>
+                            <div class="product-price"><h4 class="price">500$</h4></div>
+                            <p>Views: 999+</p>
+                        </div>
+                    </a>
+                </div>
+            </MudItem>
+        }
+        
+    }
+    else
+    {
+        foreach (var product in products)
+        {
+            <MudItem xs="12" sm="3" md="4">
+                <div class="images">
+                    <div class="product-image">
+                        <a href="/product">
+                            <MudImage Src="https://mebel.shop/upload/resize_cache/iblock/f20/600_600_140cd750bba9870f18aada2478b24840a/7pxfeznxsq3s4t0w7ptpga9fmn7547ap.jpg"
+                                      Alt="" Class="image"/>
+                        </a>
+                    </div>
+                    <div class="d-flex flex-column align-center">
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            if(i <= product.Rate)
+                            {
+                                <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning"/>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Filled.StarBorder" Color="Color.Warning"/>
+                            }
+                        }
+                    </div>
+                    <div class="product-name">
+                        <h3>@product.Name</h3>
+                        <p>@product.Description</p>
+                    </div>
+                    <div class="product-price">
+                        <h4 class="price">@product.Price $</h4>
+                    </div>
+                    <a href="/product">
+                        <div>
+                            <div class="product-name">
+                                <h3>Table Galleon leather</h3>
+                                <p>Description</p>
+                            </div>
+                            <div class="product-price"><h4 class="price">500$</h4></div>
+                            <p>Views: 999+</p>
+                        </div>
+                    </a>
+                </div>
+            </MudItem>
+        }
+    }
+</MudGrid>
+@*
+@if (products is not null)
 {
-    @foreach (var product in productViews)
+    @foreach (var product in products)
     {
         <MudCard >
              <MudCardMedia Style="max-width: 100px" Image="images/redmi.jpg" Height="200" />
@@ -22,11 +103,26 @@
         </MudCard>
     }
 }
+*@
 
 @code {
-    private List<ProductView>? productViews;
-    protected override async Task OnInitializedAsync()
-    {
-        productViews = await Http.GetFromJsonAsync<List<ProductView>>("https://localhost:7235/api/products");
-    }
+    private List<ProductView>? products;
+    
+    protected override async Task OnInitializedAsync() => products = await ProductService.GetProductsAsync();
 }
+
+<style>
+
+    .image {
+        width: 100%;
+    }
+
+    .product-image {
+        padding: 45px 1px;
+    }
+
+    .images {
+        padding: 25px;
+        border: 1px solid rgb(241, 241, 241);
+    }
+</style>    

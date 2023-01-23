@@ -7,8 +7,6 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using FurnitureShop.Common.Email_Sender.Services;
-using FurnitureShop.Data.Context;
 using FurnitureShop.Merchant.Api.Dtos;
 
 namespace FurnitureShop.Merchant.Api.Services;
@@ -17,17 +15,15 @@ namespace FurnitureShop.Merchant.Api.Services;
 public class EmployeeService : IEmployeeService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IEmailSender _emailSender;
     private readonly UserManager<AppUser> _userManager;
 
-    public EmployeeService(IUnitOfWork unitOfWork, IEmailSender emailSender, UserManager<AppUser> userManager)
+    public EmployeeService(IUnitOfWork unitOfWork, UserManager<AppUser> userManager)
     {
-        _unitOfWork = unitOfWork;
-        _emailSender = emailSender;
+        _unitOfWork = unitOfWork;   
         _userManager = userManager;
     }
 
-    public async Task AddEmployee(ClaimsPrincipal appuser, EmployeeServiceDto dto)
+    public async Task AddEmployee(ClaimsPrincipal appuser, AddEmployeeDto dto)
     {
         var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dto.OrganizationId);
         if (organization is null)
@@ -49,8 +45,6 @@ public class EmployeeService : IEmployeeService
         });
 
         _unitOfWork.Save();
-        //var message = new EmailService(new string[] { $"{dto.Email}" }, "furnitureshop.uz organizations", $"{user.FirstName} has added you to {organization.Name} as manager. \n Congratulations 🎉");
-        //_emailSender.SendEmail(message);
     }
 
     public async Task<List<GetEmployeesView>> GetManagers(Guid organizationId)
@@ -69,17 +63,17 @@ public class EmployeeService : IEmployeeService
             }).ToList();
     }
 
-    public async Task RemoveEmployee(Guid organizationId, Guid employeeId)
+    public async Task RemoveEmployee(RemoveEmployeeDto dto)
     {
-        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == organizationId);
+        var organization = await _unitOfWork.Organizations.GetAll().FirstOrDefaultAsync(org => org.Id == dto.OrganizationId);
         if (organization is null)
             throw new NotFoundException<Organization>();
 
-        var manager = organization.Users!.FirstOrDefault(u => u.UserId == employeeId);
-        if (manager is null)
+        var employee = organization.Users!.FirstOrDefault(u => u.UserId == dto.EmployeeId);
+        if (employee is null)
             throw new NotFoundException<OrganizationUser>();
 
-        organization.Users!.Remove(manager);
+        organization.Users!.Remove(employee);
         _unitOfWork.Save();
     }
 

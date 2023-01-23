@@ -1,11 +1,8 @@
-﻿using FurnitureShop.Client.Api.Filters;
+﻿using FurnitureShop.Client.Api.Dtos;
 using FurnitureShop.Client.Api.Services.Interfaces;
 using FurnitureShop.Client.Api.ViewModel;
 using FurnitureShop.Common.Filters;
-using FurnitureShop.Common.Models;
-using FurnitureShop.Data.Context;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Client.Api.Controllers;
 
@@ -15,16 +12,17 @@ namespace FurnitureShop.Client.Api.Controllers;
 public partial class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
-
-    public ProductsController(IProductService productService)
+    private readonly IProductCommentService _productCommentService;
+    public ProductsController(IProductService productService, IProductCommentService productCommentService)
     {
         _productService = productService;
+        _productCommentService = productCommentService;
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<ProductView>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] PaginationParams paginationParams)
-    => await _productService.GetProducts(paginationParams);
+    public async Task<ActionResult<List<ProductView>>> GetAllProducts([FromQuery] ProductFilterDto filter)
+    => await _productService.GetProducts(filter);
 
     [HttpGet("{productId:guid}")]
     [ProducesResponseType(typeof(ProductView), StatusCodes.Status200OK)]

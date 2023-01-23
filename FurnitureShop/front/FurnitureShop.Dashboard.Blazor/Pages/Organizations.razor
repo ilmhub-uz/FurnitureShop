@@ -1,0 +1,50 @@
+@page "/organizations"
+@using FurnitureShop.Dashboard.Blazor.ViewModel
+@inject HttpClient client
+
+<PageTitle>Organizations</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+@if (organization == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="organization" Hover="true" SortLabel="Sort By" Elevation="0">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Organization</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Action deactive</MudTh>
+            <MudTh>Action active</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Organization">@context.Name</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" OnClick="@(async () => await DeleteOrganization(@context.Id))" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Deactive</MudButton></MudTd>
+            <MudTd><MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary">Active</MudButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 50, 100 }"/>
+        </PagerContent>
+    </MudTable>
+}
+@code {
+    private List<OrganizationView>? organization;
+
+    protected override async Task OnInitializedAsync()
+    {
+        organization = await client.GetFromJsonAsync<List<OrganizationView>>("/api/Organizations");
+    }
+
+    private async Task DeleteOrganization(Guid organizationId)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Delete, $"/api/Organizations?organizationId={organizationId}");
+        message.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+
+        var responseMessage = await client.SendAsync(message);
+    }
+}

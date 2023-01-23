@@ -1,28 +1,69 @@
-﻿@page "/add-product"
-@using FurnitureShop.Admin.Blazor.Dtos
-@inject HttpClient _http;
+﻿@page "/add-product/{organizationId}"
+@using FurnitureShop.Merchant.Blazor.Dtos
+@using FurnitureShop.Merchant.Blazor.Services
+@using FurnitureShop.Merchant.Blazor.ViewModel
+@using Newtonsoft.Json
+@inject HttpClient httpClient
+@inject OrganizationService organizationService
+@inject NavigationManager NavManager
+@inject ProductService productService
 
 <PageTitle>Add Product</PageTitle>
 
-<MudGrid Justify="Justify.Center">
-    <MudCard Height="420px" Width="480px" Class="mt-5 ml-10 mr-10">
-        <h2>Add Product Form</h2>
-        <MudTextField @bind-Value="productDtoModel.Name" Label="Name" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="productDtoModel.Description" Label="Desciption" Variant="Variant.Text" Required ></MudTextField>
-        <MudTextField @bind-Value="productDtoModel.Price" Label="Price" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="productDtoModel.Count" Label="Count" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="productDtoModel.CategoryId" Label="Category id" Variant="Variant.Text" Required></MudTextField>
-        <MudTextField @bind-Value="productDtoModel.OrganizationId" Label="Organization id" Variant="Variant.Text" Required></MudTextField>
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Filled.Done"
-                   Color="Color.Primary" OnClick="OnInitializedAsync" Class="ma-5">Submit</MudButton>
-    </MudCard>
-</MudGrid>
+<EditForm Model="@model">
+    <h2> Create Product </h2>
+    <DataAnnotationsValidator />
+        <MudTextField Label="Name" @bind-Value="model.Name" For="@(() => model.Name)" />
+        <MudTextField Label="Description" @bind-Value="model.Description" For="@(() => model.Description)" />
+        <MudTextField Label="Brend" @bind-Value="model.Brend" For="@(() => model.Brend)" />
+        <MudTextField Label="Material" @bind-Value="model.Material" For="@(() => model.Material)" />
+        <MudTextField Label="Price" @bind-Value="model.Price" For="@(() => model.Price)" />
+        <MudTextField Label="Count" @bind-Value="model.Count" For="@(() => model.Count)" />
+        <MudTextField Label="Category" @bind-Value="model.CategoryId" For="@(() => model.CategoryId)" />
+    <br />
+    <MudButton @onclick="(async () => await OnValidSubmit())" Variant="Variant.Filled" Color="Color.Success" Class="ml-auto drawMiniButton">Create</MudButton>
+</EditForm>
 
 @code {
-    private CreateProductDto? productDtoModel = new CreateProductDto();
+    bool _isExpanded = true;
+    CreateProductDto? model = new CreateProductDto();
+    bool success;
+    AddFiles OrganizationImage = new AddFiles();
+    string errorMessage = null;
+    
+    List<CategoryView?> _categories = new List<CategoryView?>();
+
+    [Parameter]
+    public string? organizationId { get; set; }
+
+    protected void Redirect()
+    {
+        NavManager.NavigateTo($"/organization/{organizationId}");
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        await _http.PostAsJsonAsync("https://localhost:7113/api/Products", productDtoModel);
+
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, "/api/Categories");
+        httpRequest.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        
+        var response = await httpClient.SendAsync(httpRequest);
+        var categoriesJson = await response.Content.ReadAsStringAsync();
+
+        _categories = JsonConvert.DeserializeObject<List<CategoryView>>(categoriesJson);
+    }
+
+    private async Task OnValidSubmit()
+    {
+        model.WithInstallation = true;
+        model.IsAvailable = true;
+        model.OrganizationId = new Guid(organizationId);
+        var result = await productService.CreateProductAsync(model);
+        if(result.IsSuccess)
+        {
+            success = true;
+            StateHasChanged();
+            Redirect();
+        }
     }
 }

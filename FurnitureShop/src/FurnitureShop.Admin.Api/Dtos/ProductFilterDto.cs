@@ -6,6 +6,7 @@ namespace FurnitureShop.Admin.Api.Dtos;
 
 public class ProductFilterDto : PaginationParams
 {
+    public Guid? ProductId { get; set; }
     public Guid? OrganizationId { get; set; }
     public int? CategoryId { get; set; }
     public uint? Price { get; set; }

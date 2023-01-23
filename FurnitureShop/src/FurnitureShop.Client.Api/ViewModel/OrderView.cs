@@ -1,5 +1,4 @@
 ﻿using FurnitureShop.Data.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureShop.Client.Api.ViewModel;
 
@@ -7,10 +6,10 @@ public class OrderView
 {
     public Guid Id { get; set; }
 
-    
-    public virtual OrganizationView? Organization { get; set; }
+    public string? OrganizationName { get; set; }
 
-    public virtual UserView? User { get; set; }
+    public string? UserName { get; set; }
+    public string? UserMail { get; set; }
 
     public EOrderStatus Status { get; set; }
 

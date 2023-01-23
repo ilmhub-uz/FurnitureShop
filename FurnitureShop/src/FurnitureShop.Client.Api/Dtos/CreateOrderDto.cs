@@ -2,6 +2,5 @@
 
 public class CreateOrderDto
 {
-    public Guid OrganizationId { get; set; }
-    public List<CreateOrderProductDto>? CartProductIds { get; set; }
+  public List<CreateOrderProductDto> Products { get; set; }
 }

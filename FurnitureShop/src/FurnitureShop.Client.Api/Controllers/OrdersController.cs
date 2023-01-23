@@ -19,13 +19,17 @@ public class OrdersController : ControllerBase
 
     [HttpPost]
     public async Task<ActionResult<OrderView>> CreateOrder([FromBody] CreateOrderDto createOrderDto) =>
-        await _orderService.CreateOrder(User,createOrderDto);
+        await _orderService.CreateOrder(User, createOrderDto);
 
     [HttpGet]
-    public async Task<ActionResult<List<OrderView>>> GetOrders() => 
-        await _orderService.GetOrders();
-
-    [HttpPut("{orderId}/cancel")]
-    public async Task<ActionResult<OrderView>> UpdateOrder(UpdateOrderDto updateOrderDto,Guid orderId) => 
-        await _orderService.UpdateOrder(updateOrderDto, orderId);
+    public async Task<ActionResult<List<OrderView>>> GetOrders([FromQuery] OrderFilterDto filter) =>
+        await _orderService.GetOrders(filter, User);
+    
+    [HttpDelete("{orderId}/cancel")]
+    public async Task<ActionResult> DeleteOrder(Guid orderId)
+    {
+        await _orderService.DeleteOrder(orderId);
+       
+        return Ok("order deleted");
+    }
 }
