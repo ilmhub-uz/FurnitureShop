@@ -1,0 +1,43 @@
+﻿@page "/addcategory"
+@using FurnitureShop.Common.Helpers
+@using FurnitureShop.Dashboard.Blazor.Dtos
+
+
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Title" HelperText="Category nomini kiriting"
+                                @bind-Value="model.Name" For="@(() => model.Name)"/>
+                <MudTextField Label="Sub category" HelperText="SubCategory" Class="mt-3"
+                                @bind-Value="model.ParentId" For="@(() => model.ParentId)" InputType="InputType.Number"/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Add</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.body2" Align="Align.Center">
+        </MudText>
+    </MudItem>
+</MudGrid>
+</EditForm>
+
+
+@code {
+    CreateCategoryDto model = new CreateCategoryDto();
+    HttpResponseMessage? response = null;
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        RequestHelper request = new RequestHelper();
+
+        using var responseMessage = await request.SendRequestAsync<CreateCategoryDto>(HttpMethod.Post,"https://localhost:1003","/api/Categories", model);
+
+    }
+}
+
