@@ -18,15 +18,15 @@ public class ContractService : IContractService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<ContractView>> GetContractsAsync(Guid oreganizationId)
+    public async Task<List<ContractView>> GetContractsAsync()
     {
         var contracts = _unitOfWork.Contracts.GetAll();
         return contracts.Select(contract => contract.Adapt<ContractView>()).ToList();
     }
 
-    public async Task<ContractView> GetContractByIdAsync(Guid contractId)
+    public async Task<ContractView> GetContractByIdAsync(Guid orderId)
     {
-        var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.Id == contractId);
+        var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.OrderId == orderId);
         if (contract is null)
             throw new BadRequestException("Can't fount contract by Id") { ErrorCode = StatusCodes.Status404NotFound };
 
@@ -58,9 +58,9 @@ public class ContractService : IContractService
         return createdContract.Adapt<ContractView>();
     }
 
-    public async Task DeleteContractAsync(Guid contractId)
+    public async Task DeleteContractAsync(Guid orderId)
     {
-        var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.Id == contractId);
+        var contract = await _unitOfWork.Contracts.GetAll().FirstOrDefaultAsync(c => c.OrderId == orderId);
         if (contract is null)
             throw new BadRequestException("Can't fount contract by Id") { ErrorCode = StatusCodes.Status404NotFound };
 
